@@ -15,5 +15,3 @@ class DmeUdp(AbstractUdp):
         self.loop.create_task(self.write())
         self.loop.create_task(self.echo())
 
-    async def connect_to_dme_world(self):
-        pass

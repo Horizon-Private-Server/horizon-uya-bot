@@ -36,16 +36,20 @@ class Thug:
 
         self._config = config
 
-        # Connection status
+        # Initialize connections
         self._mls_conn = MlsTcp(self.loop, config, config['mls_ip'], config['mls_port'])
-
         self._tcp_conn = DmeTcp(self.loop, config, config['dmetcp_ip'], config['dmetcp_port'])
         self._udp_conn = DmeUdp(self.loop, config, config['dmeudp_ip'], config['dmeudp_port'])
-        #
+
+        # Connect to DME world
         access_key = self._mls_conn.get_access_key()
         self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_1(access_key))
 
-        # self._udp_conn.connect_to_staging()
+        #self._udp_conn.connect_to_dme_world()
+
+        #self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_2())
+
+
 
         self.loop.run_forever()
 

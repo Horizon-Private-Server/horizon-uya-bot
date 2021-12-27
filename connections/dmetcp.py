@@ -10,7 +10,7 @@ class DmeTcp(AbstractTcp):
     def __init__(self, loop, config, ip: str, port: int):
         super().__init__(loop, config, ip, port)
         self._logger = logging.getLogger('thug.dmetcp')
-        self._logger.setLevel(logging.DEBUG)
+        self._logger.setLevel(logging.ERROR)
 
         self.loop.run_until_complete(self.start())
         self.loop.create_task(self.read())

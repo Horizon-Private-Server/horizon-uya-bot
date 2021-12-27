@@ -12,6 +12,8 @@ class AbstractUdp:
         self._logger = None
 
         self._config = config
+        self._wait_time_for_packets = config['wait_time_for_packets']
+
         self._deframer = RtBufferDeframer()
 
         self._ip = ip

@@ -49,6 +49,14 @@ class DmeTcp(AbstractTcp):
 
         self._logger.info(f"Connected Stage [1]! Player ID: {self._player_id} | Player count: {self._player_count}")
 
+    async def connect_to_dme_world_stage_2(self):
+        self._logger.info("Connecting to dme world Stage [2] ...")
+        pkt = bytes_from_hex('170000')
+
+        self.queue(pkt)
+        self._logger.info("Connected Stage [2]!")
+
+
     def get_player_id(self):
         return self._player_id
 

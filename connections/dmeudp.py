@@ -15,3 +15,22 @@ class DmeUdp(AbstractUdp):
         self.loop.create_task(self.write())
         self.loop.create_task(self.echo())
 
+    async def connect_to_dme_world(self, player_id):
+        self._logger.info("Connecting to dme world ...")
+        pkt = bytes_from_hex('161D00010801')
+        pkt += int_to_bytes_little(2, self._config['world_id'])
+        pkt += bytes_from_hex('BC290000')
+        pkt += str_to_bytes(self._ip, 16)
+        pkt += int_to_bytes_little(2, self._port)
+        pkt += int_to_bytes_little(2, player_id)
+
+        self.queue(pkt)
+
+        await asyncio.sleep(self._wait_time_for_packets)
+
+        data = self.dequeue()
+        if data[0] != 0x19:
+            raise Exception('Unknown response!')
+
+        self._logger.info("Connected!")
+

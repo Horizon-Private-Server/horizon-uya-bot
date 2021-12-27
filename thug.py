@@ -44,11 +44,8 @@ class Thug:
         # Connect to DME world
         access_key = self._mls_conn.get_access_key()
         self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_1(access_key))
-
-        #self._udp_conn.connect_to_dme_world()
-
-        #self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_2())
-
+        self.loop.run_until_complete(self._udp_conn.connect_to_dme_world(self._tcp_conn.get_player_id()))
+        self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_2())
 
 
         self.loop.run_forever()

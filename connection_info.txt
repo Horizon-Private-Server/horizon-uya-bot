@@ -1,0 +1,21 @@
+Needed:
+TCP
+156B000108010100BC2900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000032353438383741353335423137434536003443424537453930313734393842354100
+{'packet': 'medius.rtpackets.clientconnecttcpauxudp', 'rtid': b'\x15', 'len': 107, 'unknown1': b'\x01\x08\x01', 'target_world_id': 1, 'app_id': 10684, 'key': 0, 'session_key': b'254887A535B17CE6\x00', 'access_key': b'4CBE7E9017498B5A\x00'}
+
+170000
+{'packet': 'medius.rtpackets.clientconnectreadyauxudp', 'rtid': b'\x17', 'len': 0}
+
+
+
+
+2021-12-12 02:29:14,226 robo.dmetcp | INFO | Serving on ('0.0.0.0', 10079) ...
+2021-12-12 02:29:40,068 robo.dmetcp | INFO | Client connected: Connection(dmetcp | 192.168.1.2 | 41693)
+2021-12-12 02:29:40,084 robo.dmetcp | DEBUG | Connection(dmetcp | 192.168.1.2 | 41693) | I | 156B000108010100BC2900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000032353438383741353335423137434536003443424537453930313734393842354100
+2021-12-12 02:29:40,085 robo.dmetcp | DEBUG | Connection(dmetcp | 192.168.1.2 | 41693) | Serialized | {'packet': 'medius.rtpackets.clientconnecttcpauxudp', 'rtid': b'\x15', 'len': 107, 'unknown1': b'\x01\x08\x01', 'target_world_id': 1, 'app_id': 10684, 'key': 0, 'session_key': b'254887A535B17CE6\x00', 'access_key': b'4CBE7E9017498B5A\x00'}
+2021-12-12 02:29:40,085 robo.dmetcp | DEBUG | Connection(dmetcp | 192.168.1.2 | 41693) | Response | [{'name': 'medius.rtpackets.serverconnectaccepttcp'}, {'rtid': 7}, {'unknown': b'\x01\x08\x10'}, {'dme_player_id': b'\x00\x00'}, {'player_count': b'\x01\x00'}, {'ip_addr': b'192.168.1.2\x00\x00\x00\x00\x00'}]
+2021-12-12 02:29:40,085 robo.dmetcp | DEBUG | Connection(dmetcp | 192.168.1.2 | 41693) | Response | [{'name': 'medius.rtpackets.serverinfoauxudp'}, {'rtid': 24}, {'ip': b'192.168.1.2\x00\x00\x00\x00\x00'}, {'port': b'8\xc7'}]
+2021-12-12 02:29:40,085 robo.dmetcp | DEBUG | Connection(dmetcp | 192.168.1.2 | 41693) | O | 071700010810000001003139322E3136382E312E320000000000
+2021-12-12 02:29:40,085 robo.dmetcp | DEBUG | Connection(dmetcp | 192.168.1.2 | 41693) | O | 1812003139322E3136382E312E32000000000038C7
+2021-12-12 02:29:40,117 robo.dmeudp | Thread-4 | DEBUG | dmeudp | UdpConnection(dmeudp | 192.168.1.2 | 58341) | I | 161D000108010100BC2900003139322E3136382E312E3200000000005F270000
+2021-12-12 02:29:40,135 robo.dmetcp | DEBUG | Connection(dmetcp | 192.168.1.2 | 41693) | I | 170000

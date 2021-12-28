@@ -63,7 +63,7 @@ class AbstractTcp:
     async def echo(self):
         self._logger.info("Starting echo co-routine ...")
         while True:
-            self._write_queue.put(bytes_from_hex('050100A5'))
+            self._write_queue.put(hex_to_bytes('050100A5'))
             await asyncio.sleep(30)
 
     def queue(self, data: bytes):
@@ -71,3 +71,6 @@ class AbstractTcp:
 
     def dequeue(self):
         return self._read_queue.get()
+
+    def qsize(self):
+        return self._read_queue.qsize()

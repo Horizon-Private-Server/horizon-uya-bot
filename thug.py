@@ -20,10 +20,10 @@ from connections.dmetcp import DmeTcp
 from connections.dmeudp import DmeUdp
 
 config = {
-    'account_id': 1,
+    'account_id': 2,
     'username': 'Thug',
-    'world_id': 1,
-    'session_key': '89C8CDF3764B9ECA\x00',
+    'world_id': 2,
+    'session_key': 'F04C2A8D28B7B179\x00',
     'mls_ip': '127.0.0.1', 'mls_port': 10078,
     'dmetcp_ip': '127.0.0.1', 'dmetcp_port': 10079,
     'dmeudp_ip': '127.0.0.1', 'dmeudp_port': 51000,
@@ -47,6 +47,7 @@ class Thug:
         self.loop.run_until_complete(self._udp_conn.connect_to_dme_world(self._tcp_conn.get_player_id()))
         self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_2())
 
+        self.loop.create_task(self._tcp_conn.main())
 
         self.loop.run_forever()
 

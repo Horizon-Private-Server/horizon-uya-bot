@@ -58,7 +58,7 @@ class AbstractUdp:
 
     async def echo(self):
         while True:
-            self._write_queue.put(bytes_from_hex('050100A5'))
+            self._write_queue.put(hex_to_bytes('050100A5'))
             await asyncio.sleep(30)
 
     def queue(self, data: bytes):

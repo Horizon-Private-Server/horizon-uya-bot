@@ -1,4 +1,4 @@
-from utils import bytes_to_int_little
+from utils.utils import *
 
 class RtBuffer():
     def __init__(self):
@@ -6,7 +6,7 @@ class RtBuffer():
         self._cursor = 0
         self._encrypted = False
 
-    def process(self, b): 
+    def process(self, b):
         self._buffer[self._cursor] = b
 
         if (self._cursor == 0):

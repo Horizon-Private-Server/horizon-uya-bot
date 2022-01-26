@@ -2,9 +2,8 @@ import asyncio
 from queue import Queue
 import sys
 
-import utils
-from utils import *
-from rtbufferdeframer import RtBufferDeframer
+from utils.utils import *
+from utils.rtbufferdeframer import RtBufferDeframer
 
 class AbstractTcp:
     def __init__(self, loop, config, ip: str, port: int):
@@ -40,7 +39,8 @@ class AbstractTcp:
             packets = self._deframer.deframe([data])
 
             for packet in packets:
-                self._logger.debug(f"I | {utils.bytes_to_hex(packet)}")
+                self._logger.debug(f"I | {bytes_to_hex(packet)}")
+
 
                 if packet[0] not in [0x05]:  # 05 = echo, 07 = connected, 18 =
                     self._read_queue.put(packet)
@@ -55,7 +55,7 @@ class AbstractTcp:
                 final_data = b''
                 for i in range(size):
                     final_data += self._write_queue.get()
-                self._logger.debug(f"O | {utils.bytes_to_hex(final_data)}")
+                self._logger.debug(f"O | {bytes_to_hex(final_data)}")
                 self._writer.write(final_data)
                 await self._writer.drain()
             await asyncio.sleep(self._readwrite_time)
@@ -70,6 +70,8 @@ class AbstractTcp:
         self._write_queue.put(data)
 
     def dequeue(self):
+        if self._read_queue.qsize() == 0:
+            return None
         return self._read_queue.get()
 
     def qsize(self):

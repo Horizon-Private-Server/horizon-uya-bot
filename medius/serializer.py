@@ -1,10 +1,8 @@
-
-from utils import *
+from utils.utils import *
 
 
 class SerializerMap:
 	def __init__(self):
-		
 
 		self._map = {
 			0x03: self._client_app_single,

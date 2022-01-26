@@ -2,9 +2,8 @@ import asyncio
 from queue import Queue
 import sys
 
-import utils
-from utils import *
-from rtbufferdeframer import RtBufferDeframer
+from utils.utils import *
+from utils.rtbufferdeframer import RtBufferDeframer
 
 class AbstractUdp:
     def __init__(self, loop, config, ip: str, port: int):
@@ -18,7 +17,7 @@ class AbstractUdp:
 
         self._ip = ip
         self._port = port
-        
+
         self.transport = None
 
         self._read_queue = Queue()
@@ -40,19 +39,19 @@ class AbstractUdp:
         packets = self._deframer.deframe([data])
 
         for packet in packets:
-            self._logger.debug(f"I | {utils.bytes_to_hex(packet)}")
-            if packet[0] not in [0x05]: # 05 = echo, 07 = connected, 18 = 
+            self._logger.debug(f"I | {bytes_to_hex(packet)}")
+            if packet[0] not in [0x05]: # 05 = echo, 07 = connected, 18 =
                 self._read_queue.put(packet)
 
     async def write(self):
         while True:
             size = self._write_queue.qsize()
-                
+
             if size != 0:
                 final_data = b''
                 for i in range(size):
                       final_data += self._write_queue.get()
-                self._logger.debug(f"O | {utils.bytes_to_hex(final_data)}")
+                self._logger.debug(f"O | {bytes_to_hex(final_data)}")
                 self.transport.sendto(final_data, (self._ip, self._port))
             await asyncio.sleep(self._readwrite_time)
 

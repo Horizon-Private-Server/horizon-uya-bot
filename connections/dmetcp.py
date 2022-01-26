@@ -2,7 +2,7 @@ import asyncio
 import sys
 import logging
 
-from utils import *
+from utils.utils import *
 from connections.abstracttcp import AbstractTcp
 
 #from serializer import serializer
@@ -24,9 +24,8 @@ class DmeTcp(AbstractTcp):
         self.loop.create_task(self.echo())
 
 
-    async def main(self):
+    async def lobby_routine(self):
         while True:
-
             if self.qsize() != 0:
                 packet = self.dequeue()
                 serialized = serializer.serialize(packet)

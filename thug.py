@@ -35,6 +35,8 @@ class Thug:
         logger.info("Initializing ...")
         self.loop = asyncio.get_event_loop()
 
+        self._player_state = 'Connecting'
+
         self._config = config
 
         # Initialize connections
@@ -47,11 +49,11 @@ class Thug:
 
         # Connect to DME world
         access_key = self._mls_conn.get_access_key()
-        # self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_1(access_key))
-        # self.loop.run_until_complete(self._udp_conn.connect_to_dme_world(self._tcp_conn.get_player_id()))
-        # self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_2())
+        self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_1(access_key))
+        self.loop.run_until_complete(self._udp_conn.connect_to_dme_world(self._tcp_conn.get_player_id()))
+        self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_2())
 
-        # self.loop.create_task(self._tcp_conn.main())
+        self.loop.create_task(self._tcp_conn.lobby_routine())
 
         self.loop.run_forever()
 

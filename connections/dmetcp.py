@@ -5,8 +5,7 @@ import logging
 from utils.utils import *
 from connections.abstracttcp import AbstractTcp
 
-#from serializer import serializer
-
+from medius.serializer import RtSerializer
 
 class DmeTcp(AbstractTcp):
     def __init__(self, loop, config, ip: str, port: int):
@@ -28,29 +27,32 @@ class DmeTcp(AbstractTcp):
         while True:
             if self.qsize() != 0:
                 packet = self.dequeue()
-                serialized = serializer.serialize(packet)
-                self.process(serialized)
+                serialized = RtSerializer[packet[0]]['serializer'].serialize(packet)
+                self._logger.info(serialized)
+                # self.process(serialized)
             await asyncio.sleep(self._wait_time_for_packets)
 
     def process(self, serialized: dict):
-        if serialized['name'] == 'client_app_single':
-            self.process_client_app_single(serialized)
+        pass
+
+        # if serialized['name'] == 'client_app_single':
+        #     self.process_client_app_single(serialized)
 
 
 
-    def process_client_app_single(self, serialized: dict):
-        self._logger.info(serialized)
+    # def process_client_app_single(self, serialized: dict):
+    #     self._logger.info(serialized)
+    #
+    #     hex_str = bytes_to_hex(serialized['payload'])
+    #     if "F99EC1BAF06D2674284B5305EE6E38B1DE7331F2FBF31DE497228B7C52162F18DAE8913C40C43C0E890D14EEE16AD07C64FD9281D8B972D78BE78D1B290CE0016" in hex_str:
+    #         # Initial connect packet
+    #         self._respond_to_initial_connect_ping(serialized['src_player'])
 
-        hex_str = bytes_to_hex(serialized['payload'])
-        if "F99EC1BAF06D2674284B5305EE6E38B1DE7331F2FBF31DE497228B7C52162F18DAE8913C40C43C0E890D14EEE16AD07C64FD9281D8B972D78BE78D1B290CE0016" in hex_str:
-            # Initial connect packet
-            self._respond_to_initial_connect_ping(serialized['src_player'])
-
-        elif serialized['len'] == 474 and serialized['payload'][57:72] == b'tNW_GameSetting':
-            # TODO: RESPOND TO TNW GAMESETTING
-            new_pkt = hex_to_bytes('0314000000001604010300000000000000000000000000024C00000F0100000000000000000003000300000000001A0000005465737400000000000000000300000F0100000000000000001003000300000000001A00000054657374000000000000000000000D02000201031A000000001604010300000000000200000000000000021300000000')
-            new_pkt = hex_to_bytes('0314000000001604010300000000000000000000000000024C00000F0100000000000000000002000200000000001A0000005465737400000000000000000200000F0100000000000000001002000200000000001A00000054657374000000000000000000000D02000201031A000000001604010300000000000200000000000000021300000000')
-            self.queue(new_pkt)
+        # elif serialized['len'] == 474 and serialized['payload'][57:72] == b'tNW_GameSetting':
+        #     # TODO: RESPOND TO TNW GAMESETTING
+        #     new_pkt = hex_to_bytes('0314000000001604010300000000000000000000000000024C00000F0100000000000000000003000300000000001A0000005465737400000000000000000300000F0100000000000000001003000300000000001A00000054657374000000000000000000000D02000201031A000000001604010300000000000200000000000000021300000000')
+        #     new_pkt = hex_to_bytes('0314000000001604010300000000000000000000000000024C00000F0100000000000000000002000200000000001A0000005465737400000000000000000200000F0100000000000000001002000200000000001A00000054657374000000000000000000000D02000201031A000000001604010300000000000200000000000000021300000000')
+        #     self.queue(new_pkt)
 
     async def connect_to_dme_world_stage_1(self, access_key):
         # Initial connect to DME TCP

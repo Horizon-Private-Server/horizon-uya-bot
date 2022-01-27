@@ -35,8 +35,6 @@ class Thug:
         logger.info("Initializing ...")
         self.loop = asyncio.get_event_loop()
 
-        self._player_state = 'Connecting'
-
         self._config = config
 
         # Initialize connections

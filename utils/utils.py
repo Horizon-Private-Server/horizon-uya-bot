@@ -1,3 +1,6 @@
+from collections import deque
+
+
 def bytes_to_int_little(data):
     return int.from_bytes(data, byteorder='little')
 
@@ -16,6 +19,60 @@ def str_to_bytes(data: str, length: int) -> bytes:
 
 def hex_to_bytes(hex:str):
     return bytes(bytearray.fromhex(hex))
+
+def dme_serialize(data: bytearray, data_dict: [dict], name: str) -> dict:
+    '''Serialize the byte array based on the data dictionary
+    '''
+    results = {'packet': name}
+    try:
+        for pair in data_dict:
+            if len(data) <= 0:
+                break
+            thisBytes = []
+
+            if pair['n_bytes'] == None:
+                while len(data) != 0:
+                    thisBytes.append(data.pop(0))
+            else:
+                for _ in range(pair['n_bytes']):
+                    thisBytes.append(data.pop(0))
+
+            if pair['cast'] == None:
+                results[pair['name']] = bytes(thisBytes)
+            else:
+                results[pair['name']] = pair['cast'](bytes(thisBytes))
+    except:
+        print("ERROR SERIALIZING: " + data.hex().upper())
+        traceback.print_exc()
+    return results
+
+
+def serialize(data: bytes, data_dict: [dict], name: str) -> dict:
+    '''Serialize the byte array based on the data dictionary
+    '''
+    byteList = deque(data)
+    results = {'packet': name}
+    try:
+        for pair in data_dict:
+            if len(byteList) <= 0:
+                break
+            thisBytes = []
+
+            if pair['n_bytes'] == None:
+                while len(byteList) != 0:
+                    thisBytes.append(byteList.popleft())
+            else:
+                for _ in range(pair['n_bytes']):
+                    thisBytes.append(byteList.popleft())
+
+            if pair['cast'] == None:
+                results[pair['name']] = bytes(thisBytes)
+            else:
+                results[pair['name']] = pair['cast'](bytes(thisBytes))
+    except:
+        print("ERROR SERIALIZING: " + data.hex().upper())
+        traceback.print_exc()
+    return results
 
 def serialize(data: bytes, data_dict: [dict], name: str) -> dict:
     '''Serialize the byte array based on the data dictionary

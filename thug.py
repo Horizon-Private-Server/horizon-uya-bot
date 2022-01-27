@@ -37,8 +37,6 @@ class Thug:
         logger.info("Initializing ...")
         self.loop = asyncio.get_event_loop()
 
-        self._model = Model()
-
         self._config = config
 
         # Initialize connections
@@ -55,10 +53,22 @@ class Thug:
         self.loop.run_until_complete(self._udp_conn.connect_to_dme_world(self._tcp_conn.get_player_id()))
         self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_2())
 
+        self._model = Model(self.loop, self._tcp_conn, self._udp_conn)
 
         self.loop.create_task(self._tcp_conn.main(self._model))
         #self.loop.create_task(self._udp_conn.main(self._model))
 
+
+
         self.loop.run_forever()
+
+    async def pusher(self):
+        while True:
+            if self.qsize() != 0:
+                packet = self.dequeue()
+                serialized = RtSerializer[packet[0]]['serializer'].serialize(packet)
+                serialized['protocol'] = 'TCP'
+                model.process(serialized)
+            await asyncio.sleep(self._wait_time_for_packets)
 
 Thug(config)

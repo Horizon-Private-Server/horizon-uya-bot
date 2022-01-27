@@ -4,6 +4,8 @@ import logging
 from utils.utils import *
 from connections.abstractudp import AbstractUdp
 
+from medius.serializer import RtSerializer
+
 class DmeUdp(AbstractUdp):
     def __init__(self, loop, config, ip: str, port: int):
         super().__init__(loop, config, ip, port)
@@ -33,3 +35,12 @@ class DmeUdp(AbstractUdp):
             raise Exception('Unknown response!')
 
         self._logger.info("Connected!")
+
+    async def main(self, model):
+        while True:
+            if self.qsize() != 0:
+                packet = self.dequeue()
+                serialized = RtSerializer[packet[0]]['serializer'].serialize(packet)
+                serialized['protocol'] = 'UDP'
+                model.process(serialized)
+            await asyncio.sleep(self._wait_time_for_packets)

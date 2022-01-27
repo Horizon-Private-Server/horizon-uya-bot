@@ -19,6 +19,8 @@ from connections.mlstcp import MlsTcp
 from connections.dmetcp import DmeTcp
 from connections.dmeudp import DmeUdp
 
+from model.model import Model
+
 config = {
     'account_id': 2,
     'username': 'Thug',
@@ -34,6 +36,8 @@ class Thug:
     def __init__(self, config: dict):
         logger.info("Initializing ...")
         self.loop = asyncio.get_event_loop()
+
+        self._model = Model()
 
         self._config = config
 
@@ -51,7 +55,9 @@ class Thug:
         self.loop.run_until_complete(self._udp_conn.connect_to_dme_world(self._tcp_conn.get_player_id()))
         self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_2())
 
-        self.loop.create_task(self._tcp_conn.lobby_routine())
+
+        self.loop.create_task(self._tcp_conn.main(self._model))
+        #self.loop.create_task(self._udp_conn.main(self._model))
 
         self.loop.run_forever()
 

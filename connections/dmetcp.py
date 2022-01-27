@@ -23,13 +23,13 @@ class DmeTcp(AbstractTcp):
         self.loop.create_task(self.echo())
 
 
-    async def lobby_routine(self):
+    async def main(self, model):
         while True:
             if self.qsize() != 0:
                 packet = self.dequeue()
                 serialized = RtSerializer[packet[0]]['serializer'].serialize(packet)
-                self._logger.info(serialized)
-                # self.process(serialized)
+                serialized['protocol'] = 'TCP'
+                model.process(serialized)
             await asyncio.sleep(self._wait_time_for_packets)
 
     def process(self, serialized: dict):

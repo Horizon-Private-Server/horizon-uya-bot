@@ -4,7 +4,8 @@ from medius.dme_packets import *
 
 RtSerializer = {
 	b'\x00\x18' : {'name': 'player_connected', 'serializer': playerconnected.PlayerConnectedSerializer()},
-	b'\x00\x10' : {'name': 'player_connected', 'serializer': playerconnected2.PlayerConnected2Serializer()},
+	b'\x00\x10' : {'name': 'player_connected2', 'serializer': playerconnected2.PlayerConnected2Serializer()},
+	b'\x00\x16' : {'name': 'common_sixteen', 'serializer': commonsixteen.CommonSixteenSerializer()},
 }
 
 

@@ -81,6 +81,7 @@ with open(cli_args.log, 'r') as f:
         if 'robo.dmetcp' in line:
             if port not in tcp_found_ports:
                 tcp_found_ports.append(port)
+                lines.append(f"[ ----- P{tcp_found_ports.index(port)} connected -----]")
             protocol = 'TCP'
         else:
             if port not in udp_found_ports:
@@ -97,4 +98,18 @@ with open(cli_args.log, 'r') as f:
 
 with open(cli_args.out, 'w') as f:
     for line in lines:
-        f.write(f"{line}\n")
+        if "connected" in line:
+            f.write(f"{line}\n\n")
+            continue
+
+        data = line.split()[-1]  
+        b_type = data[0:2]
+        if b_type == '02':
+            f.write(f"{' '.join(line.split()[0:2])} {data[0:6]}\n{data[6:]}\n\n")
+        elif b_type == '03':
+            f.write(f"{' '.join(line.split()[0:2])} {data[0:10]}\n{data[10:]}\n\n")
+        else:
+            f.write(f"{line}\n\n")
+
+
+         

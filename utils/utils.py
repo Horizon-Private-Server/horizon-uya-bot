@@ -1,5 +1,12 @@
 from collections import deque
 
+def bytes_to_str(data: bytes) -> str:
+    res = ''
+    for b in data:
+        if b == 0x00:
+            return res
+        res += chr(b)
+    return
 
 def bytes_to_int_little(data):
     return int.from_bytes(data, byteorder='little')

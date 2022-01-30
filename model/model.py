@@ -7,13 +7,15 @@ import asyncio
 
 from medius.dme_packets import *
 from medius.rt.clientappsingle import ClientAppSingleSerializer
+from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
 
 import queue
 
 from utils.utils import dme_packet_to_bytes, rtpacket_to_bytes
 
 class Model:
-    def __init__(self, loop, tcp_conn, udp_conn):
+    def __init__(self, config, loop, tcp_conn, udp_conn):
+        self._config = config
         self._loop = loop
         self._tcp = tcp_conn
         self._udp = udp_conn
@@ -59,6 +61,12 @@ class Model:
             resp_packet = commonsixteen.CommonSixteenSerializer.build(self._dme_player_id, src_player)
             dst_player = src_player
             responses = [[dst_player, resp_packet]]
+        elif dme_packet['packet'] == 'medius.dme_packets.tnwgamesettings':
+            my_key = f'p{self._dme_player_id}_username'
+            if dme_packet[my_key] == '': # our username is empty!
+                # We need to send the join req
+                resp_packet = joingamereq.JoinGameReqSerializer.build(self._dme_player_id)
+                responses = [['B', resp_packet]]
 
 
 
@@ -91,7 +99,7 @@ class Model:
                     if destination != 'B':
                         pkt = ClientAppSingleSerializer.build(destination, final_data)
                     else:
-                        pass
+                        pkt = ClientAppBroadcastSerializer.build(final_data)
 
                     final_pkt = rtpacket_to_bytes(pkt)
 

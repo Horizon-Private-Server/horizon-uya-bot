@@ -53,7 +53,7 @@ class Thug:
         self.loop.run_until_complete(self._udp_conn.connect_to_dme_world(self._tcp_conn.get_player_id()))
         self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_2())
 
-        self._model = Model(self.loop, self._tcp_conn, self._udp_conn)
+        self._model = Model(self._config, self.loop, self._tcp_conn, self._udp_conn)
 
         self.loop.create_task(self._tcp_conn.main(self._model))
         #self.loop.create_task(self._udp_conn.main(self._model))

@@ -25,7 +25,7 @@ config = {
     'account_id': 2,
     'username': 'Thug',
     'world_id': 1,
-    'session_key': '7F6C5D47CCF33CF9\x00',
+    'session_key': 'DB429D9B861D751B\x00',
     'mls_ip': '127.0.0.1', 'mls_port': 10078,
     'dmetcp_ip': '127.0.0.1', 'dmetcp_port': 10079,
     'dmeudp_ip': '127.0.0.1', 'dmeudp_port': 51000,

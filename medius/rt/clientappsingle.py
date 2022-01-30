@@ -15,10 +15,11 @@ class ClientAppSingleSerializer:
         return serialize(data, self.data_dict, __name__)
 
     @classmethod
-    def build(self, data: bytes):
+    def build(self, dst_player, data: bytes):
         packet = [
             {'name': __name__},
             {'rtid': b'\x03'},
+            {'dst_player': int_to_bytes_little(2, dst_player)},
             {'data': data}
         ]
         return packet

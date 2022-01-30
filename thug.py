@@ -62,13 +62,5 @@ class Thug:
 
         self.loop.run_forever()
 
-    async def pusher(self):
-        while True:
-            if self.qsize() != 0:
-                packet = self.dequeue()
-                serialized = RtSerializer[packet[0]]['serializer'].serialize(packet)
-                serialized['protocol'] = 'TCP'
-                model.process(serialized)
-            await asyncio.sleep(self._wait_time_for_packets)
 
 Thug(config)

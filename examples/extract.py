@@ -58,28 +58,43 @@ def hex_to_bytes(hex:str):
 def bytes_to_hex(data:bytes):
     return data.hex().upper()
 
+import argparse
+parser = argparse.ArgumentParser(description='dme parser')
+parser.add_argument('--log', help='log', required=True)
+parser.add_argument('--out', help='out', required=True)
+cli_args = parser.parse_args()
+
+
+tcp_found_ports = []
+udp_found_ports = []
+
 lines = []
-with open('all.txt', 'r') as f:
+with open(cli_args.log, 'r') as f:
     for line in f:
         line = line.strip()
-        if "dmetcp" in line:
+        if 'robo.dme' not in line:
+            continue
+        if ' I ' not in line:
+            continue
+
+        port = line.split(") | ")[0].split()[-1]
+        if 'robo.dmetcp' in line:
+            if port not in tcp_found_ports:
+                tcp_found_ports.append(port)
             protocol = 'TCP'
-            if '34465' in line and ' I ' in line:
-                player = 'P0'
-            elif '46719' in line and ' I ' in line:
-                player = 'P1'
         else:
+            if port not in udp_found_ports:
+                udp_found_ports.append(port)
             protocol = 'UDP'
-            if '57069' in line and ' I ' in line:
-                player = 'P0'
-            elif '52976' in line and ' I ' in line:
-                player = 'P1'
-        
+
         data = line.split(" | ")[-1]
         data = hex_to_bytes(data)
         packets = RtBufferDeframer().deframe(data)
         for packet in packets:
-            print(f"{protocol} {player} {bytes_to_hex(packet)}")
+            if bytes_to_hex(packet)[0:2] in ['0D', '0E', '05', '10']: # random packets not necessary
+                continue
+            lines.append(f"{protocol} P{tcp_found_ports.index(port) if protocol == 'TCP' else udp_found_ports.index(port)} {bytes_to_hex(packet)}")
 
-           
-
+with open(cli_args.out, 'w') as f:
+    for line in lines:
+        f.write(f"{line}\n")

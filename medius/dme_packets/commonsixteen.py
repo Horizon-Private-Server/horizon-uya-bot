@@ -28,8 +28,8 @@ class CommonSixteenSerializer:
             {'unk3': hex_to_bytes('03')}, # 05 or 03
             {'src_player?_2': int_to_bytes_little(1, src_player)},
             {'unk4': hex_to_bytes('0300')}, # 0300
-            {'dst_player?_1': int_to_bytes_little(1, dst_player)}, # 01000000
-            {'dst_player?_2': int_to_bytes_little(1, dst_player)}, # 01000000
-            {'unk5': int_to_bytes_little(1, 0)}, # 00000000
+            {'dst_player?_1': int_to_bytes_little(4, dst_player)}, # 01000000
+            {'dst_player?_2': int_to_bytes_little(4, dst_player)}, # 01000000
+            {'unk5': int_to_bytes_little(4, 0)}, # 00000000
         ]
         return packet

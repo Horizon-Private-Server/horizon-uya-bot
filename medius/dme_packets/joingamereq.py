@@ -24,6 +24,6 @@ class JoinGameReqSerializer:
             {'dme_id': b'\x02\x10'},
             {'src_player_id?': int_to_bytes_little(4, player_id)},
             {'message_type': int_to_bytes_little(4, message_type)},
-            {'unk': hex_to_bytes('00C0A84400C0A84400C0A84400C0A8440000AF430000AF430000AF430000AF430000000000000000424242424242424242424242424200414242424242424242424242427E3200004242424200000000')}
+            {'unk': hex_to_bytes('00C0A84400C0A84400C0A84400C0A8440000AF430000AF430000AF430000AF430000000000000000424242424242424242424242424200414242424242424242424242427E3200004242424200000000')} # stats, username, clan tag
         ]
         return packet

@@ -8,6 +8,9 @@ RtSerializer = {
 	b'\x00\x16' : {'name': 'common_sixteen', 'serializer': commonsixteen.CommonSixteenSerializer()},
 	b'\x00\x04' : {'name': 'tnw_gamesettings', 'serializer': tnwgamesettings.tnwGameSettingsSerializer()},
 	b'\x00\x09' : {'name': 'unk', 'serializer': unknownpacket1.UnknownPacket1Serializer()},
+	b'\x02\x12' : {'name': 'connectcompleteorheadset', 'serializer': connectcompleteorheadset.ConnectCompleteOrHeadsetSerializer()},
+	b'\x00\x0F' : {'name': 'playerupdate', 'serializer': playerupdate.PlayerUpdateSerializer()},
+
 }
 
 

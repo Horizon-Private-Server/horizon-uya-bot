@@ -10,8 +10,7 @@ from medius.rt.clientappsingle import ClientAppSingleSerializer
 from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
 
 import queue
-
-from utils.utils import dme_packet_to_bytes, rtpacket_to_bytes
+from utils.utils import *
 
 class Model:
     def __init__(self, config, loop, tcp_conn, udp_conn):
@@ -67,8 +66,8 @@ class Model:
                 # We need to send the join req
                 resp_packet = joingamereq.JoinGameReqSerializer.build(self._dme_player_id)
                 responses = [['B', resp_packet]]
-
-
+                responses.append(['B', playerupdate.PlayerUpdateSerializer.build()])
+                self._udp.queue(hex_to_bytes("032A0000000001CC6F0700000000000001CC6F0700010000000001CC6F0700020000000001DD6F070000010000"))
 
         for resp in responses:
             logger.debug(f"Resp: {resp}")

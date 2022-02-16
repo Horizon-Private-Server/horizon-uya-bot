@@ -12,7 +12,7 @@ class MlsTcp(AbstractTcp):
         self._logger = logging.getLogger('thug.mlstcp')
         self._logger.setLevel(logging.ERROR)
 
-        self._wait_time_for_packets = .5
+        self._wait_time_for_packets = 1
 
         self._access_key = None
 
@@ -35,7 +35,7 @@ class MlsTcp(AbstractTcp):
         self.queue(message)
 
         # wait for the packet to get delivered
-        await asyncio.sleep(self._wait_time_for_packets)
+        await asyncio.sleep(1)
 
         # Check the result
         data = self.dequeue()
@@ -58,7 +58,7 @@ class MlsTcp(AbstractTcp):
         self.queue(pkt)
 
         # wait half a second or so
-        await asyncio.sleep(self._wait_time_for_packets)
+        await asyncio.sleep(1)
 
         # Check the result
         data = self.dequeue()

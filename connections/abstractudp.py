@@ -64,4 +64,6 @@ class AbstractUdp:
         self._write_queue.put(data)
 
     def dequeue(self):
+        if self._read_queue.qsize() == 0:
+            return None
         return self._read_queue.get()

@@ -1,0 +1,608 @@
+struct tNW_PlayerPadInputMessage;
+struct tNW_PlayerWarpMessage;
+struct tNW_GadgetEventMessage;
+struct tNW_PlayerData;
+struct tNW_PlayerPadInputMessageListElem;
+struct tNW_Player;
+struct tNW_PlayerStateMessage;
+struct tNW_GetHitMessage;
+struct tNW_ShotSpawnMessage;
+struct tNW_ShotHitMessage;
+struct tNW_DownloadedTweaks;
+enum tNW_GameType;
+struct tNW_PlayerInfoStats;
+struct tNW_Info;
+struct tNW_MediusCallbacks;
+struct tNW_ClientJoinMessage;
+struct tNW_JoinResponseMessage;
+struct tNW_PlayerSetupMessage;
+struct tNW_PlayerHasHeadSetMessage;
+struct tNW_GameOptions;
+struct tNW_GameSettings;
+struct tNW_MGCL_Data;
+struct tNW_ConvertToJuggernaut;
+struct tNW_KillDeathMessage;
+struct tNW_VehiclePosRotUpdateMessage;
+struct tNW_GameStateMessage;
+struct tNW_Kick;
+struct tNW_MobyDestructMessage;
+struct tNW_PlayerPadInputMessage {
+/*   0 */ int cameraRot[4];
+/*  10 */ short unsigned int playerPos[3];
+/*  16 */ unsigned char sequenceNum;
+/*  17 */ unsigned char stateAndRotFlag;
+/*  17 */ unsigned char playerIndex;
+/*  17 */ unsigned char flags;
+/*  17 */ unsigned char framesWithButtonDiffs;
+/*  18 */ unsigned char pad_data[128];
+};
+
+struct tNW_PlayerWarpMessage {
+/*   0 */ char netPlayerIndex;
+/*   1 */ char dontKillMeInBaseHack;
+/*   2 */ char resetPadRing;
+/*   3 */ char playerSeq;
+/*   4 */ struct vec3 playerPos;
+/*  10 */ struct vec3 playerRot;
+/*  1c */ short int state;
+/*  1e */ char isResurrecting;
+};
+
+struct tNW_GadgetEventMessage {
+/*   0 */ short int gadgetId;
+/*   2 */ char playerIndex;
+/*   3 */ char gadgetEventType;
+/*   4 */ char extraData;
+/*   8 */ int activeTime;
+/*   c */ unsigned int targetUID;
+/*  10 */ struct vec3 firingLoc;
+/*  1c */ struct vec3 targetDir;
+};
+
+/*  24 */ struct tNW_GadgetEventMessage gadgetEventMsg;
+struct tNW_PlayerData {
+/*   0 */ struct vec4 vPosition;
+/*  10 */ struct NetTypeFloatVector3 vRotation;
+/*  1c */ int timeStamp;
+/*  20 */ struct vec4 vIdealVec;
+/*  30 */ int idealVecTime;
+/*  34 */ int accountId;
+/*  38 */ unsigned int UID;
+/*  3c */ int playerType;
+/*  40 */ int playerTeam;
+/*  44 */ float hitPoints;
+/*  48 */ int handGadget;
+/*  4c */ int lastKeepAlive;
+/*  50 */ int remoteTarget;
+/*  54 */ int playerIndex;
+/*  58 */ int cameraElevationSettings[3];
+/*  64 */ int cameraAzimuthSettings[3];
+/*  70 */ int cameraRotationSettings[3];
+/*  7c */ int rank[6];
+/*  94 */ char cGadgetLevel[32];
+/*  b4 */ unsigned int updated;
+/*  b8 */ short unsigned int gadgetsWithAmmo;
+/*  ba */ short unsigned int fpsMode;
+/*  bc */ unsigned char flags;
+};
+
+struct tNW_PlayerPadInputMessageListElem {
+/*   0 */ struct tNW_PlayerPadInputMessage msg;
+/*  98 */ struct tNW_PlayerPadInputMessageListElem* pNext;
+/*  9c */ struct tNW_PlayerPadInputMessageListElem* pPrev;
+/*  a0 */ bool inUse;
+};
+
+struct tNW_Player {
+/*   0 */ int netClientIndex;
+/*   4 */ struct tNW_PlayerData* pNetPlayerData;
+/*   8 */ short int bLocal;
+/*   a */ short int bSpawned;
+/*   c */ short int bGiveMeTheDasBoot;
+/*   e */ short int bCallbackCalled;
+/*  10 */ int latency;
+/*  14 */ unsigned int flags;
+/*  18 */ char accountName[32];
+/*  38 */ struct tNW_PlayerWarpMessage warpMessage;
+/*  58 */ struct tNW_PlayerPadInputMessageListElem padMessageElems[16];
+/* a98 */ char padMessageCurDecodePos;
+/* a99 */ char activePadFrame;
+/* a9c */ int lastActiveSeqNum;
+/* aa0 */ int numBufferedPadMessageElems;
+/* aa4 */ int receivedActivePadMsgFrame;
+/* aa8 */ char pullBack;
+/* aa9 */ signed char jitterThrottleFrames;
+/* aaa */ char numConseqSkips;
+/* aac */ struct tNW_PlayerPadInputMessageListElem* pActivePadMsg;
+/* ab0 */ struct tNW_PlayerPadInputMessageListElem* pPadMsgListTail;
+/* ab4 */ unsigned char padFrame[20];
+/* ac8 */ int homeBaseIndex;
+/* acc */ int homeNodeIndex;
+};
+
+struct tNW_PlayerStateMessage {
+/*   0 */ char netPlayerIndex;
+/*   1 */ char newState;
+/*   2 */ char seqNum;
+/*   3 */ char frame;
+/*   4 */ struct vec3 pos;
+/*  10 */ struct vec3 rot;
+};
+
+struct tNW_GetHitMessage {
+/*   0 */ struct vec3 momentum;
+/*   c */ unsigned char sequenceNum;
+/*   d */ signed char hitPlayerIndex;
+/*   e */ signed char frame;
+};
+
+/* 2eac */ struct tNW_GetHitMessage getHitMessage;
+/* 2f28 */ struct tNW_Player* pNetPlayer;
+/* 2f2c */ struct tNW_PlayerStateMessage newStateMessage;
+struct tNW_ShotSpawnMessage {
+/*   0 */ short int targetPosX;
+/*   2 */ short int targetPosY;
+/*   4 */ short int targetPosZ;
+/*   8 */ int timeStamp;
+/*   c */ unsigned int sourceUID;
+/*  10 */ unsigned int targetUID;
+/*  14 */ unsigned int shotUID;
+/*  18 */ char type;
+/*  19 */ char miscInfo;
+};
+
+struct tNW_ShotHitMessage {
+/*   0 */ char rocketIndex;
+/*   1 */ char rocketState;
+/*   2 */ char firingPlayerClientIndex;
+};
+
+struct tNW_DownloadedTweaks {
+/*   0 */ short int ranksToLevels[10];
+/*  14 */ short int m_dropPenaltyStart;
+/*  16 */ short int m_linkDirtyMax;
+/*  18 */ short int m_linkDirtyShortTermMax;
+/*  1a */ short int m_dropTo30;
+/*  1c */ short int m_perPlayer;
+/*  1e */ short int m_perPlayerSiege;
+/*  20 */ short int m_hasHeadset;
+/*  22 */ short int m_perWeapon[9];
+/*  34 */ short int m_perVehicle[4];
+/*  3c */ short int m_perLevel[12];
+/*  54 */ short int m_perMajorMode[5];
+/*  60 */ float m_RANK_SPREAD;
+/*  64 */ float m_RANK_DIFF_LOW_CLAMP;
+/*  68 */ float m_RANK_DIFF_HIGH_CLAMP;
+/*  6c */ float m_RANK_VALUE;
+/*  70 */ float m_MIN_LOSE;
+/*  74 */ float m_MIN_LOSE_SPREAD;
+/*  78 */ float m_MAX_WIN_SPREAD;
+/*  7c */ float m_MAX_SCORE;
+/*  80 */ float m_DAMP_WINNING_LOW_CLAMP;
+/*  84 */ float m_MIN_ALWAYS_POSITIVE_RANK_DELTA;
+/*  88 */ float m_MAX_ADD_TO_RANK;
+};
+
+enum tNW_GameType {
+kGS_GameTypeSiege = 0,
+kGS_GameTypeCaptureTheFlag = 1,
+kGS_GameTypeDeathMatch = 2,
+kGS_GameTypeKingOfTheHill = 3,
+kGS_GameTypeJuggernaut = 4,
+kNumGsGameTypes = 5
+};
+
+typedef /* function */ void** tNW_JoinCallback;
+typedef /* function */ void** tNW_SendGameStateUpdateCallback;
+typedef /* function */ void** tNW_LobbyUpdate;
+typedef /* function */ void** tNW_GuiCallbackPtr;
+struct tNW_PlayerInfoStats {
+/*   0 */ unsigned int crc;
+/*   4 */ int rank[6];
+/*  1c */ int padding[1];
+/*  20 */ char headsetAttached;
+/*  21 */ char isClanLeader;
+/*  22 */ char hasLocalPlayer;
+/*  23 */ char pad;
+/*  24 */ int clanID;
+/*  28 */ int totalGamesWithCheaters;
+/*  2c */ int consecutiveGamesWithCheaters;
+/*  30 */ char lastGameHadCheater;
+};
+
+struct tNW_Info {
+/*   0 */ enum eNW_STATE State;
+/*   4 */ unsigned int UniqueIdCnt;
+/*   8 */ HDME MyConnectionIndex;
+/*   c */ HDME MediusConnectionIndex;
+/*  10 */ int MyClientIndex;
+/*  14 */ int NumLocalPlayers;
+/*  18 */ int NumLocalBots;
+/*  1c */ int NumClients;
+/*  20 */ int NumPlayers;
+/*  24 */ int MaxPlayers;
+/*  28 */ int kbd_device;
+/*  2c */ int MyTeam;
+/*  30 */ int MySkin;
+/*  34 */ int MyAccountId;
+/*  38 */ int GameSequenceNumber;
+/*  3c */ int NumReservations;
+/*  40 */ struct tReservations Reservations[10];
+/*  90 */ int LeaderPartyIDs[10];
+/*  b8 */ bool IsClanChallenge;
+/*  bc */ int* mpIgnoreListNumEntries;
+/*  c0 */ int* mpIgnoreListEntries;
+/*  c4 */ char MySessionKey[17];
+/*  d8 */ int MyClanId;
+/*  dc */ char MyClanName[33];
+/*  fd */ bool ClanLeader;
+/*  fe */ char MyUserName[15];
+/* 10d */ char MyPassword[15];
+/* 11c */ int MyAccountCityId;
+/* 120 */ bool MyLicenseAccepted;
+/* 124 */ int MyMediusWorldId;
+/* 128 */ int MyRoomWorldId;
+/* 12c */ int MyCityWorldId;
+/* 130 */ unsigned int lastMediusServerTimeT;
+/* 138 */ long int lastMediusServerTimeReceived;
+/* 140 */ unsigned int TourneyRoundBeginTime;
+/* 144 */ char MyTag[5];
+/* 149 */ char MyIp[20];
+/* 160 */ struct tNW_PlayerInfoStats MyStats;
+/* 194 */ char MyStatsHaveDropPenalty;
+/* 195 */ char IsGameRanked;
+/* 198 */ int GameLevel;
+/* 19c */ char GameName[64];
+/* 1dc */ char GamePassword[32];
+/* 1fc */ int PartyMemberIDs[4];
+/* 20c */ int PartyRoomID;
+/* 210 */ int PartyID;
+/* 214 */ int NetFrameTime;
+/* 218 */ int LastTrueNetFrameTime;
+/* 21c */ int JoinGameTime;
+/* 220 */ bool ezNetCnfLoaded;
+/* 221 */ bool INukedTheMicroCode;
+/* 224 */ int ClientIndex[10];
+/* 24c */ bool SessionMaster;
+/* 24d */ bool newSessionMaster;
+/* 250 */ int SessionMasterClientIndex;
+/* 254 */ int onlyLocalPlayers;
+/* 258 */ int originalOnlyLocalPlayers;
+/* 25c */ bool m_bPeer2PeerGame;
+/* 25d */ bool m_bUseEncryption;
+/* 25e */ bool m_bZeroAggregation;
+/* 25f */ char m_UseAuxUdp;
+/* 260 */ bool m_bHardwarePresent;
+/* 261 */ bool m_bVoiceEnabled;
+/* 262 */ char m_LobbyMUISIp[32];
+/* 284 */ int m_LobbyMUISPort;
+/* 288 */ char m_LobbyMASIp[32];
+/* 2a8 */ int m_LobbyMASPort;
+/* 2ac */ int m_LastGameCreationTime;
+/* 2b0 */ tNW_GuiCallbackPtr m_GuiSetBusyCallback;
+/* 2b4 */ tNW_GuiCallbackPtr m_GuiRefreshCallback;
+/* 2b8 */ enum MediusErrorCode m_LastMediusError;
+/* 2bc */ enum MGCL_ERROR_CODE m_LastMGCLError;
+/* 2c0 */ enum NetErrorCode m_LastNetError;
+/* 2c4 */ enum NetErrorCode m_LastMediusNetError;
+/* 2c8 */ enum NetErrorCode m_LastGameServerNetError;
+/* 2cc */ int m_NumConsecutiveNetErrors;
+/* 2d0 */ bool m_bMediusInitialized;
+/* 2d1 */ bool m_bMediusConnected;
+/* 2d2 */ bool m_bMUISUpdate;
+/* 2d4 */ int m_LastMediusUpdateTime;
+/* 2d8 */ int m_MoveGameWorldOnMe;
+/* 2dc */ struct MediusGameInfoResponse m_GameInfo;
+/* 47c */ bool m_bForcePlayerReport;
+/* 480 */ int m_LastPlayerReportTime;
+/* 484 */ bool m_bForceWorldReport;
+/* 488 */ int m_LastWorldReportTime;
+/* 48c */ struct MediusWorldReport m_WorldReport;
+/* 60c */ bool m_bUpdateLadderStatsPending;
+/* 610 */ enum MediusCallbackStatus m_UpdateLadderStatsStatus;
+/* 614 */ bool m_bGetLadderStatsPending;
+/* 618 */ int* m_LadderStatDest;
+/* 61c */ enum MediusCallbackStatus m_GetLadderStatsStatus;
+/* 620 */ bool m_bUpdateClanStatsPending;
+/* 624 */ enum MediusCallbackStatus m_UpdateClanStatsStatus;
+/* 628 */ bool m_bAccountUpdateStatsPending;
+/* 62c */ enum MediusCallbackStatus m_AccountUpdateStatsStatus;
+/* 630 */ bool m_bWaitingForJoinResponse;
+/* 634 */ enum eNW_JoinResponse m_JoinResponse;
+/* 638 */ short int superCheat;
+/* 63c */ int TimeBanditsHack;
+/* 640 */ int sendMessageToPlayerClient[10];
+/* 668 */ int sendMessageData[10];
+/* 690 */ int receivedMessage;
+/* 694 */ int receivedMessageData;
+/* 698 */ int receivedMessagePlayerIdx;
+/* 69c */ int m_LastPacketReceived[10];
+/* 6c4 */ bool m_bSessionMasterLagging;
+/* 6c5 */ char m_ClientIndexRemapper[256];
+/* 7c8 */ int m_LastUdpPacketReceived[10];
+/* 7f0 */ int m_LastUdpPacketReceivedFromAnyone;
+/* 7f4 */ char m_RussiaHouseTransportFlagHack;
+/* 7f5 */ char playerHasBeenDeleted[10];
+/* 7ff */ char deletedPlayerName[16][10];
+/* 89f */ char deletedPlayerTeam[10];
+/* 8ac */ int deletedPlayerAccountId[10];
+/* 8d4 */ struct MediusSystemMessageEntry SystemMessageQueue[3];
+/* 1534 */ int myUDPBindPort;
+/* 1538 */ struct TourneyRoundInfo tourneyRoundInfo;
+/* 15a4 */ bool tourneyYouAreEliminated;
+/* 15a8 */ int m_BlockedPlayers[16];
+/* 15e8 */ int m_BlockedPlayerQueueIdx;
+/* 15ec */ struct tNW_DownloadedTweaks DLTweaks;
+/* 1678 */ bool fastNwUpdate;
+};
+
+struct tNW_MediusCallbacks {
+/*   0 */ /* function */ void** m_AccountChangePasswordCallback;
+/*   4 */ /* function */ void** m_AccountCreateCallback;
+/*   8 */ /* function */ void** m_AccountDeleteCallback;
+/*   c */ /* function */ void** m_AccountGetIDCallback;
+/*  10 */ /* function */ void** m_AccountLoginCallback;
+/*  14 */ /* function */ void** m_AccountLogoutCallback;
+/*  18 */ /* function */ void** m_BinaryMsgCallback;
+/*  1c */ /* function */ void** m_BuddyAddBuddyCallback;
+/*  20 */ /* function */ void** m_BuddyGetBuddyListCallback;
+/*  24 */ /* function */ void** m_BuddyRemoveBuddyCallback;
+/*  28 */ /* function */ void** m_ChatCallback;
+/*  2c */ /* function */ void** m_ClanByIDCallback;
+/*  30 */ /* function */ void** m_ClanByNameCallback;
+/*  34 */ /* function */ void** m_ClanConfirmChallengeCallback;
+/*  38 */ /* function */ void** m_ClanCreateClanCallback;
+/*  3c */ /* function */ void** m_ClanDeleteMessageCallback;
+/*  40 */ /* function */ void** m_ClanDisbandClanCallback;
+/*  44 */ /* function */ void** m_ClanGetAllMessagesCallback;
+/*  48 */ /* function */ void** m_ClanGetChallengeHistoryListCallback;
+/*  4c */ /* function */ void** m_ClanGetChallengeListCallback;
+/*  50 */ /* function */ void** m_ClanGetClanInfoCallback;
+/*  54 */ /* function */ void** m_ClanGetInvitesCallback;
+/*  58 */ /* function */ void** m_ClanGetLadderListCallback;
+/*  5c */ /* function */ void** m_ClanGetMembersCallback;
+/*  60 */ /* function */ void** m_ClanGetMyMessagesCallback;
+/*  64 */ /* function */ void** m_ClanGetSentInvitesCallback;
+/*  68 */ /* function */ void** m_ClanInvitePlayerCallback;
+/*  6c */ /* function */ void** m_ClanInviteResponseCallback;
+/*  70 */ /* function */ void** m_ClanInviteRevokeCallback;
+/*  74 */ /* function */ void** m_ClanLadderPositionCallback;
+/*  78 */ /* function */ void** m_ClanModifyMessageCallback;
+/*  7c */ /* function */ void** m_ClanRemovePlayerCallback;
+/*  80 */ /* function */ void** m_ClanRespondToChallengeCallback;
+/*  84 */ /* function */ void** m_ClanRevokeChallengeCallback;
+/*  88 */ /* function */ void** m_ClanSendChallengeCallback;
+/*  8c */ /* function */ void** m_ClanSendMessageCallback;
+/*  90 */ /* function */ void** m_ClanTransferClanLeadershipCallback;
+/*  94 */ /* function */ void** m_ClanUpdateClanTagCallback;
+/*  98 */ /* function */ void** m_ErrorMessageCallback;
+/*  9c */ /* function */ void** m_FileCloseCallback;
+/*  a0 */ /* function */ void** m_FileCreateCallback;
+/*  a4 */ /* function */ void** m_FileDeleteCallback;
+/*  a8 */ /* function */ void** m_FileDownloadCallback;
+/*  ac */ /* function */ void** m_FileListCallback;
+/*  b0 */ /* function */ void** m_FileUploadCallback;
+/*  b4 */ /* function */ void** m_GameAcquireGameInfoCallback;
+/*  b8 */ /* function */ void** m_GameAcquireGamePlayersCallback;
+/*  bc */ /* function */ void** m_GameHostP2PConnectCallback;
+/*  c0 */ /* function */ void** m_GameJoinCallback;
+/*  c4 */ /* function */ void** m_GameFindCallback;
+/*  c8 */ /* function */ void** m_GameListClearFilterCallback;
+/*  cc */ /* function */ void** m_GameListGetGameListCallback;
+/*  d0 */ /* function */ void** m_GameListSetFilterCallback;
+/*  d4 */ /* function */ void** m_GameRefreshGameInfoCallback;
+/*  d8 */ /* function */ void** m_GameRefreshGamePlayersCallback;
+/*  dc */ /* function */ void** m_GetTotalRankingsCallback;
+/*  e0 */ /* function */ void** m_IgnoreListAddToIgnoreListCallback;
+/*  e4 */ /* function */ void** m_IgnoreListGetIgnoreListCallback;
+/*  e8 */ /* function */ void** m_IgnoreListRemoveFromIgnoreListCallback;
+/*  ec */ /* function */ void** m_LadderGetLadderListCallback;
+/*  f0 */ /* function */ void** m_LadderPositionCallback;
+/*  f4 */ /* function */ void** m_LocationQueryLocationsCallback;
+/*  f8 */ /* function */ void** m_LocationSelectLocationCallback;
+/*  fc */ /* function */ void** m_MediusVersionCallback;
+/* 100 */ /* function */ void** m_PlayerFindPlayerCallback;
+/* 104 */ /* function */ void** m_PlayerGetPlayerInfoCallback;
+/* 108 */ /* function */ void** m_RoomClearRoomFilterCallback;
+/* 10c */ /* function */ void** m_RoomCreateCallback;
+/* 110 */ /* function */ void** m_RoomGetInfoCallback;
+/* 114 */ /* function */ void** m_RoomJoinCallback;
+/* 118 */ /* function */ void** m_RoomRefreshPlayerListCallback;
+/* 11c */ /* function */ void** m_RoomRefreshRoomListCallback;
+/* 120 */ /* function */ void** m_RoomSetRoomFilterCallback;
+/* 124 */ /* function */ void** m_SessionBeginCallback;
+/* 128 */ /* function */ void** m_SessionEndCallback;
+/* 12c */ /* function */ void** m_SessionGetUniversesCallback;
+/* 130 */ /* function */ void** m_SessionGetUniverseNewsCallback;
+/* 134 */ /* function */ void** m_SessionMediusConnectCallback;
+/* 138 */ /* function */ void** m_SessionRemoteClientConnectCallback;
+/* 13c */ /* function */ void** m_SessionRemoteClientDisconnectCallback;
+/* 140 */ /* function */ void** m_SetLocalizationParametersCallback;
+/* 144 */ /* function */ void** m_UtilChatToggleCallback;
+/* 148 */ /* function */ void** m_UtilFilterCallback;
+/* 14c */ /* function */ void** m_UtilGetPolicyCallback;
+/* 150 */ /* function */ void** m_UtilGetSecurityCallback;
+/* 154 */ /* function */ void** m_UtilMarkMessageCallback;
+/* 158 */ /* function */ void** m_UtilRefreshAnnouncementListCallback;
+/* 15c */ /* function */ void** m_UtilUpdateServerTimeCallback;
+/* 160 */ /* function */ void** m_UtilSetAutoChatHistoryCallback;
+};
+
+typedef /* function */ void** tNW_CallbackFunc;
+struct tNW_ClientJoinMessage {
+/*   0 */ int numPlayers;
+/*   4 */ int accountID;
+/*   8 */ int partyID;
+/*   c */ int extraPartySlots;
+/*  10 */ int rank[6];
+/*  28 */ short int team[2];
+/*  2c */ short int skin[2];
+/*  30 */ char name[16][2];
+/*  50 */ char clanTag[8];
+};
+
+struct tNW_JoinResponseMessage {
+/*   0 */ enum eNW_JoinResponse status;
+/*   4 */ char joiningClient;
+/*   5 */ char name[16][10];
+/*  a5 */ char clanTag[8][10];
+};
+
+struct tNW_PlayerSetupMessage {
+/*   0 */ int playerIndex;
+/*   4 */ char team;
+/*   5 */ char skin;
+/*   6 */ char state;
+/*   7 */ char name[16];
+/*  17 */ char clanTag[8];
+};
+
+struct tNW_PlayerHasHeadSetMessage {
+/*   0 */ int hasHeadSet;
+};
+
+struct tNW_GameOptions {
+/*   0 */ signed char gameFlags[59];
+/*  3c */ unsigned int weaponFlags;
+/*  40 */ signed char pointValues[11];
+/*  4b */ unsigned char upgradeTimerMultipliers[11];
+};
+
+struct tNW_GameSettings {
+/*   0 */ char playerNames[16][10];
+/*  a0 */ char playerClanTags[8][10];
+/*  f0 */ char playerSkins[10];
+/*  fa */ char playerTeams[10];
+/* 104 */ char playerClients[10];
+/* 10e */ char playerState[10];
+/* 118 */ char playerTypes[10];
+/* 124 */ float playerRank[10];
+/* 14c */ float playerRankDeviation[10];
+/* 174 */ int accountIds[10];
+/* 19c */ int gameStartTime;
+/* 1a0 */ int gameLoadStartTime;
+/* 1a4 */ short int gameLevel;
+/* 1a6 */ char numPlayers;
+/* 1a7 */ char superCheat;
+/* 1a8 */ char numPlayersAtStart;
+/* 1a9 */ char gameRules;
+/* 1aa */ char gameType;
+/* 1ac */ short unsigned int playerHeadSet;
+/* 1ae */ char playerNamesOn;
+/* 1af */ char teamSpawnPtIdx[10];
+/* 1bc */ unsigned int spawnSeed;
+/* 1c0 */ int netObjectIndex;
+};
+
+typedef /* function */ void** tNW_RemotePlayerCallback;
+struct tNW_MGCL_Data {
+/*   0 */ bool m_bMGCL_API_Initialized;
+/*   1 */ char m_MGCLSessionKey[17];
+/*  12 */ bool m_bDone_MGCLConnect1_MAS;
+/*  13 */ bool m_bDone_MGCLConnect2_MPS;
+/*  14 */ bool m_bDone_MGCLSessionBegin;
+/*  15 */ bool m_bDone_MGCLSessionEnd;
+/*  16 */ bool m_bDone_MGCLAuthenticationSend;
+/*  18 */ int m_iDone_MGCLCreateGameOnSelf;
+/*  1c */ int m_iDone_MGCLEndGameOnSelf;
+/*  20 */ bool m_bMGCL_CurrentHost;
+/*  21 */ bool m_bMGCL_Connected;
+/*  22 */ bool m_bForceSendMGCLReport;
+/*  23 */ bool m_bSecurityDisabled;
+/*  24 */ char m_HostServer0_IP[32];
+/*  44 */ char m_HostServer0_Port[32];
+/*  64 */ char m_HostServer1_IP[32];
+/*  84 */ char m_HostServer1_Port[32];
+/*  a4 */ int m_HostServer_WorldID;
+/*  a8 */ bool m_timerStarted;
+/*  ac */ unsigned int m_timerStart;
+/*  b0 */ unsigned int m_time_LastServerReportSent;
+/*  b4 */ unsigned int m_time_LastPlayerReportSent;
+/*  b8 */ unsigned int m_time_LastWorldReportSent;
+/*  bc */ int m_MediusWorldID;
+/*  c0 */ int m_regionId;
+/*  c4 */ enum MediusWorldStatus m_WorldStatus;
+/*  c8 */ int m_MediusServerResponse;
+/*  cc */ struct NetConnectionInfo netConnectInfo_ForMPS;
+/* 168 */ struct MediusServerReportType serverReport;
+};
+
+struct tNW_ConvertToJuggernaut {
+/*   0 */ char netPlayerIndex;
+};
+
+struct tNW_KillDeathMessage {
+/*   0 */ signed char killingPlayerIndex;
+/*   1 */ unsigned char deathState;
+/*   2 */ signed char deadPlayerIndex;
+/*   3 */ signed char killingWeapon;
+/*   4 */ signed char killType;
+/*   8 */ unsigned int killerUID;
+/*   c */ unsigned int deathData;
+/*  10 */ short int iTag;
+/*  12 */ short int iTagFlg;
+/*  14 */ int netFrameTime;
+};
+
+struct tNW_VehiclePosRotUpdateMessage {
+/*   0 */ unsigned char flags;
+/*   4 */ unsigned int UID;
+/*   8 */ int timeStamp;
+/*   c */ short int rot_x;
+/*   e */ short int rot_y;
+/*  10 */ short int rot_z;
+/*  12 */ short int pos_x;
+/*  14 */ short int pos_y;
+/*  16 */ short int pos_z;
+};
+
+struct tNW_GameStateMessage {
+/*   0 */ char gameType;
+/*   4 */ int timeEnd;
+/*   8 */ int timeStart;
+/*   c */ char gameState;
+/*   d */ char numTeams;
+/*   e */ short int teamTicketScore[10];
+/*  22 */ char baseTeam[10];
+/*  2c */ int winningTeam;
+/*  30 */ int winningPlayer;
+/*  34 */ int gameIsOver;
+/*  38 */ short int weaponKills[9][10];
+/*  ec */ short int weaponDeaths[9][10];
+/* 1a0 */ short int weaponShotsFired[9][10];
+/* 254 */ short int weaponShotsHit[9][10];
+/* 308 */ float vehicleTime[10];
+/* 330 */ short int vehicleWeaponKills[10];
+/* 344 */ short int vehicleWeaponDeaths[10];
+/* 358 */ short int vehicleRoadKills[10];
+/* 36c */ short int vehicleRoadDeaths[10];
+/* 380 */ short int vehicleShotsFired[10];
+/* 394 */ short int vehicleShotsHit[10];
+/* 3a8 */ short int playerKills[10];
+/* 3bc */ short int playerDeaths[10];
+/* 3d0 */ short int suicides[10];
+/* 3e4 */ short int multiKills[10];
+/* 3f8 */ short int sniperKills[10];
+/* 40c */ short int wrenchKills[10];
+/* 420 */ char conquestNodesCaptured[10];
+/* 42a */ char conquestNodeSaves[10];
+/* 434 */ char conquestDefensiveKills[10];
+/* 43e */ char conquestPoints[10];
+/* 448 */ char ctfFlagCaptures[10];
+/* 452 */ char ctfFlagSaves[10];
+/* 45c */ float kingHillHoldTime[10];
+/* 484 */ float juggernautTime[10];
+/* 4ac */ short int squats[10];
+/* 4c0 */ short int vehicleSquats[10];
+/* 4d4 */ short int ticketScore[10];
+};
+
+struct tNW_Kick {
+/*   0 */ char netPlayerIndex;
+};
+
+struct tNW_MobyDestructMessage {
+/*   0 */ int mobyIdx;
+/*   4 */ int netTimeToDestroy;
+};
+

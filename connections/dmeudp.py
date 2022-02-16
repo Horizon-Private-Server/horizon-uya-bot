@@ -10,7 +10,7 @@ class DmeUdp(AbstractUdp):
     def __init__(self, loop, config, ip: str, port: int):
         super().__init__(loop, config, ip, port)
         self._logger = logging.getLogger('thug.dmeudp')
-        self._logger.setLevel(logging.DEBUG)
+        self._logger.setLevel(logging.INFO)
 
         self.loop.create_task(self.start())
         self.loop.run_until_complete(asyncio.sleep(1))
@@ -28,7 +28,7 @@ class DmeUdp(AbstractUdp):
 
         self.queue(pkt)
 
-        await asyncio.sleep(self._wait_time_for_packets)
+        await asyncio.sleep(2)
 
         data = self.dequeue()
         if data[0] != 0x19:

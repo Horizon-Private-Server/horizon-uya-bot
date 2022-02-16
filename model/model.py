@@ -27,12 +27,9 @@ class Model:
 
     def process(self, serialized: dict):
         '''
-        A packet has been added to the queue to update the model
+        PROCESS RT PACKETS
         '''
         #logger.debug(f"Processing: {serialized}")
-
-        if serialized['packet'] == 'medius.rt.serverconnectcomplete':
-            return
 
         if serialized['packet'] == 'medius.rt.clientappsingle':
             for dme_packet in serialized['packets']:
@@ -40,6 +37,9 @@ class Model:
 
 
     def process_dme_packet(self, src_player, dme_packet, protocol):
+        '''
+        PROCESS CLIENT APP SINGLE (DME)
+        '''
         if protocol == 'TCP':
             self.process_dme_packet_tcp(src_player, dme_packet)
         elif protocol == 'UDP':
@@ -49,29 +49,24 @@ class Model:
             raise Exception()
 
     def process_dme_packet_tcp(self, src_player, dme_packet):
+        '''
+        PROCESS DME TCP DATA
+        '''
         logger.debug(f"Processing DME TCP packet (src:{src_player}): {dme_packet}")
 
-        responses = []
-        if dme_packet['packet'] == 'medius.dme_packets.playerconnected2':
-            resp_packet = playerconnected2.PlayerConnected2Serializer.build(self._dme_player_id, dme_packet['key'])
-            dst_player = src_player
-            responses = [[dst_player, resp_packet]]
-        elif dme_packet['packet'] == 'medius.dme_packets.commonsixteen':
-            resp_packet = commonsixteen.CommonSixteenSerializer.build(self._dme_player_id, src_player)
-            dst_player = src_player
-            responses = [[dst_player, resp_packet]]
-        elif dme_packet['packet'] == 'medius.dme_packets.tnwgamesettings':
-            my_key = f'p{self._dme_player_id}_username'
-            if dme_packet[my_key] == '': # our username is empty!
-                # We need to send the join req
-                resp_packet = joingamereq.JoinGameReqSerializer.build(self._dme_player_id)
-                responses = [['B', resp_packet]]
-                responses.append(['B', playerupdate.PlayerUpdateSerializer.build()])
-                self._udp.queue(hex_to_bytes("032A0000000001CC6F0700000000000001CC6F0700010000000001CC6F0700020000000001DD6F070000010000"))
 
-        for resp in responses:
-            logger.debug(f"Resp: {resp}")
-            self._dmetcp_queue.put(resp)
+        if dme_packet['packet'] == 'medius.dme_packets.tcp_0016_player_connect_handshake':
+            if dme_packet['data'] == '05000300010000000100000000000000':
+                self._dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake.build('03010300000000000000000000000000')])
+            elif dme_packet['data'] == '05000300010080440100000000000000':
+                self._dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake.build('04010300000000000000000000000000')])
+                self._dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake.build('04010300000000000200000000000000')])
+
+        if dme_packet['packet'] == 'medius.dme_packets.tcp_0018_initial_sync':
+            self._dmetcp_queue.put([src_player, tcp_0018_initial_sync.tcp_0018_initial_sync.build()])
+        if dme_packet['packet'] == 'medius.dme_packets.tcp_0010_initial_sync':
+            self._dmetcp_queue.put([src_player, tcp_0010_initial_sync.tcp_0010_initial_sync.build(self._dme_player_id)])
+
 
 
 

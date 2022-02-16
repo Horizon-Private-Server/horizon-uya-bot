@@ -22,14 +22,14 @@ from connections.dmeudp import DmeUdp
 from model.model import Model
 
 config = {
-    'account_id': 2,
+    'account_id': 50001,
     'username': 'Thug',
     'world_id': 1,
-    'session_key': 'DB429D9B861D751B\x00',
-    'mls_ip': '127.0.0.1', 'mls_port': 10078,
-    'dmetcp_ip': '127.0.0.1', 'dmetcp_port': 10079,
-    'dmeudp_ip': '127.0.0.1', 'dmeudp_port': 51000,
-    'wait_time_for_packets': .1
+    'session_key': 'DFB06D3B16E7516F\x00',
+    'mls_ip': '54.189.126.108', 'mls_port': 10078,
+    'dmetcp_ip': '54.189.126.108', 'dmetcp_port': 10079,
+    'dmeudp_ip': '54.189.126.108', 'dmeudp_port': 51000,
+    'wait_time_for_packets': .5
 }
 
 class Thug:

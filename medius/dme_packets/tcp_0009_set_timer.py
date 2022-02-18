@@ -1,10 +1,11 @@
 from utils.utils import *
 
 
-class tcp_0009_unk:
+class tcp_0009_set_timer:
     data_dict = [
         {'name': 'dme_id', 'n_bytes': 2, 'cast': None},
-        {'name': 'unk1', 'n_bytes': 14, 'cast': bytes_to_int_little}, # CC6F070003000000001702000000
+        {'name': 'time', 'n_bytes': 4, 'cast': bytes_to_int_little}, # CC6F070003000000001702000000
+        {'name': 'unk1', 'n_bytes': 10, 'cast': None}, # CC6F070003000000001702000000
     ]
 
     def serialize(self, data: bytearray):

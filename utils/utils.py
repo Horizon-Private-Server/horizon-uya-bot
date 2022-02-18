@@ -18,6 +18,12 @@ def int_to_bytes_little(bytelength, data, signed=False):
     return data.to_bytes(bytelength, 'little', signed=signed)
 
 def str_to_bytes(data: str, length: int) -> bytes:
+    if len(data) == length:
+        return data.encode()
+
+    if len(data) > length:
+        return data[:length].encode()
+
     str_bytes = data
     assert(length > len(data))
     while (len(str_bytes) != length):

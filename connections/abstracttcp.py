@@ -12,7 +12,6 @@ class AbstractTcp:
 
         self._config = config
 
-        self._wait_time_for_packets = config['wait_time_for_packets']
         self._ip = ip
         self._port = port
 

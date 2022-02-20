@@ -24,12 +24,14 @@ from model.model import Model
 config = {
     'account_id': 2,
     'username': 'BBBBBBBBBBBBBB',
-    'world_id': 8,
+    'world_id': 12,
     'session_key': 'FD47DCF351375AB7\x00',
     'mls_ip': '54.189.126.108', 'mls_port': 10078,
     'dmetcp_ip': '54.189.126.108', 'dmetcp_port': 10079,
     'dmeudp_ip': '54.189.126.108', 'dmeudp_port': 51000,
-    'wait_time_for_packets': .5
+    'skin': 1,
+    'bolt': 2,
+    'clan_tag': ''
 }
 
 class Thug:

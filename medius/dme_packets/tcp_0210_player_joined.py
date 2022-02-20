@@ -26,13 +26,13 @@ class tcp_0210_player_joined:
         return dme_serialize(data, self.data_dict, __name__)
 
     @classmethod
-    def build(self, account_id, skin, username, clantag = 'AAAA'):
+    def build(self, account_id, skin, username, rank, clantag = 'AAAA'):
         packet = [
             {'name': __name__},
             {'dme_id': b'\x02\x10'},
             {'type': int_to_bytes_little(4, 1)},
             {'account_id': int_to_bytes_little(4, account_id)},
-            {'rank': hex_to_bytes('00C0A84400C0A84400C0A84400C0A8440000AF430000AF430000AF430000AF43')},
+            {'rank': hex_to_bytes(rank)},
             {'buf': hex_to_bytes('00000000')},
             {'skin1': int_to_bytes_little(2, skin)},
             {'skin2': int_to_bytes_little(2, skin)},

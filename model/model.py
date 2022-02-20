@@ -18,8 +18,17 @@ class Model:
 
         self._account_id = self._config['account_id']
         self._username = self._config['username']
-        self._skin = 1
-        self._clan_tag = ''
+        self._skin = self._config['skin']
+        if self._config['bolt'] == 1:
+            self._rank = '00C0A84400C0A84400C0A84400C0A8440000AF430000AF430000AF430000AF43'
+        elif self._config['bolt'] == 2:
+            self._rank = '00C0A84400C0A84400C0A84400C0A84400808443008084430080844300808443'
+        elif self._config['bolt'] == 3:
+            self._rank = '00C0A84400C0A84400C0A84400C0A84400000000000000000000000000000000'
+        elif self._config['bolt'] == 4:
+            self._rank = 'C8C8D444C8C8D444C8C8D444C8C8D44400808943008089430080894300808943'
+
+        self._clan_tag = self._config['clan_tag']
 
         self._loop = loop
         self._tcp = tcp_conn
@@ -84,7 +93,7 @@ class Model:
 
             self._dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake.build('04010300000000000200000000000000')])
 
-            self._dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined.build(self._account_id, self._skin, self._username, self._clan_tag)])
+            self._dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined.build(self._account_id, self._skin, self._username, self._rank, self._clan_tag)])
 
             self._dmetcp_queue.put([src_player, tcp_0213_player_headset.tcp_0213_player_headset.build()])
 

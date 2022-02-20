@@ -30,7 +30,7 @@ class DmeTcp(AbstractTcp):
                 serialized = RtSerializer[packet[0]]['serializer'].serialize(packet)
                 serialized['protocol'] = 'TCP'
                 model.process(serialized)
-            await asyncio.sleep(self._wait_time_for_packets)
+            await asyncio.sleep(0.0001)
 
     async def connect_to_dme_world_stage_1(self, access_key):
         # Initial connect to DME TCP
@@ -43,19 +43,35 @@ class DmeTcp(AbstractTcp):
 
         self.queue(pkt)
 
-        # wait half a second
-        await asyncio.sleep(self._wait_time_for_packets)
+        while True:
+            # Check the result
+            data = self.dequeue()
 
-        # Check the result
-        data = self.dequeue()
-        if data[0] != 0x07:
-            raise Exception('Unknown response!')
-        self._player_id = bytes_to_int_little(data[6:8])
-        self._player_count = bytes_to_int_little(data[8:10])
+            if data == None:
+                await asyncio.sleep(.0001)
+                continue
 
-        data = self.dequeue()
-        if data[0] != 0x18: # we can ignore this
-            raise Exception('Unknown response!')
+            if data[0] != 0x07:
+                raise Exception('Unknown response!')
+
+            elif data[0] == 0x07:
+                self._player_id = bytes_to_int_little(data[6:8])
+                self._player_count = bytes_to_int_little(data[8:10])
+                break
+
+        while True:
+            # Check the result
+            data = self.dequeue()
+
+            if data == None:
+                await asyncio.sleep(.0001)
+                continue
+
+            if data[0] != 0x18:
+                raise Exception('Unknown response!')
+
+            elif data[0] == 0x18:
+                break
 
         self._logger.info(f"Connected Stage [1]! Player ID: {self._player_id} | Player count: {self._player_count}")
 

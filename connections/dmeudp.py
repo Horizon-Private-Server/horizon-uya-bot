@@ -28,11 +28,23 @@ class DmeUdp(AbstractUdp):
 
         self.queue(pkt)
 
-        await asyncio.sleep(2)
+        await asyncio.sleep(1)
 
-        data = self.dequeue()
-        if data[0] != 0x19:
-            raise Exception('Unknown response!')
+        while True:
+            # Check the result
+            data = self.dequeue()
+
+            if data == None:
+                await asyncio.sleep(.0001)
+                continue
+
+            if data[0] != 0x19:
+                raise Exception('Unknown response!')
+
+            elif data[0] == 0x19:
+                self._player_id = bytes_to_int_little(data[6:8])
+                self._player_count = bytes_to_int_little(data[8:10])
+                break
 
         self._logger.info("Connected!")
 

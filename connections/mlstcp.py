@@ -10,7 +10,7 @@ class MlsTcp(AbstractTcp):
     def __init__(self, loop, config, ip: str, port: int):
         super().__init__(loop, config, ip, port)
         self._logger = logging.getLogger('thug.mlstcp')
-        self._logger.setLevel(logging.ERROR)
+        self._logger.setLevel(logging.WARNING)
 
         self._access_key = None
 

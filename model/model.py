@@ -35,7 +35,7 @@ class Model:
         self._udp = udp_conn
         self._dme_player_id = self._tcp._player_id
 
-        self._loop.create_task(self._dmetcpagg())
+        self._loop.create_task(self._tcp_flusher())
         self._dmetcp_queue = queue.Queue()
         self._dmeudp_queue = queue.Queue()
 
@@ -68,8 +68,7 @@ class Model:
         '''
         PROCESS DME TCP DATA
         '''
-        logger.debug(f"Processing DME TCP packet (src:{src_player}): {dme_packet}")
-
+        logger.debug(f"I | tcp; src:{src_player} {dme_packet}")
 
         if dme_packet['packet'] == 'medius.dme_packets.tcp_0016_player_connect_handshake':
             if dme_packet['data'] == '05000300010000000100000000000000':
@@ -95,14 +94,7 @@ class Model:
 
             self._dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined.build(self._account_id, self._skin, self._username, self._rank, self._clan_tag)])
 
-            self._dmetcp_queue.put([src_player, tcp_0213_player_headset.tcp_0213_player_headset.build()])
-
-            self._udp.queue(hex_to_bytes(f'032A0000000001{bytes_to_hex(int_to_bytes_little(4, self.time))}000000000001{bytes_to_hex(int_to_bytes_little(4, self.time))}010000000001{bytes_to_hex(int_to_bytes_little(4, self.time))}02000000'))
-
-        if dme_packet['packet'] == 'medius.dme_packets.tcp_000F_playername_update':
-            self._dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update.build(self.time, '000000000010030003000000000000000000', self._username, '001A00')])
-
-    async def _dmetcpagg(self):
+    async def _tcp_flusher(self):
         '''
         This method is used to aggregate individual DME MGCL packets into a single packet
         in order to be queued. Ensure the total length < 500 bytes
@@ -111,25 +103,17 @@ class Model:
             size = self._dmetcp_queue.qsize()
 
             if size != 0:
-                all_packets = [self._dmetcp_queue.get() for _ in range(size)]
-                all_destinations = set([packet_combo[0] for packet_combo in all_packets])
+                for _ in range(size):
+                    destination, pkt = self._dmetcp_queue.get()
+                    pkt = dme_packet_to_bytes(pkt)
 
-                for destination in all_destinations:
-                    this_dest_packets = [dme_packet_to_bytes(pkt[1]) for pkt in all_packets if pkt[0] == destination]
-
-                    final_data = b'' ## TODO: Make sure this is < 500 length
-                    for pkt in this_dest_packets:
-                        final_data += pkt
-
-                    # Before we queue it, we have to wrap it in a CLIENT_APP_SINGLE/BROADCAST
                     if destination != 'B':
-                        pkt = ClientAppSingleSerializer.build(destination, final_data)
+                        pkt = ClientAppSingleSerializer.build(destination, pkt)
                     else:
-                        pkt = ClientAppBroadcastSerializer.build(final_data)
+                        pkt = ClientAppBroadcastSerializer.build(pkt)
 
-                    final_pkt = rtpacket_to_bytes(pkt)
-
-                    self._tcp.queue(final_pkt)
+                    logger.debug(f"O | tcp; {pkt}")
+                    self._tcp.queue(rtpacket_to_bytes(pkt))
 
             await asyncio.sleep(0.00001)
 

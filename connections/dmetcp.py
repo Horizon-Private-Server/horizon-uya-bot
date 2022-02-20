@@ -11,7 +11,7 @@ class DmeTcp(AbstractTcp):
     def __init__(self, loop, config, ip: str, port: int):
         super().__init__(loop, config, ip, port)
         self._logger = logging.getLogger('thug.dmetcp')
-        self._logger.setLevel(logging.DEBUG)
+        self._logger.setLevel(logging.WARNING)
 
 
         self._player_id = None

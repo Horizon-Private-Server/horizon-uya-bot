@@ -11,8 +11,13 @@ class ClientAppSingleSerializer:
         {'name': 'packets', 'n_bytes': None, 'cast': dme_serialize}
     ]
 
+    def __init__(self, protocol):
+        self.protocol = protocol
+
     def serialize(self, data: bytes):
-        return serialize(data, self.data_dict, __name__)
+        serialized = serialize(data, self.data_dict, __name__)
+        serialized['protocol'] = self.protocol
+        return serialized
 
     @classmethod
     def build(self, dst_player, data: bytes):

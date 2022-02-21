@@ -56,9 +56,9 @@ class Model:
         '''
         PROCESS CLIENT APP SINGLE (DME)
         '''
-        if protocol == 'TCP':
+        if protocol == 'tcp':
             self.process_dme_packet_tcp(src_player, dme_packet)
-        elif protocol == 'UDP':
+        elif protocol == 'udp':
             pass
         else:
             logger.error("Unknown protocl: " + protocol)

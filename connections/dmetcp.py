@@ -5,7 +5,7 @@ import logging
 from utils.utils import *
 from connections.abstracttcp import AbstractTcp
 
-from medius.serializer import RtSerializer
+from medius.serializer import TcpSerializer
 
 class DmeTcp(AbstractTcp):
     def __init__(self, loop, config, ip: str, port: int):
@@ -27,8 +27,7 @@ class DmeTcp(AbstractTcp):
         while True:
             if self.qsize() != 0:
                 packet = self.dequeue()
-                serialized = RtSerializer[packet[0]]['serializer'].serialize(packet)
-                serialized['protocol'] = 'TCP'
+                serialized = TcpSerializer[packet[0]]['serializer'].serialize(packet)
                 model.process(serialized)
             await asyncio.sleep(0.0001)
 

@@ -2,7 +2,7 @@ from utils.utils import *
 
 from medius.dme_packets import *
 
-RtSerializer = {
+TcpSerializer = {
 	'0004': tcp_0004_tnwgamesettings.tcp_0004_tnwgamesettings,
 	'000F': tcp_000F_playername_update.tcp_000F_playername_update,
 	'0010': tcp_0010_initial_sync.tcp_0010_initial_sync,
@@ -14,6 +14,9 @@ RtSerializer = {
 	'0212': tcp_0212_host_headset.tcp_0212_host_headset,
 }
 
+UdpSerializer = {
+	'0209': udp_0209_movement_update.udp_0209_movement_update,
+}
 
 def dme_serialize(data: bytes):
 	data = bytes_to_hex(data)
@@ -22,5 +25,5 @@ def dme_serialize(data: bytes):
 	packets = []
 	while len(data) != 0:
 		dme_id = data.popleft() + data.popleft() # E.g. '0201'
-		packets.append(RtSerializer[dme_id].serialize(data))
+		packets.append(TcpSerializer[dme_id].serialize(data))
 	return packets

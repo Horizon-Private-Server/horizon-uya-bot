@@ -17,6 +17,7 @@ class Model:
         self._config = config
 
         self._account_id = self._config['account_id']
+        self._color = 'blue'
         self._username = self._config['username']
         self._skin = self._config['skin']
         if self._config['bolt'] == 1:
@@ -91,6 +92,10 @@ class Model:
             self._dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='04010300000000000200000000000000')])
 
             self._dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined(account_id=self._account_id, skin1=self._skin, skin2=self._skin, username=self._username, username2=self._username, rank=self._rank, clan_tag=self._clan_tag)])
+
+
+        if dme_packet.name == 'tcp_0211_player_lobby_state_change' and src_player == 0 and dme_packet.player_ready == 'change team request':
+            self._dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team='red',skin='robo',player_ready='ready')])
 
     async def _tcp_flusher(self):
         '''

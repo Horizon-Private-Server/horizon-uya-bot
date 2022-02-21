@@ -72,25 +72,25 @@ class Model:
 
         if dme_packet.name == 'tcp_0016_player_connect_handshake':
             if dme_packet.data == '05000300010000000100000000000000':
-                self._dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='03010300000000000000000000000000').to_bytes()])
+                self._dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='03010300000000000000000000000000')])
 
         if dme_packet.name == 'tcp_0018_initial_sync':
-            self._dmetcp_queue.put([src_player, tcp_0018_initial_sync.tcp_0018_initial_sync(src=self._dme_player_id).to_bytes()])
+            self._dmetcp_queue.put([src_player, tcp_0018_initial_sync.tcp_0018_initial_sync(src=self._dme_player_id)])
         if dme_packet.name == 'tcp_0010_initial_sync':
-            self._dmetcp_queue.put([src_player, tcp_0010_initial_sync.tcp_0010_initial_sync(src=self._dme_player_id).to_bytes()])
+            self._dmetcp_queue.put([src_player, tcp_0010_initial_sync.tcp_0010_initial_sync(src=self._dme_player_id)])
 
         if dme_packet.name == 'tcp_0009_set_timer':
             self.time = dme_packet.time
 
-            self._dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='04010300000000000000000000000000').to_bytes()])
+            self._dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='04010300000000000000000000000000')])
 
-            self._dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='00000000000003000300000000001A000000', username=self._username, unk3='000300').to_bytes()])
+            self._dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='00000000000003000300000000001A000000', username=self._username, unk3='000300')])
 
-            self._dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='00000000001003000300000000001A000000', username=self._username, unk3='000000').to_bytes()])
+            self._dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='00000000001003000300000000001A000000', username=self._username, unk3='000000')])
 
-            self._dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='04010300000000000200000000000000').to_bytes()])
+            self._dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='04010300000000000200000000000000')])
 
-            self._dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined(account_id=self._account_id, skin1=self._skin, skin2=self._skin, username=self._username, username2=self._username, rank=self._rank, clan_tag=self._clan_tag).to_bytes()])
+            self._dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined(account_id=self._account_id, skin1=self._skin, skin2=self._skin, username=self._username, username2=self._username, rank=self._rank, clan_tag=self._clan_tag)])
 
     async def _tcp_flusher(self):
         '''
@@ -104,13 +104,13 @@ class Model:
                 for _ in range(size):
                     destination, pkt = self._dmetcp_queue.get()
                     # pkt = dme_packet_to_bytes(pkt)
+                    logger.debug(f"O | tcp; dst:{destination} {pkt}")
 
                     if destination != 'B':
-                        pkt = ClientAppSingleSerializer.build(destination, pkt)
+                        pkt = ClientAppSingleSerializer.build(destination, pkt.to_bytes())
                     else:
-                        pkt = ClientAppBroadcastSerializer.build(pkt)
+                        pkt = ClientAppBroadcastSerializer.build(pkt.to_bytes())
 
-                    logger.debug(f"O | tcp; {pkt}")
                     self._tcp.queue(rtpacket_to_bytes(pkt))
 
             await asyncio.sleep(0.00001)

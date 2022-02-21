@@ -123,3 +123,9 @@ def serialize(data: bytes, data_dict: [dict], name: str) -> dict:
         print("ERROR SERIALIZING: " + data.hex().upper())
         traceback.print_exc()
     return results
+
+def hex_to_int_little(hex: str):
+    return bytes_to_int_little(hex_to_bytes(hex))
+
+def hex_to_str(data: str):
+    return bytes_to_str(hex_to_bytes(data))

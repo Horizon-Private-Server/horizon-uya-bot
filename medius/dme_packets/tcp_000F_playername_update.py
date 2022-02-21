@@ -1,31 +1,30 @@
+from collections import deque
+import os
 from utils.utils import *
 
-'''
-This packet is sent to others when they join the game.
-
-This packet is received when first joining a game, and they send it to us
-'''
-
 class tcp_000F_playername_update:
-    data_dict = [
-        {'name': 'dme_id', 'n_bytes': 2, 'cast': None},
-        {'name': 'time', 'n_bytes': 4, 'cast': bytes_to_int_little},
-        {'name': 'unk1', 'n_bytes': 18, 'cast': None},
-        {'name': 'username', 'n_bytes': 11, 'cast': bytes_to_str}, # username
-        {'name': 'unk2', 'n_bytes': 3, 'cast': None}
-    ]
-
-    def serialize(self, data: bytearray):
-        return dme_serialize(data, self.data_dict, __name__)
+    def __init__(self, unk1:int=1, unk2:str="00000000000003000300000000001A000000", username:str=None, unk3:str="000300"):
+        self.name = os.path.basename(__file__).strip(".py")
+        self.id = b'\x00\x0F'
+        self.unk1 = unk1
+        self.unk2 = unk2
+        self.username = username
+        self.unk3 = unk3
 
     @classmethod
-    def build(self, time, unk1, username, unk2):
-        packet = [
-            {'name': __name__},
-            {'dme_id': b'\x00\x0F'},
-            {'time': int_to_bytes_little(4, time)},
-            {'unk1': hex_to_bytes(unk1)},
-            {'username': str_to_bytes(username, 11)},
-            {'unk2': hex_to_bytes(unk2)}
-        ]
-        return packet
+    def serialize(self, data: deque):
+        unk1 = ''.join([data.popleft() for _ in range(4)])
+        unk2 = ''.join([data.popleft() for _ in range(18)])
+        username = hex_to_str(''.join([data.popleft() for _ in range(11)]))
+        unk3 = ''.join([data.popleft() for _ in range(3)])
+        return tcp_000F_playername_update(unk1, unk2, username, unk3)
+
+    def to_bytes(self):
+        return self.id + \
+            int_to_bytes_little(4, self.unk1) + \
+            hex_to_bytes(self.unk2) + \
+            str_to_bytes(self.username, 11) + \
+            hex_to_bytes(self.unk3)
+
+    def __str__(self):
+        return f"{self.name}; unk1:{self.unk1} unk2:{self.unk2} username:{self.username} unk3:{self.unk3}"

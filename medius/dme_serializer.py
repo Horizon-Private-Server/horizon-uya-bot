@@ -3,23 +3,24 @@ from utils.utils import *
 from medius.dme_packets import *
 
 RtSerializer = {
-	b'\x00\x04' : {'name': 'tnw_gamesettings', 'serializer': tnwgamesettings.tnwGameSettingsSerializer()},
-	b'\x00\x0F' : {'name': 'tcp_000F_playername_update', 'serializer': tcp_000F_playername_update.tcp_000F_playername_update()},
-	b'\x00\x10' : {'name': 'tcp_0010_initial_sync', 'serializer': tcp_0010_initial_sync.tcp_0010_initial_sync()},
-	b'\x00\x16' : {'name': 'tcp_0016_player_connect_handshake', 'serializer': tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake()},
-	b'\x00\x18' : {'name': 'tcp_0018_initial_sync', 'serializer': tcp_0018_initial_sync.tcp_0018_initial_sync()},
+	'0004': tcp_0004_tnwgamesettings.tcp_0004_tnwgamesettings,
+	'000F': tcp_000F_playername_update.tcp_000F_playername_update,
+	'0010': tcp_0010_initial_sync.tcp_0010_initial_sync,
+	'0016': tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake,
+	'0018': tcp_0018_initial_sync.tcp_0018_initial_sync,
 
-	b'\x00\x09' : {'name': 'tcp_0009_set_timer', 'serializer': tcp_0009_set_timer.tcp_0009_set_timer()},
-	b'\x02\x10' : {'name': 'tcp_0210_player_joined', 'serializer': tcp_0210_player_joined.tcp_0210_player_joined()},
-	b'\x02\x12' : {'name': 'tcp_0212_host_headset', 'serializer': tcp_0212_host_headset.tcp_0212_host_headset()},
+	'0009': tcp_0009_set_timer.tcp_0009_set_timer,
+	'0210': tcp_0210_player_joined.tcp_0210_player_joined,
+	'0212': tcp_0212_host_headset.tcp_0212_host_headset,
 }
 
 
 def dme_serialize(data: bytes):
-	data = bytearray(data)
+	data = bytes_to_hex(data)
+	data = deque([data[i:i+2] for i in range(0,len(data),2)])
 
 	packets = []
-	while data != b'':
-		dme_id = bytes(data[0:2])
-		packets.append(RtSerializer[dme_id]['serializer'].serialize(data))
+	while len(data) != 0:
+		dme_id = data.popleft() + data.popleft() # E.g. '0201'
+		packets.append(RtSerializer[dme_id].serialize(data))
 	return packets

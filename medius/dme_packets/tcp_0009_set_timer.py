@@ -1,23 +1,24 @@
+from collections import deque
+import os
 from utils.utils import *
 
-
 class tcp_0009_set_timer:
-    data_dict = [
-        {'name': 'dme_id', 'n_bytes': 2, 'cast': None},
-        {'name': 'time', 'n_bytes': 4, 'cast': bytes_to_int_little}, # CC6F070003000000001702000000
-        {'name': 'unk1', 'n_bytes': 10, 'cast': None}, # CC6F070003000000001702000000
-    ]
+    def __init__(self, time:int=None, unk1:str='03000000001702000000'):
+        self.name = os.path.basename(__file__).strip(".py")
+        self.id = b'\x00\x09'
+        self.time = time
+        self.unk1 = unk1
 
-    def serialize(self, data: bytearray):
-        return dme_serialize(data, self.data_dict, __name__)
+    @classmethod
+    def serialize(self, data: deque):
+        time = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
+        unk1 = ''.join([data.popleft() for _ in range(10)])
+        return tcp_0009_set_timer(time, unk1)
 
-    # @classmethod
-    # def build(self, player_id, message_type=2):
-    #     packet = [
-    #         {'name': __name__},
-    #         {'dme_id': b'\x02\x10'},
-    #         {'src_player_id?': int_to_bytes_little(4, player_id)},
-    #         {'message_type': int_to_bytes_little(4, message_type)},
-    #         {'unk': hex_to_bytes('0C0A84400C0A84400C0A84400C0A8440000AF430000AF430000AF430000AF430000000000000000424242424242424242424242424200414242424242424242424242427E3200004242424200000000')}
-    #     ]
-    #     return packet
+    def to_bytes(self):
+        return self.id + \
+            int_to_bytes_little(4, self.time) + \
+            hex_to_bytes(self.unk1)
+
+    def __str__(self):
+        return f"{self.name}; time:{self.time} unk1:{self.unk1}"

@@ -24,7 +24,7 @@ from model.model import Model
 config = {
     'account_id': 2,
     'username': 'BBBBBBBBBBBBBB',
-    'world_id': 24,
+    'world_id': 25,
     'session_key': 'FD47DCF351375AB7\x00',
     'mls_ip': '54.189.126.108', 'mls_port': 10078,
     'dmetcp_ip': '54.189.126.108', 'dmetcp_port': 10079,

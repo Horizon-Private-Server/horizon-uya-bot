@@ -94,8 +94,8 @@ class Model:
             self._dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined(account_id=self._account_id, skin1=self._skin, skin2=self._skin, username=self._username, username2=self._username, rank=self._rank, clan_tag=self._clan_tag)])
 
 
-        if dme_packet.name == 'tcp_0211_player_lobby_state_change' and src_player == 0 and dme_packet.player_ready == 'change team request':
-            self._dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team='red',skin='robo',player_ready='ready')])
+        if dme_packet.name == 'tcp_0211_player_lobby_state_change' and src_player == 0 and dme_packet.ready == 'change team request':
+            self._dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team='red',skin='robo',username=self._username, ready='ready')])
 
     async def _tcp_flusher(self):
         '''

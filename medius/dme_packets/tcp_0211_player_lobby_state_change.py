@@ -50,8 +50,9 @@ class tcp_0211_player_lobby_state_change:
     def __init__(self, unk1:str='00000000',
                        team:str=None,
                        skin:str=None,
-                       player_ready:str=None,
-                       unk2:str='00000000000000000000000000000000000000000000000000'
+                       ready:str=None,
+                       username:str=None,
+                       unk2:str='0000000000000000000000'
                        ):
 
         self.name = os.path.basename(__file__).strip(".py")
@@ -59,12 +60,13 @@ class tcp_0211_player_lobby_state_change:
         self.unk1 = unk1
         self.team = team
         self.skin = skin
-        self.player_ready = player_ready
+        self.username = username
+        self.ready = ready
         self.unk2 = unk2
 
         assert self.team in self._team_map.values()
         assert self.skin in self._skin_map.values()
-        assert self.player_ready in self._ready_map.values()
+        assert self.ready in self._ready_map.values()
 
     @classmethod
     def serialize(self, data: deque):
@@ -74,21 +76,23 @@ class tcp_0211_player_lobby_state_change:
         team = self._team_map[data.popleft()]
         skin = self._skin_map[data.popleft()]
 
-        player_ready = data.popleft()
-        if player_ready == '06':
-            player_ready = 'ready'
-        elif player_ready == '01':
-            player_ready = 'not ready'
-        elif player_ready == '00':
-            player_ready = 'no change'
-        elif player_ready == '02':
-            player_ready = 'broadcast not ready'
-        elif player_ready == '04':
-            player_ready = 'change team request'
+        ready = data.popleft()
+        if ready == '06':
+            ready = 'ready'
+        elif ready == '01':
+            ready = 'not ready'
+        elif ready == '00':
+            ready = 'no change'
+        elif ready == '02':
+            ready = 'broadcast not ready'
+        elif ready == '04':
+            ready = 'change team request'
 
-        unk2 = ''.join([data.popleft() for i in range(25)])
+        username = hex_to_str(''.join([data.popleft() for i in range(14)]))
 
-        return tcp_0211_player_lobby_state_change(unk1=unk1, team=team, skin=skin, player_ready=player_ready, unk2=unk2)
+        unk2 = ''.join([data.popleft() for i in range(11)])
+
+        return tcp_0211_player_lobby_state_change(unk1=unk1, team=team, skin=skin, username=username, ready=ready, unk2=unk2)
 
 
     def to_bytes(self):
@@ -96,9 +100,10 @@ class tcp_0211_player_lobby_state_change:
             hex_to_bytes(self.unk1) + \
             hex_to_bytes({v: k for k, v in self._team_map.items()}[self.team]) + \
             hex_to_bytes({v: k for k, v in self._skin_map.items()}[self.skin]) + \
-            hex_to_bytes({v: k for k, v in self._ready_map.items()}[self.player_ready]) + \
+            hex_to_bytes({v: k for k, v in self._ready_map.items()}[self.ready]) + \
+            str_to_bytes(self.username, 14) + \
             hex_to_bytes(self.unk2)
 
     def __str__(self):
         return f"{self.name}; unk1:{self.unk1} team:{self.team} " + \
-                f"skin:{self.skin} player_ready:{self.player_ready} unk2:{self.unk2}"
+                f"skin:{self.skin} player_ready:{self.ready} username:{self.username} unk2:{self.unk2}"

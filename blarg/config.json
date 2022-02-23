@@ -1,7 +1,7 @@
 {
 	"robo_ip": "54.189.126.108",
-	"logger": "DEBUG",
+	"logger": "INFO",
   "filter": "",
-  "warn_on_unknown": "False",
+  "warn_on_unknown": "True",
 	"log_serialized": "False"
 }

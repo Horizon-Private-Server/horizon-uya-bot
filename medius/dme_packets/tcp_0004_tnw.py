@@ -39,19 +39,50 @@ skin_map = {
     'FF': 'NA'
 }
 
-class tcp_0004_tnwgamesettings:
-    def __init__(self, data):
+class tcp_0004_tnw:
+    def __init__(self, tnw_type:str='', data:dict={}):
         self.name = os.path.basename(__file__)
         self.id = b'\x00\x04'
-
+        self.tnw_type = tnw_type
         self.data = data
 
 
     @classmethod
     def serialize(self, data: deque):
         packet = {}
-        packet['unk1'] = ''.join([data.popleft() for _ in range(36)])
+        packet['unk1'] = ''.join([data.popleft() for _ in range(20)])
 
+        # Read a string. This will tell us what the type is
+        hex_str = ''
+        while True:
+            latest = data.popleft()
+            if latest == '00':
+                break
+            hex_str += latest
+        packet_type = hex_to_str(hex_str)
+
+        if packet_type == 'tNW_GameSetting':
+            self.process_tnwgamesetting(packet, data)
+        elif packet_type == 'tNW_PlayerData':
+            self.process_tnwplayerdata(packet, data)
+        else:
+            raise Exception()
+
+        return tcp_0004_tnw(packet_type, packet)
+
+    def to_bytes(self):
+        raise Exception()
+
+    def __str__(self):
+        return f"{self.name}; tnw_type:{self.tnw_type} data:{self.data}"
+
+    @classmethod
+    def process_tnwplayerdata(self, packet, data):
+        packet['unk2'] = ''.join([data.popleft() for _ in range(161)]) # 0000000002D300000100C6BF9A7C260000000000744E575F506C61796572446174610041029A0F44D0C176435C924843000000000000000000000000D8EA14408A7C260000000000000000000000000000000000000000000100000001000000000000000000000000000000D8EA14408A7C2600010000000100000000000000000000000000704100000000000000000000000000000000000000000000010000000000000001000000010000000000000000000000320000005F000000320000000100
+
+
+    @classmethod
+    def process_tnwgamesetting(self, packet, data):
         packet['p0_username'] = hex_to_str(''.join([data.popleft() for _ in range(16)]))
         packet['p1_username'] = hex_to_str(''.join([data.popleft() for _ in range(16)]))
         packet['p2_username'] = hex_to_str(''.join([data.popleft() for _ in range(16)]))
@@ -107,11 +138,3 @@ class tcp_0004_tnwgamesettings:
         packet['p5_bolt_skill'] = ''.join([data.popleft() for _ in range(4)])
         packet['p6_bolt_skill'] = ''.join([data.popleft() for _ in range(4)])
         packet['p7_bolt_skill'] = ''.join([data.popleft() for _ in range(4)])
-
-        return tcp_0004_tnwgamesettings(packet)
-
-    def to_bytes(self):
-        raise Exception()
-
-    def __str__(self):
-        return f"{self.name}; data:{self.data}"

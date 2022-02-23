@@ -21,10 +21,15 @@ from connections.dmeudp import DmeUdp
 
 from model.model import Model
 
+import requests
+import json
+world_id = json.loads(requests.get('http://54.189.126.108:8281/robo/games').text)[-1]['dme_world_id']
+
+
 config = {
     'account_id': 2,
     'username': 'BBBBBBBBBBBBBB',
-    'world_id': 38,
+    'world_id': world_id,
     'session_key': 'FD47DCF351375AB7\x00',
     'mls_ip': '54.189.126.108', 'mls_port': 10078,
     'dmetcp_ip': '54.189.126.108', 'dmetcp_port': 10079,

@@ -6,7 +6,7 @@ def bytes_to_str(data: bytes) -> str:
         if b == 0x00:
             return res
         res += chr(b)
-    return
+    return res
 
 def bytes_to_int_little(data):
     return int.from_bytes(data, byteorder='little')

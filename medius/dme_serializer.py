@@ -3,7 +3,9 @@ from utils.utils import *
 from medius.dme_packets import *
 
 TcpSerializer = {
+	'0003': tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state,
 	'0004': tcp_0004_tnwgamesettings.tcp_0004_tnwgamesettings,
+	'000D': tcp_000D_game_started.tcp_000D_game_started,
 	'000F': tcp_000F_playername_update.tcp_000F_playername_update,
 	'0010': tcp_0010_initial_sync.tcp_0010_initial_sync,
 	'0016': tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake,

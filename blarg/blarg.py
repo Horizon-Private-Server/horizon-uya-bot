@@ -70,13 +70,12 @@ class Blarg:
                 self._logger.info(f"{packet['src']} | {serialized}")
 
             elif packet['type'] == 'udp':
-                pass
-                # if packet_id not in udp_map.keys():
-                #     if self._config['warn_on_unknown'] == 'True':
-                #         self._logger.warning(f"Unknown {packet['type']} packet id: {packet_id} | data: {packet['data']}")
-                #     break
-                # else:
-                #     serialized = udp_map[packet_id].serialize(data)
+                if packet_id not in udp_map.keys():
+                    if self._config['warn_on_unknown'] == 'True':
+                        self._logger.warning(f"Unknown {packet['type']} packet id: {packet_id} | data: {packet['data']}")
+                    break
+                else:
+                    serialized = udp_map[packet_id].serialize(data)
 
             # Don't print correctly serialized unless it matches filter or the filter is empty.
             #if (self._config['filter'] == packet_id or self._config['filter'] == '') and serialized != {} and self._config['log_serialized'] != 'False':

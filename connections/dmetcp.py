@@ -27,11 +27,11 @@ class DmeTcp(AbstractTcp):
         while True:
             if self.qsize() != 0:
                 packet = self.dequeue()
-                serialized = TcpSerializer[packet[0]]['serializer'].serialize(packet)
                 try:
+                    serialized = TcpSerializer[packet[0]]['serializer'].serialize(packet)
                     model.process(serialized)
                 except:
-                    logger.exception()
+                    self._logger.exception(f"Error processing DME TCP packet")
             await asyncio.sleep(0.0001)
 
     async def connect_to_dme_world_stage_1(self, access_key):

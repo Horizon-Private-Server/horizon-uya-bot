@@ -4,7 +4,7 @@ from utils.utils import *
 
 class tcp_000D_game_started:
     def __init__(self, unk1:str='0000'):
-        self.name = os.path.basename(__file__)
+        self.name = os.path.basename(__file__).strip(".py")
         self.id = b'\x00\x0D'
         self.unk1 = unk1
 

@@ -4,7 +4,7 @@ from utils.utils import *
 
 class tcp_0213_player_headset:
     def __init__(self, unk1:str='00000000'):
-        self.name = os.path.basename(__file__)
+        self.name = os.path.basename(__file__).strip(".py")
         self.id = b'\x02\x13'
         self.unk1 = unk1
 

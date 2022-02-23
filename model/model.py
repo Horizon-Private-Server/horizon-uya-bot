@@ -97,6 +97,9 @@ class Model:
         if dme_packet.name == 'tcp_0211_player_lobby_state_change' and src_player == 0 and dme_packet.ready == 'change team request':
             self._dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team='red',skin='robo',username=self._username, ready='ready')])
 
+        if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_PlayerData':
+            self._dmetcp_queue.put(['B', tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData')])
+
     async def _tcp_flusher(self):
         '''
         This method is used to aggregate individual DME MGCL packets into a single packet

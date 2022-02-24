@@ -1,10 +1,14 @@
 from collections import deque
 from utils.utils import *
+import os
 
 class udp_0209_movement_update:
-    def __init__(self):
-        pass
+    def __init__(self, data:dict):
+        self.name = os.path.basename(__file__).strip(".py")
+        self.id = b'\x02\x09'
+        self.data = data
 
+    @classmethod
     def serialize(self, data: deque):
     	results = {}
 
@@ -35,8 +39,6 @@ class udp_0209_movement_update:
     	results['last'] = ''.join([data.popleft() for i in range(8)])
     	# Tests
     	assert results['buffer'] == '00'
-    	#assert results['last'] == '8080808080808080'
-
 
     	## Parse the button and flush
     	#
@@ -58,4 +60,33 @@ class udp_0209_movement_update:
     	else:
     		results['type'] = 'movement'
 
-    	return results
+    	return udp_0209_movement_update(results)
+
+
+    def to_bytes(self):
+        return self.id + \
+            hex_to_bytes(self.data['r1']) + \
+            int_to_bytes_little(1, self.data['cam1_y']) + \
+            int_to_bytes_little(1, self.data['cam1_x']) + \
+            hex_to_bytes(self.data['vcam1_y']) + \
+            hex_to_bytes(self.data['r2']) + \
+            int_to_bytes_little(1, self.data['cam2_y']) + \
+            int_to_bytes_little(1, self.data['cam2_x']) + \
+            hex_to_bytes(self.data['vcam2_y']) + \
+            hex_to_bytes(self.data['r3']) + \
+            int_to_bytes_little(1, self.data['cam3_y']) + \
+            int_to_bytes_little(1, self.data['cam3_x']) + \
+            hex_to_bytes(self.data['v_drv']) + \
+            hex_to_bytes(self.data['r4']) + \
+            int_to_bytes_little(1, self.data['cam4_y']) + \
+            int_to_bytes_little(1, self.data['cam4_x']) + \
+            hex_to_bytes(self.data['buffer']) + \
+            int_to_bytes_little(2, self.data['coord'][0]) + \
+            int_to_bytes_little(2, self.data['coord'][1]) + \
+            int_to_bytes_little(2, self.data['coord'][2]) + \
+            int_to_bytes_little(1, self.data['packet_num']) + \
+            int_to_bytes_little(1, self.data['flush_type']) + \
+            hex_to_bytes(self.data['last'])
+
+    def __str__(self):
+        return f"{self.name}; data:{self.data}"

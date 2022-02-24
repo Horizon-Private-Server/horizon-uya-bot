@@ -20,7 +20,7 @@ TcpSerializer = {
 }
 
 UdpSerializer = {
-	# '0209': udp_0209_movement_update.udp_0209_movement_update,
+	'0209': udp_0209_movement_update.udp_0209_movement_update,
 	'0001': udp_0001_timer_update.udp_0001_timer_update,
 }
 

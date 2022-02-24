@@ -1,5 +1,10 @@
 from collections import deque
 
+def short_bytes_to_int(byte1, byte2):
+    data = byte2 + byte1
+    data = int(data, 16)
+    return data
+    
 def bytes_to_str(data: bytes) -> str:
     res = ''
     for b in data:

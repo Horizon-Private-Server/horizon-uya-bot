@@ -53,6 +53,10 @@ class Model:
         if serialized['packet'] == 'medius.rt.clientappsingle':
             for dme_packet in serialized['packets']:
                 self.process_dme_packet(serialized['src_player'], dme_packet, serialized['protocol'])
+        if serialized['packet'] == 'medius.rt.serverdisconnectnotify':
+            if serialized['dme_player_id'] == 0:
+                logger.info("Host has left! Exiting ...")
+                self.alive = False
 
 
     def process_dme_packet(self, src_player, dme_packet, protocol):

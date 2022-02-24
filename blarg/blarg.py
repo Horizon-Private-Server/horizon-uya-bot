@@ -21,7 +21,6 @@ class Blarg:
         self._config = config
 
         self._logger = logging.getLogger('blarg')
-        self._logger.setLevel(logging.getLevelName(config['logger']))
         formatter = logging.Formatter('%(asctime)s %(name)s | %(levelname)s | %(message)s')
         sh = logging.StreamHandler()
         sh.setFormatter(formatter)
@@ -32,7 +31,8 @@ class Blarg:
         filehandler.setFormatter(formatter)
         filehandler.setLevel(logging.DEBUG)
         self._logger.addHandler(filehandler)
-        self._logger.setLevel(logging.getLevelName(config['logger']))
+
+        self._logger.setLevel(logging.DEBUG)
 
     def run(self):
         asyncio.get_event_loop().run_until_complete(self.read_websocket())

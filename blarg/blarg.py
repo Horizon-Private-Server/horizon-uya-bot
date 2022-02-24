@@ -1,11 +1,13 @@
 import asyncio
 import websockets
 import json
+import os
 
 import sys
 sys.path.append("..")
 
 import logging
+from logging import handlers
 
 from collections import deque
 
@@ -25,6 +27,12 @@ class Blarg:
         sh.setFormatter(formatter)
         sh.setLevel(logging.getLevelName(config['logger']))
         self._logger.addHandler(sh)
+
+        filehandler = logging.FileHandler(os.path.join(os.path.dirname(os.path.realpath(__file__)),'logs','blarg.log'), mode='w')
+        filehandler.setFormatter(formatter)
+        filehandler.setLevel(logging.DEBUG)
+        self._logger.addHandler(filehandler)
+        self._logger.setLevel(logging.getLevelName(config['logger']))
 
     def run(self):
         asyncio.get_event_loop().run_until_complete(self.read_websocket())
@@ -76,6 +84,8 @@ class Blarg:
                     break
                 else:
                     serialized = udp_map[packet_id].serialize(data)
+
+                self._logger.info(f"{packet['src']} | {serialized}")
 
             # Don't print correctly serialized unless it matches filter or the filter is empty.
             #if (self._config['filter'] == packet_id or self._config['filter'] == '') and serialized != {} and self._config['log_serialized'] != 'False':

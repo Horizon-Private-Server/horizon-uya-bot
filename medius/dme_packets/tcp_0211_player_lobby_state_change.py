@@ -44,7 +44,8 @@ class tcp_0211_player_lobby_state_change:
         '01': 'not ready',
         '00': 'no change',
         '02': 'broadcast not ready',
-        '04': 'change team request'
+        '04': 'change team request',
+        '08': 'unk, player in-game ready(?)'
     }
 
     def __init__(self, unk1:str='00000000',
@@ -77,16 +78,7 @@ class tcp_0211_player_lobby_state_change:
         skin = self._skin_map[data.popleft()]
 
         ready = data.popleft()
-        if ready == '06':
-            ready = 'ready'
-        elif ready == '01':
-            ready = 'not ready'
-        elif ready == '00':
-            ready = 'no change'
-        elif ready == '02':
-            ready = 'broadcast not ready'
-        elif ready == '04':
-            ready = 'change team request'
+        ready = self._ready_map[ready]
 
         username = hex_to_str(''.join([data.popleft() for i in range(14)]))
 

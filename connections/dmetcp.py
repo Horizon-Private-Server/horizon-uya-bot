@@ -24,7 +24,7 @@ class DmeTcp(AbstractTcp):
 
 
     async def main(self, model):
-        while True:
+        while model.alive:
             if self.qsize() != 0:
                 packet = self.dequeue()
                 try:

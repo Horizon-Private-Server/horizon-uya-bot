@@ -40,6 +40,12 @@ skin_map = {
     'FF': 'NA'
 }
 
+player_id_map = {
+    '0000': -1,
+    '0100': 0,
+    '0300': 1,
+}
+
 class tcp_0003_broadcast_lobby_state:
     def __init__(self, data:dict):
         self.name = os.path.basename(__file__).strip(".py")
@@ -54,11 +60,7 @@ class tcp_0003_broadcast_lobby_state:
 
         packet['num_messages'] = bytes_to_int_little(hex_to_bytes(data.popleft()))
 
-        # TODO: why is this here???
-        # if num_messages == 9:
-        #     data.clear()
-
-        packet['unk2'] = data.popleft() + data.popleft()
+        packet['src'] = player_id_map[data.popleft() + data.popleft()]
 
         for i in range(packet['num_messages']):
             sub_message = {}
@@ -83,8 +85,14 @@ class tcp_0003_broadcast_lobby_state:
                     val = data.popleft()
                     data.popleft()
                     sub_message[f'p{player_id}'] = skin_map[val]
+            elif broadcast_type == '07':
+                sub_message['type'] = '07_unk'
+                sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+            elif broadcast_type == '09':
+                sub_message['type'] = 'timer_update'
+                sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
             else:
-                raise Exception()
+                raise Exception(f'{broadcast_type} not known!')
 
             packet[f'msg{i}'] = sub_message
 

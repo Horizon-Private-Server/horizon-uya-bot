@@ -1,7 +1,8 @@
-
 import logging
 logger = logging.getLogger('thug.model')
 logger.setLevel(logging.DEBUG)
+
+import sys
 
 import asyncio
 
@@ -14,10 +15,11 @@ from utils.utils import *
 
 class Model:
     def __init__(self, config, loop, tcp_conn, udp_conn):
+        self.alive = True
         self._config = config
 
         self._account_id = self._config['account_id']
-        self._color = 'blue'
+        self._team = self._config['team']
         self._username = self._config['username']
         self._skin = self._config['skin']
         if self._config['bolt'] == 1:
@@ -93,12 +95,19 @@ class Model:
 
             self._dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined(account_id=self._account_id, skin1=self._skin, skin2=self._skin, username=self._username, username2=self._username, rank=self._rank, clan_tag=self._clan_tag)])
 
+            self._dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self._team,skin='robo',username=self._username, ready='ready')])
 
         if dme_packet.name == 'tcp_0211_player_lobby_state_change' and src_player == 0 and dme_packet.ready == 'change team request':
-            self._dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team='red',skin='robo',username=self._username, ready='ready')])
+            self._team = self._get_new_team(self._team)
+            self._dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self._team,skin='robo',username=self._username, ready='ready')])
 
         if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_PlayerData':
             self._dmetcp_queue.put(['B', tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData')])
+
+        if dme_packet.name == 'tcp_0012_player_left':
+            if src_player == 0:
+                logger.info("Host has left! Exiting ...")
+                self.alive = False
 
     async def _tcp_flusher(self):
         '''
@@ -126,3 +135,22 @@ class Model:
 
     def _dmeudpagg(self, serialized_packet):
         pass
+
+    def _get_new_team(self, team): # TODO: incorporate gamemode
+        if team == 'blue':
+            return 'red'
+        if team == 'red':
+            return 'green'
+        if team == 'green':
+            return 'orange'
+        if team == 'orange':
+            return 'yellow'
+        if team == 'yellow':
+            return 'purple'
+        if team == 'purple':
+            return 'aqua'
+        if team == 'aqua':
+            return 'pink'
+        if team == 'pink':
+            return 'blue'
+        return 'blue'

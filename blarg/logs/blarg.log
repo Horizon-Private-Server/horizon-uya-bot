@@ -1,0 +1,6 @@
+2022-02-23 18:49:46,609 blarg | DEBUG | {"type": "udp", "dme_world_id": 73, "src": 0, "dst": 1, "data": "0001C60C210001010000"}
+2022-02-23 18:49:46,609 blarg | INFO | 0 | udp_0001_timer_update; time:2165958 unk1:01010000
+2022-02-23 18:49:49,875 blarg | DEBUG | {"type": "udp", "dme_world_id": 73, "src": 0, "dst": 1, "data": "00018118210002010000"}
+2022-02-23 18:49:49,875 blarg | INFO | 0 | udp_0001_timer_update; time:2168961 unk1:02010000
+2022-02-23 18:49:50,426 blarg | DEBUG | {"type": "tcp", "dme_world_id": 73, "src": 0, "dst": -1, "data": "001200"}
+2022-02-23 18:49:50,426 blarg | DEBUG | {"type": "tcp", "dme_world_id": 73, "src": 0, "dst": -1, "data": "001200"}

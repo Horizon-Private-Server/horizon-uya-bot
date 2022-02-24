@@ -36,7 +36,8 @@ config = {
     'dmeudp_ip': '54.189.126.108', 'dmeudp_port': 51000,
     'skin': 1,
     'bolt': 2,
-    'clan_tag': ''
+    'clan_tag': '',
+    'team': 'red'
 }
 
 class Thug:
@@ -62,12 +63,10 @@ class Thug:
 
         self._model = Model(self._config, self.loop, self._tcp_conn, self._udp_conn)
 
-        self.loop.create_task(self._tcp_conn.main(self._model))
+        #self.loop.create_task(self._tcp_conn.main(self._model))
         #self.loop.create_task(self._udp_conn.main(self._model))
 
-
-
-        self.loop.run_forever()
-
+        self.loop.run_until_complete(self._tcp_conn.main(self._model))
+        
 
 Thug(config)

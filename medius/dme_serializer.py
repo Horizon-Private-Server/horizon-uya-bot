@@ -8,6 +8,7 @@ TcpSerializer = {
 	'000D': tcp_000D_game_started.tcp_000D_game_started,
 	'000F': tcp_000F_playername_update.tcp_000F_playername_update,
 	'0010': tcp_0010_initial_sync.tcp_0010_initial_sync,
+	'0012': tcp_0012_player_left.tcp_0012_player_left,
 	'0016': tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake,
 	'0018': tcp_0018_initial_sync.tcp_0018_initial_sync,
 
@@ -15,10 +16,12 @@ TcpSerializer = {
 	'0210': tcp_0210_player_joined.tcp_0210_player_joined,
 	'0211': tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change,
 	'0212': tcp_0212_host_headset.tcp_0212_host_headset,
+	'0213': tcp_0213_player_headset.tcp_0213_player_headset,
 }
 
 UdpSerializer = {
-	'0209': udp_0209_movement_update.udp_0209_movement_update,
+	# '0209': udp_0209_movement_update.udp_0209_movement_update,
+	'0001': udp_0001_timer_update.udp_0001_timer_update,
 }
 
 def dme_serialize(data: bytes):

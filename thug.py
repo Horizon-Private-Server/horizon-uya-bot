@@ -65,8 +65,8 @@ class Thug:
 
         #self.loop.create_task(self._tcp_conn.main(self._model))
         #self.loop.create_task(self._udp_conn.main(self._model))
-
+        self.loop.create_task(self._udp_conn.main(self._model))
         self.loop.run_until_complete(self._tcp_conn.main(self._model))
-        
+
 
 Thug(config)

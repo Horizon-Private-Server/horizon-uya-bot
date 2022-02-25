@@ -1,21 +1,32 @@
 from utils.utils import *
 
-from medius.dme_serializer import dme_serialize
+from medius.dme_serializer import dmetcp_serialize, dmeudp_serialize
 
 class ClientAppSingleSerializer:
-    data_dict = [
+    data_dict_tcp = [
         {'name': 'rtid', 'n_bytes': 1, 'cast': None},
         {'name': 'len', 'n_bytes': 2, 'cast': bytes_to_int_little},
         {'name': 'src_player', 'n_bytes': 1, 'cast': bytes_to_int_little},
         {'name': 'buf', 'n_bytes': 1, 'cast': None},
-        {'name': 'packets', 'n_bytes': None, 'cast': dme_serialize}
+        {'name': 'packets', 'n_bytes': None, 'cast': dmetcp_serialize}
+    ]
+
+    data_dict_udp = [
+        {'name': 'rtid', 'n_bytes': 1, 'cast': None},
+        {'name': 'len', 'n_bytes': 2, 'cast': bytes_to_int_little},
+        {'name': 'src_player', 'n_bytes': 1, 'cast': bytes_to_int_little},
+        {'name': 'buf', 'n_bytes': 1, 'cast': None},
+        {'name': 'packets', 'n_bytes': None, 'cast': dmeudp_serialize}
     ]
 
     def __init__(self, protocol):
         self.protocol = protocol
 
     def serialize(self, data: bytes):
-        serialized = serialize(data, self.data_dict, __name__)
+        if self.protocol == 'tcp':
+            serialized = serialize(data, self.data_dict_tcp, __name__)
+        elif self.protocol == 'udp':
+            serialized = serialize(data, self.data_dict_udp, __name__)
         serialized['protocol'] = self.protocol
         return serialized
 

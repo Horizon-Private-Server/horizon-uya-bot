@@ -24,7 +24,7 @@ UdpSerializer = {
 	'0001': udp_0001_timer_update.udp_0001_timer_update,
 }
 
-def dme_serialize(data: bytes):
+def dmetcp_serialize(data: bytes):
 	data = bytes_to_hex(data)
 	data = deque([data[i:i+2] for i in range(0,len(data),2)])
 
@@ -32,4 +32,14 @@ def dme_serialize(data: bytes):
 	while len(data) != 0:
 		dme_id = data.popleft() + data.popleft() # E.g. '0201'
 		packets.append(TcpSerializer[dme_id].serialize(data))
+	return packets
+
+def dmeudp_serialize(data: bytes):
+	data = bytes_to_hex(data)
+	data = deque([data[i:i+2] for i in range(0,len(data),2)])
+
+	packets = []
+	while len(data) != 0:
+		dme_id = data.popleft() + data.popleft() # E.g. '0201'
+		packets.append(UdpSerializer[dme_id].serialize(data))
 	return packets

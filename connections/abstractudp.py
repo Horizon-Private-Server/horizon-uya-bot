@@ -66,3 +66,6 @@ class AbstractUdp:
         if self._read_queue.qsize() == 0:
             return None
         return self._read_queue.get()
+
+    def qsize(self):
+        return self._read_queue.qsize()

@@ -64,18 +64,6 @@ class Model:
 
     def process_dme_packet(self, src_player, dme_packet, protocol):
         '''
-        PROCESS CLIENT APP SINGLE (DME)
-        '''
-        if protocol == 'tcp':
-            self.process_dme_packet_tcp(src_player, dme_packet)
-        elif protocol == 'udp':
-            pass
-        else:
-            logger.error("Unknown protocl: " + protocol)
-            raise Exception()
-
-    def process_dme_packet_tcp(self, src_player, dme_packet):
-        '''
         PROCESS DME TCP DATA
         '''
         logger.debug(f"I | tcp; src:{src_player} {dme_packet}")
@@ -115,6 +103,10 @@ class Model:
 
             self._loop.create_task(self.movement_update())
 
+        if dme_packet.name == 'udp_0001_timer_update':
+            self.time = dme_packet.time
+            self._dmeudp_queue.put([0, udp_0001_timer_update.udp_0001_timer_update(time=self.time, unk1=dme_packet.unk1)])
+
 
         if dme_packet.name == 'tcp_0012_player_left':
             if src_player == 0:
@@ -138,7 +130,7 @@ class Model:
             data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': 221, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': 221, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': 221, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': 221, 'buffer': '00', 'coord': coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
             self._dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.15)
 
     async def _tcp_flusher(self):
         '''

@@ -75,8 +75,6 @@ class Blarg:
                 else:
                     serialized = tcp_map[packet_id].serialize(data)
 
-                self._logger.info(f"{packet['src']} | {serialized}")
-
             elif packet['type'] == 'udp':
                 if packet_id not in udp_map.keys():
                     if self._config['warn_on_unknown'] == 'True':
@@ -85,7 +83,9 @@ class Blarg:
                 else:
                     serialized = udp_map[packet_id].serialize(data)
 
-                self._logger.info(f"{packet['src']} | {serialized}")
+            if self._config['log_serialized'] != 'False':
+                if serialized.name != 'tcp_0213_player_headset':
+                    self._logger.info(f"{packet['src']} | {serialized}")
 
             # Don't print correctly serialized unless it matches filter or the filter is empty.
             #if (self._config['filter'] == packet_id or self._config['filter'] == '') and serialized != {} and self._config['log_serialized'] != 'False':

@@ -66,7 +66,7 @@ class Model:
         '''
         PROCESS DME TCP DATA
         '''
-        logger.debug(f"I | tcp; src:{src_player} {dme_packet}")
+        logger.debug(f"I | {protocol}; src:{src_player} {dme_packet}")
 
         if dme_packet.name == 'tcp_0016_player_connect_handshake':
             if dme_packet.data == '05000300010000000100000000000000':
@@ -96,12 +96,8 @@ class Model:
             self._team = self._get_new_team(self._team)
             self._dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self._team,skin='robo',username=self._username, ready='ready')])
 
-        if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_PlayerData':
-            self._dmetcp_queue.put(['B', tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': '0100000002D301000300C6BF6C2A3C0000000000', 'unk2':'4119700F44BF23764345A44843000000000000000000000000D8EA14405B2A3C00000000000000000000000000000000000000000050C3000001000010000000000000000000000000D8EA14405B2A3C0050C3000001000010000000000000000000007041000000000000000000000000000000000000010000000100000001000000010000000100000000000000000000003200000032000000320000000000'})])
-            self._dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk2='000000000300030003000000000070410000', username=self._username, unk3='000000')])
-            self._dmetcp_queue.put([0, tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': '0100000002D301000300C6BF6C2A3C0000000000', 'unk2':'4119700F44BF23764345A44843000000000000000000000000D8EA14405B2A3C00000000000000000000000000000000000000000050C3000001000010000000000000000000000000D8EA14405B2A3C0050C3000001000010000000000000000000007041000000000000000000000000000000000000010000000100000001000000010000000100000000000000000000003200000032000000320000000000'})])
-
-            self._loop.create_task(self.movement_update())
+        if dme_packet.name == 'tcp_000D_game_started':
+            self._loop.create_task(self.send_player_data())
 
         if dme_packet.name == 'udp_0001_timer_update':
             self.time = dme_packet.time
@@ -112,6 +108,17 @@ class Model:
             if src_player == 0:
                 logger.info("Host has left! Exiting ...")
                 self.alive = False
+
+    async def send_player_data(self):
+        # It takes 13 seconds to load from game start into actual game
+        await asyncio.sleep(13)
+        self._dmetcp_queue.put(['B', tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': '0100000002D301000300C6BFE2E8660000000000', 'unk2':'41959CFC4384CCED433353544300000000000000000000000085B31AC0', 'player_start_time_1': self.time, 'player_start_time_2': self.time, 'unk3': '0000000000000000000000000000000000000000', 'account_id_1': self._account_id, 'account_id_2': self._account_id, 'team':self._team, 'unk4': '0100001000000000000000000000000085B31AC0', 'unk5': '00000100001000000000', 'unk6': '00000000007041000000000000000000000000000000000000010000000100000001000000010000000100000000000000000000003200000032000000320000000000'})])
+        self._dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='000000000300030003000000000070410000', username=self._username, unk3='000000')])
+        self._dmetcp_queue.put([0, tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': '0100000002D301000300C6BFE2E8660000000000', 'unk2':'41959CFC4384CCED433353544300000000000000000000000085B31AC0', 'player_start_time_1': self.time, 'player_start_time_2': self.time, 'unk3': '0000000000000000000000000000000000000000', 'account_id_1': self._account_id, 'account_id_2': self._account_id, 'team':self._team, 'unk4': '0100001000000000000000000000000085B31AC0', 'unk5': '00000100001000000000', 'unk6': '00000000007041000000000000000000000000000000000000010000000100000001000000010000000100000000000000000000003200000032000000320000000000'})])
+
+        self._dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(unk1='00000000', team='blue', skin='ratchet', ready='unk, player in-game ready(?)', username='', unk2='0000000000000000000000')])
+
+        self._loop.create_task(self.movement_update())
 
     async def movement_update(self):
         while True:

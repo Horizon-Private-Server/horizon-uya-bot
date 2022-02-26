@@ -76,10 +76,16 @@ class tcp_0004_tnw:
                 hex_to_bytes(self.data['unk1']) + \
                 str_to_bytes("tNW_PlayerData", 15) + \
                 hex_to_bytes(self.data['unk2']) + \
-                int_to_bytes_little(4, self.data['player_start_time2']) + \
+                int_to_bytes_little(4, self.data['player_start_time_1']) + \
                 hex_to_bytes(self.data['unk3']) + \
-                int_to_bytes_little(4, self.data['player_start_time2']) + \
-                hex_to_bytes(self.data['unk4'])
+                int_to_bytes_little(4, self.data['account_id_1']) + \
+                hex_to_bytes(self.data['unk4']) + \
+                int_to_bytes_little(4, self.data['player_start_time_2']) + \
+                int_to_bytes_little(2, self.data['account_id_2']) + \
+                hex_to_bytes(self.data['unk5']) + \
+                hex_to_bytes({v: k for k, v in team_map.items()}[self.data['team']]) + \
+                hex_to_bytes(self.data['unk6'])
+
             # return hex_to_bytes("00040000000002D300000100C6BF597D540000000000744E575F506C61796572446174610041029A0F44D0C176435C924843000000000000000000000000D8EA1440487D540000000000000000000000000000000000000000000100000001000000000000000000000000000000D8EA1440487D5400010000000100000000000000000000000000704100000000000000000000000000000000000000000000010000000000000001000000010000000000000000000000320000005F000000320000000100000F000000000000000001000000030000000000704100004141414141414141414141000000")
         raise Exception()
 
@@ -89,10 +95,16 @@ class tcp_0004_tnw:
     @classmethod
     def process_tnwplayerdata(self, packet, data):
         packet['unk2'] = ''.join([data.popleft() for _ in range(29)])
-        packet['player_start_time'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        packet['unk3'] = ''.join([data.popleft() for _ in range(44)])
-        packet['player_start_time2'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        packet['unk4'] = ''.join([data.popleft() for _ in range(80)])
+        packet['player_start_time_1'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
+        packet['unk3'] = ''.join([data.popleft() for _ in range(20)])
+        packet['account_id_1'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
+        packet['unk4'] = ''.join([data.popleft() for _ in range(20)])
+        packet['player_start_time_2'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
+        packet['account_id_2'] = hex_to_int_little(''.join([data.popleft() for _ in range(2)]))
+        packet['unk5'] = ''.join([data.popleft() for _ in range(10)])
+        packet['team'] = team_map[data.popleft()]
+        packet['unk6'] = ''.join([data.popleft() for _ in range(67)])
+
         # 0000000002D300000100C6BF9A7C260000000000744E575F506C61796572446174610041029A0F44D0C176435C924843000000000000000000000000D8EA14408A7C260000000000000000000000000000000000000000000100000001000000000000000000000000000000D8EA14408A7C2600010000000100000000000000000000000000704100000000000000000000000000000000000000000000010000000000000001000000010000000000000000000000320000005F000000320000000100
 
     @classmethod

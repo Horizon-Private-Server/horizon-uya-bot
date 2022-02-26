@@ -98,4 +98,4 @@ class tcp_0211_player_lobby_state_change:
 
     def __str__(self):
         return f"{self.name}; unk1:{self.unk1} team:{self.team} " + \
-                f"skin:{self.skin} player_ready:{self.ready} username:{self.username} unk2:{self.unk2}"
+                f"skin:{self.skin} ready:{self.ready} username:{self.username} unk2:{self.unk2}"

@@ -37,7 +37,7 @@ config = {
     'skin': 1,
     'bolt': 2,
     'clan_tag': '',
-    'team': 'red'
+    'team': 'blue'
 }
 
 class Thug:

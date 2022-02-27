@@ -109,6 +109,11 @@ class Model:
                 logger.info("Host has left! Exiting ...")
                 self.alive = False
 
+        if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and dme_packet.data['num_messages'] == 1 and dme_packet.data['msg0']['type'] == 'timer_update':
+            self.time = dme_packet.data['msg0']['time']
+            self._dmetcp_queue.put([0, tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'unk1': '00', 'num_messages': 1, 'src': self._dme_player_id, 'msg0': {'type': 'timer_update', 'time': self.time}})])
+
+
     async def send_player_data(self):
         # It takes 13 seconds to load from game start into actual game
         await asyncio.sleep(13)
@@ -128,11 +133,15 @@ class Model:
             if self._udp_movement_packet_num == 256:
                 self._udp_movement_packet_num = 0
 
-            if self._udp_movement_packet_num < 100:
+            # if self._udp_movement_packet_num < 100:
+            #     coord = [35594, 17038, 12977]
+            # else:
+            #     coord = [35594, 17538, 12977]
+
+            if self._udp_movement_packet_num % 2 == 0:
                 coord = [35594, 17038, 12977]
             else:
                 coord = [35594, 17538, 12977]
-
 
             data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': 221, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': 221, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': 221, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': 221, 'buffer': '00', 'coord': coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
             self._dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])

@@ -90,7 +90,7 @@ class tcp_0003_broadcast_lobby_state:
                 sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
             elif broadcast_type == '09':
                 sub_message['type'] = 'timer_update'
-                sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+                sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
             else:
                 raise Exception(f'{broadcast_type} not known!')
 
@@ -99,7 +99,12 @@ class tcp_0003_broadcast_lobby_state:
         return tcp_0003_broadcast_lobby_state(packet)
 
     def to_bytes(self):
-        raise Exception()
+        return self.id + \
+            hex_to_bytes(self.data['unk1']) + \
+            int_to_bytes_little(1, self.data['num_messages']) + \
+            hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
+            hex_to_bytes('09') + \
+            int_to_bytes_little(4, self.data['msg0']['time'])
 
     def __str__(self):
         return f"{self.name}; data:{self.data}"

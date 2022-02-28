@@ -83,12 +83,8 @@ class Blarg:
                 else:
                     serialized = udp_map[packet_id].serialize(data)
 
-            if self._config['log_serialized'] != 'False':
-                if serialized.name != 'tcp_0213_player_headset':
-                    self._logger.info(f"{packet['src']} | {serialized}")
-
-            # Don't print correctly serialized unless it matches filter or the filter is empty.
-            #if (self._config['filter'] == packet_id or self._config['filter'] == '') and serialized != {} and self._config['log_serialized'] != 'False':
+            if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] != 'False':
+                self._logger.info(f"{packet['src']} | {serialized}")
 
     async def read_websocket(self):
         uri = f"ws://{self._config['robo_ip']}:8765"
@@ -96,8 +92,14 @@ class Blarg:
             while True:
                 data = await websocket.recv()
                 self._logger.debug(f"{data}")
-                self.process(json.loads(data))
 
+                if self._config['fail_on_error'] == 'True':
+                    self.process(json.loads(data))
+                else:
+                    try:
+                        self.process(json.loads(data))
+                    except:
+                        self._logger.exception("error")
 
 def read_config(config_file='config.json'):
     with open(config_file, 'r') as f:

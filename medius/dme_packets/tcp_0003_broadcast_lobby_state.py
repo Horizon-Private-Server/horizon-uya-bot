@@ -91,6 +91,15 @@ class tcp_0003_broadcast_lobby_state:
             elif broadcast_type == '09':
                 sub_message['type'] = 'timer_update'
                 sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+            elif broadcast_type == '00':
+                if len(data) == 3:
+                    sub_message['type'] = 'unk'
+                    sub_message['unk1'] = ''.join([data.popleft() for i in range(3)])
+                else:
+                    sub_message['type'] = 'settings_update'
+                    sub_message['unk1'] = ''.join([data.popleft() for i in range(283)])
+                packet[f'msg{i}'] = sub_message
+                break
             else:
                 raise Exception(f'{broadcast_type} not known!')
 

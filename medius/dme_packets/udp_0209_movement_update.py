@@ -85,8 +85,11 @@ class udp_0209_movement_update:
             int_to_bytes_little(2, self.data['coord'][1]) + \
             int_to_bytes_little(2, self.data['coord'][2]) + \
             int_to_bytes_little(1, self.data['packet_num']) + \
-            int_to_bytes_little(1, self.data['flush_type']) + \
+            int_to_bytes_little(1, 0) + \
             hex_to_bytes(self.data['last'])
+            # hex_to_bytes('7F7F4C0000B0210A447C6484431C854743') + \
+            # hex_to_bytes('DE')
+            #int_to_bytes_little(1, self.data['flush_type']) + \
 
     def __str__(self):
         return f"{self.name}; data:{self.data}"

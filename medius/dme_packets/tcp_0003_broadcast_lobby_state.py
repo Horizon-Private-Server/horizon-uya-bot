@@ -90,7 +90,13 @@ class tcp_0003_broadcast_lobby_state:
                 sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
             elif broadcast_type == '09':
                 sub_message['type'] = 'timer_update'
-                sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+                if len(data) == 2:
+                    sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+                else:
+                    sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+            elif broadcast_type == '0D':
+                sub_message['type'] = 'unk_0D'
+                sub_message['unk2'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
             elif broadcast_type == '0A':
                 sub_message['type'] = 'unk0A'
                 sub_message['unk1'] = ''.join([data.popleft() for i in range(21)])

@@ -49,7 +49,8 @@ class Blarg:
             "data": a hex string of the raw data
         }
         '''
-
+        if packet['src'] != 0:
+            return
         # Convert to list. E.g. '000102030405' -> ['00', '01', '02', '03', '04', '05']
         data = deque([packet['data'][i:i+2] for i in range(0,len(packet['data']),2)])
 
@@ -70,7 +71,7 @@ class Blarg:
             if packet['type'] == 'tcp':
                 if packet_id not in tcp_map.keys():
                     if self._config['warn_on_unknown'] == 'True':
-                        self._logger.warning(f"Unknown {packet['type']} packet id: {packet_id} | data: {packet['data']}")
+                        self._logger.warning(f"Unknown {packet['type']} src:{packet['src']} packet id: {packet_id} | data: {packet['data']}")
                     break
                 else:
                     serialized = tcp_map[packet_id].serialize(data)
@@ -78,7 +79,7 @@ class Blarg:
             elif packet['type'] == 'udp':
                 if packet_id not in udp_map.keys():
                     if self._config['warn_on_unknown'] == 'True':
-                        self._logger.warning(f"Unknown {packet['type']} packet id: {packet_id} | data: {packet['data']}")
+                        self._logger.warning(f"Unknown {packet['type']} src:{packet['src']} packet id: {packet_id} | data: {packet['data']}")
                     break
                 else:
                     serialized = udp_map[packet_id].serialize(data)

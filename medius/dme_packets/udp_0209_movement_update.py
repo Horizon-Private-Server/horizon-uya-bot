@@ -33,6 +33,8 @@ class udp_0209_movement_update:
         y = short_bytes_to_int(data.popleft(), data.popleft())
         z = short_bytes_to_int(data.popleft(), data.popleft())
         results['coord'] = [x,y,z]
+        # print(bytes_to_hex(int_to_bytes_little(2, results['coord'][0])),   bytes_to_hex(int_to_bytes_little(2, results['coord'][1])),  bytes_to_hex(int_to_bytes_little(2, results['coord'][2])))
+        #print(results['coord'])
 
         results['packet_num'] = int(data.popleft(), 16)
         results['flush_type'] = int(data.popleft(), 16) # flush type -- if there are buttons or total flush

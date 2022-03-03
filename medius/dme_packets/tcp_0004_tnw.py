@@ -46,8 +46,6 @@ class tcp_0004_tnw:
         self.tnw_type = tnw_type
         self.data = data
 
-        print(self)
-
     @classmethod
     def serialize(self, data: deque):
         packet = {}

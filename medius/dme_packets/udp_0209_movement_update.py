@@ -1,18 +1,7 @@
 from collections import deque
 from utils.utils import *
 import os
-'''
-FLUSH: 17
-UP: 4B \ 7F7FDC000238170F44A971804377344843
-DOWN: 6A \ 7F7FDC0002911C0F4410A97943FE774843
-LEFT: 7A \ 7F7FDC00026F280F44FC61734316C74843
-RIGHT: 5B \ 7F7FDC0002DE8812441DC47F4369004843
 
-UP-LEFT: 43D6 \ 7F7FDC00025C5B0D4482D67B43F2054943
-UP-RIGHT: 42D2 \ 7F7FDC0002052D0E44A038864300044843
-DOWN-LEFT: 63DE \ 7F7FDC000236310E44889684436D0F4843
-DOWN-RIGHT: 535A \ 7F7FDC000202D30F44315082435E114843
-'''
 
 
 class udp_0209_movement_update:
@@ -115,12 +104,20 @@ class udp_0209_movement_update:
             int_to_bytes_little(2, self.data['coord'][1]) + \
             int_to_bytes_little(2, self.data['coord'][2]) + \
             int_to_bytes_little(1, self.data['packet_num']) + \
-            int_to_bytes_little(1, 17) + \
+            int_to_bytes_little(1, 81) + \
             hex_to_bytes(self.data['last']) + \
-            hex_to_bytes('7A') + \
-            hex_to_bytes('7F7FDC00026F280F44FC61734316C74843')
-            # hex_to_bytes('DE')
-            #int_to_bytes_little(1, self.data['flush_type']) + \
+            hex_to_bytes('EF40')
+    '''
+    FLUSH: 16
+    FORWARD: 4B
+    BACKWARDS: 6A
+    LEFT: 7A
+    RIGHT: 5B
 
+    FORWARD-LEFT: 43D6
+    FORWARD-RIGHT: 42D2
+    BACKWARDS-LEFT: 63DE
+    BACKWORDS-RIGHT: 535A
+    '''
     def __str__(self):
         return f"{self.name}; data:{self.data}"

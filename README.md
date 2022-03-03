@@ -4,4 +4,4 @@ Thug is a multiplayer bot written for the PS2 game Ratchet & Clank: Up Your Arse
 The name Thug comes from the UYA multiplayer skin.
 
 ## How does it work?
-Thug connects to a Medius server and simulates what a normal PS2 would send over the network.
+Thug connects to a Medius server and simulates what a normal PS2 would send over the network. Thug is written in Python and uses the asyncio standard library for network connections. 

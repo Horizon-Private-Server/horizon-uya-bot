@@ -72,12 +72,13 @@ class udp_0209_movement_update:
             elif len(data) == 17:
                 results['flush'] = ''.join([data.popleft() for i in range(17)])
 
-        if 'flush' in results.keys():
-            if 'button' in results.keys():
-
-                print(results['button'], results['last'], results['flush_type'], results['flush'])
-            else:
-                print(results['last'], results['flush_type'], results['flush'])
+        # if 'flush' in results.keys():
+        #     if 'button' in results.keys():
+        #         print(results['coord'], results['button'], results['last'], results['flush_type'], results['flush'])
+        #     else:
+        #         print(results['coord'], results['last'], results['flush_type'], results['flush'])
+        # elif 'button' in results.keys():
+        #     print(results['coord'], results['button'], results['last'], results['flush_type'])
 
         return udp_0209_movement_update(results)
 
@@ -104,9 +105,9 @@ class udp_0209_movement_update:
             int_to_bytes_little(2, self.data['coord'][1]) + \
             int_to_bytes_little(2, self.data['coord'][2]) + \
             int_to_bytes_little(1, self.data['packet_num']) + \
-            int_to_bytes_little(1, 81) + \
+            int_to_bytes_little(1, 16) + \
             hex_to_bytes(self.data['last']) + \
-            hex_to_bytes('EF40')
+            hex_to_bytes('EF')
     '''
     FLUSH: 16
     FORWARD: 4B
@@ -118,6 +119,8 @@ class udp_0209_movement_update:
     FORWARD-RIGHT: 42D2
     BACKWARDS-LEFT: 63DE
     BACKWORDS-RIGHT: 535A
+
+    JUMP: EF
     '''
     def __str__(self):
         return f"{self.name}; data:{self.data}"

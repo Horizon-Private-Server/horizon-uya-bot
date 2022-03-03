@@ -44,6 +44,7 @@ player_id_map = {
     '0000': -1,
     '0100': 0,
     '0300': 1,
+    '0600': 2,
 }
 
 class tcp_0003_broadcast_lobby_state:

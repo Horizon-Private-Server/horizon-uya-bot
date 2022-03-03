@@ -1,6 +1,24 @@
 from collections import deque
 from utils.utils import *
 import os
+'''
+P0 moby: 1
+P1 moby: 268435457
+P2 moby: 536870913
+
+P0 n60 : 01000008
+P0 bltz: 02000008
+P0 flux: 03004008
+P0 rckt: 04000008
+P0 grav: 05000008
+P0 mine: 06000008
+P0 lava: 07000008
+P0 mrph: 09000001
+P1 hypr: 0B000002
+
+P1 flux: 03004108
+P2 flux: 03004208
+'''
 
 class udp_020E_shot_fired:
     def __init__(self, weapon_type:str=None,

@@ -130,11 +130,9 @@ class Model:
             data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': 221, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': 221, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': 221, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': 221, 'buffer': '00', 'coord': coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
 
             self._dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
-            # 03004108 flux player2
-            # 03004008 flux player1
-            # 01000108 n60 player 2
 
-            self._dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='01000108',time=self.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+
+            # self._dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='01000108',time=self.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
 
     async def send_player_data(self):

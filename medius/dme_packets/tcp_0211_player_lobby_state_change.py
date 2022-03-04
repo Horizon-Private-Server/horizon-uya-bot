@@ -3,41 +3,9 @@ from collections import deque
 from utils.utils import *
 import os
 
+from constants.constants import TEAM_MAP, SKIN_MAP
+
 class tcp_0211_player_lobby_state_change:
-    _team_map = {
-        '00': 'blue',
-        '01': 'red',
-        '02': 'green',
-        '03': 'orange',
-        '04': 'yellow',
-        '05': 'purple',
-        '06': 'aqua',
-        '07': 'pink'
-    }
-    _skin_map = {
-        '00': 'ratchet',
-        '01': 'robo',
-        '02': 'thug',
-        '03': 'tyhrranoid',
-        '04': 'blarg',
-        '05': 'ninja',
-        '06': 'snow man',
-        '07': 'bruiser',
-        '08': 'gray',
-        '09': 'hotbot',
-        '0A': 'gladiola',
-        '0B': 'evil clown',
-        '0C': 'beach bunny',
-        '0D': 'robo rooster',
-        '0E': 'buginoid',
-        '0F': 'branius',
-        '10': 'skrunch',
-        '11': 'bones',
-        '12': 'nefarious',
-        '13': 'trooper',
-        '14': 'constructobot',
-        '15': 'dan'
-    }
 
     _ready_map = {
         '06': 'ready',
@@ -65,8 +33,8 @@ class tcp_0211_player_lobby_state_change:
         self.ready = ready
         self.unk2 = unk2
 
-        assert self.team in self._team_map.values()
-        assert self.skin in self._skin_map.values()
+        assert self.team in TEAM_MAP.values()
+        assert self.skin in SKIN_MAP.values()
         assert self.ready in self._ready_map.values()
 
     @classmethod
@@ -74,8 +42,8 @@ class tcp_0211_player_lobby_state_change:
         # Length = 32
         unk1 = data.popleft() + data.popleft() + data.popleft() + data.popleft() #'00000000'
 
-        team = self._team_map[data.popleft()]
-        skin = self._skin_map[data.popleft()]
+        team = TEAM_MAP[data.popleft()]
+        skin = SKIN_MAP[data.popleft()]
 
         ready = data.popleft()
         ready = self._ready_map[ready]
@@ -90,8 +58,8 @@ class tcp_0211_player_lobby_state_change:
     def to_bytes(self):
         return self.id + \
             hex_to_bytes(self.unk1) + \
-            hex_to_bytes({v: k for k, v in self._team_map.items()}[self.team]) + \
-            hex_to_bytes({v: k for k, v in self._skin_map.items()}[self.skin]) + \
+            hex_to_bytes({v: k for k, v in TEAM_MAP.items()}[self.team]) + \
+            hex_to_bytes({v: k for k, v in SKIN_MAP.items()}[self.skin]) + \
             hex_to_bytes({v: k for k, v in self._ready_map.items()}[self.ready]) + \
             str_to_bytes(self.username, 14) + \
             hex_to_bytes(self.unk2)

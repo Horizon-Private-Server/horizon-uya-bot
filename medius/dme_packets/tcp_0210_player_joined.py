@@ -2,13 +2,15 @@ from collections import deque
 from utils.utils import *
 import os
 
+from constants.constants import TEAM_MAP, SKIN_MAP
+
 class tcp_0210_player_joined:
     def __init__(self, type:int=1,
                        account_id:int=None,
                        rank:str='00C0A84400C0A84400C0A84400C0A8440000AF430000AF430000AF430000AF43',
                        unk1:str='00000000',
-                       skin1:int=None,
-                       skin2:int=None,
+                       skin1:str=None,
+                       skin2:str=None,
                        username:str=None, # 14 len
                        unk2:str='0034',
                        username2:str=None, # 12 len
@@ -38,8 +40,8 @@ class tcp_0210_player_joined:
         account_id = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
         rank = ''.join([data.popleft() for i in range(32)])
         unk1 = ''.join([data.popleft() for i in range(4)]) #00000000
-        skin1 = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
-        skin2 = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+        skin1 = SKIN_MAP[data.popleft()]; data.popleft();
+        skin2 = SKIN_MAP[data.popleft()]; data.popleft();
         username = hex_to_str(''.join([data.popleft() for i in range(14)]))
         unk2 = ''.join([data.popleft() for i in range(2)]) # 0034 /
         username2 = hex_to_str(''.join([data.popleft() for i in range(12)]))
@@ -54,8 +56,8 @@ class tcp_0210_player_joined:
             int_to_bytes_little(4, self.account_id) + \
             hex_to_bytes(self.rank) + \
             hex_to_bytes(self.unk1) + \
-            int_to_bytes_little(2, self.skin1) + \
-            int_to_bytes_little(2, self.skin2) + \
+            hex_to_bytes({v: k for k, v in SKIN_MAP.items()}[self.skin1] + '00') + \
+            hex_to_bytes({v: k for k, v in SKIN_MAP.items()}[self.skin2] + '00') + \
             str_to_bytes(self.username, 14) + \
             hex_to_bytes(self.unk2) + \
             str_to_bytes(self.username2, 12) + \
@@ -67,27 +69,3 @@ class tcp_0210_player_joined:
         return f"{self.name}; type:{self.type} account_id:{self.account_id} " + \
                 f"rank:{self.rank} unk1:{self.unk1} skin1:{self.skin1} skin2:{self.skin2} username:{self.username} " + \
                 f"unk2:{self.unk2} username2:{self.username2} unk3:{self.unk3} clan_tag:{self.clan_tag} unk4:{self.unk4}"
-
-
-
-# 0210
-#
-# 01000000
-#
-# 50C30000
-#
-# 00C0A84400C0A84400C0A84400C0A8440000AF430000AF430000AF430000AF43
-# 02100100000050C3000000C0A84400C0A84400C0A84400C0A8440000AF430000AF430000AF430000AF43
-#
-# 00000000
-# 11001100
-#
-# 4343434343434343434343434343
-#
-# 0034
-#
-# 434343434343434343434343
-#
-# 7E3200000000000000000000
-#
-# 0000000000000000434343434343434343434343434300344343434343434343434343437E3200000000000000000000

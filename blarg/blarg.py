@@ -49,7 +49,7 @@ class Blarg:
             "data": a hex string of the raw data
         }
         '''
-        if packet['src'] != 0:
+        if packet['src'] != 1:
             return
         # Convert to list. E.g. '000102030405' -> ['00', '01', '02', '03', '04', '05']
         data = deque([packet['data'][i:i+2] for i in range(0,len(packet['data']),2)])

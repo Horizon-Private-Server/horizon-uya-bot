@@ -98,7 +98,7 @@ class Model:
 
         if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and dme_packet.data['num_messages'] == 1 and dme_packet.data['msg0']['type'] == 'timer_update':
             self.game_state.player.time = dme_packet.data['msg0']['time']
-            self._dmetcp_queue.put([0, tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'unk1': '00', 'num_messages': 1, 'src': self._dme_player_id, 'msg0': {'type': 'timer_update', 'time': self.game_state.player.time}})])
+            self._dmetcp_queue.put([0, tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'unk1': '00', 'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'timer_update', 'time': self.game_state.player.time}})])
 
         if dme_packet.name == 'udp_0209_movement_update':
             packet_num = self.game_state.player.gen_packet_num()
@@ -115,6 +115,9 @@ class Model:
 
             self._dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
+            #self._udp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes('020001398002B8F4A8437367BD4300E007420070073900C002B900B906C0')))
+            #self._tcp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes('0204003901030900000001000000')))
+            #self._tcp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes('020A0100010A9588A84360AEBC43CC2C0842000000000000000000B906C000000100020C80461F00C4697700001000F715A00017FC1A000001000010E2BEA843C80ABD4300E007420000000000000000000080BF2C000000')))
 
             # self._dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='01000108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 

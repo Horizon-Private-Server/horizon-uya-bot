@@ -1,43 +1,9 @@
 from collections import deque
 import os
 from utils.utils import *
+from constants.constants import TEAM_MAP, SKIN_MAP
 
-team_map = {
-    '00': 'blue',
-    '01': 'red',
-    '02': 'green',
-    '03': 'orange',
-    '04': 'yellow',
-    '05': 'purple',
-    '06': 'aqua',
-    '07': 'pink',
-    'FF': 'NA'
-}
-skin_map = {
-    '00': 'ratchet',
-    '01': 'robo',
-    '02': 'thug',
-    '03': 'tyhrranoid',
-    '04': 'blarg',
-    '05': 'ninja',
-    '06': 'snow man',
-    '07': 'bruiser',
-    '08': 'gray',
-    '09': 'hotbot',
-    '0A': 'gladiola',
-    '0B': 'evil clown',
-    '0C': 'beach bunny',
-    '0D': 'robo rooster',
-    '0E': 'buginoid',
-    '0F': 'branius',
-    '10': 'skrunch',
-    '11': 'bones',
-    '12': 'nefarious',
-    '13': 'trooper',
-    '14': 'constructobot',
-    '15': 'dan',
-    'FF': 'NA'
-}
+
 
 class tcp_0004_tnw:
     def __init__(self, tnw_type:str='', data:dict={}):
@@ -82,10 +48,9 @@ class tcp_0004_tnw:
                 int_to_bytes_little(4, self.data['player_start_time_2']) + \
                 int_to_bytes_little(2, self.data['account_id_2']) + \
                 hex_to_bytes(self.data['unk5']) + \
-                hex_to_bytes({v: k for k, v in team_map.items()}[self.data['team']]) + \
+                hex_to_bytes({v: k for k, v in TEAM_MAP.items()}[self.data['team']]) + \
                 hex_to_bytes(self.data['unk6'])
 
-            # return hex_to_bytes("00040000000002D300000100C6BF597D540000000000744E575F506C61796572446174610041029A0F44D0C176435C924843000000000000000000000000D8EA1440487D540000000000000000000000000000000000000000000100000001000000000000000000000000000000D8EA1440487D5400010000000100000000000000000000000000704100000000000000000000000000000000000000000000010000000000000001000000010000000000000000000000320000005F000000320000000100000F000000000000000001000000030000000000704100004141414141414141414141000000")
         raise Exception()
 
     def __str__(self):
@@ -101,7 +66,7 @@ class tcp_0004_tnw:
         packet['player_start_time_2'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
         packet['account_id_2'] = hex_to_int_little(''.join([data.popleft() for _ in range(2)]))
         packet['unk5'] = ''.join([data.popleft() for _ in range(10)])
-        packet['team'] = team_map[data.popleft()]
+        packet['team'] = TEAM_MAP[data.popleft()]
         packet['unk6'] = ''.join([data.popleft() for _ in range(67)])
 
         # 0000000002D300000100C6BF9A7C260000000000744E575F506C61796572446174610041029A0F44D0C176435C924843000000000000000000000000D8EA14408A7C260000000000000000000000000000000000000000000100000001000000000000000000000000000000D8EA14408A7C2600010000000100000000000000000000000000704100000000000000000000000000000000000000000000010000000000000001000000010000000000000000000000320000005F000000320000000100
@@ -126,23 +91,23 @@ class tcp_0004_tnw:
         packet['p6_clan_tag'] = hex_to_str(''.join([data.popleft() for _ in range(8)]))
         packet['p7_clan_tag'] = hex_to_str(''.join([data.popleft() for _ in range(8)]))
 
-        packet['p0_skin'] = skin_map[data.popleft()]; data.popleft()
-        packet['p1_skin'] = skin_map[data.popleft()]; data.popleft()
-        packet['p2_skin'] = skin_map[data.popleft()]; data.popleft()
-        packet['p3_skin'] = skin_map[data.popleft()]; data.popleft()
-        packet['p4_skin'] = skin_map[data.popleft()]; data.popleft()
-        packet['p5_skin'] = skin_map[data.popleft()]; data.popleft()
-        packet['p6_skin'] = skin_map[data.popleft()]; data.popleft()
-        packet['p7_skin'] = skin_map[data.popleft()]; data.popleft()
+        packet['p0_skin'] = SKIN_MAP[data.popleft()]; data.popleft()
+        packet['p1_skin'] = SKIN_MAP[data.popleft()]; data.popleft()
+        packet['p2_skin'] = SKIN_MAP[data.popleft()]; data.popleft()
+        packet['p3_skin'] = SKIN_MAP[data.popleft()]; data.popleft()
+        packet['p4_skin'] = SKIN_MAP[data.popleft()]; data.popleft()
+        packet['p5_skin'] = SKIN_MAP[data.popleft()]; data.popleft()
+        packet['p6_skin'] = SKIN_MAP[data.popleft()]; data.popleft()
+        packet['p7_skin'] = SKIN_MAP[data.popleft()]; data.popleft()
 
-        packet['p0_team'] = team_map[data.popleft()]; data.popleft()
-        packet['p1_team'] = team_map[data.popleft()]; data.popleft()
-        packet['p2_team'] = team_map[data.popleft()]; data.popleft()
-        packet['p3_team'] = team_map[data.popleft()]; data.popleft()
-        packet['p4_team'] = team_map[data.popleft()]; data.popleft()
-        packet['p5_team'] = team_map[data.popleft()]; data.popleft()
-        packet['p6_team'] = team_map[data.popleft()]; data.popleft()
-        packet['p7_team'] = team_map[data.popleft()]; data.popleft()
+        packet['p0_team'] = TEAM_MAP[data.popleft()]; data.popleft()
+        packet['p1_team'] = TEAM_MAP[data.popleft()]; data.popleft()
+        packet['p2_team'] = TEAM_MAP[data.popleft()]; data.popleft()
+        packet['p3_team'] = TEAM_MAP[data.popleft()]; data.popleft()
+        packet['p4_team'] = TEAM_MAP[data.popleft()]; data.popleft()
+        packet['p5_team'] = TEAM_MAP[data.popleft()]; data.popleft()
+        packet['p6_team'] = TEAM_MAP[data.popleft()]; data.popleft()
+        packet['p7_team'] = TEAM_MAP[data.popleft()]; data.popleft()
 
         packet['unk2'] = ''.join([data.popleft() for _ in range(112)])
 

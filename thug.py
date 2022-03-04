@@ -26,15 +26,15 @@ import json
 
 
 config = {
-    'account_id': 2,
-    'username': 'BBBBBBBBBBBBBB',
+    'account_id': 50005,
+    'username': 'CPU-001',
     'world_id': 0,
-    'skin': 'thug',
+    'skin': 'robo rooster',
     'bolt': 4,
     'clan_tag': '',
     'team': 'blue',
     'autojoin': 'True',
-    'session_key': 'FD47DCF351375AB7\x00',
+    'session_key': '3A634A7E8B898C71\x00',
     'mls_ip': '54.189.126.108', 'mls_port': 10078,
     'dmetcp_ip': '54.189.126.108', 'dmetcp_port': 10079,
     'dmeudp_ip': '54.189.126.108', 'dmeudp_port': 51000,

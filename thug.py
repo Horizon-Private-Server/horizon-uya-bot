@@ -24,12 +24,15 @@ from model.model import Model
 import requests
 import json
 
+from constants.constants import SKIN_MAP
+
+import random
 
 config = {
     'account_id': 50005,
     'username': 'CPU-001',
     'world_id': 0,
-    'skin': 'robo rooster',
+    'skin': 'random',
     'bolt': 4,
     'clan_tag': '',
     'team': 'blue',
@@ -46,6 +49,11 @@ class Thug:
         self.loop = asyncio.get_event_loop()
 
         self._config = config
+        if self._config['skin'] == 'random':
+            skins = list(SKIN_MAP.values())
+            skins.remove('NA')
+            random.shuffle(skins)
+            self._config['skin'] = skins[0]
 
         # For debugging so we don't have to change the world id every time
         if self._config['autojoin'] == 'True':

@@ -49,8 +49,9 @@ class Blarg:
             "data": a hex string of the raw data
         }
         '''
-        if packet['src'] != 1:
-            return
+        if self._config['src_filter'] != []:
+            if packet['src'] not in self._config['src_filter']:
+                return
         # Convert to list. E.g. '000102030405' -> ['00', '01', '02', '03', '04', '05']
         data = deque([packet['data'][i:i+2] for i in range(0,len(packet['data']),2)])
 
@@ -84,7 +85,7 @@ class Blarg:
                 else:
                     serialized = udp_map[packet_id].serialize(data)
 
-            if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] != 'False':
+            if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] != 'False' and packet_id not in ['0001', '0209']:
                 self._logger.info(f"{packet['src']} | {serialized}")
 
     async def read_websocket(self):

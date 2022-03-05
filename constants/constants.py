@@ -35,3 +35,35 @@ SKIN_MAP = {
     '15': 'dan',
     'FF': 'NA'
 }
+
+KILL_MSG_MAP = {
+    '00': 'butchered',
+    '01': 'liquidated',
+    '02': 'extirpated',
+    '03': 'exterminated',
+    '04': 'mousetrapped',
+    '05': 'kervorked',
+    '06': 'flatlined',
+    '07': 'abolished',
+    '08': 'eviscerated',
+    '09': 'cremated',
+    '0A': 'dismembered',
+    '0B': 'euthanized',
+    '0C': 'tomahawked',
+    '0D': 'expunged',
+    '0E': 'devastated',
+    '0F': 'smoked',
+}
+
+WEAPON_MAP = {
+    '01': 'n60',
+    '02': 'blitz',
+    '03': 'flux',
+    '04': 'rocket',
+    '05': 'grav',
+    '06': 'mine',
+    '07': 'lava',
+    '09': 'morph',
+    '0B': 'hyper',
+    'FF': 'NA'
+}

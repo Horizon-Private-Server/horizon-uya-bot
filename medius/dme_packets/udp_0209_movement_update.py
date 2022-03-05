@@ -105,9 +105,9 @@ class udp_0209_movement_update:
             int_to_bytes_little(2, self.data['coord'][1]) + \
             int_to_bytes_little(2, self.data['coord'][2]) + \
             int_to_bytes_little(1, self.data['packet_num']) + \
-            int_to_bytes_little(1, 16) + \
+            int_to_bytes_little(1, 32) + \
             hex_to_bytes(self.data['last']) + \
-            hex_to_bytes('EF')
+            hex_to_bytes('9C')
     '''
     FLUSH: 16
     FORWARD: 4B

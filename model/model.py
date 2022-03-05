@@ -115,19 +115,25 @@ class Model:
 
             self._dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
-            #self._udp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes('020001398002B8F4A8437367BD4300E007420070073900C002B900B906C0')))
-            #self._tcp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes('0204003901030900000001000000')))
-            #self._tcp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes('020A0100010A9588A84360AEBC43CC2C0842000000000000000000B906C000000100020C80461F00C4697700001000F715A00017FC1A000001000010E2BEA843C80ABD4300E007420000000000000000000080BF2C000000')))
+            # self._tdp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes("020C61040000CBE68700001000F70D1000F70301")))
+            # self._udp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes("020FFD40E33C1B14423DF125D93AB0010100")))
+            # self._udp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes("02000039910389AC9E431BA3AF43512F074200506939006092B828E3823F")))
 
-            # self._dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='01000108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
+            #self._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes('0204003901030E00000001000000'))))
+
+            #self._dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='01000108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+
+            self._dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='flux', kill_msg='smoked')])
+            self._dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='grav', kill_msg='expunged')])
+            self._dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='blitz', kill_msg='mousetrapped')])
 
     async def send_player_data(self):
         # It takes 13 seconds to load from game start into actual game
         await asyncio.sleep(13)
-        self._dmetcp_queue.put(['B', tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': '0100000002D301000300C6BFE2E8660000000000', 'unk2':'41959CFC4384CCED433353544300000000000000000000000085B31AC0', 'player_start_time_1': self.game_state.player.time, 'player_start_time_2': self.game_state.player.time, 'unk3': '0000000000000000000000000000000000000000', 'account_id_1': self.game_state.player.account_id, 'account_id_2': self.game_state.player.account_id, 'team':self.game_state.player.team, 'unk4': '0100001000000000000000000000000085B31AC0', 'unk5': '00000100001000000000', 'unk6': '00000000007041000000000000000000000000000000000000010000000100000001000000010000000100000000000000000000003200000032000000320000000000'})])
+        self._dmetcp_queue.put(['B', tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': '01000000026E010003000000C173250000000000', 'unk2':'0066809443620B8B4309BA48430000000000000000000000000F73E83F', 'player_start_time_1': self.game_state.player.time, 'player_start_time_2': self.game_state.player.time, 'unk3': '0000000000000000000000000000000000000000', 'account_id_1': self.game_state.player.account_id, 'account_id_2': self.game_state.player.account_id, 'team':self.game_state.player.team, 'unk4': '010000100000000000000000000000000F73E83F', 'unk5': '00000100001000000000', 'unk6': '00000000007041000000000000000000000000000000000000010000000100000000000000010000000100000000000000000000003200000064000000320000000100'})])
         self._dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='000000000300030003000000000070410000', username=self.game_state.player.username, unk3='000000')])
-        self._dmetcp_queue.put([0, tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': '01000000026E0100030000005B0A220000000000', 'unk2':'0019700F44BF23764345A44843000000000000000000000000D8EA1440', 'player_start_time_1': self.game_state.player.time, 'player_start_time_2': self.game_state.player.time, 'unk3': '0000000000000000000000000000000000000000', 'account_id_1': self.game_state.player.account_id, 'account_id_2': self.game_state.player.account_id, 'team':self.game_state.player.team, 'unk4': '01000010000000000000000000000000D8EA1440', 'unk5': '00000100001000000000', 'unk6': '00000000007041000000000000000000000000000000000000010000000100000000000000010000000100000000000000000000003200000064000000320000000100'})])
+        self._dmetcp_queue.put([0, tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': '01000000026E010003000000C173250000000000', 'unk2':'0066809443620B8B4309BA48430000000000000000000000000F73E83F', 'player_start_time_1': self.game_state.player.time, 'player_start_time_2': self.game_state.player.time, 'unk3': '0000000000000000000000000000000000000000', 'account_id_1': self.game_state.player.account_id, 'account_id_2': self.game_state.player.account_id, 'team':self.game_state.player.team, 'unk4': '010000100000000000000000000000000F73E83F', 'unk5': '00000100001000000000', 'unk6': '00000000007041000000000000000000000000000000000000010000000100000000000000010000000100000000000000000000003200000064000000320000000100'})])
 
 
         self._dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(unk1='00000000', team='blue', skin='ratchet', ready='unk, player in-game ready(?)', username='', unk2='0000000000000000000000')])

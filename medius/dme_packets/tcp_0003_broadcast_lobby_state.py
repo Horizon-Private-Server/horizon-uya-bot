@@ -2,7 +2,7 @@ from collections import deque
 from utils.utils import *
 import os
 
-from constants.constants import TEAM_MAP, SKIN_MAP
+from constants.constants import TEAM_MAP, SKIN_MAP, WEAPON_MAP
 
 player_id_map = {
     '0000': -1,
@@ -77,8 +77,15 @@ class tcp_0003_broadcast_lobby_state:
                 packet[f'msg{i}'] = sub_message
                 break
             elif broadcast_type == '08':
-                sub_message['type'] = 'unk08'
-                sub_message['unk1'] = ''.join([data.popleft() for i in range(4)])
+                sub_message['type'] = 'weapon_changed'
+                weap_changed_to = data.popleft()
+                if weap_changed_to == '00':
+                    sub_message['weapon_changed_to'] = 'NA'
+                else:
+                    sub_message['weapon_changed_to'] = WEAPON_MAP[weap_changed_to]
+
+
+                sub_message['unk1'] = ''.join([data.popleft() for i in range(3)])
             else:
                 raise Exception(f'{broadcast_type} not known!')
 

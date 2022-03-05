@@ -64,6 +64,8 @@ WEAPON_MAP = {
     '06': 'mine',
     '07': 'lava',
     '09': 'morph',
+    '0A': 'wrench',
     '0B': 'hyper',
+    '0C': 'holo shield',
     'FF': 'NA'
 }

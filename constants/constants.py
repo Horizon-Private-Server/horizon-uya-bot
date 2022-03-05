@@ -70,6 +70,7 @@ WEAPON_MAP = {
     'FF': 'NA'
 }
 
+
 # FLUSH: 16
 ANIMATION_MAP = {
     'forward': '4B',
@@ -81,5 +82,5 @@ ANIMATION_MAP = {
     'backward-left': '63DE',
     'backward-right': '535A',
     'jump': 'EF',
-    'crouch': '9C'
+    'crouch': '9C'  # side flip: use flush = 148, spam crouch: 32
 }

@@ -94,12 +94,34 @@ class tcp_0003_broadcast_lobby_state:
         return tcp_0003_broadcast_lobby_state(packet)
 
     def to_bytes(self):
-        return self.id + \
-            hex_to_bytes(self.data['unk1']) + \
-            int_to_bytes_little(1, self.data['num_messages']) + \
-            hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
-            hex_to_bytes('09') + \
-            int_to_bytes_little(4, self.data['msg0']['time'])
+        # 01 -> unk1
+        # return self.id + \
+        #     hex_to_bytes('01') + \
+        #     int_to_bytes_little(1, self.data['num_messages']) + \
+        #     hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
+        #     hex_to_bytes('09') + \
+        #     int_to_bytes_little(4, self.data['msg0']['time'])
+
+        if self.data['msg0']['type'] == 'weapon_changed':
+            # 01 is the unk1
+            return self.id + \
+                hex_to_bytes('01') + \
+                int_to_bytes_little(1, self.data['num_messages']) + \
+                hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
+                hex_to_bytes('08') + \
+                hex_to_bytes({v: k for k, v in WEAPON_MAP.items()}[self.data['msg0']['weapon_changed_to']]) + \
+                hex_to_bytes("000000")
+
+        elif self.data['msg0']['type'] == 'timer_update':
+            # 01 is the unk1
+            return self.id + \
+                hex_to_bytes('01') + \
+                int_to_bytes_little(1, self.data['num_messages']) + \
+                hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
+                hex_to_bytes('09') + \
+                int_to_bytes_little(4, self.data['msg0']['time'])
+        else:
+            raise Exception()
 
     def __str__(self):
         return f"{self.name}; data:{self.data}"

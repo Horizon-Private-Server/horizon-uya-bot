@@ -69,3 +69,17 @@ WEAPON_MAP = {
     '0C': 'holo shield',
     'FF': 'NA'
 }
+
+# FLUSH: 16
+ANIMATION_MAP = {
+    'forward': '4B',
+    'backward': '6A',
+    'left': '7A',
+    'right': '5B',
+    'forward-left': '43D6',
+    'forward-right': '42D2',
+    'backward-left': '63DE',
+    'backward-right': '535A',
+    'jump': 'EF',
+    'crouch': '9C'
+}

@@ -108,19 +108,6 @@ class udp_0209_movement_update:
             int_to_bytes_little(1, 32) + \
             hex_to_bytes(self.data['last']) + \
             hex_to_bytes('9C')
-    '''
-    FLUSH: 16
-    FORWARD: 4B
-    BACKWARDS: 6A
-    LEFT: 7A
-    RIGHT: 5B
 
-    FORWARD-LEFT: 43D6
-    FORWARD-RIGHT: 42D2
-    BACKWARDS-LEFT: 63DE
-    BACKWORDS-RIGHT: 535A
-
-    JUMP: EF
-    '''
     def __str__(self):
         return f"{self.name}; data:{self.data}"

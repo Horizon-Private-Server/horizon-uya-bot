@@ -28,27 +28,13 @@ from constants.constants import SKIN_MAP
 
 import random
 
-config = {
-    'account_id': 50005,
-    'username': 'CPU-001',
-    'world_id': 0,
-    'skin': 'random',
-    'bolt': 4,
-    'clan_tag': '',
-    'team': 'blue',
-    'autojoin': 'True',
-    'session_key': '3A634A7E8B898C71\x00',
-    'mls_ip': '54.189.126.108', 'mls_port': 10078,
-    'dmetcp_ip': '54.189.126.108', 'dmetcp_port': 10079,
-    'dmeudp_ip': '54.189.126.108', 'dmeudp_port': 51000,
-}
-
 class Thug:
-    def __init__(self, config: dict):
+    def __init__(self):
         logger.info("Initializing ...")
+        self._config = self.read_config()
+
         self.loop = asyncio.get_event_loop()
 
-        self._config = config
         if self._config['skin'] == 'random':
             skins = list(SKIN_MAP.values())
             skins.remove('NA')
@@ -62,11 +48,11 @@ class Thug:
 
         # Initialize connections
         logger.info("Initializing MLS ... ")
-        self._mls_conn = MlsTcp(self.loop, config, config['mls_ip'], config['mls_port'])
+        self._mls_conn = MlsTcp(self.loop, self._config, self._config['mls_ip'], self._config['mls_port'])
         logger.info("Initializing DME TCP ...")
-        self._tcp_conn = DmeTcp(self.loop, config, config['dmetcp_ip'], config['dmetcp_port'])
+        self._tcp_conn = DmeTcp(self.loop, self._config, self._config['dmetcp_ip'], self._config['dmetcp_port'])
         logger.info("Initializing DME UDP ...")
-        self._udp_conn = DmeUdp(self.loop, config, config['dmeudp_ip'], config['dmeudp_port'])
+        self._udp_conn = DmeUdp(self.loop, self._config, self._config['dmeudp_ip'], self._config['dmeudp_port'])
 
         # Connect to DME world
         access_key = self._mls_conn.get_access_key()
@@ -81,5 +67,9 @@ class Thug:
         self.loop.create_task(self._udp_conn.main(self._model))
         self.loop.run_until_complete(self._tcp_conn.main(self._model))
 
+    def read_config(self, config_file='config.json'):
+        with open(config_file, 'r') as f:
+            return json.loads(f.read())
 
-Thug(config)
+if __name__ == '__main__':
+    Thug()

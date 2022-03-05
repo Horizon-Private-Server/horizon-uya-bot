@@ -84,7 +84,6 @@ class tcp_0003_broadcast_lobby_state:
                 else:
                     sub_message['weapon_changed_to'] = WEAPON_MAP[weap_changed_to]
 
-
                 sub_message['unk1'] = ''.join([data.popleft() for i in range(3)])
             else:
                 raise Exception(f'{broadcast_type} not known!')
@@ -94,14 +93,6 @@ class tcp_0003_broadcast_lobby_state:
         return tcp_0003_broadcast_lobby_state(packet)
 
     def to_bytes(self):
-        # 01 -> unk1
-        # return self.id + \
-        #     hex_to_bytes('01') + \
-        #     int_to_bytes_little(1, self.data['num_messages']) + \
-        #     hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
-        #     hex_to_bytes('09') + \
-        #     int_to_bytes_little(4, self.data['msg0']['time'])
-
         if self.data['msg0']['type'] == 'weapon_changed':
             # 01 is the unk1
             return self.id + \

@@ -9,6 +9,8 @@ from connections.abstracttcp import AbstractTcp
 class MlsTcp(AbstractTcp):
     def __init__(self, loop, config, ip: str, port: int):
         super().__init__(loop, config, ip, port)
+
+        self._config['session_key'] += '\x00'
         self._logger = logging.getLogger('thug.mlstcp')
         self._logger.setLevel(logging.WARNING)
 

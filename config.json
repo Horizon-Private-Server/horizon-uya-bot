@@ -1,0 +1,17 @@
+{
+    "account_id": 50005,
+    "username": "CPU-001",
+    "world_id": 0,
+    "skin": "random",
+    "bolt": 4,
+    "clan_tag": "",
+    "team": "blue",
+    "autojoin": "True",
+    "session_key": "",
+    "mls_ip": "",
+    "mls_port": 10078,
+    "dmetcp_ip": "",
+    "dmetcp_port": 10079,
+    "dmeudp_ip": "",
+    "dmeudp_port": 51000
+}

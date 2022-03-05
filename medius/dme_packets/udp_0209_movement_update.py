@@ -105,9 +105,9 @@ class udp_0209_movement_update:
             int_to_bytes_little(2, self.data['coord'][1]) + \
             int_to_bytes_little(2, self.data['coord'][2]) + \
             int_to_bytes_little(1, self.data['packet_num']) + \
-            int_to_bytes_little(1, 16) + \
-            hex_to_bytes(self.data['last']) + \
-            hex_to_bytes(ANIMATION_MAP['crouch'])
+            int_to_bytes_little(1, 0) + \
+            hex_to_bytes(self.data['last']) #+ \
+            #hex_to_bytes(ANIMATION_MAP['crouch'])
 
     def __str__(self):
         return f"{self.name}; data:{self.data}"

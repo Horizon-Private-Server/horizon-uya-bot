@@ -116,6 +116,9 @@ class Model:
 
             self.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
+
+        if dme_packet.name == 'udp_020E_shot_fired':
+
             self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': 'flux'}})])
 
             # self._tdp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes("020C61040000CBE68700001000F70D1000F70301")))
@@ -125,7 +128,7 @@ class Model:
 
             #self._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes('0204003901030E00000001000000'))))
 
-            #self.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='01000108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+            self.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='03004108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
             # self.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='flux')])
             # self.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='grav')])
@@ -191,6 +194,7 @@ class Model:
             except:
                 logger.exception("TCP FLUSHER ERROR")
                 self.alive = False
+                break
 
 
     async def _udp_flusher(self):
@@ -218,3 +222,4 @@ class Model:
             except:
                 logger.exception("UDP FLUSHER ERROR")
                 self.alive = False
+                break

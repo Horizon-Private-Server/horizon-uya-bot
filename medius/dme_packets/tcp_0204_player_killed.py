@@ -1,40 +1,14 @@
-'''
-0204003901030000000001000000 butchered
-0204003901030100000001000000 liquidated
-0204003901030200000001000000 extirpated
-0204003901030300000001000000 exterminated
-0204003901030400000001000000 mousetrapped
-0204003901030500000001000000 kervorked
-0204003901030600000001000000 flatlined
-0204003901030700000001000000 abolished
-0204003901030800000001000000 eviscerated
-0204003901030900000001000000 cremated
-0204003901030A00000001000000 dismembered
-0204003901030B00000001000000 euthanized
-0204003901030C00000001000000 tomahawked
-0204003901030D00000001000000 expunged
-0204003901030E00000001000000 devastated
-0204003901030F00000001000000 smoked
-
-0204003901030F00000001000000
-
-0204003901030700000001000000 -- flux
-0204003901050700000001000000 -- grav
-
-
-1 kills 0
-0204
-01 -- killer
-39 -- unk1
-00 -- killed
-03 -- weapon
-0F -- kill_msg
-00000001000000 -- unk3
-'''
 from collections import deque
 from utils.utils import *
 import os
+import random
 from constants.constants import WEAPON_MAP, KILL_MSG_MAP
+
+'''
+killer_id = 255 -> suicide
+killer_id = 246 -> trooper
+killer_id = 248 -> drones
+'''
 
 class tcp_0204_player_killed:
     def __init__(self, killer_id:int=None,
@@ -51,7 +25,12 @@ class tcp_0204_player_killed:
         self.unk1 = unk1
         self.killed_id = killed_id
         self.weapon = weapon
-        self.kill_msg = kill_msg
+        if kill_msg == None:
+            msgs = list(KILL_MSG_MAP.values())
+            random.shuffle(msgs)
+            self.kill_msg = msgs[0]
+        else:
+            self.kill_msg = kill_msg
         self.unk2 = unk2
 
     @classmethod

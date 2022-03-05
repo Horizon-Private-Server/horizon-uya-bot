@@ -124,9 +124,9 @@ class Model:
 
             #self._dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='01000108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
-            self._dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='flux', kill_msg='smoked')])
-            self._dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='grav', kill_msg='expunged')])
-            self._dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='blitz', kill_msg='mousetrapped')])
+            self._dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='flux')])
+            self._dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='grav')])
+            self._dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='blitz')])
 
     async def send_player_data(self):
         # It takes 13 seconds to load from game start into actual game

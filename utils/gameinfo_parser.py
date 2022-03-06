@@ -53,16 +53,16 @@ def advancedRulesParser(num):
 
 import struct
 MAPS = {
-    "00001":"Bakisi_Isle",
-    "00010":"Hoven_Gorge",
-    "00011":"Outpost_x12",
-    "00100":"Korgon_Outpost",
-    "00101":"Metropolis",
-    "00110":"Blackwater_City",
-    "00111":"Command_Center",
-    "01001":'Aquatos_Sewers',
-    "01000": "Blackwater_Dox",
-    "01010":"Marcadia_Palace",
+    "00001":"bakisi_isles",
+    "00010":"hoven_gorge",
+    "00011":"outpost_x12",
+    "00100":"korgon_outpost",
+    "00101":"metropolis",
+    "00110":"blackwater_city",
+    "00111":"command_center",
+    "01001":'aquatos_sewers',
+    "01000":"blackwater_docks",
+    "01010":"marcadia_palace",
 }
 
 

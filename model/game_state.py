@@ -1,3 +1,6 @@
+import os
+import json
+
 from model.player_state import PlayerState
 
 class GameState:
@@ -18,6 +21,23 @@ class GameState:
         # ['Siege', 'CTF', 'Deathmatch']
         self.game_mode = gameinfo['game_mode']
 
+        # Point grid
+        self.grid = self._read_map()
+
+
+    def time_update(self, src_player: int, time: int):
+        if src_player not in self.players.keys():
+            return
+        self.players[src_player].time = time
+
+    def movement_update(self, src_player:int, movement_data:dict):
+        if src_player not in self.players.keys():
+            return
+        self.players[src_player].coord = movement_data['coord']
+        self.players[src_player].movement_packet_num = movement_data['packet_num']
+
+    def tnw_playerdata_update(self, src_player:int, tnw_playerdata: dict):
+        self.players[src_player] = PlayerState(src_player, tnw_playerdata['account_id_1'], tnw_playerdata['team'])
 
     def __str__(self):
         result = f'''
@@ -28,8 +48,13 @@ Map:{self.map} GameMode:{self.game_mode}
 State:{self.state} PlayerCount:{len(self.players)+1}
 ---------------------------------------------
 {self.player}
+---------------------------------------------
 '''
         for player in self.players.values():
-            result += str(player)
+            result += str(player) + '\n'
         result += '============================================='
         return result
+
+    def _read_map(self):
+        with open(os.path.join('maps', f'{self.map}.json'), 'r') as f:
+            return json.loads(f.read())

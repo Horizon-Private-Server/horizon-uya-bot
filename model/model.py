@@ -1,6 +1,6 @@
 import logging
 logger = logging.getLogger('thug.model')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 
 import sys
 
@@ -54,7 +54,7 @@ class Model:
 
     def process_dme_packet(self, src_player, dme_packet, protocol):
         '''
-        PROCESS DME TCP DATA
+        This method is to process packets that are not handled with in-game logic, but rather handling the connection handshake, and other boring things.
         '''
         logger.debug(f"I | {protocol}; src:{src_player} {dme_packet}")
 
@@ -88,10 +88,12 @@ class Model:
 
         if dme_packet.name == 'tcp_000D_game_started':
             self._loop.create_task(self.send_player_data())
+            self.game_state.state = 'active'
 
         if dme_packet.name == 'udp_0001_timer_update':
             self.game_state.player.time = dme_packet.time
             self.dmeudp_queue.put([0, udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1=dme_packet.unk1)])
+            self.game_state.time_update(src_player, dme_packet.time)
 
 
         if dme_packet.name == 'tcp_0012_player_left':
@@ -102,6 +104,13 @@ class Model:
         if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and dme_packet.data['num_messages'] == 1 and dme_packet.data['msg0']['type'] == 'timer_update':
             self.game_state.player.time = dme_packet.data['msg0']['time']
             self.dmetcp_queue.put([0, tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'timer_update', 'time': self.game_state.player.time}})])
+
+        if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_PlayerData':
+            self.game_state.tnw_playerdata_update(src_player, dme_packet.data)
+
+
+        if dme_packet.name == 'udp_0209_movement_update':
+            self.game_state.movement_update(src_player, dme_packet.data)
 
         # if dme_packet.name == 'udp_0209_movement_update':
         #     packet_num = self.game_state.player.gen_packet_num()
@@ -126,7 +135,7 @@ class Model:
         #     self.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='03004108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
 
-        if dme_packet.name == 'udp_020E_shot_fired':
+        if dme_packet.name in ['udp_020E_shot_fired', 'udp_0209_movement_update']:
             pass
 
 
@@ -147,12 +156,8 @@ class Model:
         self.dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='000000000300030003000000000070410000', username=self.game_state.player.username, unk3='000000')])
         self.dmetcp_queue.put([0, tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': '01000000026E010003000000C173250000000000', 'unk2':'0066809443620B8B4309BA48430000000000000000000000000F73E83F', 'player_start_time_1': self.game_state.player.time, 'player_start_time_2': self.game_state.player.time, 'unk3': '0000000000000000000000000000000000000000', 'account_id_1': self.game_state.player.account_id, 'account_id_2': self.game_state.player.account_id, 'team':self.game_state.player.team, 'unk4': '010000100000000000000000000000000F73E83F', 'unk5': '00000100001000000000', 'unk6': '00000000007041000000000000000000000000000000000000010000000100000000000000010000000100000000000000000000003200000064000000320000000100'})])
 
-
         self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(unk1='00000000', team='blue', skin='ratchet', ready='unk, player in-game ready(?)', username='', unk2='0000000000000000000000')])
 
-        #self.dmetcp_queue.put([])
-
-        #self._loop.create_task(self.movement_update())
         self._loop.create_task(self.bot.main_loop())
 
 

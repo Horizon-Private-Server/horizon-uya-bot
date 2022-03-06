@@ -1,5 +1,6 @@
 import os
 import json
+import numpy as np
 
 from model.player_state import PlayerState
 
@@ -57,4 +58,4 @@ State:{self.state} PlayerCount:{len(self.players)+1}
 
     def _read_map(self):
         with open(os.path.join('maps', f'{self.map}.json'), 'r') as f:
-            return json.loads(f.read())
+            return np.array(json.loads(f.read()))

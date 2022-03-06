@@ -19,20 +19,3 @@ x maximum = 254
 
 
 # good default y camera: 127
-
-
-import math
-import numpy as np
-
-def calculate_angle(source_loc, dest_loc):
-    x = math.degrees(math.atan2(dest_loc[0]-source_loc[0],dest_loc[1]-source_loc[1]))
-    return x
-
-print(calculate_angle([21,23], [21,25]))
-print(calculate_angle([21,23], [24,25]))
-print(calculate_angle([21,23], [25,23]))
-print(calculate_angle([21,23], [25,20]))
-print(calculate_angle([21,23], [21,20]))
-print(calculate_angle([21,23], [20.9999999999,-999]))
-print(calculate_angle([21,23], [18,23]))
-print(calculate_angle([21,23], [18,26]))

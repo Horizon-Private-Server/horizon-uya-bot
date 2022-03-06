@@ -4,7 +4,7 @@ def short_bytes_to_int(byte1, byte2):
     data = byte2 + byte1
     data = int(data, 16)
     return data
-    
+
 def bytes_to_str(data: bytes) -> str:
     res = ''
     for b in data:
@@ -134,3 +134,31 @@ def hex_to_int_little(hex: str):
 
 def hex_to_str(data: str):
     return bytes_to_str(hex_to_bytes(data))
+
+
+############ Math functions
+
+import math
+import numpy as np
+first_keys = np.array(list(reversed(np.arange(-179,1)))).astype(int)
+first_vals = np.linspace(127,0, 180).astype(int)
+first_angle_map = dict(zip(first_keys, first_vals))
+
+second_keys = np.array(list(reversed(np.arange(0,181)))).astype(int)
+second_vals = np.linspace(254,128, 181).astype(int)
+second_angle_map = dict(zip(second_keys, second_vals))
+
+def calculate_angle(source_coord, dest_coord):
+    # UYA uses angles from 0 -> 254. We need to translate the 0->180|-179->0 to this coordinate system
+    degrees = int(math.degrees(math.atan2(dest_coord[1]-source_coord[1],dest_coord[0]-source_coord[0])))
+    print("===========================")
+    print(degrees)
+    print(int(math.degrees(math.atan2(source_coord[0]-dest_coord[0],source_coord[1]-dest_coord[1]))))
+    print(int(math.degrees(math.atan2(dest_coord[1]-source_coord[1],dest_coord[0]-source_coord[0]))))
+    print(int(math.degrees(math.atan2(source_coord[1]-dest_coord[1],source_coord[0]-dest_coord[0]))))
+    if -179 <= degrees <= 0:
+        return int(first_angle_map[degrees])
+    elif 1 <= degrees <= 180:
+        return int(second_angle_map[degrees])
+
+    raise Exception(f"Invalid coordinates! Unable to calculate angle! source_coord:{source_coord} dest_coord:{dest_coord}")

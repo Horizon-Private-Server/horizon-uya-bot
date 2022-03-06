@@ -1,6 +1,6 @@
 import logging
 logger = logging.getLogger('thug.model')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 
 import sys
 
@@ -99,23 +99,24 @@ class Model:
                 self.alive = False
 
         if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and dme_packet.data['num_messages'] == 1 and dme_packet.data['msg0']['type'] == 'timer_update':
-            logger.info("QUEUEING TIMER UPDATE")
             self.game_state.player.time = dme_packet.data['msg0']['time']
             self.dmetcp_queue.put([0, tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'timer_update', 'time': self.game_state.player.time}})])
 
         if dme_packet.name == 'udp_0209_movement_update':
             packet_num = self.game_state.player.gen_packet_num()
 
-            coord = dme_packet.data['coord']
+            dst_coord = dme_packet.data['coord']
             # coord[1] += 100
-            coord = [21219, 23327, 2167]
+            src_coord = [21219, 23327, 2167]
+
+            x_angle = calculate_angle(src_coord, dst_coord)
 
             # if self._udp_movement_packet_num % 2 == 0:
             #     coord = [35594, 17038, 12977]
             # else:
             #     coord = [35594, 17538, 12977]
 
-            data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': 221, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': 221, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': 221, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': 221, 'buffer': '00', 'coord': coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
+            data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': x_angle, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': x_angle, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': x_angle, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': x_angle, 'buffer': '00', 'coord': src_coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
 
             self.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
@@ -182,7 +183,6 @@ class Model:
             try:
                 size = self.dmetcp_queue.qsize()
                 if size != 0:
-                    logger.debug("TCP FOUND DATA UPDATE!")
                     for _ in range(size):
                         destination, pkt = self.dmetcp_queue.get()
                         logger.debug(f"O | tcp; dst:{destination} {pkt}")

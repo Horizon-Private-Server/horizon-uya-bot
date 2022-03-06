@@ -6,6 +6,8 @@ from connections.abstractudp import AbstractUdp
 
 from medius.serializer import UdpSerializer
 
+from datetime import datetime
+
 class DmeUdp(AbstractUdp):
     def __init__(self, loop, config, ip: str, port: int):
         super().__init__(loop, config, ip, port)
@@ -28,9 +30,13 @@ class DmeUdp(AbstractUdp):
 
         self.queue(pkt)
 
+        started = datetime.now().timestamp()
         while True:
             # Check the result
             data = self.dequeue()
+
+            if datetime.now().timestamp() - started > 4: # 4 second timeout
+                raise Exception('UDP Timeout!')
 
             if data == None:
                 await asyncio.sleep(.0001)

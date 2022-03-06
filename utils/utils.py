@@ -151,11 +151,6 @@ second_angle_map = dict(zip(second_keys, second_vals))
 def calculate_angle(source_coord, dest_coord):
     # UYA uses angles from 0 -> 254. We need to translate the 0->180|-179->0 to this coordinate system
     degrees = int(math.degrees(math.atan2(dest_coord[1]-source_coord[1],dest_coord[0]-source_coord[0])))
-    print("===========================")
-    print(degrees)
-    print(int(math.degrees(math.atan2(source_coord[0]-dest_coord[0],source_coord[1]-dest_coord[1]))))
-    print(int(math.degrees(math.atan2(dest_coord[1]-source_coord[1],dest_coord[0]-source_coord[0]))))
-    print(int(math.degrees(math.atan2(source_coord[1]-dest_coord[1],source_coord[0]-dest_coord[0]))))
     if -179 <= degrees <= 0:
         return int(first_angle_map[degrees])
     elif 1 <= degrees <= 180:

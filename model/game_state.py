@@ -17,3 +17,19 @@ class GameState:
         self.map = gameinfo['map']
         # ['Siege', 'CTF', 'Deathmatch']
         self.game_mode = gameinfo['game_mode']
+
+
+    def __str__(self):
+        result = f'''
+=============================================
+                GameState
+---------------------------------------------
+Map:{self.map} GameMode:{self.game_mode}
+State:{self.state} PlayerCount:{len(self.players)+1}
+---------------------------------------------
+{self.player}
+'''
+        for player in self.players.values():
+            result += str(player)
+        result += '============================================='
+        return result

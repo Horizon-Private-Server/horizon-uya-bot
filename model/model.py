@@ -1,6 +1,6 @@
 import logging
 logger = logging.getLogger('thug.model')
-logger.setLevel(logging.WARNING)
+logger.setLevel(logging.DEBUG)
 
 import sys
 
@@ -15,6 +15,7 @@ from utils.utils import *
 
 from model.player_state import PlayerState
 from model.game_state import GameState
+from model.bots import *
 
 
 class Model:
@@ -22,19 +23,19 @@ class Model:
         self.alive = True
         self._config = config
 
-        print(self._config['gameinfo'])
-
         self._loop = loop
         self._tcp = tcp_conn
         self._udp = udp_conn
 
-        player = PlayerState(self._tcp._player_id, self._config)
+        player = PlayerState(self._tcp._player_id, config['account_id'], config['team'], username=config['username'], skin=config['skin'], clan_tag=config['clan_tag'], rank=config['bolt'])
         self.game_state = GameState(self._config['gameinfo'], player)
+        self.bot = eval(f"{config['bot_class']}.{config['bot_class']}(self, self.game_state)")
 
         self._loop.create_task(self._tcp_flusher())
         self._loop.create_task(self._udp_flusher())
         self.dmetcp_queue = queue.Queue()
         self.dmeudp_queue = queue.Queue()
+
 
     def process(self, serialized: dict):
         '''
@@ -102,36 +103,36 @@ class Model:
             self.game_state.player.time = dme_packet.data['msg0']['time']
             self.dmetcp_queue.put([0, tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'timer_update', 'time': self.game_state.player.time}})])
 
-        if dme_packet.name == 'udp_0209_movement_update':
-            packet_num = self.game_state.player.gen_packet_num()
-
-            dst_coord = dme_packet.data['coord']
-            # coord[1] += 100
-            src_coord = [21219, 23327, 2167]
-
-            x_angle = calculate_angle(src_coord, dst_coord)
-
-            # if self._udp_movement_packet_num % 2 == 0:
-            #     coord = [35594, 17038, 12977]
-            # else:
-            #     coord = [35594, 17538, 12977]
-
-            data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': x_angle, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': x_angle, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': x_angle, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': x_angle, 'buffer': '00', 'coord': src_coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
-
-            self.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
+        # if dme_packet.name == 'udp_0209_movement_update':
+        #     packet_num = self.game_state.player.gen_packet_num()
+        #
+        #     dst_coord = dme_packet.data['coord']
+        #     # coord[1] += 100
+        #     src_coord = [21219, 23327, 2167]
+        #
+        #     x_angle = calculate_angle(src_coord, dst_coord)
+        #
+        #     # if self._udp_movement_packet_num % 2 == 0:
+        #     #     coord = [35594, 17038, 12977]
+        #     # else:
+        #     #     coord = [35594, 17538, 12977]
+        #
+        #     data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': x_angle, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': x_angle, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': x_angle, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': x_angle, 'buffer': '00', 'coord': src_coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
+        #
+        #     self.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
+        #
+        #     self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': 'flux'}})])
+        #
+        #     self.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='03004108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
 
         if dme_packet.name == 'udp_020E_shot_fired':
             pass
 
-            # self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': 'flux'}})])
-
-            # self._tdp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes("020C61040000CBE68700001000F70D1000F70301")))
-            # self._udp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes("020FFD40E33C1B14423DF125D93AB0010100")))
-            # self._udp.queue(ClientAppBroadcastSerializer.build(hex_to_bytes("02000039910389AC9E431BA3AF43512F074200506939006092B828E3823F")))
-
 
             #self._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes('0204003901030E00000001000000'))))
+
+            # self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': 'flux'}})])
 
             # self.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='03004108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
@@ -152,27 +153,9 @@ class Model:
         #self.dmetcp_queue.put([])
 
         #self._loop.create_task(self.movement_update())
+        self._loop.create_task(self.bot.main_loop())
 
-    async def movement_update(self):
-        while True:
 
-            packet_num = self._udp_movement_packet_num
-            self._udp_movement_packet_num += 1
-            if self._udp_movement_packet_num == 256:
-                self._udp_movement_packet_num = 0
-
-            coord = [35594, 17038, 12977]
-
-            # if self._udp_movement_packet_num % 2 == 0:
-            #     coord = [35594, 17038, 12977]
-            # else:
-            #     coord = [35594, 17538, 12977]
-
-            data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': 221, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': 221, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': 221, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': 221, 'buffer': '00', 'coord': coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
-
-            self.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
-
-            await asyncio.sleep(0.03)
 
     async def _tcp_flusher(self):
         '''

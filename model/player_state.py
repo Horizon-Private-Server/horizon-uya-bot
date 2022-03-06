@@ -1,28 +1,27 @@
 
 
 class PlayerState:
-    def __init__(self, player_id:int, config:dict):
-        self._config = config
-
+    def __init__(self, player_id:int, account_id:int, team:str, username:str=None, skin:str=None, clan_tag:str=None, rank:int=0):
         self.player_id = player_id
-
-        self.account_id = self._config['account_id']
-        self.team = self._config['team']
-        self.username = self._config['username']
-        self.skin = self._config['skin']
-        self.clan_tag = self._config['clan_tag']
-
+        self.account_id = account_id
+        self.team = team
+        self.username = username
+        self.skin = skin
+        self.clan_tag = clan_tag
         rank_map = {
+            0: '',
             1: '00C0A84400C0A84400C0A84400C0A8440000AF430000AF430000AF430000AF43',
             2: '00C0A84400C0A84400C0A84400C0A84400808443008084430080844300808443',
             3: '00C0A84400C0A84400C0A84400C0A84400000000000000000000000000000000',
             4: 'C8C8D444C8C8D444C8C8D444C8C8D44400808943008089430080894300808943'
         }
-        self.rank = rank_map[self._config['bolt']]
+        self.rank = rank_map[rank]
 
+        self.coord = [0,0,0]
         self.movement_packet_num = 0
-
         self.time = 0
+
+
 
     def gen_packet_num(self):
         self.movement_packet_num += 1
@@ -44,3 +43,7 @@ class PlayerState:
         }
         self.team = team_change_map[self.team]
         return self.team
+
+    def __str__(self):
+        return f"PlayerState; player_id:{self.player_id} account_id:{self.account_id} team:{self.team} " + \
+                f"coord:{self.coord} movement_packet_num:{self.movement_packet_num} time:{self.time}"

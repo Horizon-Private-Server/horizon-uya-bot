@@ -89,9 +89,9 @@ class udp_0209_movement_update:
         # del results['type']
         # del results['last']
 
-        keys = ['coord', 'cam1_y', 'cam1_x', 'cam2_y', 'cam2_x', 'cam3_y', 'cam3_x', 'cam4_y', 'cam4_x']
-        test = [results.get(key) for key in keys]
-        print(test)
+        # keys = ['coord', 'cam1_y', 'cam1_x', 'cam2_y', 'cam2_x', 'cam3_y', 'cam3_x', 'cam4_y', 'cam4_x']
+        # test = [results.get(key) for key in keys]
+        # print(test)
 
         return udp_0209_movement_update(results)
 

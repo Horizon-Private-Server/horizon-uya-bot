@@ -72,13 +72,26 @@ class udp_0209_movement_update:
             elif len(data) == 17:
                 results['flush'] = ''.join([data.popleft() for i in range(17)])
 
-        if 'flush' in results.keys():
-            if 'button' in results.keys():
-                print(results['coord'], results['button'], results['last'], results['flush_type'], results['flush'])
-            else:
-                print(results['coord'], results['last'], results['flush_type'], results['flush'])
-        elif 'button' in results.keys():
-            print(results['coord'], results['button'], results['last'], results['flush_type'])
+        ## Flush type / button / animation debugging
+        # if 'flush' in results.keys():
+        #     if 'button' in results.keys():
+        #         print(results['coord'], results['button'], results['last'], results['flush_type'], results['flush'])
+        #     else:
+        #         print(results['coord'], results['last'], results['flush_type'], results['flush'])
+        # elif 'button' in results.keys():
+        #     print(results['coord'], results['button'], results['last'], results['flush_type'])
+
+        ## Camera debugging
+        # if 'button' in results.keys():
+        #     del results['button']
+        # if 'flush' in results.keys():
+        #     del results['flush']
+        # del results['type']
+        # del results['last']
+
+        keys = ['coord', 'cam1_y', 'cam1_x', 'cam2_y', 'cam2_x', 'cam3_y', 'cam3_x', 'cam4_y', 'cam4_x']
+        test = [results.get(key) for key in keys]
+        print(test)
 
         return udp_0209_movement_update(results)
 

@@ -107,7 +107,8 @@ class Model:
             packet_num = self.game_state.player.gen_packet_num()
 
             coord = dme_packet.data['coord']
-            coord[1] += 100
+            # coord[1] += 100
+            coord = [21219, 23327, 2167]
 
             # if self._udp_movement_packet_num % 2 == 0:
             #     coord = [35594, 17038, 12977]

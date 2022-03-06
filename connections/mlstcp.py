@@ -136,7 +136,7 @@ class MlsTcp(AbstractTcp):
             self._logger.info("Invalid game settings.")
             sys.exit(1)
 
-        game = {'game name': gameinfo['game_name']}
+        game = {'game_name': gameinfo['game_name']}
         game['weapons'] = weaponParser(gameinfo['player_skill_level'])
         game['advanced_rules'] = advancedRulesParser(gameinfo['generic_field_3'])
         game['map'] = mapParser(gameinfo['generic_field_3'])

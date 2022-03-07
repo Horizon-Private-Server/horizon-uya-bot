@@ -13,5 +13,8 @@
     "dmetcp_ip": "",
     "dmetcp_port": 10079,
     "dmeudp_ip": "",
-    "dmeudp_port": 51000
+    "dmeudp_port": 51000,
+    "map_prune_dist": 40,
+    "map_min_move_dist": 25,
+    "map_max_move_dist": 55
 }

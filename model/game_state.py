@@ -25,7 +25,7 @@ class GameState:
         self.game_mode = gameinfo['game_mode']
 
         # Point grid
-        self.map = Map(self.map_name, config['min_movement_dist'], config['max_movement_dist'])
+        self.map = Map(self.map_name, config['map_prune_dist'], config['map_min_move_dist'], config['map_max_move_dist'])
 
     def time_update(self, src_player: int, time: int):
         if src_player not in self.players.keys():

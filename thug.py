@@ -46,7 +46,7 @@ class Thug:
             world_id = json.loads(requests.get(f'http://{self._config["mls_ip"]}:8281/robo/games').text)[-1]['dme_world_id']
             self._config['world_id'] = world_id
 
-        print(self._config)
+        logger.info(self._config)
 
         # Initialize connections
         logger.info("Initializing MLS ... ")

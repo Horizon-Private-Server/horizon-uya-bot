@@ -19,9 +19,7 @@ class prototype:
             #print(self.game_state)
 
             # update angle/coord
-            if self.game_state.player.movement_packet_num % 5 == 0:
-
-                self.game_state.player.coord = self.game_state.map.path(self.game_state.player.coord, self.game_state.players[0].coord)
+            self.game_state.player.coord = self.game_state.map.path(self.game_state.player.coord, self.game_state.players[0].coord, distance_to_move=30)
             #print(self.game_state.players[0].coord)
             # grid = self.game_state.grid
             #

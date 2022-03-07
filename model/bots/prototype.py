@@ -10,28 +10,29 @@ class prototype:
         self._model = model
         self.game_state = game_state
 
-        if self.game_state.map == 'command_center':
-            self.game_state.player.coord = [21919, 24040, 2174]
+        if self.game_state.map.map == 'command_center':
+            self.game_state.player.coord = [20707, 23601, 2152]
             self.game_state.player.x_angle = 127
 
     async def main_loop(self):
         while self._model.alive:
-            print(self.game_state)
+            #print(self.game_state)
 
             # update angle/coord
+            if self.game_state.player.movement_packet_num % 5 == 0:
 
-            grid = self.game_state.grid
-
-            distances = distance.cdist(grid, [self.game_state.player.coord], 'euclidean')
-            # Get all coordinates within moveable distances
-            moveables = (distances < 40) & (distances > 20)
-            possible_coords = grid[moveables.flatten(),:]
-
-            # Get point closest to enemy
-            distances = distance.cdist(possible_coords, [self.game_state.players[0].coord], 'euclidean')
-            min_idx = np.where(distances == np.amin(distances))[0][0]
-
-            self.game_state.player.coord = list(possible_coords[min_idx])
+                self.game_state.player.coord = self.game_state.map.path(self.game_state.player.coord, self.game_state.players[0].coord)
+            #print(self.game_state.players[0].coord)
+            # grid = self.game_state.grid
+            #
+            # distances = distance.cdist(grid, [self.game_state.player.coord], 'euclidean')
+            # # Get all coordinates within moveable distances
+            # moveables = (distances < 40) & (distances > 20)
+            # possible_coords = grid[moveables.flatten(),:]
+            #
+            # # Get point closest to enemy
+            # distances = distance.cdist(possible_coords, [self.game_state.players[0].coord], 'euclidean')
+            # min_idx = np.where(distances == np.amin(distances))[0][0]
 
             # Update camera angle
             if self.game_state.player.movement_packet_num % 20 == 0:
@@ -54,9 +55,10 @@ class prototype:
 
         self._model.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
-        self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': 'flux'}})])
-
-        self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='03004108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+        # God mode
+        # self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': 'flux'}})])
+        #
+        # self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='03004108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
 
 

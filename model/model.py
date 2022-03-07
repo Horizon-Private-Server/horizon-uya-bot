@@ -28,7 +28,7 @@ class Model:
         self._udp = udp_conn
 
         player = PlayerState(self._tcp._player_id, config['account_id'], config['team'], username=config['username'], skin=config['skin'], clan_tag=config['clan_tag'], rank=config['bolt'])
-        self.game_state = GameState(self._config['gameinfo'], player)
+        self.game_state = GameState(self._config['gameinfo'], player, self._config)
         self.bot = eval(f"{config['bot_class']}.{config['bot_class']}(self, self.game_state)")
 
         self._loop.create_task(self._tcp_flusher())

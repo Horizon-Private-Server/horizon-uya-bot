@@ -2,10 +2,12 @@ import os
 import json
 import numpy as np
 
+from maps.map import Map
+
 from model.player_state import PlayerState
 
 class GameState:
-    def __init__(self, gameinfo:dict, player:PlayerState):
+    def __init__(self, gameinfo:dict, player:PlayerState, config:dict):
         self.player = player
 
         self.players = {} # player id -> PlayerState
@@ -18,13 +20,12 @@ class GameState:
         # {'baseDefenses': True, 'spawn_charge_boots': False, 'spawn_weapons': False, 'player_names': True, 'vehicles': True}
         self.advanced_rules = gameinfo['advanced_rules']
         # ['Bakisi_Isle', 'Hoven_Gorge', 'Outpost_x12', 'Korgon_Outpost', 'Metropolis', 'Blackwater_City', 'Command_Center', 'Aquatos_Sewers', 'Blackwater_Dox', 'Marcadia_Palace']
-        self.map = gameinfo['map']
+        self.map_name = gameinfo['map']
         # ['Siege', 'CTF', 'Deathmatch']
         self.game_mode = gameinfo['game_mode']
 
         # Point grid
-        self.grid = self._read_map()
-
+        self.map = Map(self.map_name, config['min_movement_dist'], config['max_movement_dist'])
 
     def time_update(self, src_player: int, time: int):
         if src_player not in self.players.keys():

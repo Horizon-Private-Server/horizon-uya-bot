@@ -6,6 +6,8 @@ The name Thug comes from the UYA multiplayer skin.
 ## How does it work?
 Thug connects to a Medius server and simulates what a normal PS2 would send over the network. Thug is written in Python and uses the asyncio standard library for network connections. 
 
+Thug builds a network graph based on a set of moveable points, then uses the A* algorithm to pathfind to other players/objects.
+
 Bot Movement Graph             |  In Game View
 :-------------------------:|:-------------------------:
 <img src="https://raw.githubusercontent.com/jtjanecek/thug/master/assets/scatter_command_center.png" width="455" height="350">  |  <img src="https://raw.githubusercontent.com/jtjanecek/thug/master/assets/command_center.jpg" width="455" height="350">

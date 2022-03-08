@@ -36,49 +36,6 @@ class Map:
             G.add_edge(tuple(self.points[edge_src].astype(int)), tuple(self.points[edge_dst].astype(int)))
 
         return G
-        #
-        # # Prune the points
-        # points_selected = []
-        # points_to_pick_from = points_raw
-        # while points_to_pick_from != []:
-        #     point_to_add = points_to_pick_from.pop()
-        #     points_selected.append(point_to_add)
-        #
-        #     points_to_check = np.array(points_to_pick_from)
-        #     if points_to_check.shape[0] == 0:
-        #         continue
-        #
-        #     distances = distance.cdist(points_to_check, [point_to_add], 'euclidean')
-        #     for i in range(distances.shape[0]):
-        #         if distances[i][0] < self.prune_dist:
-        #             points_to_pick_from.remove(list(points_to_check[i]))
-        #
-        # self.points = np.array(points_selected)
-        # logger.info("Done.")
-        #
-        # ## Generate the graph
-        # logger.info("Generating graph ...")
-        # G = nx.Graph()
-        #
-        # for i in range(len(self.points)):
-        #     point = self.points[i]
-        #     distances = distance.cdist(self.points, [point], 'euclidean')
-        #     # Get all coordinates within moveable distances
-        #     moveables = (distances > min_dist) & (distances < max_dist)
-        #     points_connected = self.points[moveables.flatten(),:]
-        #     distances = distances[moveables.flatten()]
-        #
-        #     # print(point)
-        #     # print(points_connected)
-        #     # print(distances)
-        #     #G.add_node(tuple(point))
-        #     for i in range(len(distances)):
-        #         G.add_edge(tuple(point), tuple(points_connected[i]), weight=distances[i][0])
-        #         # Calculate the distance between this connected point and
-        #     #print("Nodes in G: ", G.nodes(data=True))
-        # logger.info("Done.")
-        return G
-
 
 
     def path(self, src, dst, distance_to_move=20):
@@ -142,15 +99,15 @@ if __name__ == '__main__':
     zs = [n[2] for n in nodes]
     ax.scatter(xs, ys, zs, s=5, c='tab:blue')
 
-    print(len(G.edges))
-    i = 0
-    for src, dst in G.edges:
-        print(i)
-        i+=1
-        xs = [src[0], dst[0]]
-        ys = [src[1], dst[1]]
-        zs = [src[2], dst[2]]
-        ax.plot3D(xs,ys,zs, c='tab:blue', linewidth=1)
+    # print(len(G.edges))
+    # i = 0
+    # for src, dst in G.edges:
+    #     print(i)
+    #     i+=1
+    #     xs = [src[0], dst[0]]
+    #     ys = [src[1], dst[1]]
+    #     zs = [src[2], dst[2]]
+    #     ax.plot3D(xs,ys,zs, c='tab:blue', linewidth=1)
 
     xlim = ax.get_xlim()
     zlim = ax.get_zlim()
@@ -161,7 +118,7 @@ if __name__ == '__main__':
     zlim = [zmid - xdiff, zmid + xdiff]
 
     ax.set_zlim3d(zlim[0], zlim[1])
-    ax.set_xlim3d(23000,23500)
+    #ax.set_xlim3d(23000,23500)
     ax.set_xlabel("x")
     ax.set_ylabel("y")
     ax.set_zlabel("z")

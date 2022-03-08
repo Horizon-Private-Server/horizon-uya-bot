@@ -18,7 +18,7 @@ pcd.points = o3d.utility.Vector3dVector(points)
 
 distances = pcd.compute_nearest_neighbor_distance()
 avg_dist = np.mean(distances)
-radius = 3 * avg_dist
+radius = 2 * avg_dist
 
 pcd.estimate_normals(
     search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.1, max_nn=30))
@@ -34,6 +34,7 @@ dec_mesh.remove_duplicated_triangles()
 dec_mesh.remove_duplicated_vertices()
 dec_mesh.remove_non_manifold_edges()
 
-o3d.io.write_triangle_mesh(f"{map_name}.stl", dec_mesh)
+
+o3d.io.write_triangle_mesh(f"meshes/{map_name}.stl", dec_mesh)
 
 o3d.visualization.draw_geometries([dec_mesh])

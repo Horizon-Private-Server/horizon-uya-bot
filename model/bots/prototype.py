@@ -10,9 +10,8 @@ class prototype:
         self._model = model
         self.game_state = game_state
 
-        if self.game_state.map.map == 'command_center':
-            self.game_state.player.coord = [20707, 23601, 2152]
-            self.game_state.player.x_angle = 127
+        self.game_state.player.coord = self.game_state.map.get_random_coord()
+        self.game_state.player.x_angle = 127
 
     async def main_loop(self):
         while self._model.alive:

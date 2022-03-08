@@ -4,10 +4,9 @@ import networkx as nx
 import os
 from scipy.spatial import distance
 from datetime import datetime
-import trimesh
-
+import random
 import sys
-sys.path.append("/home/fourbolt/Documents/uya/thug")
+
 from utils.utils import *
 
 import logging
@@ -24,24 +23,14 @@ class Map:
         logger.info(f"Loaded map in {datetime.now().timestamp() - start_time} seconds!")
 
     def read_map(self, map_name):
-        logger.info("Loading map mesh ...")
-        mesh = trimesh.load(f'/home/fourbolt/Documents/uya/thug/maps/meshes/{self.map}.stl', process=False)
-
-        self.points = np.array(mesh.vertices).astype(int)
-        edge_idxes = mesh.edges
-
-        G = nx.Graph()
-
-        for edge_src, edge_dst in edge_idxes:
-            G.add_edge(tuple(self.points[edge_src].astype(int)), tuple(self.points[edge_dst].astype(int)))
-
+        logger.info("Loading map graph ...")
+        G = nx.read_edgelist(f"maps/graphs/{self.map}.edgelist",nodetype=eval, delimiter='|')
+        self.points = np.array(G.nodes)
         return G
-
 
     def path(self, src, dst, distance_to_move=20):
         def search_heuristic(node1, node2):
             return distance.cdist([node1], [node2], 'euclidean')[0]
-
 
         src = tuple(src)
         dst = tuple(dst)
@@ -76,51 +65,10 @@ class Map:
         idx, dist_closest = min(enumerate(distances), key=lambda x: abs(x[1]-dist))
         return lst[idx]
 
+    def get_random_coord(self):
+        return tuple(random.choice(np.array(self.points)))
+
 if __name__ == '__main__':
     print("Reading map")
     map = Map('aquatos_sewers')
     print("Done")
-    import networkx as nx
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from mpl_toolkits.mplot3d import Axes3D
-
-    G = map.G
-
-    # Create the 3D figure
-    print("Graphing ...")
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection="3d")
-
-    # Plot the nodes - alpha is scaled by "depth" automatically
-    nodes = np.array(G.nodes)
-    xs = [n[0] for n in nodes]
-    ys = [n[1] for n in nodes]
-    zs = [n[2] for n in nodes]
-    ax.scatter(xs, ys, zs, s=5, c='tab:blue')
-
-    # print(len(G.edges))
-    # i = 0
-    # for src, dst in G.edges:
-    #     print(i)
-    #     i+=1
-    #     xs = [src[0], dst[0]]
-    #     ys = [src[1], dst[1]]
-    #     zs = [src[2], dst[2]]
-    #     ax.plot3D(xs,ys,zs, c='tab:blue', linewidth=1)
-
-    xlim = ax.get_xlim()
-    zlim = ax.get_zlim()
-    xdiff = (xlim[1] - xlim[0]) / 2
-
-    zmid = zlim[0] + ((zlim[1] - zlim[0]) / 2)
-
-    zlim = [zmid - xdiff, zmid + xdiff]
-
-    ax.set_zlim3d(zlim[0], zlim[1])
-    #ax.set_xlim3d(23000,23500)
-    ax.set_xlabel("x")
-    ax.set_ylabel("y")
-    ax.set_zlabel("z")
-    plt.tight_layout()
-    plt.show()

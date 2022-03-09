@@ -85,7 +85,7 @@ class Blarg:
                 else:
                     serialized = udp_map[packet_id].serialize(data)
 
-            if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] != 'False' and packet_id not in ['0001', '0209']:
+            if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] != 'False': #and packet_id not in ['0001', '0209']:
                 self._logger.info(f"{packet['src']} | {serialized}")
 
     async def read_websocket(self):

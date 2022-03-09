@@ -67,6 +67,9 @@ class udp_0209_movement_update:
             if len(data) > 17:
                 results['button'] = ''.join([data.popleft() for i in range(len(data)-17)]) # this is wrong
                 results['flush'] = ''.join([data.popleft() for i in range(17)])
+# 2022-03-09 14:36:32,713 blarg | INFO | 0 | udp_0209_movement_update; data:{'r1': '7F', 'cam1_y': 128, 'cam1_x': 46, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 128, 'cam2_x': 46, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 128, 'cam3_x': 46, 'v_drv': '00', 'r4': '7F', 'cam4_y': 128, 'cam4_x': 46, 'buffer': '00', 'coord': [21629, 24276, 2174], 'packet_num': 76, 'flush_type': 16, 'last': '5806580658065806', 'type': 'movement', 'button': 'B673020E03004008D7385100FFFFFFFF0FA2A843D510BD', 'flush': '4313B10B4279DE9F437B18AA437A950B42'}
+                
+
             elif len(data) < 17:
                 results['button'] = ''.join([data.popleft() for i in range(len(data))])
             elif len(data) == 17:

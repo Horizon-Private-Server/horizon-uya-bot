@@ -14,6 +14,8 @@ class prototype:
         self.game_state.player.coord = self.game_state.map.get_random_coord()
         self.game_state.player.x_angle = 127
 
+        self._is_dead = False
+
         self.animation = None
 
         self.weapon = 'n60'
@@ -31,16 +33,17 @@ class prototype:
 
 
             # update angle/coord
-            if self.game_state.player.movement_packet_num % 4 == 0:
-                new_coord = self.game_state.map.path(self.game_state.player.coord, self.game_state.players[0].coord, distance_to_move=30)
-                if new_coord[2] > self.game_state.player.coord[2]:
-                    self.animation = 'jump'
-                elif new_coord != self.game_state.player.coord:
-                    self.animation = 'forward'
-                else:
-                    self.animation = None
+            if not self._is_dead:
+                if self.game_state.player.movement_packet_num % 4 == 0:
+                    new_coord = self.game_state.map.path(self.game_state.player.coord, self.game_state.players[0].coord, distance_to_move=30)
+                    if new_coord[2] > self.game_state.player.coord[2]:
+                        self.animation = 'jump'
+                    elif new_coord != self.game_state.player.coord:
+                        self.animation = 'forward'
+                    else:
+                        self.animation = None
 
-                self.game_state.player.coord = new_coord
+                    self.game_state.player.coord = new_coord
 
             # Update camera angle
             if self.game_state.player.movement_packet_num % 20 == 0:

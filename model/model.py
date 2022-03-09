@@ -112,32 +112,15 @@ class Model:
         if dme_packet.name == 'udp_0209_movement_update':
             self.game_state.movement_update(src_player, dme_packet.data)
 
-        # if dme_packet.name == 'udp_0209_movement_update':
-        #     packet_num = self.game_state.player.gen_packet_num()
-        #
-        #     dst_coord = dme_packet.data['coord']
-        #     # coord[1] += 100
-        #     src_coord = [21219, 23327, 2167]
-        #
-        #     x_angle = calculate_angle(src_coord, dst_coord)
-        #
-        #     # if self._udp_movement_packet_num % 2 == 0:
-        #     #     coord = [35594, 17038, 12977]
-        #     # else:
-        #     #     coord = [35594, 17538, 12977]
-        #
-        #     data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': x_angle, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': x_angle, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': x_angle, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': x_angle, 'buffer': '00', 'coord': src_coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
-        #
-        #     self.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
-        #
-        #     self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': 'flux'}})])
-        #
-        #     self.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='03004108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
 
         if dme_packet.name in ['udp_020E_shot_fired', 'udp_0209_movement_update']:
             pass
 
+            ## Examples
+        #     self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': 'flux'}})])
+        #
+        #     self.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='03004108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
             #self._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes('0204003901030E00000001000000'))))
 
@@ -151,7 +134,7 @@ class Model:
 
     async def send_player_data(self):
         # It takes 13 seconds to load from game start into actual game
-        await asyncio.sleep(13)
+        await asyncio.sleep(14)
         self.dmetcp_queue.put(['B', tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': '01000000026E010003000000C173250000000000', 'unk2':'0066809443620B8B4309BA48430000000000000000000000000F73E83F', 'player_start_time_1': self.game_state.player.time, 'player_start_time_2': self.game_state.player.time, 'unk3': '0000000000000000000000000000000000000000', 'account_id_1': self.game_state.player.account_id, 'account_id_2': self.game_state.player.account_id, 'team':self.game_state.player.team, 'unk4': '010000100000000000000000000000000F73E83F', 'unk5': '00000100001000000000', 'unk6': '00000000007041000000000000000000000000000000000000010000000100000000000000010000000100000000000000000000003200000064000000320000000100'})])
         self.dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='000000000300030003000000000070410000', username=self.game_state.player.username, unk3='000000')])
         self.dmetcp_queue.put([0, tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': '01000000026E010003000000C173250000000000', 'unk2':'0066809443620B8B4309BA48430000000000000000000000000F73E83F', 'player_start_time_1': self.game_state.player.time, 'player_start_time_2': self.game_state.player.time, 'unk3': '0000000000000000000000000000000000000000', 'account_id_1': self.game_state.player.account_id, 'account_id_2': self.game_state.player.account_id, 'team':self.game_state.player.team, 'unk4': '010000100000000000000000000000000F73E83F', 'unk5': '00000100001000000000', 'unk6': '00000000007041000000000000000000000000000000000000010000000100000000000000010000000100000000000000000000003200000064000000320000000100'})])

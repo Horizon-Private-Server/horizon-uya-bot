@@ -5,5 +5,5 @@
     "warn_on_unknown": "False",
 	"log_serialized": "True",
 	"fail_on_error": "False",
-	"src_filter": [0]
+	"src_filter": [1]
 }

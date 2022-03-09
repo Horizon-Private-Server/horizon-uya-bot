@@ -97,7 +97,7 @@ class udp_0209_movement_update:
 
 
     def to_bytes(self):
-        return self.id + \
+        res = self.id + \
             hex_to_bytes(self.data['r1']) + \
             int_to_bytes_little(1, self.data['cam1_y']) + \
             int_to_bytes_little(1, self.data['cam1_x']) + \
@@ -118,9 +118,11 @@ class udp_0209_movement_update:
             int_to_bytes_little(2, int(self.data['coord'][1])) + \
             int_to_bytes_little(2, int(self.data['coord'][2])) + \
             int_to_bytes_little(1, self.data['packet_num']) + \
-            int_to_bytes_little(1, 16) + \
-            hex_to_bytes(self.data['last']) + \
-            hex_to_bytes(ANIMATION_MAP['forward'])
+            int_to_bytes_little(1, self.data['flush_type']) + \
+            hex_to_bytes(self.data['last'])
+        if 'animation' in self.data.keys():
+            res += hex_to_bytes(ANIMATION_MAP[self.data['animation']])
+        return res
 
     def __str__(self):
         return f"{self.name}; data:{self.data}"

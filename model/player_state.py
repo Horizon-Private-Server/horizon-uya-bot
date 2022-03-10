@@ -21,6 +21,9 @@ class PlayerState:
         self.movement_packet_num = 0
         self.time = 0
 
+        self.weapon = 'n60'
+        self.is_dead = False
+        self.animation = None
 
 
     def gen_packet_num(self):

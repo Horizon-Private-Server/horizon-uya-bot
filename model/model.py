@@ -128,7 +128,7 @@ class Model:
 
             # self.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='03004108',time=self.game_state.player.time, moby_id=1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
             self.bot._is_dead = True
-            self.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation()])
+            self.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
             self.dmeudp_queue.put(['B', udp_0200_player_died.udp_0200_player_died(src_player=self.game_state.player.player_id)])
 
             #])(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes("020001396D0267BCA8433B0CBD4300E0074200A08238008075B800B906C0"))))

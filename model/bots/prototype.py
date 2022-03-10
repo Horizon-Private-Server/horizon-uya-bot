@@ -14,19 +14,14 @@ class prototype:
         self.game_state.player.coord = self.game_state.map.get_random_coord()
         self.game_state.player.x_angle = 127
 
-        self._is_dead = False
-
-        self.animation = None
-
-        self.weapon = 'n60'
 
     async def main_loop(self):
         while self._model.alive:
 
-            if self.weapon == 'n60':
+            if self.game_state.player.weapon == 'n60':
                 # Switch to flux
                 self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': 'flux'}})])
-                self.weapon = 'flux'
+                self.game_state.player.weapon = 'flux'
 
             if random.random() > .99:
                 self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='03004108',time=self.game_state.player.time, moby_id=-1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
@@ -49,13 +44,10 @@ class prototype:
             if self.game_state.player.movement_packet_num % 20 == 0:
                 self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.game_state.players[0].coord)
 
-
-
-
-
             # Update movement
             self.send_movement()
 
+            # Sleep for the loop
             await asyncio.sleep(0.03)
 
     def send_movement(self):

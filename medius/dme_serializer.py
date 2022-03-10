@@ -14,6 +14,7 @@ TcpSerializer = {
 
 	'0009': tcp_0009_set_timer.tcp_0009_set_timer,
 	'0204': tcp_0204_player_killed.tcp_0204_player_killed,
+	'020A': tcp_020A_player_respawned.tcp_020A_player_respawned,
 	'0210': tcp_0210_player_joined.tcp_0210_player_joined,
 	'0211': tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change,
 	'0212': tcp_0212_host_headset.tcp_0212_host_headset,
@@ -21,6 +22,7 @@ TcpSerializer = {
 }
 
 UdpSerializer = {
+	'0200': udp_0200_player_died.udp_0200_player_died,
 	'0209': udp_0209_movement_update.udp_0209_movement_update,
 	'020E': udp_020E_shot_fired.udp_020E_shot_fired,
 	'020F': udp_020F_player_damage_animation.udp_020F_player_damage_animation,

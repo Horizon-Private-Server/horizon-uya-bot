@@ -24,11 +24,11 @@ class prototype:
                 self.game_state.player.weapon = 'flux'
 
             if random.random() > .99:
-                self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon_type='03004108',time=self.game_state.player.time, moby_id=-1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+                self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon='flux',src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=-1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
 
             # update angle/coord
-            if not self._is_dead:
+            if not self.game_state.player.is_dead:
                 if self.game_state.player.movement_packet_num % 4 == 0:
                     new_coord = self.game_state.map.path(self.game_state.player.coord, self.game_state.players[0].coord, distance_to_move=30)
                     if new_coord[2] > self.game_state.player.coord[2]:

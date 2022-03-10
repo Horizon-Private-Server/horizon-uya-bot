@@ -24,6 +24,7 @@ class PlayerState:
         self.weapon = 'n60'
         self.is_dead = False
         self.animation = None
+        self.health = 100
 
 
     def gen_packet_num(self):

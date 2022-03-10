@@ -1,7 +1,7 @@
 {
 	"robo_ip": "54.189.126.108",
 	"logger": "INFO",
-	"filter": "020A",
+	"filter": "020E",
 	"warn_on_unknown": "False",
 	"log_serialized": "True",
 	"fail_on_error": "False",

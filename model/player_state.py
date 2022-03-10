@@ -25,6 +25,7 @@ class PlayerState:
         self.is_dead = False
         self.animation = None
         self.health = 100
+        self.respawn_time = None
 
 
     def gen_packet_num(self):

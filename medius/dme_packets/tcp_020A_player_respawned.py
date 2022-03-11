@@ -3,11 +3,21 @@ from utils.utils import *
 import os
 
 class tcp_020A_player_respawned:
-    def __init__(self, src_player:int=None, unk1="000138CCA1A143C5ADB043CC2C08420000000000000000E964823F00000100"):
+    def __init__(self, src_player:int=None, map:str='unk', unk1="000138CCA1A143C5ADB043CC2C08420000000000000000E964823F00000100"):
         self.name = os.path.basename(__file__).strip(".py")
         self.id = b'\x02\x0A'
         self.src_player = src_player
-        self.unk1 = unk1
+
+        self.map = map
+
+        if map == 'unk':
+            self.unk1 = unk1
+        elif map == 'aquatos_sewers':
+            self.unk1 = '0001B94FE6C84300808D43CC446B440000000000000000DB0FC93F00000100'
+        elif map == 'command_center':
+            self.unk1 = '000138CCA1A143C5ADB043CC2C08420000000000000000E964823F00000100'
+        else:
+            self.unk1 = unk1
 
     @classmethod
     def serialize(self, data: deque):
@@ -22,4 +32,4 @@ class tcp_020A_player_respawned:
 
 
     def __str__(self):
-        return f"{self.name}; src_player:{self.src_player} unk1:{self.unk1}"
+        return f"{self.name}; src_player:{self.src_player} map:{self.map} unk1:{self.unk1}"

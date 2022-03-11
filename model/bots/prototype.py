@@ -28,7 +28,7 @@ class prototype:
                 continue
 
             if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
-                self._model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id)])
+                self._model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, map=self.game_state.map.map)])
                 self.game_state.player.coord = self.game_state.map.get_random_coord()
                 self.game_state.player.is_dead = False
 
@@ -39,10 +39,10 @@ class prototype:
                 self.game_state.player.weapon = 'flux'
 
             random_gen = random.random()
-            if not self.game_state.player.is_dead and random_gen > .95:
+            if not self.game_state.player.is_dead and random_gen > .975:
                 self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon='flux',src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=self.game_state.players[0].player_id, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
-            elif not self.game_state.player.is_dead and random_gen > .975:
+            elif not self.game_state.player.is_dead and random_gen > .999:
                 self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon='flux',src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=-1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
 

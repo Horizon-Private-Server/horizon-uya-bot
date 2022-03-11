@@ -57,7 +57,15 @@ zs = np.array([c[2] for c in coords])
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 ax.scatter(xs,ys,zs, s=1)
-#surf = ax.plot_trisurf(xs, ys, zs, alpha=.1)
-
-ax.set_zlim3d(58000, 62000)
+xlim = ax.get_xlim()
+zlim = ax.get_zlim()
+xdiff = (xlim[1] - xlim[0]) / 2
+zmid = zlim[0] + ((zlim[1] - zlim[0]) / 2)
+zlim = [zmid - xdiff, zmid + xdiff]
+ax.set_zlim3d(zlim[0], zlim[1])
+ax.set_xlabel("x")
+ax.set_ylabel("y")
+ax.set_zlabel("z")
+ax.view_init(80, -60)
+plt.tight_layout()
 plt.show()

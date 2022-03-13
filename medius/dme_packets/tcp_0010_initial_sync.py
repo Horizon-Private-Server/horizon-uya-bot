@@ -20,8 +20,8 @@ class tcp_0010_initial_sync:
 
     def to_bytes(self):
         return self.id + \
-            int_to_bytes_little(4, self.type) + \
-            int_to_bytes_little(4, self.src) + \
+            int_to_bytes_little(1, self.type) + \
+            int_to_bytes_little(1, self.src) + \
             hex_to_bytes(self.key)
 
     def __str__(self):

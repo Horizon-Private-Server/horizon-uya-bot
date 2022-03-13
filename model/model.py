@@ -58,9 +58,16 @@ class Model:
         '''
         logger.debug(f"I | {protocol}; src:{src_player} {dme_packet}")
 
-        if dme_packet.name == 'tcp_0016_player_connect_handshake':
-            if dme_packet.data == '05000300010000000100000000000000':
-                self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='03010300000000000000000000000000')])
+        if dme_packet.name == 'tcp_0016_player_connect_handshake' and dme_packet.subtype == 'host_initial_handshake':
+            if dme_packet.unk1 == '03000100000001':
+                #self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='03010300000000000000000000000000')])
+                self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(subtype='player_initial_handshake', src_player=self.game_state.player.player_id, unk1='03000000000000')])
+            # elif dme_packet.unk1 == '03000100804401':
+            #     self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(subtype='player_initial_handshake', src_player=self.game_state.player.player_id, unk1='03000000000000')])
+            #     self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(subtype='handshake', src_player=self.game_state.player.player_id, unk1='03000000000002')])
+
+                #self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='04010300000000000000000000000000')])
+                #self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='04010300000000000200000000000000')])
 
         if dme_packet.name == 'tcp_0018_initial_sync':
             self.dmetcp_queue.put([src_player, tcp_0018_initial_sync.tcp_0018_initial_sync(src=self.game_state.player.player_id)])
@@ -70,13 +77,11 @@ class Model:
         if dme_packet.name == 'tcp_0009_set_timer':
             self.game_state.player.time = dme_packet.time
 
-            self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='04010300000000000000000000000000')])
 
             self.dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='00000000000003000300000000001A000000', username=self.game_state.player.username, unk3='000300')])
 
             self.dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='00000000001003000300000000001A000000', username=self.game_state.player.username, unk3='000000')])
 
-            self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='04010300000000000200000000000000')])
 
             self.dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined(account_id=self.game_state.player.account_id, skin1=self.game_state.player.skin, skin2=self.game_state.player.skin, username=self.game_state.player.username, username2=self.game_state.player.username, rank=self.game_state.player.rank, clan_tag=self.game_state.player.clan_tag)])
 

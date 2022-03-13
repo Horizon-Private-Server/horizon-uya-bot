@@ -9,7 +9,7 @@ class tcp_0018_initial_sync:
                        time:int=1100,
                        unk3:str='000000000000',
                        time2:int=700,
-                       unk4:str='000001000000000000'
+                       unk4:str='000001000000'
                        ):
 
         self.name = os.path.basename(__file__).strip(".py")

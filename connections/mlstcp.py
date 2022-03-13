@@ -13,7 +13,7 @@ class MlsTcp(AbstractTcp):
 
         self._config['session_key'] += '\x00'
         self._logger = logging.getLogger('thug.mlstcp')
-        self._logger.setLevel(logging.WARNING)
+        self._logger.setLevel(logging.DEBUG)
 
         self._access_key = None
 

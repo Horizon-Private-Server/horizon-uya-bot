@@ -10,14 +10,30 @@ subtype_map = {
     '00401F00': 'crate_destroyed',
     '02401F00': 'crate_respawn',
     '00000000': 'crate_destroyed_and_pickup',
-    '10000000': '?_crate_destroyed_and_pickup'
+    '10000000': '?_crate_destroyed_and_pickup',
+    '40401F00': 'flag_pickup',
+    '21000000': 'flag_update',
+    '02411F00': 'flag_drop',
+}
+
+flag_subtype_map = {
+    '0100': 'capture',
+    '00FF': 'return'
+}
+
+red_team_flag_ids = {
+    '0E1000F7'
+}
+
+blue_team_flag_ids = {
+    '0F1000F7'
 }
 
 
 class tcp_020C_info:
     def __init__(self, subtype:str=None,
                        timestamp:int=None,
-                       subtype_id:str=None,
+                       object_id:str=None,
                        data:dict=None
                        ):
 
@@ -25,7 +41,7 @@ class tcp_020C_info:
         self.id = b'\x02\x0C'
         self.subtype = subtype
         self.timestamp = timestamp
-        self.subtype_id = subtype_id
+        self.object_id = object_id
         self.data = data
 
 
@@ -35,14 +51,27 @@ class tcp_020C_info:
         subtype = ''.join([data.popleft() for i in range(4)])
         subtype = subtype_map[subtype]
         timestamp = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        subtype_id = ''.join([data.popleft() for i in range(4)])
+        object_id = ''.join([data.popleft() for i in range(4)])
 
         data_dict = {}
+
+        if object_id in red_team_flag_ids:
+            data_dict['flag_color'] = 'red'
+        elif object_id in blue_team_flag_ids:
+            data_dict['flag_color'] = 'blue'
+
+
         if subtype in ['?_crate_destroyed_and_pickup', '?_crate_destroyed']:
             data_dict['weapon_spawned'] = WEAPON_MAP[data.popleft()]
-        if subtype == 'weapon_pickup':
+        elif subtype == 'weapon_pickup':
             data_dict['weapon_pickup_unk'] =  ''.join([data.popleft() for i in range(4)])
-        return tcp_020C_info(subtype, timestamp, subtype_id, data_dict)
+        elif subtype == 'flag_pickup':
+            data_dict['flag_pickup_unk'] =  ''.join([data.popleft() for i in range(4)])
+        elif subtype == 'flag_update':
+            data_dict['flag_update_type'] =  flag_subtype_map[''.join([data.popleft() for i in range(2)])]
+        elif subtype == 'flag_drop':
+            data_dict['flag_drop_unk'] =  ''.join([data.popleft() for i in range(16)])
+        return tcp_020C_info(subtype, timestamp, object_id, data_dict)
 
     # def to_bytes(self):
     #     return self.id + \
@@ -61,4 +90,4 @@ class tcp_020C_info:
 
     def __str__(self):
         return f"{self.name}; subtype:{self.subtype} " + \
-                f"timestamp:{self.timestamp} subtype_id:{self.subtype_id} data:{self.data}"
+                f"timestamp:{self.timestamp} object_id:{self.object_id} data:{self.data}"

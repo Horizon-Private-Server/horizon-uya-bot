@@ -43,7 +43,7 @@ def print_diff(data1, data2):
         if i % MAX_CHAR_PER_LINE == 0:
             print()
         if i in idx_diff:
-            print(f"{bcolors.WARNING}{data1[i]}{bcolors.ENDC}",end='')
+            print(f"{bcolors.FAIL}{data1[i]}{bcolors.ENDC}",end='')
         else:
             print(data1[i], end='')
 
@@ -53,7 +53,7 @@ def print_diff(data1, data2):
         if i % MAX_CHAR_PER_LINE == 0:
             print()
         if i in idx_diff:
-            print(f"{bcolors.WARNING}{data2[i]}{bcolors.ENDC}",end='')
+            print(f"{bcolors.FAIL}{data2[i]}{bcolors.ENDC}",end='')
         else:
             print(data2[i], end='')
 

@@ -9,7 +9,13 @@ player_id_map = {
     '0100': 0,
     '0300': 1,
     '0600': 2,
+    '0900': 3,
+    '0C00': 4,
+    '0F00': 5,
+    '1200': 6,
+    '1500': 7,
 }
+
 
 class tcp_0003_broadcast_lobby_state:
     def __init__(self, data:dict):

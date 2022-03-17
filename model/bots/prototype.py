@@ -22,6 +22,8 @@ class prototype:
     async def main_loop(self):
         while self._model.alive:
 
+            print(self.game_state)
+
             # Wait for players to join
             if len(self.game_state.players) == 0:
                 await asyncio.sleep(0.03)
@@ -39,7 +41,7 @@ class prototype:
                 self.game_state.player.weapon = 'flux'
 
             random_gen = random.random()
-            if not self.game_state.player.is_dead and random_gen > .975:
+            if not self.game_state.player.is_dead and random_gen > .995:
                 self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon='flux',src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=self.game_state.players[0].player_id, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
             elif not self.game_state.player.is_dead and random_gen > .999:
@@ -77,13 +79,26 @@ class prototype:
 
             self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
             #self._model.dmeudp_queue.put(['B', udp_0200_player_died.udp_0200_player_died(src_player=self.game_state.player.player_id)])
-            self._model._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes("0003000103000700000000"))))
+
+            # Aquatos Sewers
+            test_map = {
+                0: '01',
+                1: '03',
+                2: '06',
+                3: '09',
+                4: '0C',
+                5: '0F',
+                6: '12',
+                7: '15'
+            }
+            # Death animation
+            self._model._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes(f"00030001{test_map[self.game_state.player.player_id]}000700000000"))))
 
             #])(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes("020001396D0267BCA8433B0CBD4300E0074200A08238008075B800B906C0"))))
 
-            self._model.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=0, killed_id=1, weapon='flux')])
+            self._model.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=src_player, killed_id=self.game_state.player.player_id, weapon='flux')])
 
-            self.game_state.player.respawn_time = datetime.now().timestamp() + 10
+            self.game_state.player.respawn_time = datetime.now().timestamp() + 5
 
     def send_movement(self):
         packet_num = self.game_state.player.gen_packet_num()

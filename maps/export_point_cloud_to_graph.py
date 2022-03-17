@@ -8,7 +8,7 @@ import os
 import sys
 
 figsize = (12, 12)
-map_name = 'command_center'
+map_name = 'aquatos_sewers'
 display_raw_points = False
 display_downsampled = False
 

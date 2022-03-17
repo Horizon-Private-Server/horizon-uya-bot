@@ -79,6 +79,9 @@ class Model:
 
             self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready')])
 
+            self._loop.create_task(self._timer_update())
+
+
         if dme_packet.name == 'tcp_0211_player_lobby_state_change' and src_player == 0 and dme_packet.ready == 'change team request':
             new_team = self.game_state.player.change_teams()
             self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready')])
@@ -88,8 +91,8 @@ class Model:
             self.game_state.state = 'active'
 
         if dme_packet.name == 'udp_0001_timer_update':
-            self.game_state.player.time = dme_packet.time
-            self.dmeudp_queue.put([0, udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1=dme_packet.unk1)])
+            if src_player == 0:
+                self.game_state.player.time = dme_packet.time
             self.game_state.time_update(src_player, dme_packet.time)
 
 
@@ -100,7 +103,6 @@ class Model:
 
         if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and dme_packet.data['num_messages'] == 1 and dme_packet.data['msg0']['type'] == 'timer_update':
             self.game_state.player.time = dme_packet.data['msg0']['time']
-            self.dmetcp_queue.put([0, tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'timer_update', 'time': self.game_state.player.time}})])
 
         if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_PlayerData':
             self.game_state.tnw_playerdata_update(src_player, dme_packet.data)
@@ -130,7 +132,7 @@ class Model:
 
     async def send_player_data(self):
         # It takes 13 seconds to load from game start into actual game
-        await asyncio.sleep(14)
+        await asyncio.sleep(18)
 
 
         # Command Center
@@ -141,13 +143,25 @@ class Model:
         # unk5 = '00000100001000000000'
         # unk6 = '00000000007041000000000000000000000000000000000000010000000100000000000000010000000100000000000000000000003200000064000000320000000100'
 
+
         # Aquatos Sewers
-        unk1='0100000002D301000300C6BF8EE7000000000000'
+        test_map = {
+            0: '01',
+            1: '03',
+            2: '06',
+            3: '09',
+            4: '0C',
+            5: '0F',
+            6: '12',
+            7: '15'
+        }
+
+        unk1=f'0{self.game_state.player.player_id}00000002D30{self.game_state.player.player_id}00{test_map[self.game_state.player.player_id]}00C6BF8EE7000000000000'
         unk2='4116E1C7430A7EBA43B2446B44000000000000000000000000DB0FC9BF'
         unk3='0000000000000000000000000000000000000000'
-        unk4='01000010000000000000000000000000DB0FC9BF'
-        unk5='00000100001000000000'
-        unk6='00000000007041000000000000000000000000000000000000010000000100000000000000010000000100000000000000000000003200000064000000320000000100'
+        unk4=f'010000{self.game_state.player.player_id}0000000000000000000000000DB0FC9BF'
+        unk5=f'0000010000{self.game_state.player.player_id}000000000'
+        unk6=f'000000000070410000000000000000000000000000000000000{self.game_state.player.player_id}0000000100000000000000010000000100000000000000000000003200000064000000320000000100'
 
         self.dmetcp_queue.put(['B', tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': unk1, 'unk2':unk2, 'player_start_time_1': self.game_state.player.time, 'player_start_time_2': self.game_state.player.time, 'unk3': unk3, 'account_id_1': self.game_state.player.account_id, 'account_id_2': self.game_state.player.account_id, 'team':self.game_state.player.team, 'unk4': unk4, 'unk5': unk5, 'unk6':unk6})])
 
@@ -156,14 +170,23 @@ class Model:
 
         self._loop.create_task(self.bot.main_loop())
 
-
+    async def _timer_update(self):
+        while self.alive:
+            try:
+                self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'timer_update', 'time': self.game_state.player.time}})])
+                self.dmeudp_queue.put([0, udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1='0000FFFF')])
+                await asyncio.sleep(1)
+            except:
+                logger.exception("TIMER UPDATE ERROR")
+                self.alive = False
+                break
 
     async def _tcp_flusher(self):
         '''
         This method is used to aggregate individual DME MGCL packets into a single packet
         in order to be queued. Ensure the total length < 500 bytes
         '''
-        while True:
+        while self.alive:
             try:
                 size = self.dmetcp_queue.qsize()
                 if size != 0:
@@ -190,7 +213,7 @@ class Model:
         This method is used to aggregate individual DME MGCL packets into a single packet
         in order to be queued. Ensure the total length < 500 bytes
         '''
-        while True:
+        while self.alive:
             try:
                 size = self.dmeudp_queue.qsize()
 

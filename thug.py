@@ -29,9 +29,9 @@ from constants.constants import SKIN_MAP
 import random
 
 class Thug:
-    def __init__(self):
+    def __init__(self, config:dict):
         logger.info("Initializing ...")
-        self._config = self.read_config()
+        self._config = config
 
         self.loop = asyncio.get_event_loop()
 
@@ -69,9 +69,14 @@ class Thug:
         self.loop.create_task(self._udp_conn.main(self._model))
         self.loop.run_until_complete(self._tcp_conn.main(self._model))
 
-    def read_config(self, config_file='config.json'):
-        with open(config_file, 'r') as f:
-            return json.loads(f.read())
+def read_config(config_file='config.json'):
+    with open(config_file, 'r') as f:
+        return json.loads(f.read())
+
+# AWS Lambda handler
+def handler(event, context):
+    print(event)
+    Thug(config = event)
 
 if __name__ == '__main__':
-    Thug()
+    Thug(config = read_config())

@@ -76,7 +76,11 @@ def read_config(config_file='config.json'):
 # AWS Lambda handler
 def handler(event, context):
     print(event)
-    Thug(config = event)
+    try:
+        Thug(config = event)
+    except:
+        return 1
+    return 0
 
 if __name__ == '__main__':
     Thug(config = read_config())

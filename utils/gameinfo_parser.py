@@ -1,13 +1,13 @@
 
 weapons = {
-    0:"Lava Gun",
-    1:"Morph O' Ray",
-    2:"Mines",
-    3:"Gravity Bomb",
-    4:"Rockets",
-    5:"Blitz",
-    6:"N60",
-    7:"Flux"
+    0:"lava",
+    1:"morph",
+    2:"mine",
+    3:"grav",
+    4:"rocket",
+    5:"blitz",
+    6:"n60",
+    7:"flux"
 }
 
 def weaponParser(num):

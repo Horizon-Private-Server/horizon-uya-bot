@@ -1,6 +1,6 @@
 import logging
 logger = logging.getLogger('thug.model')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 
 import sys
 
@@ -184,6 +184,18 @@ class Model:
                 logger.exception("TIMER UPDATE ERROR")
                 self.alive = False
                 break
+
+    def get_closest_enemy_player(self):
+        players = [p for p in self.game_state.players.values() if p.team != self.game_state.player.team]
+
+        if players == []:
+            players = [p for p in self.game_state.players.values()]
+
+        idx = find_closest_node_from_list(self.game_state.player.coord, [p.coord for p in players])
+        closest_player = players[idx]
+
+        return closest_player
+
 
     async def _tcp_flusher(self):
         '''

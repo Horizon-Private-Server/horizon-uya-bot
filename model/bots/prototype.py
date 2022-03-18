@@ -10,6 +10,10 @@ from utils.utils import *
 from medius.rt.clientappsingle import ClientAppSingleSerializer
 from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
 
+import logging
+logger = logging.getLogger('thug.model.prototype')
+logger.setLevel(logging.INFO)
+
 class prototype:
     def __init__(self, model, game_state):
         self._model = model
@@ -18,40 +22,41 @@ class prototype:
         self.game_state.player.coord = self.game_state.map.get_random_coord()
         self.game_state.player.x_angle = 127
 
+        self.tracking = self.game_state.player
 
     async def main_loop(self):
         while self._model.alive:
             try:
                 print(self.game_state)
+                print(self.game_state.weapons)
+                print(self.game_state.game_info)
 
                 # Wait for players to join
                 if len(self.game_state.players) == 0:
                     await asyncio.sleep(0.03)
                     continue
 
+                # Randomly pick a valid weapon
+                if self.game_state.player.weapon == None:
+                    if self.game_state.weapons == []:
+                        weapon = 'wrench'
+                    else:
+                        weapon = random.choice(self.game_state.weapons)
+                    self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
+                    self.game_state.player.weapon = weapon
+
+                # Respawn
                 if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
+                    self.game_state.player.weapon = None
                     self._model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, map=self.game_state.map.map)])
                     self.game_state.player.coord = self.game_state.map.get_random_coord()
                     self.game_state.player.is_dead = False
 
-
-                if self.game_state.player.weapon == 'n60':
-                    # Switch to flux
-                    self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': 'flux'}})])
-                    self.game_state.player.weapon = 'flux'
-
-                # random_gen = random.random()
-                # if not self.game_state.player.is_dead and random_gen > .995:
-                #     self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon='flux',src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=self.game_state.players[0].player_id, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
-                #
-                # elif not self.game_state.player.is_dead and random_gen > .999:
-                #     self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon='flux',src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=-1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
-
-
                 # update angle/coord
                 if not self.game_state.player.is_dead:
                     if self.game_state.player.movement_packet_num % 4 == 0:
-                        new_coord = self.game_state.map.path(self.game_state.player.coord, self.game_state.players[0].coord, distance_to_move=30)
+                        self.tracking = self._model.get_closest_enemy_player()
+                        new_coord = self.game_state.map.path(self.tracking.coord, self.tracking.coord, distance_to_move=30)
                         if new_coord[2] > self.game_state.player.coord[2]:
                             self.game_state.player.animation = 'jump'
                         elif new_coord != self.game_state.player.coord:
@@ -63,7 +68,10 @@ class prototype:
 
                 # Update camera angle
                 if self.game_state.player.movement_packet_num % 5 == 0:
-                    self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.game_state.players[0].coord)
+                    self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.tracking.coord)
+
+                # Fire weapon
+                self.fire_weapon()
 
                 # Update movement
                 self.send_movement()
@@ -74,6 +82,19 @@ class prototype:
                 logger.exception("PROTOTYPE ERROR")
                 self._model.alive = False
                 break
+
+    def fire_weapon(self):
+        if self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench']:
+            return
+
+        random_gen = random.random()
+        if not self.game_state.player.is_dead and random_gen > .98:
+            self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=self.tracking.player_id, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+
+            #if self.game_state.player.weapon =
+
+        elif not self.game_state.player.is_dead and random_gen > .999:
+            self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=-1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
     def process_shot_fired(self, src_player, packet_data):
 

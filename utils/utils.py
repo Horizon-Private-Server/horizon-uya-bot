@@ -1,4 +1,6 @@
 from collections import deque
+import math
+
 
 def short_bytes_to_int(byte1, byte2):
     data = byte2 + byte1
@@ -157,3 +159,15 @@ def calculate_angle(source_coord, dest_coord):
         return int(second_angle_map[degrees])
 
     raise Exception(f"Invalid coordinates! Unable to calculate angle! source_coord:{source_coord} dest_coord:{dest_coord}")
+
+
+
+def find_closest_node_from_list(src, dsts):
+    min_dist = 999999999999
+    min_idx = None
+    for i,dst in enumerate(dsts):
+        edist = math.dist(src, dst)
+        if edist < min_dist:
+            min_dist = edist
+            min_idx = i
+    return min_idx

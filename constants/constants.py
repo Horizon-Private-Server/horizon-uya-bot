@@ -82,5 +82,8 @@ ANIMATION_MAP = {
     'backward-left': '63DE',
     'backward-right': '535A',
     'jump': 'EF',
-    'crouch': '9C'  # side flip: use flush = 148, spam crouch: 32
+    'crouch': '9C', # side flip: use flush = 148, spam crouch: 32
+    'shoot': 'BD',
+    'forward-shoot': '45D2',
+    'jump-shoot': 'B77B'
 }

@@ -15,14 +15,17 @@ class GameState:
         self.state = 'staging'
 
         self.game_name = gameinfo['game_name']
-        # ['Flux', 'N60', 'Blitz', 'Rockets', 'Gravity Bomb', 'Mines', "Morph O' Ray", 'Lava Gun']
-        self.allowed_weapons = gameinfo['weapons']
+        # ['flux', 'n60', 'blitz', 'rocket', 'grav', 'mine', 'morph', 'lava']
+        self.weapons = list(set(gameinfo['weapons']).intersection({'flux', 'rocket', 'blitz', 'grav', 'n60'}))
+
         # {'baseDefenses': True, 'spawn_charge_boots': False, 'spawn_weapons': False, 'player_names': True, 'vehicles': True}
         self.advanced_rules = gameinfo['advanced_rules']
         # ['Bakisi_Isle', 'Hoven_Gorge', 'Outpost_x12', 'Korgon_Outpost', 'Metropolis', 'Blackwater_City', 'Command_Center', 'Aquatos_Sewers', 'Blackwater_Dox', 'Marcadia_Palace']
         self.map_name = gameinfo['map']
         # ['Siege', 'CTF', 'Deathmatch']
         self.game_mode = gameinfo['game_mode']
+
+        self.game_info = gameinfo
 
         # Point grid
         self.map = Map(self.map_name)

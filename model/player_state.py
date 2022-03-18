@@ -21,7 +21,7 @@ class PlayerState:
         self.movement_packet_num = 0
         self.time = 0
 
-        self.weapon = 'n60'
+        self.weapon = None
         self.is_dead = False
         self.animation = None
         self.health = 100
@@ -50,5 +50,5 @@ class PlayerState:
         return self.team
 
     def __str__(self):
-        return f"PlayerState; player_id:{self.player_id} account_id:{self.account_id} team:{self.team} " + \
+        return f"PlayerState; player_id:{self.player_id} account_id:{self.account_id} team:{self.team} weapon:{self.weapon} " + \
                 f"coord:{self.coord} movement_packet_num:{self.movement_packet_num} time:{self.time}"

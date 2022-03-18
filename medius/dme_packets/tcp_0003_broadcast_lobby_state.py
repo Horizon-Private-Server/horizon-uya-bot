@@ -39,11 +39,12 @@ class tcp_0003_broadcast_lobby_state:
             #assert broadcast_type in ['02','03','05']
 
             if broadcast_type == '05': # Ready/Unready
+                ready_unready_map = {'00': 'unready', '06': 'ready', '05': 'kicked'}
                 sub_message['type'] = 'ready/unready'
                 for player_id in range(8):
                     val = data.popleft()
                     data.popleft()
-                    sub_message[f'p{player_id}'] = val == '06'
+                    sub_message[f'p{player_id}'] = ready_unready_map[val]
             elif broadcast_type == '03': # Color
                 sub_message['type'] = 'colors'
                 for player_id in range(8):

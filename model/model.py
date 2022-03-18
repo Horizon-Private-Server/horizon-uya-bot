@@ -1,6 +1,6 @@
 import logging
 logger = logging.getLogger('thug.model')
-logger.setLevel(logging.WARNING)
+logger.setLevel(logging.DEBUG)
 
 import sys
 
@@ -81,6 +81,10 @@ class Model:
 
             self._loop.create_task(self._timer_update())
 
+        if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and dme_packet.data['src'] == -1 and dme_packet.data['msg0']['type'] == 'ready/unready' and dme_packet.data['msg0'][f'p{self.game_state.player.player_id}'] == 'kicked':
+            # Bot just got kicked
+            # tcp_0003_broadcast_lobby_state; data:{'unk1': '01', 'num_messages': 1, 'src': -1, 'msg0': {'type': 'ready/unready', 'p0': False, 'p1': False, 'p2': False, 'p3': False, 'p4': False, 'p5': False, 'p6': False, 'p7': False}}
+            self.alive = False
 
         if dme_packet.name == 'tcp_0211_player_lobby_state_change' and src_player == 0 and dme_packet.ready == 'change team request':
             new_team = self.game_state.player.change_teams()

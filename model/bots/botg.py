@@ -21,10 +21,10 @@ class botg(prototype):
         }
         self._hit_rate = {
             'n60': 1,
-            'rocket': 1,
+            'rocket': .8,
             'flux': 1,
             'blitz': 1,
-            'grav': 1
+            'grav': .8
         }
 
     def __str__(self):

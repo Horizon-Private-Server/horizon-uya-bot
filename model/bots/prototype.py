@@ -24,6 +24,29 @@ class prototype:
 
         self.tracking = self.game_state.player
 
+        self._weapons_enabled = True
+        self._fire_rate = {
+            'n60': 1,
+            'rocket': 1,
+            'flux': 1,
+            'blitz': 1,
+            'grav': 1
+        }
+        # self._hit_rate = {
+        #     'n60': .5,
+        #     'rocket': .1,
+        #     'flux': .1,
+        #     'blitz': .2,
+        #     'grav': .1
+        # }
+        self._hit_rate = {
+            'n60': 1,
+            'rocket': 1,
+            'flux': 1,
+            'blitz': 1,
+            'grav': 1
+        }
+
     async def main_loop(self):
         while self._model.alive:
             try:
@@ -48,6 +71,7 @@ class prototype:
                 # Respawn
                 if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
                     self.game_state.player.weapon = None
+                    self.game_state.player.health = 100
                     self._model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, map=self.game_state.map.map)])
                     self.game_state.player.coord = self.game_state.map.get_random_coord()
                     self.game_state.player.is_dead = False
@@ -56,7 +80,7 @@ class prototype:
                 if not self.game_state.player.is_dead:
                     if self.game_state.player.movement_packet_num % 4 == 0:
                         self.tracking = self._model.get_closest_enemy_player()
-                        new_coord = self.game_state.map.path(self.tracking.coord, self.tracking.coord, distance_to_move=30)
+                        new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord, distance_to_move=30)
                         if new_coord[2] > self.game_state.player.coord[2]:
                             self.game_state.player.animation = 'jump'
                         elif new_coord != self.game_state.player.coord:
@@ -71,7 +95,8 @@ class prototype:
                     self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.tracking.coord)
 
                 # Fire weapon
-                self.fire_weapon()
+                if self._weapons_enabled:
+                    self.fire_weapon()
 
                 # Update movement
                 self.send_movement()
@@ -84,46 +109,65 @@ class prototype:
                 break
 
     def fire_weapon(self):
-        if self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench']:
+        if self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench']:
             return
 
-        random_gen = random.random()
-        if not self.game_state.player.is_dead and random_gen > .98:
-            self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=self.tracking.player_id, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+        # Fire weapon
+        if random.random() < self._fire_rate[self.game_state.player.weapon]:
 
-            #if self.game_state.player.weapon =
+            # Fire weapon HIT
+            if random.random() < self._hit_rate[self.game_state.player.weapon]:
+                object_id=self.tracking.player_id
+            else:
+                object_id=-1
 
-        elif not self.game_state.player.is_dead and random_gen > .999:
-            self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=-1, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+            self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+
+
 
     def process_shot_fired(self, src_player, packet_data):
 
+        # Player is Alive, and the teammate who shot was on the enemy team. The object hit was us.
         if not self.game_state.player.is_dead and self.game_state.players[src_player].team != self.game_state.player.team and packet_data.object_id == self.game_state.player.player_id:
-            self.game_state.player.is_dead = True
-            self.game_state.player.animation = None
 
             self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
-            #self._model.dmeudp_queue.put(['B', udp_0200_player_died.udp_0200_player_died(src_player=self.game_state.player.player_id)])
 
-            # Aquatos Sewers
-            test_map = {
-                0: '01',
-                1: '03',
-                2: '06',
-                3: '09',
-                4: '0C',
-                5: '0F',
-                6: '12',
-                7: '15'
-            }
-            # Death animation
-            self._model._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes(f"00030001{test_map[self.game_state.player.player_id]}000700000000"))))
 
-            #])(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes("020001396D0267BCA8433B0CBD4300E0074200A08238008075B800B906C0"))))
 
-            self._model.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=src_player, killed_id=self.game_state.player.player_id, weapon='flux')])
+            # If the opposite player is ALSO a CPU, we need to check the distance to ensure that they are close enough to do dmg
 
-            self.game_state.player.respawn_time = datetime.now().timestamp() + 5
+            if packet_data.weapon == 'flux':
+                self.game_state.player.health -= 87
+            elif packet_data.weapon == 'n60':
+                self.game_state.player.health -= 20
+            elif packet_data.weapon == 'rocket':
+                self.game_state.player.health -= 60
+
+
+            if self.game_state.player.health < 0:
+
+                self.game_state.player.is_dead = True
+                self.game_state.player.animation = None
+
+                #self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+
+                # Aquatos Sewers
+                test_map = {
+                    0: '01',
+                    1: '03',
+                    2: '06',
+                    3: '09',
+                    4: '0C',
+                    5: '0F',
+                    6: '12',
+                    7: '15'
+                }
+                # Death animation
+                self._model._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes(f"00030001{test_map[self.game_state.player.player_id]}000700000000"))))
+
+                self._model.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=src_player, killed_id=self.game_state.player.player_id, weapon=packet_data.weapon)])
+
+                self.game_state.player.respawn_time = datetime.now().timestamp() + 5
 
     def send_movement(self):
         packet_num = self.game_state.player.gen_packet_num()

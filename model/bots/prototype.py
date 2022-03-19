@@ -24,27 +24,22 @@ class prototype:
 
         self.tracking = self.game_state.player
 
+        self.follow_player = False
+
         self._weapons_enabled = True
         self._fire_rate = {
-            'n60': 1,
-            'rocket': 1,
-            'flux': 1,
-            'blitz': 1,
-            'grav': 1
+            'n60': .1,
+            'rocket': .007,
+            'flux': .007,
+            'blitz': .007,
+            'grav': .007
         }
-        # self._hit_rate = {
-        #     'n60': .5,
-        #     'rocket': .1,
-        #     'flux': .1,
-        #     'blitz': .2,
-        #     'grav': .1
-        # }
         self._hit_rate = {
-            'n60': 1,
-            'rocket': 1,
-            'flux': 1,
-            'blitz': 1,
-            'grav': 1
+            'n60': .1,
+            'rocket': .1,
+            'flux': .1,
+            'blitz': .1,
+            'grav': .1
         }
 
     async def main_loop(self):
@@ -71,7 +66,7 @@ class prototype:
                 # Respawn
                 if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
                     self.game_state.player.weapon = None
-                    self.game_state.player.health = 100
+                    self.game_state.player.reset_health()
                     self._model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, map=self.game_state.map.map)])
                     self.game_state.player.coord = self.game_state.map.get_random_coord()
                     self.game_state.player.is_dead = False
@@ -79,8 +74,16 @@ class prototype:
                 # update angle/coord
                 if not self.game_state.player.is_dead:
                     if self.game_state.player.movement_packet_num % 4 == 0:
+
+
                         self.tracking = self._model.get_closest_enemy_player()
-                        new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord, distance_to_move=30)
+
+                        # if we are at 300 distance, we can strafe around instead of walking toward them
+                        if calculate_distance(self.game_state.player.coord, self.tracking.coord) > 600 or self.follow_player == True:
+                            new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord, distance_to_move=30)
+                        else:
+                            new_coord = self.game_state.map.get_random_coord_connected(self.game_state.player.coord)
+
                         if new_coord[2] > self.game_state.player.coord[2]:
                             self.game_state.player.animation = 'jump'
                         elif new_coord != self.game_state.player.coord:

@@ -24,9 +24,12 @@ class PlayerState:
         self.weapon = None
         self.is_dead = False
         self.animation = None
-        self.health = 100
+        self._default_health = 100
+        self.reset_health()
         self.respawn_time = None
 
+    def reset_health(self):
+        self.health = self._default_health
 
     def gen_packet_num(self):
         self.movement_packet_num += 1

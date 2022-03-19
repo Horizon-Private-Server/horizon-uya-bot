@@ -160,7 +160,8 @@ def calculate_angle(source_coord, dest_coord):
 
     raise Exception(f"Invalid coordinates! Unable to calculate angle! source_coord:{source_coord} dest_coord:{dest_coord}")
 
-
+def calculate_distance(source_coord, dest_coord):
+    return math.dist(source_coord, dest_coord)
 
 def find_closest_node_from_list(src, dsts):
     min_dist = 999999999999

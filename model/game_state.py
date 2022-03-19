@@ -16,7 +16,7 @@ class GameState:
 
         self.game_name = gameinfo['game_name']
         # ['flux', 'n60', 'blitz', 'rocket', 'grav', 'mine', 'morph', 'lava']
-        self.weapons = list(set(gameinfo['weapons']).intersection({'flux', 'rocket', 'blitz', 'grav', 'n60'}))
+        self.weapons = list(set(gameinfo['weapons']).intersection({'flux', 'rocket', 'grav', 'n60'}))
 
         # {'baseDefenses': True, 'spawn_charge_boots': False, 'spawn_weapons': False, 'player_names': True, 'vehicles': True}
         self.advanced_rules = gameinfo['advanced_rules']

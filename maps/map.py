@@ -68,6 +68,9 @@ class Map:
     def get_random_coord(self):
         return tuple(random.choice(np.array(self.points)))
 
+    def get_random_coord_connected(self, coord):
+        return list(random.choice(list(self.G.neighbors(tuple(coord)))))
+
 if __name__ == '__main__':
     print("Reading map")
     map = Map('aquatos_sewers')

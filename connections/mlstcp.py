@@ -12,16 +12,24 @@ class MlsTcp(AbstractTcp):
         super().__init__(loop, config, ip, port)
 
         self._config['session_key'] += '\x00'
+        self._access_key = None
+
         self._logger = logging.getLogger('thug.mlstcp')
         self._logger.setLevel(logging.DEBUG)
 
-        self._access_key = None
-
+        self._logger.debug("Opening connection 1...")
         self.loop.run_until_complete(self.start())
-        self.loop.create_task(self.read())
-        self.loop.create_task(self.write())
+
+        self._logger.debug("Connection opened!")
+        self.loop.run_until_complete(asyncio.sleep(5))
+
+        self._logger.debug("Starting Read routine ...")
+        self.loop.create_task(self.read_data())
+        self._logger.debug("Starting Write routine ...")
+        self.loop.create_task(self.write_data())
         self.loop.run_until_complete(self.generate_access_key())
         self.loop.run_until_complete(self.get_game_info())
+
 
         # TODO: add CTF/Siege modes
         if self._config['gameinfo']['game_mode'] != 'Deathmatch' or self._config['gameinfo']['submode'] != 'Teams':
@@ -96,6 +104,7 @@ class MlsTcp(AbstractTcp):
 
 
     async def get_game_info(self):
+        self._logger.debug("Getting Game Info ...")
         pkt = hex_to_bytes('0B2E00013331000000000000000000000000000000C01D480000')
         pkt += self._config['session_key'].encode()
         pkt += hex_to_bytes("0000")

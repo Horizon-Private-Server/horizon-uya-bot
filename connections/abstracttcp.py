@@ -26,14 +26,19 @@ class AbstractTcp:
         self._readwrite_time = 0.0001
 
     async def start(self):
+        self._logger.debug("Starting async open_connection ...")
         self._reader, self._writer = await asyncio.open_connection(self._ip, self._port)
+        self._logger.debug("Done async open_connection ...")
 
-    async def read(self):
+    async def read_data(self):
+        self._logger.debug("Starting read data ...")
         while True:
             data = await self._reader.read(500)
             if data == b'':
-                self._logger.info("Disconnected by server!")
-                sys.exit()
+                await asyncio.sleep(self._readwrite_time)
+                continue
+                # self._logger.info("Disconnected by server!")
+                # sys.exit()
 
             packets = self._deframer.deframe([data])
 
@@ -46,7 +51,8 @@ class AbstractTcp:
 
             await asyncio.sleep(self._readwrite_time)
 
-    async def write(self):
+    async def write_data(self):
+        self._logger.debug("Starting write data ...")
         while True:
             size = self._write_queue.qsize()
 

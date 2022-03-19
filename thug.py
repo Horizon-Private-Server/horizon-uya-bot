@@ -79,6 +79,7 @@ def handler(event, context):
     try:
         Thug(config = event)
     except:
+        logger.exception("Thug error!")
         return 1
     return 0
 

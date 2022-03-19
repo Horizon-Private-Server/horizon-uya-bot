@@ -18,8 +18,8 @@ class DmeTcp(AbstractTcp):
         self._player_count = 0
 
         self.loop.run_until_complete(self.start())
-        self.loop.create_task(self.read())
-        self.loop.create_task(self.write())
+        self.loop.create_task(self.read_data())
+        self.loop.create_task(self.write_data())
         self.loop.create_task(self.echo())
 
 

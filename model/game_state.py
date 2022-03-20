@@ -42,7 +42,25 @@ class GameState:
         self.players[src_player].movement_packet_num = movement_data['packet_num']
 
     def tnw_playerdata_update(self, src_player:int, tnw_playerdata: dict):
-        self.players[src_player] = PlayerState(src_player, tnw_playerdata['account_id_1'], tnw_playerdata['team'])
+        if src_player in self.players.keys():
+            self.players[src_player].player_id = src_player
+            self.players[src_player].account_id = tnw_playerdata['account_id_1']
+            self.players[src_player].team = tnw_playerdata['team']
+        else:
+            self.players[src_player] = PlayerState(player_id=src_player, account_id=tnw_playerdata['account_id_1'], team=tnw_playerdata['team'])
+
+    def tnw_gamesetting_update(self, src_player:int, tnw_gamesetting: dict):
+        for player_idx in range(8):
+            if player_idx == self.player.player_id:
+                continue
+
+            username = tnw_gamesetting[f'p{player_idx}_username']
+            if username != '':
+                # Update username
+                if player_idx in self.players.keys():
+                    self.players[player_idx].username = username
+                else:
+                    self.players[player_idx] = PlayerState(player_id=player_idx, username = username)
 
     def __str__(self):
         result = f'''

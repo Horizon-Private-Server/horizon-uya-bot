@@ -110,6 +110,8 @@ class Model:
 
         if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_PlayerData':
             self.game_state.tnw_playerdata_update(src_player, dme_packet.data)
+        if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_GameSetting':
+            self.game_state.tnw_gamesetting_update(src_player, dme_packet.data)
 
 
         if dme_packet.name == 'udp_0209_movement_update':

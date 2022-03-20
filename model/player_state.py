@@ -1,7 +1,7 @@
 
 
 class PlayerState:
-    def __init__(self, player_id:int, account_id:int, team:str, username:str=None, skin:str=None, clan_tag:str=None, rank:int=0):
+    def __init__(self, player_id:int=None, account_id:int=None, team:str=None, username:str=None, skin:str=None, clan_tag:str=None, rank:int=0):
         self.player_id = player_id
         self.account_id = account_id
         self.team = team
@@ -53,5 +53,5 @@ class PlayerState:
         return self.team
 
     def __str__(self):
-        return f"PlayerState; player_id:{self.player_id} health:{self.health} account_id:{self.account_id} team:{self.team} weapon:{self.weapon} " + \
+        return f"PlayerState; username: {self.username} player_id:{self.player_id} health:{self.health} account_id:{self.account_id} team:{self.team} weapon:{self.weapon} " + \
                 f"coord:{self.coord} movement_packet_num:{self.movement_packet_num} time:{self.time}"

@@ -8,7 +8,7 @@ import os
 import sys
 
 figsize = (12, 12)
-map_name = 'blackwater_docks'
+map_name = 'marcadia_palace'
 display_raw_points = False
 display_downsampled = False
 
@@ -141,4 +141,4 @@ plt.tight_layout()
 plt.show()
 
 print("-- Writing Graph to graphs folder ...")
-#nx.write_edgelist(G, os.path.join('graphs', f"{map_name}.edgelist"), delimiter='|')
+nx.write_edgelist(G, os.path.join('graphs', f"{map_name}.edgelist"), delimiter='|')

@@ -42,6 +42,8 @@ class prototype:
             'grav': .1
         }
 
+        self.cpu_damage_min_dist = 500
+
     async def main_loop(self):
         while self._model.alive:
             try:
@@ -133,11 +135,14 @@ class prototype:
         # Player is Alive, and the teammate who shot was on the enemy team. The object hit was us.
         if not self.game_state.player.is_dead and self.game_state.players[src_player].team != self.game_state.player.team and packet_data.object_id == self.game_state.player.player_id:
 
+            # If the opposite player is ALSO a CPU, we need to check the distance to ensure that they are close enough to do dmg
+            if self.game_state.players[src_player].username[0:3] == 'CPU' and calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) > self.cpu_damage_min_dist:
+                return
+
             self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
 
 
 
-            # If the opposite player is ALSO a CPU, we need to check the distance to ensure that they are close enough to do dmg
 
             if packet_data.weapon == 'flux':
                 self.game_state.player.health -= 87

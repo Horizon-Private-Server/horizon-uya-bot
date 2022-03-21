@@ -21,7 +21,7 @@ class MlsTcp(AbstractTcp):
         self.loop.run_until_complete(self.start())
 
         self._logger.debug("Connection opened!")
-        self.loop.run_until_complete(asyncio.sleep(5))
+        #self.loop.run_until_complete(asyncio.sleep(5))
 
         self._logger.debug("Starting Read routine ...")
         self.loop.create_task(self.read_data())

@@ -26,3 +26,7 @@ class bot4(prototype):
 
     def __str__(self):
         return "bot4"
+
+    def fire_weapon(self):
+        super().fire_weapon()
+        self.change_weapon()

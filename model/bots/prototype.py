@@ -44,6 +44,20 @@ class prototype:
 
         self.cpu_damage_min_dist = 500
 
+        self.respawn_time = 5
+
+        self._close_weapon_self_dmg_rate = {
+            'grav': .25,
+            'blitz': .1,
+            'lava': .08
+        }
+
+        self._close_weapon_self_dmg_amount = {
+            'grav': 60,
+            'blitz': 20,
+            'lava': 38
+        }
+
     async def main_loop(self):
         while self._model.alive:
             try:
@@ -58,12 +72,7 @@ class prototype:
 
                 # Randomly pick a valid weapon
                 if self.game_state.player.weapon == None:
-                    if self.game_state.weapons == []:
-                        weapon = 'wrench'
-                    else:
-                        weapon = random.choice(self.game_state.weapons)
-                    self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
-                    self.game_state.player.weapon = weapon
+                    self.change_weapon()
 
                 # Respawn
                 if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
@@ -126,13 +135,20 @@ class prototype:
             else:
                 object_id=-1
 
-            self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+            self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
-
+    def change_weapon(self):
+        if self.game_state.weapons == []:
+            weapon = 'wrench'
+        else:
+            weapon = random.choice(self.game_state.weapons)
+        self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
+        self.game_state.player.weapon = weapon
 
     def process_shot_fired(self, src_player, packet_data):
 
         # Player is Alive, and the teammate who shot was on the enemy team. The object hit was us.
+        # ---- N60, Rocket, Flux
         if not self.game_state.player.is_dead and self.game_state.players[src_player].team != self.game_state.player.team and packet_data.object_id == self.game_state.player.player_id:
 
             # If the opposite player is ALSO a CPU, we need to check the distance to ensure that they are close enough to do dmg
@@ -141,41 +157,59 @@ class prototype:
 
             self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
 
-
-
-
             if packet_data.weapon == 'flux':
                 self.game_state.player.health -= 87
+                self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
             elif packet_data.weapon == 'n60':
                 self.game_state.player.health -= 20
+                self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
             elif packet_data.weapon == 'rocket':
                 self.game_state.player.health -= 60
+                self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+            else:
+                return
+
+            self.check_if_dead(src_player, packet_data)
+
+        # ---- Gravity, Blitz, Lava
+        elif not self.game_state.player.is_dead and self.game_state.players[src_player].team != self.game_state.player.team and packet_data.weapon in ('grav', 'lava', 'blitz'):
+            # Check that the enemy player is within distance to hit us
+            if calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < self.cpu_damage_min_dist:
+                # Randomly take hit
+                if random.random() < self._close_weapon_self_dmg_rate[packet_data.weapon]:
+                    self.game_state.player.health -= self._close_weapon_self_dmg_amount[packet_data.weapon]
+                    self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+                    self.check_if_dead(src_player, packet_data)
+            else: # player out of range
+                pass
 
 
-            if self.game_state.player.health < 0:
+    def check_if_dead(self, src_player, packet_data):
+        # ---- Process health now
+        if self.game_state.player.health < 0:
 
-                self.game_state.player.is_dead = True
-                self.game_state.player.animation = None
+            self.game_state.player.is_dead = True
+            self.game_state.player.animation = None
 
-                #self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+            # Aquatos Sewers
+            test_map = {
+                0: '01',
+                1: '03',
+                2: '06',
+                3: '09',
+                4: '0C',
+                5: '0F',
+                6: '12',
+                7: '15'
+            }
+            # Death animation
+            self._model._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes(f"00030001{test_map[self.game_state.player.player_id]}000700000000"))))
 
-                # Aquatos Sewers
-                test_map = {
-                    0: '01',
-                    1: '03',
-                    2: '06',
-                    3: '09',
-                    4: '0C',
-                    5: '0F',
-                    6: '12',
-                    7: '15'
-                }
-                # Death animation
-                self._model._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes(f"00030001{test_map[self.game_state.player.player_id]}000700000000"))))
+            self._model.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=src_player, killed_id=self.game_state.player.player_id, weapon=packet_data.weapon)])
 
-                self._model.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=src_player, killed_id=self.game_state.player.player_id, weapon=packet_data.weapon)])
+            self.game_state.player.respawn_time = datetime.now().timestamp() + self.respawn_time
 
-                self.game_state.player.respawn_time = datetime.now().timestamp() + 5
+
 
     def send_movement(self):
         packet_num = self.game_state.player.gen_packet_num()

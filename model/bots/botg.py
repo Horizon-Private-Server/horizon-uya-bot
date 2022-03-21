@@ -17,14 +17,16 @@ class botg(prototype):
             'rocket': 1,
             'flux': 1,
             'blitz': 1,
-            'grav': 1
+            'grav': 1,
+            'lava': 1
         }
         self._hit_rate = {
             'n60': 1,
             'rocket': .8,
             'flux': 1,
             'blitz': 1,
-            'grav': .8
+            'grav': .8,
+            'lava': 1
         }
 
     def __str__(self):

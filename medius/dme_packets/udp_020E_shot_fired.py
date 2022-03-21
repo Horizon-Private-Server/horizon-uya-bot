@@ -21,6 +21,11 @@ P1 flux: 4108
 P2 flux: 4208
 '''
 
+'''
+020E02000001F09E2001FFFFFFFF000000004083300000000000010000000000000080000000
+020E02000008F09E2001FFFFFFFF0000000040833000000000008F773ABFF989213F40B188BE
+'''
+
 object_id_map = {
     1: 0,
     268435457: 1,
@@ -34,20 +39,21 @@ object_id_map = {
 }
 
 WEAPON_MAP_SRC = {
-    'n60': '0{}08',
-    'blitz': '0{}08',
-    'flux': '4{}08',
-    'rocket': '0{}08',
-    'grav': '0{}08',
-    'mine': '0{}08',
-    'lava': '0{}08',
-    'morph': '0{}01',
-    'hyper': '0{}02',
+    'n60': '0{}',
+    'blitz': '0{}',
+    'flux': '4{}',
+    'rocket': '0{}',
+    'grav': '0{}',
+    'mine': '0{}',
+    'lava': '0{}',
+    'morph': '0{}',
+    'hyper': '0{}',
 }
 
 class udp_020E_shot_fired:
     def __init__(self, weapon:str=None,
                            src_player:int=None,
+                           unk1:str='08',
                            time:int=None,
                            object_id:int=None,
                            unk2:int=0,
@@ -64,6 +70,7 @@ class udp_020E_shot_fired:
         self.src_player = src_player
         self.time = time
         self.object_id = object_id
+        self.unk1 = unk1
         self.unk2 = unk2
         self.unk3 = unk3
         self.unk4 = unk4
@@ -74,9 +81,9 @@ class udp_020E_shot_fired:
     @classmethod
     def serialize(self, data: deque):
         weapon = WEAPON_MAP[data.popleft()]
-        data.popleft()
-        temp = ''.join([data.popleft() for i in range(2)])
-        src_player = int(temp[1])
+        t = data.popleft()
+        src_player = hex_to_int_little(data.popleft())
+        unk1 = data.popleft()
 
         time = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
         moby_id = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
@@ -86,20 +93,21 @@ class udp_020E_shot_fired:
         else:
             object_id = object_id_map[moby_id]
 
-        unk2 = (''.join([data.popleft() for i in range(4)]))
-        unk3 = (''.join([data.popleft() for i in range(4)]))
-        unk4 = (''.join([data.popleft() for i in range(4)]))
-        unk5 = (''.join([data.popleft() for i in range(4)]))
-        unk6 = (''.join([data.popleft() for i in range(4)]))
-        unk7 = (''.join([data.popleft() for i in range(4)]))
+        unk2 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        unk3 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        unk4 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        unk5 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        unk6 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        unk7 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
 
-        return udp_020E_shot_fired(weapon, src_player, time, object_id, unk2, unk3, unk4, unk5, unk6, unk7)
+        return udp_020E_shot_fired(weapon, src_player, unk1, time, object_id, unk2, unk3, unk4, unk5, unk6, unk7)
 
     def to_bytes(self):
         return self.id + \
             hex_to_bytes({v: k for k, v in WEAPON_MAP.items()}[self.weapon]) + \
             hex_to_bytes("00") + \
             hex_to_bytes(WEAPON_MAP_SRC[self.weapon].format(self.src_player)) + \
+            hex_to_bytes(self.unk1) + \
             int_to_bytes_little(4, self.time) + \
             int_to_bytes_little(4, {v: k for k, v in object_id_map.items()}[self.object_id]) + \
             int_to_bytes_little(4, self.unk2) + \
@@ -110,6 +118,6 @@ class udp_020E_shot_fired:
             int_to_bytes_little(4, self.unk7)
 
     def __str__(self):
-        return f"{self.name}; weapon:{self.weapon} src_player:{self.src_player} time:{self.time} object_id:{self.object_id} " + \
+        return f"{self.name}; weapon:{self.weapon} src_player:{self.src_player} unk1:{self.unk1} time:{self.time} object_id:{self.object_id} " + \
                 f"unk2:{self.unk2} unk3:{self.unk3} unk4:{self.unk4} unk5:{self.unk5} unk6:{self.unk6} " + \
                 f"unk7:{self.unk7}"

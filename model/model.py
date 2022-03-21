@@ -50,6 +50,8 @@ class Model:
             if serialized['dme_player_id'] == 0:
                 logger.info("Host has left! Exiting ...")
                 self.alive = False
+            else:
+                self.game_state.player_left(serialized['dme_player_id'])
 
 
     def process_dme_packet(self, src_player, dme_packet, protocol):
@@ -162,12 +164,21 @@ class Model:
             7: '15'
         }
 
-        unk1=f'0{self.game_state.player.player_id}00000002D30{self.game_state.player.player_id}00{test_map[self.game_state.player.player_id]}00C6BF8EE7000000000000'
-        unk2='4116E1C7430A7EBA43B2446B44000000000000000000000000DB0FC9BF'
-        unk3='0000000000000000000000000000000000000000'
-        unk4=f'010000{self.game_state.player.player_id}0000000000000000000000000DB0FC9BF'
-        unk5=f'0000010000{self.game_state.player.player_id}000000000'
-        unk6=f'000000000070410000000000000000000000000000000000000{self.game_state.player.player_id}0000000100000000000000010000000100000000000000000000003200000064000000320000000100'
+        if self.game_state.map.map == 'aquatos_sewers':
+            unk1=f'0{self.game_state.player.player_id}00000002D30{self.game_state.player.player_id}00{test_map[self.game_state.player.player_id]}00C6BF8EE7000000000000'
+            unk2='4116E1C7430A7EBA43B2446B44000000000000000000000000DB0FC9BF'
+            unk3='0000000000000000000000000000000000000000'
+            unk4=f'010000{self.game_state.player.player_id}0000000000000000000000000DB0FC9BF'
+            unk5=f'0000010000{self.game_state.player.player_id}000000000'
+            unk6=f'000000000070410000000000000000000000000000000000000{self.game_state.player.player_id}0000000100000000000000010000000100000000000000000000003200000064000000320000000100'
+        else:
+            # Marcadia_Palace
+            unk1=f'0{self.game_state.player.player_id}00000002D30{self.game_state.player.player_id}00{test_map[self.game_state.player.player_id]}00C6BF4CD8340000000000'
+            unk2='41A8E9DF4380735D4436F0E742000000000000000000000000E9F18ABF'
+            unk3='0000000000000000000000000000000000000000'
+            unk4=f'010000{self.game_state.player.player_id}0000000000000000000000000E9F18ABF'
+            unk5=f'0000010000{self.game_state.player.player_id}000000000'
+            unk6=f'000000000070410000000000000000000000000000000000000{self.game_state.player.player_id}0000000100000000000000010000000100000000000000000000003200000064000000320000000100'
 
         self.dmetcp_queue.put(['B', tcp_0004_tnw.tcp_0004_tnw(tnw_type='tNW_PlayerData', data={'unk1': unk1, 'unk2':unk2, 'player_start_time_1': self.game_state.player.time, 'player_start_time_2': self.game_state.player.time, 'unk3': unk3, 'account_id_1': self.game_state.player.account_id, 'account_id_2': self.game_state.player.account_id, 'team':self.game_state.player.team, 'unk4': unk4, 'unk5': unk5, 'unk6':unk6})])
 

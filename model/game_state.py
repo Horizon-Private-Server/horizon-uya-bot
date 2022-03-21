@@ -30,6 +30,11 @@ class GameState:
         # Point grid
         self.map = Map(self.map_name)
 
+    def player_left(self, src_player:int):
+        if src_player not in self.players.keys():
+            return
+        del self.players[src_player]
+
     def time_update(self, src_player: int, time: int):
         if src_player not in self.players.keys():
             return

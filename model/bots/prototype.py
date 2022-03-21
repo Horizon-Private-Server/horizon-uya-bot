@@ -137,6 +137,11 @@ class prototype:
 
             self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
+            self.posthook_weapon_fired()
+
+    def posthook_weapon_fired(self):
+        pass
+
     def change_weapon(self):
         if self.game_state.weapons == []:
             weapon = 'wrench'

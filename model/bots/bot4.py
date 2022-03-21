@@ -27,6 +27,5 @@ class bot4(prototype):
     def __str__(self):
         return "bot4"
 
-    def fire_weapon(self):
-        super().fire_weapon()
+    def posthook_weapon_fired(self):
         self.change_weapon()

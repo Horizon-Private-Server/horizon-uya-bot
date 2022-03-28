@@ -32,9 +32,11 @@ class MlsTcp(AbstractTcp):
 
 
         # TODO: add CTF/Siege modes
+        '''
         if self._config['gameinfo']['game_mode'] != 'Deathmatch' or self._config['gameinfo']['submode'] != 'Teams':
             self._logger.warning("Incorrect game mode")
             sys.exit(1)
+        '''
 
         self.loop.create_task(self.echo())
         self.loop.run_until_complete(self.connect_to_mls())

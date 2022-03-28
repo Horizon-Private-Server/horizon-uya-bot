@@ -10,6 +10,8 @@ from utils.utils import *
 from medius.rt.clientappsingle import ClientAppSingleSerializer
 from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
 
+from model.arsenal import Arsenal
+
 import logging
 logger = logging.getLogger('thug.model.prototype')
 logger.setLevel(logging.INFO)
@@ -26,30 +28,19 @@ class prototype:
 
         self.follow_player = False
 
-        self._weapons_enabled = True
-        self._fire_rate = {
-            'n60': .1,
-            'rocket': .007,
-            'flux': .007,
-            'blitz': .007,
-            'grav': .007
-        }
-        self._hit_rate = {
-            'n60': .1,
-            'rocket': .1,
-            'flux': .1,
-            'blitz': .1,
-            'grav': .1
-        }
+        self.arsenal = Arsenal()
 
-        self.cpu_damage_min_dist = 500
+        self.cpu_damage_min_dist = 800
 
         self.respawn_time = 5
 
+        self.weapon_switch_fire_cooldown = .3
+        self.weapon_switch_dt = datetime.now().timestamp()
+
         self._close_weapon_self_dmg_rate = {
-            'grav': .25,
-            'blitz': .1,
-            'lava': .08
+            'grav': .4,
+            'blitz': .5,
+            'lava': .5
         }
 
         self._close_weapon_self_dmg_amount = {
@@ -61,9 +52,9 @@ class prototype:
     async def main_loop(self):
         while self._model.alive:
             try:
-                print(self.game_state)
-                print(self.game_state.weapons)
-                print(self.game_state.game_info)
+                # print(self.game_state)
+                # print(self.game_state.weapons)
+                # print(self.game_state.game_info)
 
                 # Wait for players to join
                 if len(self.game_state.players) == 0:
@@ -109,8 +100,7 @@ class prototype:
                     self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.tracking.coord)
 
                 # Fire weapon
-                if self._weapons_enabled:
-                    self.fire_weapon()
+                self.fire_weapon()
 
                 # Update movement
                 self.send_movement()
@@ -123,18 +113,21 @@ class prototype:
                 break
 
     def fire_weapon(self):
-        if self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench']:
+        if self.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench']:
             return
 
-        # Fire weapon
-        if random.random() < self._fire_rate[self.game_state.player.weapon]:
+        if datetime.now().timestamp() - self.weapon_switch_dt < self.weapon_switch_fire_cooldown:
+            return
 
-            # Fire weapon HIT
-            if random.random() < self._hit_rate[self.game_state.player.weapon]:
+        weapon_fired_bool, hit_bool = self.arsenal.fire_weapon(self.game_state.player.weapon)
+
+        if weapon_fired_bool:
+            # Weapon was fired.
+
+            if hit_bool: # player was hit
                 object_id=self.tracking.player_id
             else:
                 object_id=-1
-
             self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
             self.posthook_weapon_fired()
@@ -143,10 +136,14 @@ class prototype:
         pass
 
     def change_weapon(self):
+        self.weapon_switch_dt = datetime.now().timestamp()
+
         if self.game_state.weapons == []:
             weapon = 'wrench'
-        else:
+        elif len(self.game_state.weapons) == 1:
             weapon = random.choice(self.game_state.weapons)
+        else:
+            weapon = random.choice([weap for weap in self.game_state.weapons if weap != self.game_state.player.weapon])
         self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
         self.game_state.player.weapon = weapon
 

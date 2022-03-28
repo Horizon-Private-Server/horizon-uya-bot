@@ -163,8 +163,15 @@ class Model:
             6: '12',
             7: '15'
         }
-
-        if self.game_state.map.map == 'aquatos_sewers':
+        # 2022-03-27 19:07:39,549 blarg | INFO | 1 -> -1 | tcp_0004_tnw; tnw_type:tNW_PlayerData data:{'unk1': '0100000002D301000300C6BF09AA780100000000', 'unk2': '41C51302446893AC4332E347430000000000000000000000005E4D0740', 'player_start_time_1': 24685048, 'unk3': '0000000000000000000000000000000000000000', 'account_id_1': 999, 'unk4': '010000100000000000000000000000005E4D0740', 'player_start_time_2': 24685048, 'account_id_2': 999, 'unk5': '00000100001000000000', 'team': 'red', 'unk6': '00000000007041000000000000000000000000000000000000010000000100000000000000010000000100000000000000000000003200000064000000320000000100'}
+        if self.game_state.map.map == 'bakisi_isles':
+            unk1=f'0{self.game_state.player.player_id}00000002D30{self.game_state.player.player_id}00{test_map[self.game_state.player.player_id]}00C6BF09AA780100000000'
+            unk2='41C51302446893AC4332E347430000000000000000000000005E4D0740'
+            unk3='0000000000000000000000000000000000000000'
+            unk4=f'010000{self.game_state.player.player_id}0000000000000000000000000DB0FC9BF'
+            unk5=f'0000010000{self.game_state.player.player_id}000000000'
+            unk6=f'000000000070410000000000000000000000000000000000000{self.game_state.player.player_id}0000000100000000000000010000000100000000000000000000003200000064000000320000000100'
+        elif self.game_state.map.map == 'aquatos_sewers':
             unk1=f'0{self.game_state.player.player_id}00000002D30{self.game_state.player.player_id}00{test_map[self.game_state.player.player_id]}00C6BF8EE7000000000000'
             unk2='4116E1C7430A7EBA43B2446B44000000000000000000000000DB0FC9BF'
             unk3='0000000000000000000000000000000000000000'

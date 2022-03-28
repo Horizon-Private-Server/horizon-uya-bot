@@ -8,7 +8,7 @@ import os
 import sys
 
 figsize = (12, 12)
-map_name = 'aquatos_sewers'
+map_name = 'bakisi_isles'
 display_raw_points = False
 display_downsampled = False
 
@@ -103,7 +103,7 @@ for i in range(len(nodes)):
         # Calculate the distance between this connected point and
     #print("Nodes in G: ", G.nodes(data=True))
 print("Done.")
-
+'''
 print("-- Plotting Graph ...")
 # The graph to visualize
 xs = [n[0] for n in G]
@@ -139,6 +139,6 @@ ax.set_zlabel("z")
 ax.view_init(80, -60)
 plt.tight_layout()
 plt.show()
-
+'''
 print("-- Writing Graph to graphs folder ...")
-#nx.write_edgelist(G, os.path.join('graphs', f"{map_name}.edgelist"), delimiter='|')
+nx.write_edgelist(G, os.path.join('graphs', f"{map_name}.edgelist"), delimiter='|')

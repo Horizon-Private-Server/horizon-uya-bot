@@ -3,8 +3,9 @@ from utils.utils import *
 import os
 
 class tcp_020A_player_respawned:
-    def __init__(self, src_player:int=None, map:str='unk', unk1="00012DD7D3FD43831C5A4466CEE7420000000000000000B2B3BA3F00000100"):
+    def __init__(self, src_player:int=None, map:str='unk', unk1="000139C6AC0A444BB1A243563B4E430000000000000000A041174000000100"):
         # 000138CCA1A143C5ADB043CC2C08420000000000000000E964823F00000100
+        # old: 00012DD7D3FD43831C5A4466CEE7420000000000000000B2B3BA3F00000100
         self.name = os.path.basename(__file__).strip(".py")
         self.id = b'\x02\x0A'
         self.src_player = src_player

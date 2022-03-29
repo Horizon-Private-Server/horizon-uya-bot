@@ -8,7 +8,7 @@ import os
 import sys
 
 figsize = (12, 12)
-map_name = 'bakisi_isles'
+map_name = 'korgon_outpost'
 display_raw_points = False
 display_downsampled = False
 

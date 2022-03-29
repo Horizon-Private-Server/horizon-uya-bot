@@ -82,7 +82,7 @@ class prototype:
 
                         # if we are at 300 distance, we can strafe around instead of walking toward them
                         if calculate_distance(self.game_state.player.coord, self.tracking.coord) > 600 or self.follow_player == True:
-                            new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord, distance_to_move=30)
+                            new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord)
                         else:
                             new_coord = self.game_state.map.get_random_coord_connected(self.game_state.player.coord)
 

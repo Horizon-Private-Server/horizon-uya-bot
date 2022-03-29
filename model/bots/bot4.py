@@ -61,7 +61,5 @@ class bot4(prototype):
         else:
             weapon = self.weapon_order_map[self.game_state.player.weapon]
 
-        print(self.weapon_order_map, self.game_state.player.weapon, weapon)
-
         self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
         self.game_state.player.weapon = weapon

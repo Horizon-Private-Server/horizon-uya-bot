@@ -11,7 +11,7 @@ class bot0(prototype):
 
         self.follow_player = True
 
-        self._weapons_enabled = False
+        self.arsenal.enabled = False
 
     def __str__(self):
         return "bot0"

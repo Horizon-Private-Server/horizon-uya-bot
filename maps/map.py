@@ -40,7 +40,7 @@ class Map:
         use_cboot = calculate_distance(src, dst) > 3000
         cboot_factor = 5
 
-        if self.path_cache != None:
+        if self.path_cache != None and len(self.path_cache) != 0:
             if calculate_distance(src, self.path_cache[0]) < 100 and calculate_distance(dst, self.path_cache[-1]) < 100:
                 if not use_cboot:
                     return self.path_cache.pop(0)

@@ -8,7 +8,7 @@ import os
 import sys
 
 figsize = (12, 12)
-map_name = 'korgon_outpost'
+map_name = 'hoven_gorge'
 display_raw_points = False
 display_downsampled = False
 

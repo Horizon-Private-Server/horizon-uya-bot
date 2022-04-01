@@ -10,7 +10,7 @@ import sys
 figsize = (12, 12)
 map_name = 'hoven_gorge'
 display_raw_points = False
-display_downsampled = False
+display_downsampled = True
 
 # Adjust this in order to make the grid further apart or closer together
 point_cloud_voxel_size = 50
@@ -19,7 +19,6 @@ distance_connected_variance = 30
 
 print("-- Loading in point cloud ...")
 with open(os.path.join(f'point_clouds',f'{map_name}.json'), 'r') as f:
-#with open('../blarg/logs/points.json', 'r') as f:
     points = np.array(json.loads(f.read()))
 
 print(f"-- Points loaded: {points.shape}")
@@ -81,7 +80,6 @@ if display_downsampled == True:
     ax.set_zlabel("z")
     plt.tight_layout()
     plt.show()
-
 
 
 ## Generate the graph

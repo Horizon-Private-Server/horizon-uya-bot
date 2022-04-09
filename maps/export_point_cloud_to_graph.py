@@ -10,7 +10,7 @@ import sys
 figsize = (12, 12)
 map_name = 'hoven_gorge'
 display_raw_points = False
-display_downsampled = True
+display_downsampled = False
 
 # Adjust this in order to make the grid further apart or closer together
 point_cloud_voxel_size = 50
@@ -80,6 +80,7 @@ if display_downsampled == True:
     ax.set_zlabel("z")
     plt.tight_layout()
     plt.show()
+
 
 
 ## Generate the graph

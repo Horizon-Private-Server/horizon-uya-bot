@@ -18,6 +18,8 @@ class tcp_020A_player_respawned:
             self.unk1 = '0001B94FE6C84300808D43CC446B440000000000000000DB0FC93F00000100'
         elif map == 'command_center':
             self.unk1 = '000138CCA1A143C5ADB043CC2C08420000000000000000E964823F00000100'
+        elif map == 'metropolis':
+            self.unk1 = '0001AAEF9A37445643694399B7A74300000000000000001514C93F00000100'
         else:
             self.unk1 = unk1
 

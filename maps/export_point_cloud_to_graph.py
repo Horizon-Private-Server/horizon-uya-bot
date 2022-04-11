@@ -8,9 +8,11 @@ import os
 import sys
 
 figsize = (12, 12)
-map_name = 'bakisi_isles'
+map_name = 'metropolis'
 display_raw_points = False
 display_downsampled = False
+plot_connected_graph = False
+write_graph = True
 
 # Adjust this in order to make the grid further apart or closer together
 point_cloud_voxel_size = 50
@@ -102,42 +104,44 @@ for i in range(len(nodes)):
         # Calculate the distance between this connected point and
     #print("Nodes in G: ", G.nodes(data=True))
 print("Done.")
-'''
-print("-- Plotting Graph ...")
-# The graph to visualize
-xs = [n[0] for n in G]
-ys = [n[1] for n in G]
-zs = [n[2] for n in G]
 
-# Create the 3D figure
-fig = plt.figure(figsize=figsize)
-ax = fig.add_subplot(111, projection="3d")
+if plot_connected_graph:
+    print("-- Plotting Graph ...")
+    # The graph to visualize
+    xs = [n[0] for n in G]
+    ys = [n[1] for n in G]
+    zs = [n[2] for n in G]
 
-# Plot the nodes - alpha is scaled by "depth" automatically
-nodes = np.array(G.nodes)
-xs = [n[0] for n in nodes]
-ys = [n[1] for n in nodes]
-zs = [n[2] for n in nodes]
-#ax.scatter(xs, ys, zs, s=5, c='tab:blue')
+    # Create the 3D figure
+    fig = plt.figure(figsize=figsize)
+    ax = fig.add_subplot(111, projection="3d")
 
-for src, dst in G.edges:
-    xs = [src[0], dst[0]]
-    ys = [src[1], dst[1]]
-    zs = [src[2], dst[2]]
-    ax.plot3D(xs,ys,zs, c='tab:blue', linewidth=1)
+    # Plot the nodes - alpha is scaled by "depth" automatically
+    nodes = np.array(G.nodes)
+    xs = [n[0] for n in nodes]
+    ys = [n[1] for n in nodes]
+    zs = [n[2] for n in nodes]
+    #ax.scatter(xs, ys, zs, s=5, c='tab:blue')
 
-xlim = ax.get_xlim()
-zlim = ax.get_zlim()
-xdiff = (xlim[1] - xlim[0]) / 2
-zmid = zlim[0] + ((zlim[1] - zlim[0]) / 2)
-zlim = [zmid - xdiff, zmid + xdiff]
-ax.set_zlim3d(zlim[0], zlim[1])
-ax.set_xlabel("x")
-ax.set_ylabel("y")
-ax.set_zlabel("z")
-ax.view_init(80, -60)
-plt.tight_layout()
-plt.show()
-'''
-print("-- Writing Graph to graphs folder ...")
-nx.write_edgelist(G, os.path.join('graphs', f"{map_name}.edgelist"), delimiter='|')
+    for src, dst in G.edges:
+        xs = [src[0], dst[0]]
+        ys = [src[1], dst[1]]
+        zs = [src[2], dst[2]]
+        ax.plot3D(xs,ys,zs, c='tab:blue', linewidth=1)
+
+    xlim = ax.get_xlim()
+    zlim = ax.get_zlim()
+    xdiff = (xlim[1] - xlim[0]) / 2
+    zmid = zlim[0] + ((zlim[1] - zlim[0]) / 2)
+    zlim = [zmid - xdiff, zmid + xdiff]
+    ax.set_zlim3d(zlim[0], zlim[1])
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.set_zlabel("z")
+    ax.view_init(80, -60)
+    plt.tight_layout()
+    plt.show()
+
+if write_graph:
+    print("-- Writing Graph to graphs folder ...")
+    nx.write_edgelist(G, os.path.join('graphs', f"{map_name}.edgelist"), delimiter='|')

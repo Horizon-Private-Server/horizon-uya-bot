@@ -21,12 +21,7 @@ P1 flux: 4108
 P2 flux: 4208
 '''
 
-'''
-020E02000001F09E2001FFFFFFFF000000004083300000000000010000000000000080000000
-020E02000008F09E2001FFFFFFFF0000000040833000000000008F773ABFF989213F40B188BE
-'''
-
-object_id_map = {
+standard_object_id_map = {
     1: 0,
     268435457: 1,
     536870913: 2,
@@ -37,6 +32,30 @@ object_id_map = {
     1879048193: 7,
     4294967295: -1
 }
+
+alt_object_id_map = {
+    13: 0,
+    1: 1,
+    2: 2,
+    3: 3,
+    6: 4,
+    5: 5,
+    4: 6,
+    7: 7,
+    4294967295: -1
+}
+
+# hoven src_player_map = {
+#     64: 0,
+#     65: 1,
+#     66: 2,
+#     67: 3,
+#     68: 4,
+#     69: 5,
+#     70: 6,
+#     71: 7
+# }
+
 
 WEAPON_MAP_SRC = {
     'n60': '0{}',
@@ -51,7 +70,7 @@ WEAPON_MAP_SRC = {
 }
 
 class udp_020E_shot_fired:
-    def __init__(self, weapon:str=None,
+    def __init__(self, map:str=None, weapon:str=None,
                            src_player:int=None,
                            unk1:str='08',
                            time:int=None,
@@ -66,6 +85,7 @@ class udp_020E_shot_fired:
 
         self.name = os.path.basename(__file__).strip(".py")
         self.id = b'\x02\x0E'
+        self.map = map
         self.weapon = weapon
         self.src_player = src_player
         self.time = time
@@ -88,10 +108,10 @@ class udp_020E_shot_fired:
         time = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
         moby_id = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
 
-        if moby_id not in object_id_map.keys():
+        if moby_id not in standard_object_id_map.keys():
             object_id = moby_id
         else:
-            object_id = object_id_map[moby_id]
+            object_id = standard_object_id_map[moby_id]
 
         unk2 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
         unk3 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
@@ -100,16 +120,22 @@ class udp_020E_shot_fired:
         unk6 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
         unk7 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
 
-        return udp_020E_shot_fired(weapon, src_player, unk1, time, object_id, unk2, unk3, unk4, unk5, unk6, unk7)
+        return udp_020E_shot_fired('', weapon, src_player, unk1, time, object_id, unk2, unk3, unk4, unk5, unk6, unk7)
 
     def to_bytes(self):
+
+        if self.map in {'hoven_gorge', 'outpost_x12', 'metropolis'}:
+            object_id = {v: k for k, v in alt_object_id_map.items()}[self.object_id]
+        else:
+            object_id = {v: k for k, v in standard_object_id_map.items()}[self.object_id]
+
         return self.id + \
             hex_to_bytes({v: k for k, v in WEAPON_MAP.items()}[self.weapon]) + \
             hex_to_bytes("00") + \
             hex_to_bytes(WEAPON_MAP_SRC[self.weapon].format(self.src_player)) + \
             hex_to_bytes(self.unk1) + \
             int_to_bytes_little(4, self.time) + \
-            int_to_bytes_little(4, {v: k for k, v in object_id_map.items()}[self.object_id]) + \
+            int_to_bytes_little(4, object_id) + \
             int_to_bytes_little(4, self.unk2) + \
             int_to_bytes_little(4, self.unk3) + \
             int_to_bytes_little(4, self.unk4) + \
@@ -118,6 +144,6 @@ class udp_020E_shot_fired:
             int_to_bytes_little(4, self.unk7)
 
     def __str__(self):
-        return f"{self.name}; weapon:{self.weapon} src_player:{self.src_player} unk1:{self.unk1} time:{self.time} object_id:{self.object_id} " + \
+        return f"{self.name}; map:{self.map} weapon:{self.weapon} src_player:{self.src_player} unk1:{self.unk1} time:{self.time} object_id:{self.object_id} " + \
                 f"unk2:{self.unk2} unk3:{self.unk3} unk4:{self.unk4} unk5:{self.unk5} unk6:{self.unk6} " + \
                 f"unk7:{self.unk7}"

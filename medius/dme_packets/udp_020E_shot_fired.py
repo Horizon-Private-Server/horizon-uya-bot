@@ -33,28 +33,29 @@ standard_object_id_map = {
     4294967295: -1
 }
 
+# alt_object_id_map = {
+#     13: 0,
+#     1: 1,
+#     2: 2,
+#     3: 3,
+#     6: 4,
+#     5: 5,
+#     4: 6,
+#     7: 7,
+#     4294967295: -1
+# }
+
 alt_object_id_map = {
     13: 0,
-    1: 1,
-    2: 2,
-    3: 3,
-    6: 4,
-    5: 5,
-    4: 6,
-    7: 7,
+    268435457: 1,
+    536870913: 2,
+    805306369: 3,
+    1610612737: 4,
+    1342177281: 5,
+    1073741825: 6,
+    1879048193: 7,
     4294967295: -1
 }
-
-# hoven src_player_map = {
-#     64: 0,
-#     65: 1,
-#     66: 2,
-#     67: 3,
-#     68: 4,
-#     69: 5,
-#     70: 6,
-#     71: 7
-# }
 
 
 WEAPON_MAP_SRC = {
@@ -108,10 +109,11 @@ class udp_020E_shot_fired:
         time = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
         moby_id = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
 
-        if moby_id not in standard_object_id_map.keys():
-            object_id = moby_id
-        else:
-            object_id = standard_object_id_map[moby_id]
+        # if moby_id not in standard_object_id_map.keys():
+        #     object_id = moby_id
+        # else:
+        #     object_id = standard_object_id_map[moby_id]
+        object_id = moby_id
 
         unk2 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
         unk3 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))

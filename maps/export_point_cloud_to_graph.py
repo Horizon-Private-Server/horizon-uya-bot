@@ -8,7 +8,7 @@ import os
 import sys
 
 figsize = (12, 12)
-map_name = 'korgon_outpost'
+map_name = 'blackwater_city'
 display_raw_points = False
 display_downsampled = False
 plot_connected_graph = False

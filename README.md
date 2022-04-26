@@ -11,3 +11,23 @@ Thug builds a network graph based on a set of moveable points, then uses the A* 
 Bot Movement Graph             |  In Game View
 :-------------------------:|:-------------------------:
 <img src="https://raw.githubusercontent.com/jtjanecek/thug/master/assets/scatter_command_center.png" width="455" height="350">  |  <img src="https://raw.githubusercontent.com/jtjanecek/thug/master/assets/command_center.jpg" width="455" height="350">
+
+## Contributors
+Special thanks to Devin for leading the mapping for the rest of the UYA multiplayer maps. Thanks to AgentMoose for his cheats to help map. And thanks to the following for helping:
+```
+GC
+TheBananaTarT
+sanjum2
+Flygsand
+Willow
+Artronoth
+ThunderHunter
+Xo
+kiLLimo
+CreepNT
+Youngster Joey
+toomuchzelda
+roxas997
+nepuleomon
+blown
+```

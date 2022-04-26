@@ -8,7 +8,7 @@ import os
 import sys
 
 figsize = (12, 12)
-map_name = 'blackwater_city'
+map_name = 'bakisi_isles'
 display_raw_points = False
 display_downsampled = False
 plot_connected_graph = False

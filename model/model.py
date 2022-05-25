@@ -143,7 +143,7 @@ class Model:
 
     async def send_player_data(self):
         # It takes 13 seconds to load from game start into actual game
-        await asyncio.sleep(18)
+        await asyncio.sleep(25)
 
 
         # Command Center
@@ -196,7 +196,23 @@ class Model:
         ####
         self.dmetcp_queue.put(['B', tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(unk1='00000000', team='blue', skin='ratchet', ready='unk, player in-game ready(?)', username='', unk2='0000000000000000000000')])
 
+
+        self.dmetcp_queue.put(['B', tcp_0205_unk.tcp_0205_unk()])
+
+        self.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype='p1_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data={'unk': '011000F70101'})])
+        self.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype='p1_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data={'unk': '031000F70101'})])
+        self.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype='p1_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data={'unk': '051000F70101'})])
+        self.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype='p1_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data={'unk': '0D1000F70101'})])
+        self.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype='p1_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data={'unk': '0F1000F70101'})])
+
+        self._loop.create_task(self.c_confirmations())
         self._loop.create_task(self.bot.main_loop())
+
+    async def c_confirmations(self):
+        while self.alive:
+            self.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype='p1_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data={'unk': '0F1000F70101'})])
+            self.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype='p1_req_confirmation', timestamp=self.game_state.player.time, object_id='001000F7')])
+            await asyncio.sleep(1)
 
     async def _timer_update(self):
         while self.alive:

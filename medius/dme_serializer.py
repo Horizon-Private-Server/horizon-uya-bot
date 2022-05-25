@@ -14,6 +14,7 @@ TcpSerializer = {
 
 	'0009': tcp_0009_set_timer.tcp_0009_set_timer,
 	'0204': tcp_0204_player_killed.tcp_0204_player_killed,
+	'0205': tcp_0205_unk.tcp_0205_unk,
 	'020A': tcp_020A_player_respawned.tcp_020A_player_respawned,
 	'020C': tcp_020C_info.tcp_020C_info,
 	'0210': tcp_0210_player_joined.tcp_0210_player_joined,

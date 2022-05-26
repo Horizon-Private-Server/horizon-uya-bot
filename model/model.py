@@ -37,6 +37,7 @@ class Model:
         self.dmeudp_queue = queue.Queue()
 
 
+
     def process(self, serialized: dict):
         '''
         PROCESS RT PACKETS
@@ -60,10 +61,18 @@ class Model:
         '''
         logger.debug(f"I | {protocol}; src:{src_player} {dme_packet}")
 
+        if dme_packet.name == 'tcp_000F_playername_update' and dme_packet.unk3 == '001A00':
+            self.dmetcp_queue.put([0, tcp_000F_playername_update.tcp_000F_playername_update(unk1=32958977, unk2='00000000000003000300000000001A000000', username=self.game_state.player.username, unk3='001A00')])
+
+
         if dme_packet.name == 'tcp_0016_player_connect_handshake' and dme_packet.subtype == 'host_initial_handshake':
             if dme_packet.unk1 == '03000100000001':
                 #self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='03010300000000000000000000000000')])
                 self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(subtype='player_initial_handshake', src_player=self.game_state.player.player_id, unk1='03000000000000')])
+            elif dme_packet.unk1 == '03000100804401':
+                self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(subtype='handshake', src_player=self.game_state.player.player_id, unk1='03000000000000')])
+                self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(subtype='handshake', src_player=self.game_state.player.player_id, unk1='03000000000002')])
+
 
         if dme_packet.name == 'tcp_0018_initial_sync':
             self.dmetcp_queue.put([src_player, tcp_0018_initial_sync.tcp_0018_initial_sync(src=self.game_state.player.player_id)])
@@ -73,7 +82,7 @@ class Model:
         if dme_packet.name == 'tcp_0009_set_timer' and src_player == 0:
             self.game_state.player.time = dme_packet.time
 
-            self.dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=self.game_state.player.player_id, unk2='00000000000003000300000000001A000000', username=self.game_state.player.username, unk3='000300')])
+            self.dmetcp_queue.put([0, tcp_000F_playername_update.tcp_000F_playername_update(unk1=self.game_state.player.player_id, unk2='00000000000003000300000000001A000000', username=self.game_state.player.username, unk3='000300')])
             self.dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=self.game_state.player.player_id, unk2='00000000001003000300000000001A000000', username=self.game_state.player.username, unk3='000000')])
 
 
@@ -143,9 +152,7 @@ class Model:
 
     async def send_player_data(self):
         # It takes 13 seconds to load from game start into actual game
-        await asyncio.sleep(25)
-
-
+        await asyncio.sleep(18)
         # Command Center
         # unk1 = '01000000026E010003000000C173250000000000'
         # unk2 = '0066809443620B8B4309BA48430000000000000000000000000F73E83F'
@@ -217,7 +224,7 @@ class Model:
     async def _timer_update(self):
         while self.alive:
             try:
-                self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'timer_update', 'time': self.game_state.player.time}})])
+                self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': '09_timer_update', 'time': self.game_state.player.time}})])
 
 
                 #self.dmeudp_queue.put(['B', udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1=random.choice(['00010000', '0000FFFF'])])

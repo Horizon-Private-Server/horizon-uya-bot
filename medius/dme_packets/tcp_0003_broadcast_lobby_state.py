@@ -27,8 +27,8 @@ class tcp_0003_broadcast_lobby_state:
     def serialize(self, data: deque):
         # Length is #messages * 17
         packet = {}
-        packet['unk1'] = data.popleft() # 01
-
+        packet['base_type'] = data.popleft()
+        assert packet['base_type'] in {'01', '00'}
         packet['num_messages'] = bytes_to_int_little(hex_to_bytes(data.popleft()))
 
         packet['src'] = player_id_map[data.popleft() + data.popleft()]
@@ -36,10 +36,13 @@ class tcp_0003_broadcast_lobby_state:
         for i in range(packet['num_messages']):
             sub_message = {}
             broadcast_type = data.popleft()
-            #assert broadcast_type in ['02','03','05']
+
+            # 0003000403000941AC29000A54C80C54C80D82017CE6
+
+
 
             if broadcast_type == '05': # Ready/Unready
-                ready_unready_map = {'00': 'unready', '06': 'ready', '05': 'kicked'}
+                ready_unready_map = {'00': 'unready', '06': 'ready', '05': 'kicked', '06': 'unk_06_loading_in', '07': 'unk_06_loading_in', '08': 'unk_08_in_game'}
                 sub_message['type'] = 'ready/unready'
                 for player_id in range(8):
                     val = data.popleft()
@@ -58,10 +61,10 @@ class tcp_0003_broadcast_lobby_state:
                     data.popleft()
                     sub_message[f'p{player_id}'] = SKIN_MAP[val]
             elif broadcast_type == '07':
-                sub_message['type'] = '07_unk'
+                sub_message['type'] = '07_timer_update'
                 sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
             elif broadcast_type == '09':
-                sub_message['type'] = 'timer_update'
+                sub_message['type'] = '09_timer_update'
                 if len(data) == 2:
                     sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
                 else:
@@ -103,17 +106,17 @@ class tcp_0003_broadcast_lobby_state:
         if self.data['msg0']['type'] == 'weapon_changed':
             # 01 is the unk1
             return self.id + \
-                hex_to_bytes('01') + \
+                hex_to_bytes('00') + \
                 int_to_bytes_little(1, self.data['num_messages']) + \
                 hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
                 hex_to_bytes('08') + \
                 hex_to_bytes({v: k for k, v in WEAPON_MAP.items()}[self.data['msg0']['weapon_changed_to']]) + \
                 hex_to_bytes("000000")
 
-        elif self.data['msg0']['type'] == 'timer_update':
+        elif self.data['msg0']['type'] == '09_timer_update':
             # 01 is the unk1
             return self.id + \
-                hex_to_bytes('01') + \
+                hex_to_bytes('00') + \
                 int_to_bytes_little(1, self.data['num_messages']) + \
                 hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
                 hex_to_bytes('09') + \

@@ -5,10 +5,10 @@ import os
 class tcp_0018_initial_sync:
     def __init__(self, unk1:str="02000000",
                        src:int=None,
-                       unk2:str='000000C0000264',
-                       time:int=1100,
-                       unk3:str='000000000000',
-                       time2:int=700,
+                       unk2:str='0000000A000038',
+                       time:int=6234,
+                       unk3:str='000062CBAD1E',
+                       time2:int=23064,
                        unk4:str='000001000000'
                        ):
 

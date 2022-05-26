@@ -12,10 +12,10 @@ class tcp_0210_player_joined:
                        skin1:str=None,
                        skin2:str=None,
                        username:str=None, # 14 len
-                       unk2:str='0034',
+                       unk2:str='0000',
                        username2:str=None, # 12 len
-                       unk3:str='7E320000',
-                       clan_tag:str=None,
+                       unk3:str='32000000',
+                       clan_tag:str='',
                        unk4:str='00000000'
                        ):
 

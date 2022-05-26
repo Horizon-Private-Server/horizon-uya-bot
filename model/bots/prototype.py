@@ -100,7 +100,7 @@ class prototype:
                     self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.tracking.coord)
 
                 # Fire weapon
-                self.fire_weapon()
+                #self.fire_weapon()
 
                 # Update movement
                 self.send_movement()

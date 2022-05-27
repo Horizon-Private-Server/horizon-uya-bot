@@ -30,19 +30,20 @@ class tcp_0003_broadcast_lobby_state:
         packet['base_type'] = data.popleft()
         assert packet['base_type'] in {'01', '00'}
         packet['num_messages'] = bytes_to_int_little(hex_to_bytes(data.popleft()))
+        if packet['num_messages'] != 1:
+            packet['num_messages'] -= 1
 
         packet['src'] = player_id_map[data.popleft() + data.popleft()]
 
         for i in range(packet['num_messages']):
             sub_message = {}
+
+            if len(data) == 0:
+                break
             broadcast_type = data.popleft()
 
-            # 0003000403000941AC29000A54C80C54C80D82017CE6
-
-
-
             if broadcast_type == '05': # Ready/Unready
-                ready_unready_map = {'00': 'unready', '06': 'ready', '05': 'kicked', '06': 'unk_06_loading_in', '07': 'unk_06_loading_in', '08': 'unk_08_in_game'}
+                ready_unready_map = {'00': 'unready', '06': 'ready', '05': 'kicked', '06': 'unk_06_loading_in', '07': 'unk_07_loading_in', '08': 'unk_08_in_game'}
                 sub_message['type'] = 'ready/unready'
                 for player_id in range(8):
                     val = data.popleft()
@@ -73,10 +74,9 @@ class tcp_0003_broadcast_lobby_state:
                 sub_message['type'] = 'unk_0D'
                 sub_message['unk2'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
             elif broadcast_type == '0A':
-                sub_message['type'] = 'unk0A'
-                sub_message['unk1'] = ''.join([data.popleft() for i in range(21)])
+                sub_message['type'] = 'weapon_update'
+                sub_message['unk1'] = ''.join([data.popleft() for i in range(5)])
                 packet[f'msg{i}'] = sub_message
-                break
             elif broadcast_type == '00':
                 if len(data) == 3:
                     sub_message['type'] = 'unk00'
@@ -85,7 +85,6 @@ class tcp_0003_broadcast_lobby_state:
                     sub_message['type'] = 'settings_update'
                     sub_message['unk1'] = ''.join([data.popleft() for i in range(283)])
                 packet[f'msg{i}'] = sub_message
-                break
             elif broadcast_type == '08':
                 sub_message['type'] = 'weapon_changed'
                 weap_changed_to = data.popleft()

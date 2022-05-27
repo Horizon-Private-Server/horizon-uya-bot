@@ -226,10 +226,6 @@ class Model:
             try:
                 self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': '09_timer_update', 'time': self.game_state.player.time}})])
 
-
-                #self.dmeudp_queue.put(['B', udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1=random.choice(['00010000', '0000FFFF'])])
-
-                #self.dmeudp_queue.put(['B', udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1='00010000')])
                 await asyncio.sleep(1)
             except:
                 logger.exception("TIMER UPDATE ERROR")

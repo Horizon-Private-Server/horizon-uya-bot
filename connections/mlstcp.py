@@ -2,10 +2,10 @@ import asyncio
 import sys
 import logging
 
-from utils.utils import *
+from butils.utils import *
 from connections.abstracttcp import AbstractTcp
 
-from utils.gameinfo_parser import weaponParser, advancedRulesParser, mapParser, timeParser, gamerulesParser
+from butils.gameinfo_parser import weaponParser, advancedRulesParser, mapParser, timeParser, gamerulesParser
 
 class MlsTcp(AbstractTcp):
     def __init__(self, loop, config, ip: str, port: int):

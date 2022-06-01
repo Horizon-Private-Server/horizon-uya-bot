@@ -1,14 +1,14 @@
 from collections import deque
-from utils.utils import *
+from butils.utils import *
 import os
 
 class tcp_0018_initial_sync:
     def __init__(self, unk1:str="02000000",
                        src:int=None,
-                       unk2:str='0000000A000038',
-                       time:int=6234,
-                       unk3:str='000062CBAD1E',
-                       time2:int=23064,
+                       unk2:str='000000C0000264',
+                       time:int=6035,
+                       unk3:str='000000000000',
+                       time2:int=0,
                        unk4:str='000001000000'
                        ):
 
@@ -37,7 +37,7 @@ class tcp_0018_initial_sync:
     def to_bytes(self):
         return self.id + \
             hex_to_bytes(self.unk1) + \
-            int_to_bytes_little(4, self.src) + \
+            int_to_bytes_little(1, self.src) + \
             hex_to_bytes(self.unk2) + \
             int_to_bytes_little(2, self.time) + \
             hex_to_bytes(self.unk3) + \

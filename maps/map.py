@@ -7,7 +7,7 @@ from datetime import datetime
 import random
 import sys
 
-from utils.utils import *
+from butils.utils import *
 
 import logging
 logger = logging.getLogger("thug.map")

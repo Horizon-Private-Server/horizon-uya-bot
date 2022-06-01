@@ -5,7 +5,7 @@ from datetime import datetime
 
 from constants.constants import ANIMATION_MAP
 from medius.dme_packets import *
-from utils.utils import *
+from butils.utils import *
 
 from medius.rt.clientappsingle import ClientAppSingleSerializer
 from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
@@ -205,7 +205,7 @@ class prototype:
                 7: '15'
             }
             # Death animation
-            self._model._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes(f"00030001{test_map[self.game_state.player.player_id]}000700000000"))))
+            #self._model._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes(f"00030001{test_map[self.game_state.player.player_id]}000700000000"))))
 
             self._model.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=src_player, killed_id=self.game_state.player.player_id, weapon=packet_data.weapon)])
 

@@ -1,6 +1,6 @@
 from collections import deque
 import os
-from utils.utils import *
+from butils.utils import *
 
 class tcp_000F_playername_update:
     def __init__(self, unk1:int=1, unk2:str="00000000000003000300000000001A000000", username:str=None, unk3:str="000300"):
@@ -13,7 +13,7 @@ class tcp_000F_playername_update:
 
     @classmethod
     def serialize(self, data: deque):
-        unk1 = ''.join([data.popleft() for _ in range(4)])
+        unk1 = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
         unk2 = ''.join([data.popleft() for _ in range(18)])
         username = hex_to_str(''.join([data.popleft() for _ in range(11)]))
         unk3 = ''.join([data.popleft() for _ in range(3)])

@@ -1,6 +1,6 @@
 from collections import deque
 import os
-from utils.utils import *
+from butils.utils import *
 from constants.constants import TEAM_MAP, SKIN_MAP
 
 

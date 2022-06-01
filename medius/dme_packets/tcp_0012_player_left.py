@@ -1,6 +1,6 @@
 from collections import deque
 import os
-from utils.utils import *
+from butils.utils import *
 
 class tcp_0012_player_left:
     def __init__(self, unk1:str='00'):

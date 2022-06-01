@@ -1,5 +1,5 @@
 from collections import deque
-from utils.utils import *
+from butils.utils import *
 import os
 
 from constants.constants import TEAM_MAP, SKIN_MAP, WEAPON_MAP
@@ -15,8 +15,14 @@ player_id_map = {
     '1200': 6,
     '1500': 7,
 }
-
-
+'''
+0003
+00
+01
+0100
+0A
+F8CA
+'''
 class tcp_0003_broadcast_lobby_state:
     def __init__(self, data:dict):
         self.name = os.path.basename(__file__).strip(".py")
@@ -120,6 +126,14 @@ class tcp_0003_broadcast_lobby_state:
                 hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
                 hex_to_bytes('09') + \
                 int_to_bytes_little(4, self.data['msg0']['time'])
+        elif self.data['msg0']['type'] == 'unk_0D':
+            # 01 is the unk1
+            return self.id + \
+                hex_to_bytes('00') + \
+                int_to_bytes_little(1, self.data['num_messages']) + \
+                hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
+                hex_to_bytes('0D') + \
+                int_to_bytes_little(4, self.data['msg0']['unk2'])
         else:
             raise Exception()
 

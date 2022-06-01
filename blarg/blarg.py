@@ -14,7 +14,7 @@ from collections import deque
 from medius.dme_serializer import TcpSerializer as tcp_map
 from medius.dme_serializer import UdpSerializer as udp_map
 
-from utils.utils import *
+from butils.utils import *
 
 class Blarg:
     def __init__(self, config: dict):
@@ -84,6 +84,9 @@ class Blarg:
                     break
                 else:
                     serialized = udp_map[packet_id].serialize(data)
+
+            if packet_id in self._config['exclude']:
+                continue
 
             if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] != 'False': # and packet_id not in ['0209', '0213']:
                 self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")

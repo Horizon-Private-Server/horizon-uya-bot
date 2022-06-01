@@ -1,5 +1,5 @@
 from collections import deque
-from utils.utils import *
+from butils.utils import *
 import os
 import random
 from constants.constants import WEAPON_MAP, KILL_MSG_MAP

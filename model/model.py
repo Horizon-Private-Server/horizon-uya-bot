@@ -210,7 +210,7 @@ class Model:
         print(bot_player_idx)
         print(min_bot_player_idx)
 
-        if len(cpu_player_ids) != 0 and bot_player_idx < min_bot_player_idx:
+        if len(cpu_player_ids) != 0 and bot_player_idx > min_bot_player_idx:
             return
 
         for i in range(1,100):

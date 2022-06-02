@@ -13,6 +13,20 @@ import logging
 logger = logging.getLogger("thug.map")
 logger.setLevel(logging.DEBUG)
 
+
+siege_ctf_respawn_coords = {
+    "bakisi_isles": {"red": [12446, 17599, 12802], "blue": [36762, 15792, 12832]},
+    "hoven_gorge": {"red": [9883, 9623, 4170], "blue": [19874, 22622, 4269]},
+    "outpost_x12": {"red": [10290, 14710, 6144], "blue": [45047, 15683, 6151]},
+    "korgon_outpost": {"red": [28328, 21108, 6145], "blue": [14090, 22676, 6145]},
+    "metropolis": {"red": [47061, 14929, 21463], "blue": [49628, 28445, 21463]},
+    "blackwater_city": {"red": [13004, 9759, 5156], "blue": [15165, 24379, 5156]},
+    "command_center": {"red": [21523, 24181, 2174], "blue": [20766, 22551, 2174]},
+    'aquatos_sewers': {"red": [12680, 17857, 6736], "blue": [17312, 12087, 6379]},
+    "blackwater_docks": {"red": [25773, 18112, 60224], "blue": [25527, 23871, 60224]},
+    "marcadia_palace": {"red": [33990, 54644, 7413], "blue": [27500, 54131, 7424]},
+}
+
 class Map:
     def __init__(self, map_name:str):
 
@@ -94,6 +108,13 @@ class Map:
 
     def get_random_coord_connected(self, coord):
         return list(random.choice(list(self.G.neighbors(tuple(coord)))))
+
+    def get_respawn_location(self, team_color, game_mode):
+        if game_mode == 'Deathmatch':
+            return self.get_random_coord()
+
+        # Siege/CTF
+        return self.find_closest_node(siege_ctf_respawn_coords[self.map][team_color])
 
     def __str__(self):
         return f"Map(name={self.map})"

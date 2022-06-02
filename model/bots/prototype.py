@@ -44,17 +44,15 @@ class prototype:
         }
 
         self._close_weapon_self_dmg_amount = {
-            'grav': 60,
-            'blitz': 20,
-            'lava': 38
+            'grav': 20,
+            'blitz': 10,
+            'lava': 10
         }
 
     async def main_loop(self):
         while self._model.alive:
             try:
                 #print(self.game_state)
-                # print(self.game_state.weapons)
-                # print(self.game_state.game_info)
 
                 # Wait for players to join
                 if len(self.game_state.players) == 0:
@@ -67,16 +65,11 @@ class prototype:
 
                 # Respawn
                 if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
-                    self.game_state.player.weapon = None
-                    self.game_state.player.reset_health()
-                    self._model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, map=self.game_state.map.map)])
-                    self.game_state.player.coord = self.game_state.map.get_random_coord()
-                    self.game_state.player.is_dead = False
+                    self.respawn()
 
                 # update angle/coord
                 if not self.game_state.player.is_dead:
                     if self.game_state.player.movement_packet_num % 4 == 0:
-
 
                         self.tracking = self._model.get_closest_enemy_player()
 
@@ -111,6 +104,13 @@ class prototype:
                 logger.exception("PROTOTYPE ERROR")
                 self._model.alive = False
                 break
+
+    def respawn(self):
+        self.game_state.player.weapon = None
+        self.game_state.player.reset_health()
+        self._model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, map=self.game_state.map.map)])
+        self.game_state.player.coord = self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode)
+        self.game_state.player.is_dead = False
 
     def fire_weapon(self):
         if self.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench']:

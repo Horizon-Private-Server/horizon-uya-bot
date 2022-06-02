@@ -36,8 +36,6 @@ class Model:
         self.dmetcp_queue = queue.Queue()
         self.dmeudp_queue = queue.Queue()
 
-
-
     def process(self, serialized: dict):
         '''
         PROCESS RT PACKETS
@@ -64,7 +62,6 @@ class Model:
         if dme_packet.name == 'tcp_000F_playername_update' and dme_packet.unk3 == '001A00':
             self.dmetcp_queue.put([0, tcp_000F_playername_update.tcp_000F_playername_update(unk1=32958977, unk2='00000000000003000300000000001A000000', username=self.game_state.player.username, unk3='001A00')])
 
-
         if dme_packet.name == 'tcp_0016_player_connect_handshake' and dme_packet.subtype == 'host_initial_handshake':
             if dme_packet.unk1 == '03000100000001':
                 #self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(data='03010300000000000000000000000000')])
@@ -73,10 +70,9 @@ class Model:
                 self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(subtype='handshake', src_player=self.game_state.player.player_id, unk1='03000000000000')])
                 self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(subtype='handshake', src_player=self.game_state.player.player_id, unk1='03000000000002')])
 
-
         if dme_packet.name == 'tcp_0018_initial_sync':
             self._loop.create_task(self.send_tcp_0018(src_player))
-            #self._loop.create_task(self.send_tcp_0213())
+
         if dme_packet.name == 'tcp_0010_initial_sync':
             self.dmetcp_queue.put([src_player, tcp_0010_initial_sync.tcp_0010_initial_sync(src=self.game_state.player.player_id)])
 
@@ -85,12 +81,8 @@ class Model:
 
             self.dmetcp_queue.put([0, tcp_000F_playername_update.tcp_000F_playername_update(unk1=self.game_state.player.player_id, unk2='00000000000003000300000000001A000000', username=self.game_state.player.username, unk3='000300')])
             self.dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=self.game_state.player.player_id, unk2='00000000001003000300000000001A000000', username=self.game_state.player.username, unk3='000000')])
-
-
             self.dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined(account_id=self.game_state.player.account_id, skin1=self.game_state.player.skin, skin2=self.game_state.player.skin, username=self.game_state.player.username, username2=self.game_state.player.username, rank=self.game_state.player.rank, clan_tag=self.game_state.player.clan_tag)])
-
             self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready')])
-
 
         if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and dme_packet.data['src'] == -1 and dme_packet.data['msg0']['type'] == 'ready/unready' and dme_packet.data['msg0'][f'p{self.game_state.player.player_id}'] == 'kicked':
             # Bot just got kicked
@@ -109,7 +101,6 @@ class Model:
             if src_player == 0:
                 self.game_state.player.time = dme_packet.time
             self.game_state.time_update(src_player, dme_packet.time)
-
 
         if dme_packet.name == 'tcp_0012_player_left':
             if src_player == 0:
@@ -133,9 +124,9 @@ class Model:
 
         if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_PlayerData':
             self.game_state.tnw_playerdata_update(src_player, dme_packet.data)
+
         if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_GameSetting':
             self.game_state.tnw_gamesetting_update(src_player, dme_packet.data)
-
 
         if dme_packet.name == 'udp_0209_movement_update':
             self.game_state.movement_update(src_player, dme_packet.data)
@@ -149,38 +140,15 @@ class Model:
 
         if dme_packet.name == 'tcp_020C_info' and 'req_confirmation' in dme_packet.subtype:
             data = {'object_id': dme_packet.data['object_id'], 'unk': dme_packet.data['unk']}
-            # self.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype='p1_req_confirmation', timestamp=self.game_state.player.time, object_id='001000F7', data=data)])
-
-            # 2022-06-01 17:30:02,278 blarg | INFO | 0 -> 1 | tcp_020C_info; subtype:p0_confirm timestamp:172090 object_id:001000F7 data:{'object_id': '0E1000F7', 'unk': '0200'}
-
             self.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype='p1_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data=data)])
 
     async def send_tcp_0018(self, src_player):
         await asyncio.sleep(3)
         self.dmetcp_queue.put([src_player, tcp_0018_initial_sync.tcp_0018_initial_sync(src=self.game_state.player.player_id)])
 
-
-    # async def send_tcp_0213(self):
-    #     while self.alive:
-    #         try:
-    #             self.dmetcp_queue.put([0, tcp_0213_player_headset.tcp_0213_player_headset()])
-    #             await asyncio.sleep(1)
-    #         except:
-    #             logger.exception("send_tcp_0213 ERROR")
-    #             self.alive = False
-    #             break
-
     async def send_player_data(self):
         # It takes 13 seconds to load from game start into actual game
         await asyncio.sleep(18)
-        # Command Center
-        # unk1 = '01000000026E010003000000C173250000000000'
-        # unk2 = '0066809443620B8B4309BA48430000000000000000000000000F73E83F'
-        # unk3 = '0000000000000000000000000000000000000000'
-        # unk4 = '010000100000000000000000000000000F73E83F'
-        # unk5 = '00000100001000000000'
-        # unk6 = '00000000007041000000000000000000000000000000000000010000000100000000000000010000000100000000000000000000003200000064000000320000000100'
-
 
         # Aquatos Sewers
         test_map = {
@@ -193,7 +161,7 @@ class Model:
             6: '12',
             7: '15'
         }
-        # 2022-04-09 20:04:06,691 blarg | INFO | 1 -> -1 | tcp_0004_tnw; tnw_type:tNW_PlayerData data:{'unk1': '0100000002D301000300C6BF60B8000000000000', 'unk2': '41EF9A37445643694399B7A7430000000000000000000000001514C93F', 'player_start_time_1': 47184, 'unk3': '0000000000000000000000000000000000000000', 'account_id_1': 1008, 'unk4': '010000100000000000000000000000001514C93F', 'player_start_time_2': 47184, 'account_id_2': 1008, 'unk5': '00000100001000000000', 'team': 'red', 'unk6': '00000000007041000000000000000000000000000000000000010000000100000000000000010000000100000000000000000000003200000064000000320000000100'}
+
         if self.game_state.map.map == 'bakisi_isles':
             map_specific_1 = '00C6BF09AA780100000000'
             unk2='41C51302446893AC4332E347430000000000000000000000005E4D0740'
@@ -222,9 +190,7 @@ class Model:
 
         self.dmetcp_queue.put([0, tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='000000000300030003000000000070410000', username=self.game_state.player.username, unk3='000000')])
 
-        ####
         self.dmetcp_queue.put(['B', tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(unk1='00000000', team='blue', skin='ratchet', ready='unk, player in-game ready(?)', username='', unk2='0000000000000000000000')])
-
 
         self.dmetcp_queue.put(['B', tcp_0205_unk.tcp_0205_unk()])
 
@@ -232,6 +198,21 @@ class Model:
         self._loop.create_task(self.bot.main_loop())
 
     async def c_confirmations(self):
+        bot_player_idx = self.game_state.player.player_id
+
+        cpu_player_ids = [player_id for player_id in self.game_state.players.keys() if len(self.game_state.players[player_id].username) == 7 and self.game_state.players[player_id].username[0:3] == 'CPU']
+
+
+        min_bot_player_idx = min(cpu_player_ids) if len(cpu_player_ids) > 0 else 99999
+
+        print(cpu_player_ids)
+        print(len(cpu_player_ids))
+        print(bot_player_idx)
+        print(min_bot_player_idx)
+
+        if len(cpu_player_ids) != 0 and bot_player_idx < min_bot_player_idx:
+            return
+
         for i in range(1,100):
             d = bytes_to_hex(int_to_bytes_little(1,i))
             data = {'object_id': f'{d}1000F7', 'unk': '0200'}
@@ -252,6 +233,9 @@ class Model:
 
     def get_closest_enemy_player(self):
         players = [p for p in self.game_state.players.values() if p.team != self.game_state.player.team and p.is_dead == False]
+
+        if players == []:
+            players = [p for p in self.game_state.players.values() if p.team != self.game_state.player.team]
 
         if players == []:
             players = [p for p in self.game_state.players.values()]

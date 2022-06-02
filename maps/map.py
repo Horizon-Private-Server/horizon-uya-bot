@@ -95,6 +95,9 @@ class Map:
     def get_random_coord_connected(self, coord):
         return list(random.choice(list(self.G.neighbors(tuple(coord)))))
 
+    def __str__(self):
+        return f"Map(name={self.map})"
+
 if __name__ == '__main__':
     print("Reading map")
     map = Map('aquatos_sewers')

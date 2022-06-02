@@ -119,6 +119,15 @@ class Model:
         if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and dme_packet.data['num_messages'] == 1 and dme_packet.data['msg0']['type'] == 'timer_update':
             self.game_state.player.time = dme_packet.data['msg0']['time']
 
+        if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and dme_packet.data['num_messages'] == 1 and dme_packet.data['msg0']['type'] == 'health_update':
+            self.game_state.players[src_player].health = dme_packet.data['msg0']['health']
+            if self.game_state.players[src_player].health == 0:
+                self.game_state.players[src_player].is_dead = True
+
+        if dme_packet.name == 'tcp_020A_player_respawned':
+            self.game_state.players[src_player].is_dead = False
+            self.game_state.players[src_player].reset_health()
+
         if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and "msg2" in dme_packet.data.keys() and dme_packet.data['msg2']['type'] == 'unk_0D':
             self._loop.create_task(self._timer_update(dme_packet.data['msg2']['unk2']))
 
@@ -242,7 +251,7 @@ class Model:
                 break
 
     def get_closest_enemy_player(self):
-        players = [p for p in self.game_state.players.values() if p.team != self.game_state.player.team]
+        players = [p for p in self.game_state.players.values() if p.team != self.game_state.player.team and p.is_dead == False]
 
         if players == []:
             players = [p for p in self.game_state.players.values()]

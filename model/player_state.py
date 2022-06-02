@@ -53,5 +53,5 @@ class PlayerState:
         return self.team
 
     def __str__(self):
-        return f"PlayerState; username: {self.username} player_id:{self.player_id} health:{self.health} account_id:{self.account_id} team:{self.team} weapon:{self.weapon} " + \
+        return f"PlayerState; username: {self.username} player_id:{self.player_id} health:{self.health} is_dead:{self.is_dead} account_id:{self.account_id} team:{self.team} weapon:{self.weapon} " + \
                 f"coord:{self.coord} movement_packet_num:{self.movement_packet_num} time:{self.time}"

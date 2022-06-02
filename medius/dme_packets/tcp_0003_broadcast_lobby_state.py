@@ -4,6 +4,25 @@ import os
 
 from constants.constants import TEAM_MAP, SKIN_MAP, WEAPON_MAP
 
+HP_MAP ={
+    1097859072:100,
+    1096810496:93,
+    1095761920:86,
+    1094713344:80,
+    1093664768:73,
+    1092616192:66,
+    1091567616:60,
+    1090519040:53,
+    1088421888:46,
+    1086324736:40,
+    1084227584:33,
+    1082130432:26,
+    1077936128:20,
+    1073741824:13,
+    1065353216:6,
+    0:0
+}
+
 player_id_map = {
     '0000': -1,
     '0100': 0,
@@ -68,8 +87,8 @@ class tcp_0003_broadcast_lobby_state:
                     data.popleft()
                     sub_message[f'p{player_id}'] = SKIN_MAP[val]
             elif broadcast_type == '07':
-                sub_message['type'] = '07_timer_update'
-                sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+                sub_message['type'] = 'health_update'
+                sub_message['health'] = HP_MAP[hex_to_int_little(''.join([data.popleft() for i in range(4)]))]
             elif broadcast_type == '09':
                 sub_message['type'] = '09_timer_update'
                 if len(data) == 2:
@@ -126,6 +145,7 @@ class tcp_0003_broadcast_lobby_state:
                 hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
                 hex_to_bytes('09') + \
                 int_to_bytes_little(4, self.data['msg0']['time'])
+
         elif self.data['msg0']['type'] == 'unk_0D':
             # 01 is the unk1
             return self.id + \
@@ -134,6 +154,15 @@ class tcp_0003_broadcast_lobby_state:
                 hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
                 hex_to_bytes('0D') + \
                 int_to_bytes_little(4, self.data['msg0']['unk2'])
+
+        elif self.data['msg0']['type'] == 'health_update':
+            # 01 is the unk1
+            return self.id + \
+                hex_to_bytes('00') + \
+                int_to_bytes_little(1, self.data['num_messages']) + \
+                hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
+                hex_to_bytes('07') + \
+                int_to_bytes_little(4, {v: k for k, v in HP_MAP.items()}[self.data['msg0']['health']])
         else:
             raise Exception()
 

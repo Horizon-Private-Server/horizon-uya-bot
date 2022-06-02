@@ -7,8 +7,10 @@ from constants.constants import WEAPON_MAP
 subtype_map = {
     '10401F00': '?_crate_destroyed',
     '41401F00': 'weapon_pickup',
+    '41441F00': 'weapon_pickup_unk?_p1',
     '00401F00': 'crate_destroyed',
     '02401F00': 'crate_respawn',
+    '02441F00': 'crate_respawn_p1?',
     '00000000': 'crate_destroyed_and_pickup',
     '10000000': '?_crate_destroyed_and_pickup',
     '40401F00': 'object_update',
@@ -20,6 +22,18 @@ subtype_map = {
     '73040000': 'p1_req_confirmation',
 }
 
+'''
+020C
+41441F00
+A2B40100
+041000F7
+01000000
+
+020C
+02441F00
+55290C00
+081000F7
+'''
 
 class tcp_020C_info:
     def __init__(self, subtype:str=None,
@@ -57,9 +71,16 @@ class tcp_020C_info:
         elif subtype == 'flag_drop':
             data_dict['flag_drop_unk'] =  ''.join([data.popleft() for i in range(16)])
         elif subtype in ['p0_confirm', 'p1_confirm']:
-            data_dict['unk'] = ''.join([data.popleft() for i in range(6)])
-        elif subtype in ['p0_req_confirmation', 'p0_req_confirmation']:
-            data_dict['unk'] = ''.join([data.popleft() for i in range(7)])
+            data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
+            data_dict['unk'] = ''.join([data.popleft() for i in range(2)])
+        elif subtype in ['p0_req_confirmation', 'p1_req_confirmation']:
+            data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
+            data_dict['buf'] = ''.join([data.popleft() for i in range(1)])
+            data_dict['unk'] = ''.join([data.popleft() for i in range(2)])
+        elif subtype == 'crate_respawn_p1?':
+            pass
+        elif subtype == 'weapon_pickup_unk?_p1':
+            data_dict['unk'] =  ''.join([data.popleft() for i in range(4)])
 
         return tcp_020C_info(subtype, timestamp, object_id, data_dict)
 
@@ -69,12 +90,16 @@ class tcp_020C_info:
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
                 hex_to_bytes(self.object_id) + \
+                hex_to_bytes(self.data['object_id']) + \
                 hex_to_bytes(self.data['unk'])
         elif self.subtype == 'p1_req_confirmation':
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
-                hex_to_bytes(self.object_id)
+                hex_to_bytes(self.object_id) + \
+                hex_to_bytes(self.data['object_id']) + \
+                hex_to_bytes('00') + \
+                hex_to_bytes(self.data['unk'])
 
     def __str__(self):
         return f"{self.name}; subtype:{self.subtype} " + \

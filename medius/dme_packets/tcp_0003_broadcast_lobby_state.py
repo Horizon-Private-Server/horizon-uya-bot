@@ -88,7 +88,8 @@ class tcp_0003_broadcast_lobby_state:
                     sub_message[f'p{player_id}'] = SKIN_MAP[val]
             elif broadcast_type == '07':
                 sub_message['type'] = 'health_update'
-                sub_message['health'] = HP_MAP[hex_to_int_little(''.join([data.popleft() for i in range(4)]))]
+                raw_hp = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+                sub_message['health'] = HP_MAP[raw_hp] if raw_hp in HP_MAP else 100
             elif broadcast_type == '09':
                 sub_message['type'] = '09_timer_update'
                 if len(data) == 2:

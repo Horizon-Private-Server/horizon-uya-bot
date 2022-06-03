@@ -4,6 +4,32 @@ import os
 
 from constants.constants import WEAPON_MAP
 
+'''
+cc:
+red flag: 131000F7
+blue flag: 141000F7
+
+dox:
+red flag: 0E1000F7
+blue flag: 0F1000F7
+
+marc:
+red flag: 131000F7
+blue flag: 141000F7
+
+sewers:
+red flag: 121000F7
+blue flag: 131000F7
+
+bwc
+-- no nodes, bd on
+red flag: 3D1000F7
+blue flag:
+-- no nodes, bd off
+red flag:
+blue flag: 
+
+'''
 subtype_map = {
     '10401F00': '?_crate_destroyed',
     '41401F00': 'weapon_pickup',
@@ -13,26 +39,23 @@ subtype_map = {
     '02441F00': 'crate_respawn_p1?',
     '00000000': 'crate_destroyed_and_pickup',
     '10000000': '?_crate_destroyed_and_pickup',
-    '40401F00': 'object_update',
     '21000000': 'flag_update',
     '02411F00': 'flag_drop',
     '61000000': 'p0_confirm',
     '61040000': 'p1_confirm',
     '73000000': 'p0_req_confirmation',
     '73040000': 'p1_req_confirmation',
+
+    '40401F00': 'p0_object_update',
+    '40441F00': 'p1_object_update',
 }
 
 '''
 020C
-41441F00
-A2B40100
-041000F7
+40441F00
+17680C00
+141000F7
 01000000
-
-020C
-02441F00
-55290C00
-081000F7
 '''
 
 class tcp_020C_info:
@@ -64,7 +87,7 @@ class tcp_020C_info:
             data_dict['weapon_spawned'] = WEAPON_MAP[data.popleft()]
         elif subtype == 'weapon_pickup':
             data_dict['weapon_pickup_unk'] =  ''.join([data.popleft() for i in range(4)])
-        elif subtype == 'object_update':
+        elif 'object_update' in subtype:
             data_dict['object_update_unk'] =  ''.join([data.popleft() for i in range(4)])
         elif subtype == 'flag_update':
             data_dict['flag_update_type'] =  ''.join([data.popleft() for i in range(2)])
@@ -81,6 +104,9 @@ class tcp_020C_info:
             pass
         elif subtype == 'weapon_pickup_unk?_p1':
             data_dict['unk'] =  ''.join([data.popleft() for i in range(4)])
+
+
+
 
         return tcp_020C_info(subtype, timestamp, object_id, data_dict)
 

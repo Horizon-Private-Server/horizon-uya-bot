@@ -27,6 +27,8 @@ class GameState:
 
         self.game_info = gameinfo
 
+        self.nodes = True
+
         # Point grid
         self.map = Map(self.map_name)
 
@@ -66,13 +68,14 @@ class GameState:
                     self.players[player_idx].username = username
                 else:
                     self.players[player_idx] = PlayerState(player_id=player_idx, username = username)
+        self.nodes = tnw_gamesetting['nodes']
 
     def __str__(self):
         result = f'''
 =============================================
                 GameState
 ---------------------------------------------
-Map:{self.map} GameMode:{self.game_mode}
+Map:{self.map} GameMode:{self.game_mode} Nodes:{self.nodes}
 State:{self.state} PlayerCount:{len(self.players)+1}
 ---------------------------------------------
 {self.player}

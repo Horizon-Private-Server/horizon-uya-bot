@@ -52,7 +52,7 @@ class prototype:
     async def main_loop(self):
         while self._model.alive:
             try:
-                #print(self.game_state)
+                print(self.game_state)
 
                 # Wait for players to join
                 if len(self.game_state.players) == 0:

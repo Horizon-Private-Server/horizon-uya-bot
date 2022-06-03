@@ -109,7 +109,9 @@ class tcp_0004_tnw:
         packet['p6_team'] = TEAM_MAP[data.popleft()]; data.popleft()
         packet['p7_team'] = TEAM_MAP[data.popleft()]; data.popleft()
 
-        packet['unk2'] = ''.join([data.popleft() for _ in range(112)])
+        packet['unk2'] = ''.join([data.popleft() for _ in range(63)])
+        packet['nodes'] = data.popleft() == '01'
+        packet['unk3'] = ''.join([data.popleft() for _ in range(48)])
 
         packet['p0_bolt_modifier'] = ''.join([data.popleft() for _ in range(4)])
         packet['p1_bolt_modifier'] = ''.join([data.popleft() for _ in range(4)])

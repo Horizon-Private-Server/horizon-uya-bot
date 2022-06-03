@@ -122,14 +122,14 @@ class tcp_020C_info:
         return tcp_020C_info(subtype, timestamp, object_id, data_dict)
 
     def to_bytes(self):
-        if self.subtype == 'p1_confirm':
+        if self.subtype in ['p0_confirm', 'p1_confirm', 'p2_confirm', 'p3_confirm', 'p4_confirm', 'p5_confim', 'p6_confirm', 'p7_confirm']:
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
                 hex_to_bytes(self.object_id) + \
                 hex_to_bytes(self.data['object_id']) + \
                 hex_to_bytes(self.data['unk'])
-        elif self.subtype == 'p1_req_confirmation':
+        elif self.subtype in ['p0_req_confirmation', 'p1_req_confirmation', 'p2_req_confirmation', 'p3_req_confirmation', 'p4_req_confirmation', 'p5_req_confirmation', 'p6_req_confirmation', 'p7_req_confirmation']:
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \

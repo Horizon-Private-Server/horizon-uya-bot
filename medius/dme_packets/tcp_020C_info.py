@@ -20,15 +20,6 @@ blue flag: 141000F7
 sewers:
 red flag: 121000F7
 blue flag: 131000F7
-
-bwc
--- no nodes, bd on
-red flag: 3D1000F7
-blue flag:
--- no nodes, bd off
-red flag:
-blue flag: 
-
 '''
 subtype_map = {
     '10401F00': '?_crate_destroyed',
@@ -41,13 +32,33 @@ subtype_map = {
     '10000000': '?_crate_destroyed_and_pickup',
     '21000000': 'flag_update',
     '02411F00': 'flag_drop',
+
     '61000000': 'p0_confirm',
     '61040000': 'p1_confirm',
+    '61080000': 'p2_confirm',
+    '610C0000': 'p3_confirm',
+    '61100000': 'p4_confirm',
+    '61140000': 'p5_confirm',
+    '61180000': 'p6_confirm',
+    '611C0000': 'p7_confirm',
+
     '73000000': 'p0_req_confirmation',
     '73040000': 'p1_req_confirmation',
+    '73080000': 'p2_req_confirmation',
+    '730C0000': 'p3_req_confirmation',
+    '73100000': 'p4_req_confirmation',
+    '73140000': 'p5_req_confirmation',
+    '73180000': 'p6_req_confirmation',
+    '731C0000': 'p7_req_confirmation',
 
     '40401F00': 'p0_object_update',
     '40441F00': 'p1_object_update',
+    '40481F00': 'p2_object_update',
+    '404C1F00': 'p3_object_update',
+    '40501F00': 'p4_object_update',
+    '40541F00': 'p5_object_update',
+    '40581F00': 'p6_object_update',
+    '405C1F00': 'p7_object_update',
 }
 
 '''
@@ -93,10 +104,10 @@ class tcp_020C_info:
             data_dict['flag_update_type'] =  ''.join([data.popleft() for i in range(2)])
         elif subtype == 'flag_drop':
             data_dict['flag_drop_unk'] =  ''.join([data.popleft() for i in range(16)])
-        elif subtype in ['p0_confirm', 'p1_confirm']:
+        elif subtype in ['p0_confirm', 'p1_confirm', 'p2_confirm', 'p3_confirm', 'p4_confirm', 'p5_confim', 'p6_confirm', 'p7_confirm']:
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
             data_dict['unk'] = ''.join([data.popleft() for i in range(2)])
-        elif subtype in ['p0_req_confirmation', 'p1_req_confirmation']:
+        elif subtype in ['p0_req_confirmation', 'p1_req_confirmation', 'p2_req_confirmation', 'p3_req_confirmation', 'p4_req_confirmation', 'p5_req_confirmation', 'p6_req_confirmation', 'p7_req_confirmation']:
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
             data_dict['buf'] = ''.join([data.popleft() for i in range(1)])
             data_dict['unk'] = ''.join([data.popleft() for i in range(2)])

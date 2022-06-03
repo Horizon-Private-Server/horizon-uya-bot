@@ -205,11 +205,6 @@ class Model:
 
         min_bot_player_idx = min(cpu_player_ids) if len(cpu_player_ids) > 0 else 99999
 
-        print(cpu_player_ids)
-        print(len(cpu_player_ids))
-        print(bot_player_idx)
-        print(min_bot_player_idx)
-
         if len(cpu_player_ids) != 0 and bot_player_idx > min_bot_player_idx:
             return
 

@@ -29,6 +29,10 @@ class GameState:
 
         self.nodes = True
 
+        # if self.game_mode == 'CTF':
+        #     self.red_flag_loc = None
+        #     self.blue_flag_loc = None
+
         # Point grid
         self.map = Map(self.map_name)
 

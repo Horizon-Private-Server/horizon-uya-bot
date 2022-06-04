@@ -90,7 +90,7 @@ class Model:
             self.alive = False
 
         if dme_packet.name == 'tcp_0211_player_lobby_state_change' and src_player == 0 and dme_packet.ready == 'change team request':
-            new_team = self.game_state.player.change_teams()
+            new_team = self.game_state.player.change_teams(self.game_state.game_mode)
             self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready')])
 
         if dme_packet.name == 'tcp_000D_game_started':
@@ -253,12 +253,10 @@ class Model:
                     for _ in range(size):
                         destination, pkt = self.dmetcp_queue.get()
                         logger.debug(f"O | tcp; dst:{destination} {pkt}")
-
                         if destination != 'B':
                             pkt = ClientAppSingleSerializer.build(destination, pkt.to_bytes())
                         else:
                             pkt = ClientAppBroadcastSerializer.build(pkt.to_bytes())
-
                         self._tcp.queue(rtpacket_to_bytes(pkt))
 
                 await asyncio.sleep(0.00001)

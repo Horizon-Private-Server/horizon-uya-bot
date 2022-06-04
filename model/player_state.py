@@ -38,7 +38,7 @@ class PlayerState:
             return 0
         return self.movement_packet_num - 1
 
-    def change_teams(self):
+    def change_teams(self, game_mode):
         team_change_map = {
             'blue': 'red',
             'red': 'green',
@@ -49,7 +49,15 @@ class PlayerState:
             'aqua': 'pink',
             'pink': 'blue'
         }
-        self.team = team_change_map[self.team]
+        ctf_siege_map = {
+            'red': 'blue',
+            'blue': 'red'
+        }
+
+        if game_mode == 'Deathmatch':
+            self.team = team_change_map[self.team]
+        else:
+            self.team = ctf_siege_map[self.team]
         return self.team
 
     def __str__(self):

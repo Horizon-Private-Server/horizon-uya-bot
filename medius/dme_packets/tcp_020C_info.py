@@ -104,7 +104,7 @@ class tcp_020C_info:
             data_dict['flag_update_type'] =  ''.join([data.popleft() for i in range(2)])
         elif subtype == 'flag_drop':
             data_dict['flag_drop_unk'] =  ''.join([data.popleft() for i in range(16)])
-        elif subtype in ['p0_confirm', 'p1_confirm', 'p2_confirm', 'p3_confirm', 'p4_confirm', 'p5_confim', 'p6_confirm', 'p7_confirm']:
+        elif subtype in ['p0_confirm', 'p1_confirm', 'p2_confirm', 'p3_confirm', 'p4_confirm', 'p5_confirm', 'p6_confirm', 'p7_confirm']:
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
             data_dict['unk'] = ''.join([data.popleft() for i in range(2)])
         elif subtype in ['p0_req_confirmation', 'p1_req_confirmation', 'p2_req_confirmation', 'p3_req_confirmation', 'p4_req_confirmation', 'p5_req_confirmation', 'p6_req_confirmation', 'p7_req_confirmation']:
@@ -116,13 +116,10 @@ class tcp_020C_info:
         elif subtype == 'weapon_pickup_unk?_p1':
             data_dict['unk'] =  ''.join([data.popleft() for i in range(4)])
 
-
-
-
         return tcp_020C_info(subtype, timestamp, object_id, data_dict)
 
     def to_bytes(self):
-        if self.subtype in ['p0_confirm', 'p1_confirm', 'p2_confirm', 'p3_confirm', 'p4_confirm', 'p5_confim', 'p6_confirm', 'p7_confirm']:
+        if self.subtype in ['p0_confirm', 'p1_confirm', 'p2_confirm', 'p3_confirm', 'p4_confirm', 'p5_confirm', 'p6_confirm', 'p7_confirm']:
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \

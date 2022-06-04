@@ -114,6 +114,9 @@ class Model:
             self.game_state.players[src_player].health = dme_packet.data['msg0']['health']
             if self.game_state.players[src_player].health == 0:
                 self.game_state.players[src_player].is_dead = True
+            else:
+                self.game_state.players[src_player].is_dead = False
+
 
         if dme_packet.name == 'tcp_020A_player_respawned':
             self.game_state.players[src_player].is_dead = False

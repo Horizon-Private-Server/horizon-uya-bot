@@ -17,6 +17,8 @@ from model.player_state import PlayerState
 from model.game_state import GameState
 from model.bots import *
 
+from constants.constants import parse_object_id
+
 
 class Model:
     def __init__(self, config, loop, tcp_conn, udp_conn):
@@ -117,7 +119,6 @@ class Model:
             else:
                 self.game_state.players[src_player].is_dead = False
 
-
         if dme_packet.name == 'tcp_020A_player_respawned':
             self.game_state.players[src_player].is_dead = False
             self.game_state.players[src_player].reset_health()
@@ -144,6 +145,33 @@ class Model:
         if dme_packet.name == 'tcp_020C_info' and 'req_confirmation' in dme_packet.subtype:
             data = {'object_id': dme_packet.data['object_id'], 'unk': dme_packet.data['unk']}
             self.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data=data)])
+
+        if dme_packet.name == 'tcp_020C_info' and '_object_update' in dme_packet.subtype:
+            # Flag Pickup
+            object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
+            if object == 'red_flag' or object == 'blue_flag':
+                self.game_state.players[src_player].flag = object
+
+        if dme_packet.name == 'tcp_020C_info' and 'flag_drop' in dme_packet.subtype:
+            # Flag Dropped
+            object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
+            if object == 'red_flag' or object == 'blue_flag':
+                for player_id in self.game_state.players.keys():
+                    if self.game_state.players[player_id].flag == object:
+                        self.game_state.players[player_id].flag = None
+
+        if dme_packet.name == 'tcp_020C_info' and 'flag_update' in dme_packet.subtype:
+            # Flag Returned or Flag Captured
+            object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
+            if object == 'red_flag' or object == 'blue_flag':
+                if '_capture' in dme_packet.data['flag_update_type'] or dme_packet.data['flag_update_type'] == 'flag_return':
+                    # Find players that have redflag/blueflag and set to None
+                    self.game_state.clear_flag(object)
+
+
+        '''
+        2022-06-04 12:05:09,522 blarg | INFO | 0 -> -1 | tcp_020C_info; subtype:flag_update timestamp:750393 object_id:131000F7 data:{'flag_update_type': '0100'}
+        '''
 
     async def send_tcp_0018(self, src_player):
         await asyncio.sleep(3)

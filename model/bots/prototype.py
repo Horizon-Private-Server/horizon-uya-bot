@@ -59,7 +59,7 @@ class prototype:
                     await asyncio.sleep(0.03)
                     continue
 
-                # Randomly pick a valid weapon
+                # Randomly pick a valid weapon if no weapon is selected
                 if self.game_state.player.weapon == None:
                     self.change_weapon()
 
@@ -67,33 +67,8 @@ class prototype:
                 if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
                     self.respawn()
 
-                # update angle/coord
-                if not self.game_state.player.is_dead:
-                    if self.game_state.player.movement_packet_num % 4 == 0:
-
-                        self.tracking = self._model.get_closest_enemy_player()
-
-                        # if we are at 300 distance, we can strafe around instead of walking toward them
-                        if calculate_distance(self.game_state.player.coord, self.tracking.coord) > 600 or self.follow_player == True:
-                            new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord)
-                        else:
-                            new_coord = self.game_state.map.get_random_coord_connected(self.game_state.player.coord)
-
-                        if new_coord[2] > self.game_state.player.coord[2]:
-                            self.game_state.player.animation = 'jump'
-                        elif new_coord != self.game_state.player.coord:
-                            self.game_state.player.animation = 'forward'
-                        else:
-                            self.game_state.player.animation = None
-
-                        self.game_state.player.coord = new_coord
-
-                # Update camera angle
-                if self.game_state.player.movement_packet_num % 5 == 0:
-                    self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.tracking.coord)
-
-                # Fire weapon
-                self.fire_weapon()
+                # Run objective
+                self.objective()
 
                 # Update movement
                 self.send_movement()
@@ -104,6 +79,41 @@ class prototype:
                 logger.exception("PROTOTYPE ERROR")
                 self._model.alive = False
                 break
+
+    def objective(self):
+        # first determine the state of the flag etc
+
+
+
+
+        # update angle/coord
+        if not self.game_state.player.is_dead:
+            if self.game_state.player.movement_packet_num % 4 == 0:
+
+                self.tracking = self._model.get_closest_enemy_player()
+
+                # if we are at 300 distance, we can strafe around instead of walking toward them
+                if calculate_distance(self.game_state.player.coord, self.tracking.coord) > 600 or self.follow_player == True:
+                    new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord)
+                else:
+                    new_coord = self.game_state.map.get_random_coord_connected(self.game_state.player.coord)
+
+                if new_coord[2] > self.game_state.player.coord[2]:
+                    self.game_state.player.animation = 'jump'
+                elif new_coord != self.game_state.player.coord:
+                    self.game_state.player.animation = 'forward'
+                else:
+                    self.game_state.player.animation = None
+
+                self.game_state.player.coord = new_coord
+
+        # Update camera angle
+        if self.game_state.player.movement_packet_num % 5 == 0:
+            self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.tracking.coord)
+
+        # Fire weapon
+        self.fire_weapon()
+
 
     def respawn(self):
         self.game_state.player.weapon = None

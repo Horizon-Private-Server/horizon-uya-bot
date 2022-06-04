@@ -1,3 +1,34 @@
+CTF_FLAG_ID_MAP = {
+    'command_center': {'131000F7': 'red_flag', '141000F7': 'blue_flag'},
+    'aquatos_sewers': {'121000F7': 'red_flag', '131000F7': 'blue_flag'},
+    'blackwater_docks': {'0E1000F7': 'red_flag', '0F1000F7': 'blue_flag'},
+    'marcadia_palace': {'131000F7': 'red_flag', '141000F7': 'blue_flag'},
+}
+
+CTF_FLAG_LOCATIONS = {
+    'command_center': {'red': [22401, 23381, 2296], 'blue': [19863, 23373, 2296]},
+    'aquatos_sewers': {'red': [25666, 17724, 60224], 'blue': [25675, 24307, 60226]},
+    'blackwater_docks': {'red': [12621, 17510, 6765], 'blue': [17104, 11738, 6409]},
+    'marcadia_palace': {'red': [34431, 53967, 7362], 'blue': [26813, 54001, 7364]},
+}
+
+def parse_object_id(object_id, map='marcadia_palace', nodes=True, base_defenses=True):
+
+    if map in {'command_center', 'aquatos_sewers', 'blackwater_docks', 'marcadia_palace'}:
+        if object_id not in CTF_FLAG_ID_MAP[map].keys():
+            return None
+        return CTF_FLAG_ID_MAP[map][object_id]
+
+    return None
+
+
+def get_flag_location(map='marcadia_palace', team='red'):
+    if map in {'command_center', 'aquatos_sewers', 'blackwater_docks', 'marcadia_palace'}:
+        return CTF_FLAG_LOCATIONS[map][team]
+    return [0,0,0]
+
+
+
 TEAM_MAP = {
     '00': 'blue',
     '01': 'red',

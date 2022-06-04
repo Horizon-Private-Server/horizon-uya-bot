@@ -6,6 +6,8 @@ from maps.map import Map
 
 from model.player_state import PlayerState
 
+from constants.constants import get_flag_location
+
 class GameState:
     def __init__(self, gameinfo:dict, player:PlayerState, config:dict):
         self.player = player
@@ -29,12 +31,25 @@ class GameState:
 
         self.nodes = True
 
-        # if self.game_mode == 'CTF':
-        #     self.red_flag_loc = None
-        #     self.blue_flag_loc = None
+        self.red_flag_loc = get_flag_location(map=self.map_name, team='red')
+        self.blue_flag_loc = get_flag_location(map=self.map_name, team='blue')
 
         # Point grid
         self.map = Map(self.map_name)
+
+    def clear_flag(self, flag):
+        if self.player.flag == flag:
+            self.player.flag = None
+            return
+
+        for player_id in self.players.keys():
+            if self.players[player_id].flag == flag:
+                self.players[player_id].flag = None
+
+        if flag == 'red_flag':
+            self.red_flag_loc = get_flag_location(map=self.map_name, team='red')
+        elif flag == 'blue_flag':
+            self.blue_flag_loc = get_flag_location(map=self.map_name, team='blue')
 
     def player_left(self, src_player:int):
         if src_player not in self.players.keys():
@@ -51,6 +66,11 @@ class GameState:
             return
         self.players[src_player].coord = movement_data['coord']
         self.players[src_player].movement_packet_num = movement_data['packet_num']
+
+        if self.players[src_player].flag == 'red_flag':
+            self.red_flag_loc = movement_data['coord']
+        elif self.players[src_player].flag == 'blue_flag':
+            self.blue_flag_loc = movement_data['coord']
 
     def tnw_playerdata_update(self, src_player:int, tnw_playerdata: dict):
         if src_player in self.players.keys():
@@ -81,6 +101,7 @@ class GameState:
 ---------------------------------------------
 Map:{self.map} GameMode:{self.game_mode} Nodes:{self.nodes}
 State:{self.state} PlayerCount:{len(self.players)+1}
+Red Flag:{self.red_flag_loc} Blue Flag:{self.blue_flag_loc}
 ---------------------------------------------
 {self.player}
 ---------------------------------------------

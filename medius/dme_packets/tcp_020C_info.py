@@ -4,23 +4,19 @@ import os
 
 from constants.constants import WEAPON_MAP
 
-'''
-cc:
-red flag: 131000F7
-blue flag: 141000F7
+flag_drop_map = {
+    '0100': 'p0_capture',
+    '0101': 'p1_capture',
+    '0102': 'p2_capture',
+    '0103': 'p3_capture',
+    '0104': 'p4_capture',
+    '0105': 'p5_capture',
+    '0106': 'p6_capture',
+    '0107': 'p7_capture',
+    '00FF': 'flag_return',
+}
 
-dox:
-red flag: 0E1000F7
-blue flag: 0F1000F7
 
-marc:
-red flag: 131000F7
-blue flag: 141000F7
-
-sewers:
-red flag: 121000F7
-blue flag: 131000F7
-'''
 subtype_map = {
     '10401F00': '?_crate_destroyed',
     '41401F00': 'weapon_pickup',
@@ -30,8 +26,15 @@ subtype_map = {
     '02441F00': 'crate_respawn_p1?',
     '00000000': 'crate_destroyed_and_pickup',
     '10000000': '?_crate_destroyed_and_pickup',
-    '21000000': 'flag_update',
-    '02411F00': 'flag_drop',
+
+    '02411F00': 'p0_flag_drop',
+    '02451F00': 'p1_flag_drop',
+    '02491F00': 'p2_flag_drop',
+    '024D1F00': 'p3_flag_drop',
+    '02511F00': 'p4_flag_drop',
+    '02551F00': 'p5_flag_drop',
+    '02591F00': 'p6_flag_drop',
+    '025D1F00': 'p7_flag_drop',
 
     '61000000': 'p0_confirm',
     '61040000': 'p1_confirm',
@@ -59,6 +62,16 @@ subtype_map = {
     '40541F00': 'p5_object_update',
     '40581F00': 'p6_object_update',
     '405C1F00': 'p7_object_update',
+
+    '21000000': 'p0_flag_update',
+    '21040000': 'p1_flag_update',
+    '21080000': 'p2_flag_update',
+    '210C0000': 'p3_flag_update',
+    '21100000': 'p4_flag_update',
+    '21140000': 'p5_flag_update',
+    '21180000': 'p6_flag_update',
+    '211C0000': 'p7_flag_update',
+
 }
 
 '''
@@ -100,9 +113,9 @@ class tcp_020C_info:
             data_dict['weapon_pickup_unk'] =  ''.join([data.popleft() for i in range(4)])
         elif 'object_update' in subtype:
             data_dict['object_update_unk'] =  ''.join([data.popleft() for i in range(4)])
-        elif subtype == 'flag_update':
-            data_dict['flag_update_type'] =  ''.join([data.popleft() for i in range(2)])
-        elif subtype == 'flag_drop':
+        elif 'flag_update' in subtype:
+            data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+        elif 'flag_drop' in subtype:
             data_dict['flag_drop_unk'] =  ''.join([data.popleft() for i in range(16)])
         elif subtype in ['p0_confirm', 'p1_confirm', 'p2_confirm', 'p3_confirm', 'p4_confirm', 'p5_confirm', 'p6_confirm', 'p7_confirm']:
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
@@ -127,6 +140,14 @@ class tcp_020C_info:
                 hex_to_bytes(self.data['object_id']) + \
                 hex_to_bytes(self.data['unk'])
         elif self.subtype in ['p0_req_confirmation', 'p1_req_confirmation', 'p2_req_confirmation', 'p3_req_confirmation', 'p4_req_confirmation', 'p5_req_confirmation', 'p6_req_confirmation', 'p7_req_confirmation']:
+            return self.id + \
+                hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
+                int_to_bytes_little(4, self.timestamp) + \
+                hex_to_bytes(self.object_id) + \
+                hex_to_bytes(self.data['object_id']) + \
+                hex_to_bytes('00') + \
+                hex_to_bytes(self.data['unk'])
+        elif 'flag_drop' in self.subtype:
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \

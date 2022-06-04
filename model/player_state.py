@@ -28,6 +28,8 @@ class PlayerState:
         self.reset_health()
         self.respawn_time = None
 
+        self.flag = None
+
     def reset_health(self):
         self.health = self._default_health
 
@@ -61,5 +63,5 @@ class PlayerState:
         return self.team
 
     def __str__(self):
-        return f"PlayerState; username: {self.username} player_id:{self.player_id} health:{self.health} is_dead:{self.is_dead} account_id:{self.account_id} team:{self.team} weapon:{self.weapon} " + \
-                f"coord:{self.coord} movement_packet_num:{self.movement_packet_num} time:{self.time}"
+        return f"PlayerState; username: {self.username} player_id:{self.player_id} account_id:{self.account_id} team:{self.team} health:{self.health} is_dead:{self.is_dead}  weapon:{self.weapon} " + \
+                f"coord:{self.coord} movement_packet_num:{self.movement_packet_num} time:{self.time} flag:{self.flag}"

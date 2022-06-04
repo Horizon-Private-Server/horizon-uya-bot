@@ -5,3 +5,6 @@ configs/
 *.pyc
 *.log
 .idea
+configs_local
+configs_test
+butils/diff_indiv/testing.txt

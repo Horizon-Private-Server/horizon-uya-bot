@@ -90,7 +90,7 @@ class Map:
             else:
                 raise Exception(f"Unknown path length: {path}")
         except nx.exception.NetworkXNoPath:
-            logger.warning("No Path Found!")
+            logger.exception("No Path Found:")
             return src
 
     def find_closest_node(self, dst):

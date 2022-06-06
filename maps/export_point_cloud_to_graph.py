@@ -17,7 +17,7 @@ write_graph = True
 # Adjust this in order to make the grid further apart or closer together
 point_cloud_voxel_size = 50
 # Adjust this to connect closer/farther points
-distance_connected_variance = 30
+distance_connected_variance = 40
 
 print("-- Loading in point cloud ...")
 with open(os.path.join(f'point_clouds',f'{map_name}.json'), 'r') as f:

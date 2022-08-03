@@ -3,6 +3,7 @@ import logging
 logger = logging.getLogger('thug.model.botg')
 logger.setLevel(logging.INFO)
 
+import random
 import asyncio
 
 from datetime import datetime
@@ -44,12 +45,13 @@ class botg(prototype):
         t = datetime.now().timestamp()
         minute_diff = ((t - start_ts) / 60)
 
-        if minute_diff > 7: # after 7 min, start cycling
+        if minute_diff > 1: # after 7 min, start cycling
             if self.changing_weapons == False:
                 self._model._loop.create_task(self.change_weapon_timer())
 
     async def change_weapon_timer(self):
         self.changing_weapons = True
-        await asyncio.sleep(.3)
+        time_to_sleep = random.random() * 3 + .3
+        await asyncio.sleep(time_to_sleep)
         self.change_weapon()
         self.changing_weapons = False

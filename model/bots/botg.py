@@ -25,6 +25,8 @@ class botg(prototype):
 
         self.changing_weapons = False
 
+        self.firing = True
+
         self.arsenal.weapons['flux']['shoot_rate'] = 1
         self.arsenal.weapons['rocket']['shoot_rate'] = 1
         self.arsenal.weapons['grav']['shoot_rate'] = 1
@@ -42,6 +44,8 @@ class botg(prototype):
 
         self._model.game_state.map.cboot_factor = 2
         self._model.game_state.map.cboot_distance = 100
+
+        self._model._loop.create_task(self.cycle())
 
     def __str__(self):
         return "botg"
@@ -77,20 +81,23 @@ class botg(prototype):
             self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.tracking.coord)
 
         # Fire weapon
-        self.fire_weapon()
+        if self.firing:
+            self.fire_weapon()
 
-    def posthook_weapon_fired(self):
-        start_ts = self._model._config['start_time']
-        t = datetime.now().timestamp()
-        minute_diff = ((t - start_ts) / 60)
+    # def posthook_weapon_fired(self):
+    #     start_ts = self._model._config['start_time']
+    #     t = datetime.now().timestamp()
+    #     minute_diff = ((t - start_ts) / 60)
+    #
+    #     if minute_diff > 1: # after 1 min, start cycling
+    #         if self.changing_weapons == False:
+    #             self._model._loop.create_task(self.change_weapon_timer())
 
-        if minute_diff > 1: # after 7 min, start cycling
-            if self.changing_weapons == False:
-                self._model._loop.create_task(self.change_weapon_timer())
-
-    async def change_weapon_timer(self):
-        self.changing_weapons = True
-        time_to_sleep = random.random() * 3 + .3
-        await asyncio.sleep(time_to_sleep)
-        self.change_weapon()
-        self.changing_weapons = False
+    async def cycle(self):
+        while self._model.alive:
+            time_to_sleep = random.random() * 3 + 2
+            self.firing = False
+            await asyncio.sleep(1.25)
+            self.firing = True
+            await asyncio.sleep(time_to_sleep)
+            self.change_weapon()

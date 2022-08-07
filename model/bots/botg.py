@@ -10,6 +10,9 @@ from datetime import datetime
 
 from model.bots.prototype import prototype
 
+from butils.utils import *
+
+
 class botg(prototype):
     def __init__(self, model, game_state):
         super().__init__(model, game_state)
@@ -37,8 +40,44 @@ class botg(prototype):
         self.arsenal.weapons['grav']['cooldown'] = .01
         self.arsenal.weapons['n60']['cooldown'] = .01
 
+        self._model.game_state.map.cboot_factor = 2
+        self._model.game_state.map.cboot_distance = 100
+
     def __str__(self):
         return "botg"
+
+    def objective(self):
+        # first determine the state of the flag etc
+
+        # update angle/coord
+        if not self.game_state.player.is_dead:
+            if self.game_state.player.movement_packet_num % 4 == 0:
+
+                self.tracking = self._model.get_closest_enemy_player()
+
+                # Follow
+                #new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord)
+
+                # Strafe and get coordinate that is close to this one, but in a random direction
+                new_coord = self.game_state.map.get_random_coord_connected_close(self.game_state.player.coord, self.tracking.coord)
+
+                if new_coord[2] > self.game_state.player.coord[2]:
+                    self.game_state.player.animation = 'jump'
+                elif random.random() < .2:
+                    self.game_state.player.animation = 'jump'
+                elif new_coord != self.game_state.player.coord:
+                    self.game_state.player.animation = 'forward'
+                else:
+                    self.game_state.player.animation = None
+
+                self.game_state.player.coord = new_coord
+
+        # Update camera angle
+        if self.game_state.player.movement_packet_num % 5 == 0:
+            self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.tracking.coord)
+
+        # Fire weapon
+        self.fire_weapon()
 
     def posthook_weapon_fired(self):
         start_ts = self._model._config['start_time']

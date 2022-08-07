@@ -83,9 +83,6 @@ class prototype:
     def objective(self):
         # first determine the state of the flag etc
 
-
-
-
         # update angle/coord
         if not self.game_state.player.is_dead:
             if self.game_state.player.movement_packet_num % 4 == 0:

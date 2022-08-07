@@ -13,7 +13,6 @@ import logging
 logger = logging.getLogger("thug.map")
 logger.setLevel(logging.DEBUG)
 
-
 siege_ctf_respawn_coords = {
     "bakisi_isles": {"red": [12446, 17599, 12802], "blue": [36762, 15792, 12832]},
     "hoven_gorge": {"red": [9883, 9623, 4170], "blue": [19874, 22622, 4269]},
@@ -38,6 +37,9 @@ class Map:
 
         self.path_cache = None
 
+        self.cboot_factor = 5
+        self.cboot_distance = 3000
+
     def read_map(self, map_name):
         logger.info("Loading map graph ...")
         G = nx.read_edgelist(f"maps/graphs/{self.map}.edgelist",nodetype=eval, delimiter='|')
@@ -51,16 +53,15 @@ class Map:
         src = tuple(src)
         dst = tuple(dst)
 
-        use_cboot = calculate_distance(src, dst) > 3000
-        cboot_factor = 5
+        use_cboot = calculate_distance(src, dst) > self.cboot_distance
 
         if self.path_cache != None and len(self.path_cache) != 0:
             if calculate_distance(src, self.path_cache[0]) < 100 and calculate_distance(dst, self.path_cache[-1]) < 100:
                 if not use_cboot:
                     return self.path_cache.pop(0)
                 else: # Use cboot
-                    if len(self.path_cache) > cboot_factor:
-                        self.path_cache = self.path_cache[cboot_factor:]
+                    if len(self.path_cache) > self.cboot_factor:
+                        self.path_cache = self.path_cache[self.cboot_factor:]
                         return self.path_cache.pop(0)
                     return self.path_cache.pop(0)
 
@@ -78,8 +79,8 @@ class Map:
                 return path[0]
             elif len(path) > 1:
                 if use_cboot:
-                    if (len(path)-1) > cboot_factor:
-                        self.path_cache = path[cboot_factor:]
+                    if (len(path)-1) > self.cboot_factor:
+                        self.path_cache = path[self.cboot_factor:]
                         return self.path_cache.pop(0)
                     else:
                         self.path_cache = path[1:]
@@ -108,6 +109,32 @@ class Map:
 
     def get_random_coord_connected(self, coord):
         return list(random.choice(list(self.G.neighbors(tuple(coord)))))
+
+    def get_random_coord_connected_close(self, src_coord, dst_coord):
+        if not self.G.has_node(src_coord):
+            src_coord = self.find_closest_node(src_coord)
+
+        if random.random() < .4:
+            return self.get_random_coord_connected(src_coord)
+        return self.path(src_coord, dst_coord)
+
+
+        if not self.G.has_node(dst_coord):
+            # get the closest point as dst
+            dst_coord = self.find_closest_node(dst_coord)
+
+        connected = list(self.G.neighbors(tuple(dst_coord)))
+
+        logger.info(connected)
+        distances = distance.cdist(connected, [dst_coord])
+        distance_to_src = distance.cdist([src_coord],[dst_coord])[0][0]
+
+        for i in range(len(distances)):
+            if distances[i][0] < distance_to_src:
+                logger.info(connected[i])
+                return connected[i]
+        return self.path(src_coord, dst_coord)
+
 
     def get_respawn_location(self, team_color, game_mode):
         if game_mode == 'Deathmatch':

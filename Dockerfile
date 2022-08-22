@@ -1,14 +1,15 @@
-FROM public.ecr.aws/lambda/python:3.9
+FROM python:3.9-slim-buster as build-image
 
-# Install the function's dependencies using file requirements.txt
-# from your project folder.
+ARG FUNCTION_DIR=/code
+RUN mkdir -p ${FUNCTION_DIR}
+WORKDIR ${FUNCTION_DIR}
 
-COPY requirements.txt  .
-RUN  python3 -m pip install --upgrade pip
-RUN  pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+ENV USE_ENV_VARS Yes
 
 # Copy function code
-COPY . ${LAMBDA_TASK_ROOT}
+COPY . ${FUNCTION_DIR}
 
 # Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
-CMD [ "thug.handler" ]
+CMD python thug.py

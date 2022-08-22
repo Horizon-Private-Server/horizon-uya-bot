@@ -1,4 +1,4 @@
-
+import os
 import asyncio
 import logging
 
@@ -27,11 +27,14 @@ import json
 from constants.constants import SKIN_MAP
 
 import random
+from datetime import datetime
 
 class Thug:
     def __init__(self, config:dict):
         logger.info("Initializing ...")
         self._config = config
+
+        self._config['start_time'] = datetime.now().timestamp()
 
         self.loop = asyncio.get_event_loop()
 
@@ -64,14 +67,33 @@ class Thug:
 
         self._model = Model(self._config, self.loop, self._tcp_conn, self._udp_conn)
 
-        #self.loop.create_task(self._tcp_conn.main(self._model))
-        #self.loop.create_task(self._udp_conn.main(self._model))
         self.loop.create_task(self._udp_conn.main(self._model))
         self.loop.run_until_complete(self._tcp_conn.main(self._model))
 
 def read_config(config_file='config.json'):
     with open(config_file, 'r') as f:
         return json.loads(f.read())
+
+def read_config_from_env():
+    return {
+        "bot_class":os.getenv("BOT_CLASS"),
+        "account_id":int(os.getenv("ACCOUNT_ID")),
+        "username":os.getenv("USERNAME"),
+        "world_id":int(os.getenv("WORLD_ID")),
+        "skin":os.getenv("SKIN"),
+        "bolt":int(os.getenv("BOLT")),
+        "clan_tag":os.getenv("CLAN_TAG"),
+        "team":os.getenv("TEAM"),
+        "autojoin":os.getenv("AUTOJOIN"),
+        "session_key":os.getenv("SESSION_KEY"),
+        "mls_ip":os.getenv("MLS_IP"),
+        "mls_port":int(os.getenv("MLS_PORT")),
+        "dmetcp_ip":os.getenv("DMETCP_IP"),
+        "dmetcp_port":int(os.getenv("DMETCP_PORT")),
+        "dmeudp_ip":os.getenv("DMEUDP_IP"),
+        "dmeudp_port":int(os.getenv("DMEUDP_PORT")),
+        "timeout":float(os.getenv("TIMEOUT"))
+    }
 
 # AWS Lambda handler
 def handler(event, context):
@@ -84,4 +106,7 @@ def handler(event, context):
     return 0
 
 if __name__ == '__main__':
-    Thug(config = read_config())
+    if os.getenv('USE_ENV_VARS') == 'Yes':
+        Thug(config=read_config_from_env())
+    else:
+        Thug(config = read_config())

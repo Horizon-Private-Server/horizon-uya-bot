@@ -8,11 +8,11 @@ from connections.abstracttcp import AbstractTcp
 from medius.serializer import TcpSerializer
 
 class DmeTcp(AbstractTcp):
-    def __init__(self, loop, config, ip: str, port: int):
-        super().__init__(loop, config, ip, port)
+    def __init__(self, loop, config):
+        super().__init__(loop, config, config['dme_ip'], config['dme_port'])
         self._logger = logging.getLogger('thug.dmetcp')
-        self._logger.setLevel(logging.WARNING)
-
+        self._logger.setLevel(logging.DEBUG)
+        self._logger.info(f"DME CONFIG: {config}")
 
         self._player_id = None
         self._player_count = 0
@@ -21,7 +21,6 @@ class DmeTcp(AbstractTcp):
         self.loop.create_task(self.read_data())
         self.loop.create_task(self.write_data())
         self.loop.create_task(self.echo())
-
 
     async def main(self, model):
         while model.alive:
@@ -34,14 +33,15 @@ class DmeTcp(AbstractTcp):
                     self._logger.exception(f"Error processing DME TCP packet")
             await asyncio.sleep(0.0001)
 
-    async def connect_to_dme_world_stage_1(self, access_key):
+    async def connect_to_dme_world_stage_1(self):
         # Initial connect to DME TCP
         self._logger.info("Connecting to dme world Stage [1] ...")
-        pkt = hex_to_bytes('156B00010801')
-        pkt += int_to_bytes_little(2, self._config['world_id'])
+        pkt = hex_to_bytes('156A00010801')
+        pkt += int_to_bytes_little(2, self._config['world_id']-1)
+        #pkt += int_to_bytes_little(2, 1)
         pkt += hex_to_bytes('BC29000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
-        pkt += self._config['session_key'].encode()
-        pkt += access_key
+        pkt += self._config['dme_session_key']
+        pkt += self._config['dme_access_key']
 
         self.queue(pkt)
 
@@ -57,9 +57,11 @@ class DmeTcp(AbstractTcp):
                 raise Exception('Unknown response!')
 
             elif data[0] == 0x07:
+                self._logger.info(bytes_to_hex(data))
                 self._player_id = bytes_to_int_little(data[6:8])
                 self._player_count = bytes_to_int_little(data[8:10])
                 break
+
 
         while True:
             # Check the result
@@ -73,7 +75,14 @@ class DmeTcp(AbstractTcp):
                 raise Exception('Unknown response!')
 
             elif data[0] == 0x18:
-                break
+                self._logger.info(bytes_to_hex(data))
+
+            data = bytes_to_hex(data)
+            data = deque([data[i:i+2] for i in range(0,len(data),2)])
+            buf = ''.join([data.popleft() for _ in range(3)])
+            self._config['dmeudp_ip'] = hex_to_str(''.join([data.popleft() for _ in range(16)]))
+            self._config['dmeudp_port'] = hex_to_int_little(''.join([data.popleft() for _ in range(2)]))
+            break
 
         self._logger.info(f"Connected Stage [1]! Player ID: {self._player_id} | Player count: {self._player_count}")
 

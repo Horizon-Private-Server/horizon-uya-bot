@@ -12,7 +12,7 @@ class MasTcp(AbstractTcp):
         super().__init__(loop, config, ip, port)
 
         self._logger = logging.getLogger('thug.mastcp')
-        self._logger.setLevel(logging.DEBUG)
+        self._logger.setLevel(logging.WARNING)
 
         self._logger.debug("Opening MAS...")
         self.loop.run_until_complete(self.start())
@@ -30,33 +30,8 @@ class MasTcp(AbstractTcp):
         self.loop.run_until_complete(self.begin_session())
         self.loop.run_until_complete(self.account_login())
 
-        # self.loop.run_until_complete(self.connect_to_mls())
+        self._alive = False
 
-    # async def generate_access_key(self):
-    #     self._logger.info("Generating access key ...")
-
-    #     # Join game packet
-    #     join_game_p1 = '0BC60001F331000000000000000000000000000000000000000000000000000000000000000000000000000000'
-    #     join_game_p2 = '0000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-    #     message = hex_to_bytes(join_game_p1 + bytes_to_hex(int_to_bytes_little(4, self._config['world_id'])) + join_game_p2)
-
-    #     self.queue(message)
-
-    #     while True:
-    #         # Check the result
-    #         data = self.dequeue()
-
-    #         if data == None:
-    #             await asyncio.sleep(.0001)
-    #             continue
-
-    #         if data[0] != 0x0A or data[1] != 0xBC:
-    #             raise Exception('Unknown response!')
-
-    #         elif data[0] == 0x0A and data[1] == 0xBC:
-    #             self._access_key = data[174:]
-    #             self._logger.info("Access key generated!")
-    #             break
 
     async def connect_tcp(self):
         self._logger.info("Sending connect TCP ...")
@@ -113,7 +88,7 @@ class MasTcp(AbstractTcp):
                 continue
 
             if bytes_to_hex(data)[0:2] != '1A':
-                raise Exception()
+                raise Exception('Unknown')
             break
 
 
@@ -136,6 +111,10 @@ class MasTcp(AbstractTcp):
 
             beginsessionresponse = self.serialize_session_begin_response(data)
 
+            if beginsessionresponse['status'] != '00000000':
+                raise Exception('Got invalid status code!')
+
+
             self._session_key = beginsessionresponse['session_key']
 
             self._logger.info(f"Got session response! {beginsessionresponse}")
@@ -147,16 +126,16 @@ class MasTcp(AbstractTcp):
         pkt = hex_to_bytes('0B6800010731001A00000000004DC81F00000000000000000000')
 
         # Session key
-        pkt += hex_to_bytes(self._session_key)
+        pkt += self._session_key
 
         # Username
-        pkt += str_to_bytes('CPU-001', 10)
+        pkt += str_to_bytes(self._config['username'], 10)
         
         # UNK
         pkt += hex_to_bytes('C4D8240000000000EBFFFF7F08020000B0D82400FF00')
 
         # PASSWORD
-        pkt += str_to_bytes('PASSWORD', 10)
+        pkt += str_to_bytes(self._config['password'], 10)
 
         # UNK
         pkt += hex_to_bytes('000000000000000000000000000000002C2B15000000')
@@ -171,35 +150,18 @@ class MasTcp(AbstractTcp):
                 await asyncio.sleep(.0001)
                 continue
 
-            self._logger.info(f"Got Data: {bytes_to_hex(data)}")
-
-            # 00006331514542485254723242534A425A4D000000
             raw = bytes_to_hex(data)
             data = deque([raw[i:i+2] for i in range(0,len(raw),2)])
             buf = ''.join([data.popleft() for _ in range(182)])
 
-            self._mls_access_key = ''.join([data.popleft() for _ in range(16)])
+            self._access_key = hex_to_bytes(''.join([data.popleft() for _ in range(16)]))
 
-            if self._mls_access_key == '00000000000000000000000000000000':
+            if self._access_key == '00000000000000000000000000000000':
                 raise Exception("Couldn't get MLS access key!")
         
+            self._logger.info("Login success!")
+
             break
-        # callback = ''.join([data.popleft() for _ in range(4)])
-            # if callback != '00000000':
-            #     sys.exit(1)
-
-            # gameinfo['app_id'] = ''.join([data.popleft() for _ in range(4)])
-            # gameinfo['min_players'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-            # gameinfo['max_players'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-            # gameinfo['game_level'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-
-            # if len(data) != 53:
-            #     self._logger.info(f"Got unexpected response! Expected len 53, got len {len(data)}! Data: {bytes_to_hex(data)}")
-
-            # beginsessionresponse = self.serialize_session_begin_response(data)
-
-            # self._logger.info(f"Got session response! {beginsessionresponse}")
-            # break
 
 
     def get_access_key(self):
@@ -223,71 +185,8 @@ class MasTcp(AbstractTcp):
         gameinfo['len'] = ''.join([data.popleft() for _ in range(2)])
         gameinfo['message_id'] = ''.join([data.popleft() for _ in range(21)])
         gameinfo['status'] = ''.join([data.popleft() for _ in range(4)])
-        gameinfo['session_key'] = ''.join([data.popleft() for _ in range(17)])
+        gameinfo['session_key'] = hex_to_bytes(''.join([data.popleft() for _ in range(17)]))
         gameinfo['end'] = ''.join([data.popleft() for _ in range(3)])
-
-        print(hex_to_bytes(gameinfo['session_key']))
 
         print(len(data))
         return gameinfo
-
-    async def get_game_info(self):
-        self._logger.debug("Getting Game Info ...")
-        pkt = hex_to_bytes('0B2E00013331000000000000000000000000000000C01D480000')
-        pkt += self._config['session_key'].encode()
-        pkt += hex_to_bytes("0000")
-        pkt += int_to_bytes_little(4, self._config['world_id'])
-
-        self.queue(pkt)
-
-        while True:
-            # Check the result
-            data = self.dequeue()
-
-            if data == None:
-                await asyncio.sleep(.0001)
-                continue
-
-            self.serialize_game_info(data)
-            break
-
-    
-
-    def serialize_game_info(self, raw_gameinfo0):
-        gameinfo = {}
-        raw_gameinfo0 = bytes_to_hex(raw_gameinfo0)
-        data = deque([raw_gameinfo0[i:i+2] for i in range(0,len(raw_gameinfo0),2)])
-        buf = ''.join([data.popleft() for _ in range(29)])
-
-        callback = ''.join([data.popleft() for _ in range(4)])
-        if callback != '00000000':
-            sys.exit(1)
-
-        gameinfo['app_id'] = ''.join([data.popleft() for _ in range(4)])
-        gameinfo['min_players'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        gameinfo['max_players'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        gameinfo['game_level'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        gameinfo['player_skill_level'] = hex_to_int_little(''.join([data.popleft() for _ in range(3)])); data.popleft()
-        gameinfo['player_count'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        stats = ''.join([data.popleft() for _ in range(256)])
-        gameinfo['game_name'] = ''.join([data.popleft() for _ in range(64)])
-        gameinfo['rules_set'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        gameinfo['generic_field_1'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        gameinfo['generic_field_2'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        gameinfo['generic_field_3'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        gameinfo['game_status'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        gameinfo['game_host_type'] = ''.join([data.popleft() for _ in range(4)])
-        if gameinfo['game_status'] != 1 or gameinfo['player_count'] == 8:
-            self._logger.info("Invalid game settings.")
-            sys.exit(1)
-
-        game = {'game_name': gameinfo['game_name']}
-        game['weapons'] = weaponParser(gameinfo['player_skill_level'])
-        game['advanced_rules'] = advancedRulesParser(gameinfo['generic_field_3'])
-        game['map'] = mapParser(gameinfo['generic_field_3'])
-        game['game_length'] = timeParser(gameinfo['generic_field_3'])
-        game_mode, submode = gamerulesParser(gameinfo['generic_field_3'])
-        game['game_mode'] = game_mode
-        game['submode'] = submode
-
-        self._config['gameinfo'] = game

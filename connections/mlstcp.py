@@ -8,11 +8,11 @@ from connections.abstracttcp import AbstractTcp
 from butils.gameinfo_parser import weaponParser, advancedRulesParser, mapParser, timeParser, gamerulesParser
 
 class MlsTcp(AbstractTcp):
-    def __init__(self, loop, config, ip: str, port: int):
+    def __init__(self, loop, config, session_key: bytes, access_key: bytes, ip: str, port: int):
         super().__init__(loop, config, ip, port)
 
-        self._config['session_key'] += '\x00'
-        self._access_key = None
+        self._access_key = access_key
+        self._session_key = session_key
 
         self._logger = logging.getLogger('thug.mlstcp')
         self._logger.setLevel(logging.DEBUG)
@@ -27,53 +27,44 @@ class MlsTcp(AbstractTcp):
         self.loop.create_task(self.read_data())
         self._logger.debug("Starting Write routine ...")
         self.loop.create_task(self.write_data())
-        self.loop.run_until_complete(self.generate_access_key())
-        self.loop.run_until_complete(self.get_game_info())
 
 
-        # TODO: add CTF/Siege modes
-        # if self._config['gameinfo']['game_mode'] != 'Deathmatch' or self._config['gameinfo']['submode'] != 'Teams':
-        #     self._logger.warning("Incorrect game mode")
-        #     sys.exit(1)
-
-        self.loop.create_task(self.echo())
         self.loop.run_until_complete(self.connect_to_mls())
 
-    async def generate_access_key(self):
-        self._logger.info("Generating access key ...")
+        self.loop.run_until_complete(self.get_game_info())
+        print(self._config['gameinfo'])
 
-        # Join game packet
-        join_game_p1 = '0BC60001F331000000000000000000000000000000000000000000000000000000000000000000000000000000'
-        join_game_p2 = '0000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-        message = hex_to_bytes(join_game_p1 + bytes_to_hex(int_to_bytes_little(4, self._config['world_id'])) + join_game_p2)
+        self.loop.run_until_complete(self.join_game())
 
-        self.queue(message)
-
-        while True:
-            # Check the result
-            data = self.dequeue()
-
-            if data == None:
-                await asyncio.sleep(.0001)
-                continue
-
-            if data[0] != 0x0A or data[1] != 0xBC:
-                raise Exception('Unknown response!')
-
-            elif data[0] == 0x0A and data[1] == 0xBC:
-                self._access_key = data[174:]
-                self._logger.info("Access key generated!")
-                break
+        self.loop.create_task(self.echo())
 
     async def connect_to_mls(self):
         self._logger.info("Connecting to MLS ...")
-        pkt = hex_to_bytes('006B000108010000BC29000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
-        pkt += self._config['session_key'].encode()
+
+        pkt = hex_to_bytes('1240006B8F99EC1BAF06D2674284B5305EE6E38B1DE7331F2FBF31DE497228B7C52162F18DAE8913C40C43C0E890D14EEE16AD07C64FD9281D8B972D78BE78D1B290CE')
+        self.queue(pkt)
+
+        #pkt = hex_to_bytes('006B000108010000BC29000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
+        pkt = hex_to_bytes('006A000108010100BC290000E7D48669E1D5DD01BFD7B847A4BA6AB1E44EB12EDAD93485F274F3AC246C4FFAFAFF3E7AEC8AE4899CFF71F69AEACC16B8BE59CB9B88B55C8C719E41CBB18382')
+
+        pkt += self._session_key
         pkt += self._access_key
 
         self.queue(pkt)
 
         while True:
+                # Check the result
+                data = self.dequeue()
+
+                if data == None:
+                    await asyncio.sleep(.0001)
+                    continue
+
+                if bytes_to_hex(data)[0:2] != '13':
+                    raise Exception()
+                break
+
+        while True:
             # Check the result
             data = self.dequeue()
 
@@ -81,32 +72,40 @@ class MlsTcp(AbstractTcp):
                 await asyncio.sleep(.0001)
                 continue
 
-            if data[0] != 0x07:
-                raise Exception('Unknown response!')
-
-            elif data[0] == 0x07:
-                break
+            if bytes_to_hex(data)[0:2] != '14':
+                raise Exception()
+            break
 
         while True:
             # Check the result
             data = self.dequeue()
 
-            if data[0] != 0x1A:
-                raise Exception('Unknown response!')
+            if data == None:
+                await asyncio.sleep(.0001)
+                continue
 
-            elif data[0] == 0x1A:
-                break
-        self._logger.info("Connected!")
+            if bytes_to_hex(data)[0:2] != '07':
+                raise Exception()
+            break
 
-    def get_access_key(self):
-        self.loop.run_until_complete(self.generate_access_key())
-        return self._access_key
+        while True:
+            # Check the result
+            data = self.dequeue()
 
+            if data == None:
+                await asyncio.sleep(.0001)
+                continue
+
+            if bytes_to_hex(data)[0:2] != '1A':
+                raise Exception()
+            break
+
+        self._logger.info("Connected to MLS!")
 
     async def get_game_info(self):
         self._logger.debug("Getting Game Info ...")
         pkt = hex_to_bytes('0B2E00013331000000000000000000000000000000C01D480000')
-        pkt += self._config['session_key'].encode()
+        pkt += self._session_key
         pkt += hex_to_bytes("0000")
         pkt += int_to_bytes_little(4, self._config['world_id'])
 
@@ -131,6 +130,8 @@ class MlsTcp(AbstractTcp):
 
         callback = ''.join([data.popleft() for _ in range(4)])
         if callback != '00000000':
+            self._logger.debug(callback)
+            self._logger.debug("Game Info Returned Error!")
             sys.exit(1)
 
         gameinfo['app_id'] = ''.join([data.popleft() for _ in range(4)])
@@ -161,3 +162,41 @@ class MlsTcp(AbstractTcp):
         game['submode'] = submode
 
         self._config['gameinfo'] = game
+
+
+    async def join_game(self):
+        self._logger.debug("Joining Game ...")
+        pkt = hex_to_bytes('0BC60001F3310000000000000000000000000000000000000000')
+        pkt += self._session_key
+        pkt += hex_to_bytes("0000")
+        pkt += int_to_bytes_little(4, self._config['world_id'])
+        pkt += hex_to_bytes("0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000")
+
+        self.queue(pkt)
+
+        while True:
+            # Check the result
+            data = self.dequeue()
+
+            if data == None:
+                await asyncio.sleep(.0001)
+                continue
+
+            self.serialize_join_game(data)
+            break
+
+
+    def serialize_join_game(self, raw_joingame):
+        raw_joingame = bytes_to_hex(raw_joingame)
+        data = deque([raw_joingame[i:i+2] for i in range(0,len(raw_joingame),2)])
+        buf = ''.join([data.popleft() for _ in range(45)])
+
+        self._config['dme_ip'] = hex_to_str(''.join([data.popleft() for _ in range(16)]))
+        self._config['dme_port'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
+        buf = ''.join([data.popleft() for _ in range(92)])
+
+        self._config['dme_session_key'] = hex_to_bytes(''.join([data.popleft() for _ in range(17)]))
+        self._config['dme_access_key'] = hex_to_bytes(''.join([data.popleft() for _ in range(16)]))
+
+        self._logger.info(self._config)
+

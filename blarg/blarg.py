@@ -93,7 +93,7 @@ class Blarg:
 
     async def read_websocket(self):
         uri = f"ws://{self._config['robo_ip']}:8765"
-        async with websockets.connect(uri) as websocket:
+        async with websockets.connect(uri,ping_interval=None) as websocket:
             while True:
                 data = await websocket.recv()
                 self._logger.debug(f"{data}")

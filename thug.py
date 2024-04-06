@@ -30,6 +30,8 @@ from constants.constants import SKIN_MAP
 import random
 from datetime import datetime
 
+from local import authenticate, get_active_games
+
 class Thug:
     def __init__(self, config:dict):
         logger.info("Initializing ...")
@@ -89,10 +91,14 @@ def read_config_debug(config_file='config.json'):
         return config
 
 def read_config(config_file='config.json'):
+    result = {}
     with open(config_file, 'r') as f:
-        config = json.loads(f.read())
-        return config
+        result = json.loads(f.read())
 
+    authenticate()
+    result['world_id'] = get_active_games(result['game_name_to_join'])
+
+    return result
 
 def read_config_from_env():
     return {
@@ -129,5 +135,5 @@ def handler(event, context):
 if __name__ == '__main__':
     if os.getenv('USE_ENV_VARS') == 'Yes':
         Thug(config=read_config_from_env())
-    else:
+    else: # Local
         Thug(config = read_config())

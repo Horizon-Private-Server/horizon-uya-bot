@@ -47,16 +47,11 @@ class Thug:
             random.shuffle(skins)
             self._config['skin'] = skins[0]
 
-        # For debugging so we don't have to change the world id every time
-        # if self._config['autojoin'] == 'True':
-        #     world_id = json.loads(requests.get(f'http://{self._config["mls_ip"]}:8281/robo/games').text)[-1]['dme_world_id']
-        #     self._config['world_id'] = world_id
-
         logger.info(self._config)
 
         logger.info("Initializing MAS ... ")
         self._mas_conn = MasTcp(self.loop, self._config, self._config['mas_ip'], self._config['mas_port'])
-        self.loop.run_until_complete(self._mas_conn.kill())
+        self.loop.run_until_complete(self._mas_conn.close())
 
         # Initialize connections
         logger.info("Initializing MLS ... ")

@@ -1,6 +1,7 @@
 import asyncio
 from queue import Queue
 import sys
+from datetime import datetime
 
 from butils.utils import *
 from butils.rtbufferdeframer import RtBufferDeframer
@@ -26,6 +27,10 @@ class AbstractTcp:
 
         self._readwrite_time = 0.0001
 
+        self._last_echo_sent = datetime.now()
+        self._last_echo_recv = datetime.now()
+        
+
     async def start(self):
         self._logger.debug("Starting async open_connection ...")
         self._reader, self._writer = await asyncio.open_connection(self._ip, self._port)
@@ -47,8 +52,11 @@ class AbstractTcp:
                 self._logger.debug(f"I | {bytes_to_hex(packet)}")
 
 
-                if packet[0] not in [0x05]:  # 05 = echo, 07 = connected, 18 =
+                if packet[0] == 0x05:
+                    self._last_echo_recv = datetime.now()
+                else:  # 05 = echo, 07 = connected, 18 =
                     self._read_queue.put(packet)
+
 
             await asyncio.sleep(self._readwrite_time)
 
@@ -78,6 +86,14 @@ class AbstractTcp:
     async def echo(self):
         self._logger.info("Starting echo co-routine ...")
         while self._alive:
+
+            # If we haven't gotten a response since the last ping, force close
+            if self._last_echo_recv == None:
+                self._logger.info("Force closing connection, no echo received!")
+                await self.close()
+
+            self._last_echo_sent = datetime.now()
+            self._last_echo_recv = None
             self._write_queue.put(hex_to_bytes('050100A5'))
             await asyncio.sleep(15)
 
@@ -91,7 +107,10 @@ class AbstractTcp:
 
     def qsize(self):
         return self._read_queue.qsize()
-
-    async def kill(self):
+    
+    async def close(self):
+        self._logger.info("Closing connections ...")
+        self._alive = False
         self._writer.close()
         await self._writer.wait_closed()        
+        self._logger.info("Connections closed!")

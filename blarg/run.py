@@ -11,6 +11,6 @@ async def read_websocket(ip):
 
 
 ip = '216.146.25.143'
-asyncio.get_event_loop().run_until_complete(read_websocket(ip))
+asyncio.new_event_loop().run_until_complete(read_websocket(ip))
 
 

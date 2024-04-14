@@ -31,7 +31,6 @@ class Model:
         self._tcp = tcp_conn
         self._udp = udp_conn
 
-        self._loop.create_task(self.timeout())
 
         player = PlayerState(self._tcp._player_id, config['account_id'], config['team'], username=config['username'], skin=config['skin'], clan_tag=config['clan_tag'], rank=config['bolt'])
         self.game_state = GameState(self._config['gameinfo'], player, self._config)
@@ -41,18 +40,6 @@ class Model:
         self._loop.create_task(self._udp_flusher())
         self.dmetcp_queue = queue.Queue()
         self.dmeudp_queue = queue.Queue()
-
-    async def timeout(self):
-        while self.alive:
-            t = datetime.now().timestamp()
-            if ((t - self._config['start_time']) / 60 / 60) > self._config['timeout']:
-                logger.info("Timeout!")
-                logger.info(f"Start time: {self._config['start_time']} | End time: {datetime.now().timestamp()}")
-                logger.info(f"Total time (hours): {(t - self._config['start_time'])/60/60}")
-                logger.info(f"Total time (miuntes): {(t - self._config['start_time'])/60}")
-                logger.info(f"Total time (seconds): {(t - self._config['start_time'])}")
-                self.alive = False
-            await asyncio.sleep(10)
 
     def process(self, serialized: dict):
         '''

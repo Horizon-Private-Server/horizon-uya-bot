@@ -2,6 +2,7 @@ import asyncio
 import websockets
 import json
 import os
+import argparse
 
 import sys
 sys.path.append("..")
@@ -35,7 +36,7 @@ class Blarg:
         self._logger.setLevel(logging.DEBUG)
 
     def run(self):
-        asyncio.get_event_loop().run_until_complete(self.read_websocket())
+        asyncio.new_event_loop().run_until_complete(self.read_websocket())
 
     def process(self, packet: dict):
         '''
@@ -92,7 +93,7 @@ class Blarg:
                 self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")
 
     async def read_websocket(self):
-        uri = f"ws://{self._config['robo_ip']}:8765"
+        uri = f"ws://{self._config['server_ip']}:8765"
         async with websockets.connect(uri,ping_interval=None) as websocket:
             while True:
                 data = await websocket.recv()
@@ -102,16 +103,25 @@ class Blarg:
                     self.process(json.loads(data))
                 else:
                     try:
-                        self.process(json.loads(data))
+                        print(data)
+                        for data_point in json.loads(data):
+                            self.process(data_point)
                     except:
                         self._logger.exception("error")
 
-def read_config(config_file='config.json'):
+def read_config(target, config_file='config.json'):
     with open(config_file, 'r') as f:
-        return json.loads(f.read())
+        config = json.loads(f.read())
+        config['server_ip'] = config[target]
+        return config
 
 if __name__ == '__main__':
-    config = read_config()
+
+    parser = argparse.ArgumentParser(description="Run Horizon's UYA Bot. (Thug)")
+    parser.add_argument('--target', type=str, default='test', help='Use prod or test target')
+
+    args = parser.parse_args()
+    config = read_config(args.target)
 
     blarg = Blarg(config)
     blarg.run()

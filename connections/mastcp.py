@@ -12,7 +12,7 @@ class MasTcp(AbstractTcp):
         super().__init__(loop, config, ip, port)
 
         self._logger = logging.getLogger('thug.mastcp')
-        self._logger.setLevel(logging.WARNING)
+        self._logger.setLevel(logging.DEBUG)
 
         self._logger.debug("Opening MAS...")
         self.loop.run_until_complete(self.start())
@@ -122,6 +122,7 @@ class MasTcp(AbstractTcp):
 
 
     async def account_login(self):
+
         self._logger.info("Logging in ...")
         pkt = hex_to_bytes('0B6800010731001A00000000004DC81F00000000000000000000')
 
@@ -188,5 +189,4 @@ class MasTcp(AbstractTcp):
         gameinfo['session_key'] = hex_to_bytes(''.join([data.popleft() for _ in range(17)]))
         gameinfo['end'] = ''.join([data.popleft() for _ in range(3)])
 
-        print(len(data))
         return gameinfo

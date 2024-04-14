@@ -21,7 +21,6 @@ class MlsTcp(AbstractTcp):
         self.loop.run_until_complete(self.start())
 
         self._logger.debug("Connection opened!")
-        #self.loop.run_until_complete(asyncio.sleep(5))
 
         self._logger.debug("Starting Read routine ...")
         self.loop.create_task(self.read_data())
@@ -31,12 +30,15 @@ class MlsTcp(AbstractTcp):
 
         self.loop.run_until_complete(self.connect_to_mls())
 
+        self.loop.create_task(self.echo())
+
+        self.loop.run_until_complete(asyncio.sleep(100))
+
         self.loop.run_until_complete(self.get_game_info())
         print(self._config['gameinfo'])
 
         self.loop.run_until_complete(self.join_game())
 
-        self.loop.create_task(self.echo())
 
     async def connect_to_mls(self):
         self._logger.info("Connecting to MLS ...")

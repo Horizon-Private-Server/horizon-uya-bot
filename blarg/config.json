@@ -1,5 +1,6 @@
 {
-	"robo_ip": "216.146.25.59",
+	"prod": "",
+	"test": "",
 	"logger": "INFO",
 	"filter": "",
 	"warn_on_unknown": "False",

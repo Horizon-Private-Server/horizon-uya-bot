@@ -1,7 +1,7 @@
 {
-    "account_id": 880,
-    "username": "CPU-001",
-    "password": "CPUPW@",
+    "account_id": 1,
+    "username": "",
+    "password": "",
     "world_id": 0,
     "bot_class": "bot0",
     "skin": "random",
@@ -10,14 +10,14 @@
     "team": "blue",
     "autojoin": "True",
     "session_key": "",
-    "mas_ip": "216.146.25.59",
+    "mas_ip": "",
     "mas_port": 10075,
-    "mls_ip": "216.146.25.59",
+    "mls_ip": "",
     "mls_port": 10078,
     "map_prune_dist": 40,
     "map_min_move_dist": 25,
     "map_max_move_dist": 55,
-    "game_name_to_join": "eee's",
+    "game_name_to_join": "",
     "timeout": 0.5,
     "loop_time": 0.001
 }

@@ -7,12 +7,10 @@ from butils.utils import *
 from butils.rtbufferdeframer import RtBufferDeframer
 
 class AbstractTcp:
-    def __init__(self, loop, config, ip: str, port: int):
-        self._alive = True
+    def __init__(self, loop, ip: str, port: int):
+        self.alive = True
         self._logger = None
         self.loop = loop
-
-        self._config = config
 
         self._ip = ip
         self._port = port
@@ -35,10 +33,13 @@ class AbstractTcp:
         self._logger.debug("Starting async open_connection ...")
         self._reader, self._writer = await asyncio.open_connection(self._ip, self._port)
         self._logger.debug("Done async open_connection ...")
+        self._logger.debug("Connection opened!")
+        self.loop.create_task(self.read_data())
+        self.loop.create_task(self.write_data())
 
     async def read_data(self):
         self._logger.debug("Starting read data ...")
-        while self._alive:
+        while self.alive:
             data = await self._reader.read(500)
             if data == b'':
                 await asyncio.sleep(self._readwrite_time)
@@ -62,7 +63,7 @@ class AbstractTcp:
 
     async def write_data(self):
         self._logger.debug("Starting write data ...")
-        while self._alive:
+        while self.alive:
             size = self._write_queue.qsize()
 
             if size != 0:
@@ -85,7 +86,7 @@ class AbstractTcp:
 
     async def echo(self):
         self._logger.info("Starting echo co-routine ...")
-        while self._alive:
+        while self.alive:
 
             # If we haven't gotten a response since the last ping, force close
             if self._last_echo_recv == None:
@@ -108,9 +109,15 @@ class AbstractTcp:
     def qsize(self):
         return self._read_queue.qsize()
     
+
+
     async def close(self):
+        await asyncio.wait_for(self._close(), timeout=5.0)
+
+    async def _close(self):
         self._logger.info("Closing connections ...")
-        self._alive = False
+        self.alive = False
         self._writer.close()
         await self._writer.wait_closed()        
         self._logger.info("Connections closed!")
+

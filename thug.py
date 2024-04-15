@@ -36,47 +36,33 @@ class Thug:
         logger.info("Initializing ...")
         self._config = config
 
-        self._config.start_time = datetime.now()
-        self._loop_time = .001
-
-        self.loop = asyncio.new_event_loop()
-
-        self._timer = TimeoutTimer(self.loop, self._config.start_time, self._config.timeout)
-        self._network_manager = NetworkManager()
-
         if self._config.skin == 'random':
             skins = list(SKIN_MAP.values())
             skins.remove('NA')
             random.shuffle(skins)
             self._config.skin = skins[0]
 
-        logger.info(self._config)
+        self._config.start_time = datetime.now()
+        self._loop_time = .001
+
+        self.loop = asyncio.new_event_loop()
 
 
-        self.loop.run_until_complete(self.main())
+
+        self._network_manager = NetworkManager(self.loop, self._config)
+        print("SLEEPING!")
+        self.loop.run_until_complete(self.sleep())
+
         return
 
-        self.loop.run_until_complete(self._tcp_conn.main(self._model))
+        self._timer = TimeoutTimer(self.loop, self._config.start_time, self._config.timeout)
 
-        logger.info("Initializing MAS ... ")
-        self._mas_conn = MasTcp(self.loop, self._config, self._config['mas_ip'], self._config['mas_port'])
-        self.loop.run_until_complete(self._mas_conn.close())
 
-        # Initialize connections
-        logger.info("Initializing MLS ... ")
-        self._mls_conn = MlsTcp(self.loop, self._config, self._mas_conn._session_key, self._mas_conn._access_key, self._config['mls_ip'], self._config['mls_port'])
-        logger.info("Initializing DME TCP ...")
-        self._tcp_conn = DmeTcp(self.loop, self._config)
 
-        self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_1())
-        
-        logger.info("Initializing DME UDP ...")
-        self._udp_conn = DmeUdp(self.loop, self._config, self._config['dmeudp_ip'], self._config['dmeudp_port'])
 
-        # Connect to DME world
-        self.loop.run_until_complete(self._udp_conn.connect_to_dme_world(self._tcp_conn.get_player_id()))
-        self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_2())
+        logger.info(self._config)
 
+        #self.loop.run_until_complete(self._tcp_conn.main(self._model))
 
 
         self._model = Model(self._config, self.loop, self._tcp_conn, self._udp_conn)
@@ -84,6 +70,13 @@ class Thug:
         self.loop.create_task(self._udp_conn.main(self._model))
         self.loop.run_until_complete(self._tcp_conn.main(self._model))
 
+
+
+        self.loop.run_until_complete(self.main())
+        return
+
+    async def sleep(self):
+        await asyncio.sleep(50000)
 
     async def main(self):
         while self.is_alive():

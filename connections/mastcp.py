@@ -8,34 +8,26 @@ from connections.abstracttcp import AbstractTcp
 from butils.gameinfo_parser import weaponParser, advancedRulesParser, mapParser, timeParser, gamerulesParser
 
 class MasTcp(AbstractTcp):
-    def __init__(self, loop, config, ip: str, port: int):
-        super().__init__(loop, config, ip, port)
+    def __init__(self, loop, ip: str, port: int, username: str, password: str):
+        super().__init__(loop, ip, port)
+
+        self._username = username
+        self._password = password
 
         self._logger = logging.getLogger('thug.mastcp')
         self._logger.setLevel(logging.DEBUG)
 
-        self._logger.debug("Opening MAS...")
+        self._logger.info("Opening MAS...")
         self.loop.run_until_complete(self.start())
 
-        self._logger.debug("Connection opened!")
-        #self.loop.run_until_complete(asyncio.sleep(5))
-
-        self._logger.debug("Starting Read routine ...")
-        self.loop.create_task(self.read_data())
-        self._logger.debug("Starting Write routine ...")
-        self.loop.create_task(self.write_data())
-
-        self.loop.run_until_complete(self.connect_tcp())
-
-        self.loop.run_until_complete(self.begin_session())
-        self.loop.run_until_complete(self.account_login())
-
-        self._alive = False
-
+        self.session_key = None
+        self.access_key = None
 
     async def connect_tcp(self):
-        self._logger.info("Sending connect TCP ...")
+        await asyncio.wait_for(self._connect_tcp(), timeout=5.0)
 
+    async def _connect_tcp(self):
+        self._logger.info("Sending connect TCP ...")
 
         pkt = hex_to_bytes('1240006B8F99EC1BAF06D2674284B5305EE6E38B1DE7331F2FBF31DE497228B7C52162F18DAE8913C40C43C0E890D14EEE16AD07C64FD9281D8B972D78BE78D1B290CE')
         self.queue(pkt)
@@ -49,7 +41,7 @@ class MasTcp(AbstractTcp):
 
             if data == None:
                 await asyncio.sleep(.0001)
-                continue
+                continue    
 
             if bytes_to_hex(data)[0:2] != '13':
                 raise Exception()
@@ -91,9 +83,10 @@ class MasTcp(AbstractTcp):
                 raise Exception('Unknown')
             break
 
-
-
     async def begin_session(self):
+        await asyncio.wait_for(self._begin_session(), timeout=5.0)
+
+    async def _begin_session(self):
         self._logger.info("Beginning MAS session ...")
         pkt = hex_to_bytes('0B1E00010331000000000000000000000000000000000000000000000001000000')
         self.queue(pkt)
@@ -115,28 +108,31 @@ class MasTcp(AbstractTcp):
                 raise Exception('Got invalid status code!')
 
 
-            self._session_key = beginsessionresponse['session_key']
+            self.session_key = beginsessionresponse['session_key']
 
             self._logger.info(f"Got session response! {beginsessionresponse}")
             break
 
 
     async def account_login(self):
+        await asyncio.wait_for(self._account_login(), timeout=5.0)
+
+    async def _account_login(self):
 
         self._logger.info("Logging in ...")
         pkt = hex_to_bytes('0B6800010731001A00000000004DC81F00000000000000000000')
 
         # Session key
-        pkt += self._session_key
+        pkt += self.session_key
 
         # Username
-        pkt += str_to_bytes(self._config['username'], 10)
+        pkt += str_to_bytes(self._username, 10)
         
         # UNK
         pkt += hex_to_bytes('C4D8240000000000EBFFFF7F08020000B0D82400FF00')
 
         # PASSWORD
-        pkt += str_to_bytes(self._config['password'], 10)
+        pkt += str_to_bytes(self._password, 10)
 
         # UNK
         pkt += hex_to_bytes('000000000000000000000000000000002C2B15000000')
@@ -155,19 +151,15 @@ class MasTcp(AbstractTcp):
             data = deque([raw[i:i+2] for i in range(0,len(raw),2)])
             buf = ''.join([data.popleft() for _ in range(182)])
 
-            self._access_key = hex_to_bytes(''.join([data.popleft() for _ in range(16)]))
+            self.access_key = hex_to_bytes(''.join([data.popleft() for _ in range(16)]))
 
-            if self._access_key == '00000000000000000000000000000000':
+            if self.access_key == '00000000000000000000000000000000':
                 raise Exception("Couldn't get MLS access key!")
         
             self._logger.info("Login success!")
 
             break
 
-
-    def get_access_key(self):
-        self.loop.run_until_complete(self.generate_access_key())
-        return self._access_key
 
 
     def serialize_session_begin_response(self, data):

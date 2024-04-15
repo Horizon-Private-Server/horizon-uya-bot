@@ -8,36 +8,24 @@ from connections.abstracttcp import AbstractTcp
 from butils.gameinfo_parser import weaponParser, advancedRulesParser, mapParser, timeParser, gamerulesParser
 
 class MlsTcp(AbstractTcp):
-    def __init__(self, loop, config, session_key: bytes, access_key: bytes, ip: str, port: int):
-        super().__init__(loop, config, ip, port)
+    def __init__(self, loop, ip: str, port: int):
+        super().__init__(loop, ip, port)
 
-        self._access_key = access_key
-        self._session_key = session_key
+        # self._access_key = access_key
+        # self._session_key = session_key
 
         self._logger = logging.getLogger('thug.mlstcp')
         self._logger.setLevel(logging.DEBUG)
 
-        self._logger.debug("Opening connection 1...")
         self.loop.run_until_complete(self.start())
-
-        self._logger.debug("Connection opened!")
-
-        self._logger.debug("Starting Read routine ...")
-        self.loop.create_task(self.read_data())
-        self._logger.debug("Starting Write routine ...")
-        self.loop.create_task(self.write_data())
-
-
-        self.loop.run_until_complete(self.connect_to_mls())
-
         self.loop.create_task(self.echo())
 
-        self.loop.run_until_complete(asyncio.sleep(100))
+        # self.loop.run_until_complete(self.connect_to_mls())
+        # self.loop.run_until_complete(asyncio.sleep(100))
+        # self.loop.run_until_complete(self.get_game_info())
+        # print(self._config['gameinfo'])
 
-        self.loop.run_until_complete(self.get_game_info())
-        print(self._config['gameinfo'])
-
-        self.loop.run_until_complete(self.join_game())
+        # self.loop.run_until_complete(self.join_game())
 
 
     async def connect_to_mls(self):

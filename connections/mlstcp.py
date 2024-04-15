@@ -27,13 +27,12 @@ class MlsTcp(AbstractTcp):
         self.loop.run_until_complete(self.start())
         
         
-
-
+    async def connect(self, world_id):
+        await asyncio.wait_for(self.connect_to_mls(), timeout=5.0)
+        await asyncio.wait_for(self.get_game_info(world_id), timeout=5.0)
+        await asyncio.wait_for(self.join_game(world_id), timeout=5.0)
 
     async def connect_to_mls(self):
-        await asyncio.wait_for(self._connect_to_mls(), timeout=5.0)
-
-    async def _connect_to_mls(self):
         self._logger.info("Connecting to MLS ...")
 
         pkt = hex_to_bytes('1240006B8F99EC1BAF06D2674284B5305EE6E38B1DE7331F2FBF31DE497228B7C52162F18DAE8913C40C43C0E890D14EEE16AD07C64FD9281D8B972D78BE78D1B290CE')
@@ -97,10 +96,8 @@ class MlsTcp(AbstractTcp):
 
         self._logger.info("Connected to MLS!")
 
-    async def get_game_info(self, world_id):
-        await asyncio.wait_for(self._get_game_info(world_id), timeout=5.0)
 
-    async def _get_game_info(self, world_id):
+    async def get_game_info(self, world_id):
         self._logger.info("Getting Game Info ...")
         pkt = hex_to_bytes('0B2E00013331000000000000000000000000000000C01D480000')
         pkt += self.session_key
@@ -161,10 +158,8 @@ class MlsTcp(AbstractTcp):
 
         self.gameinfo = game
 
-    async def join_game(self, world_id):
-        await asyncio.wait_for(self._join_game(world_id), timeout=5.0)
 
-    async def _join_game(self, world_id):
+    async def join_game(self, world_id):
         self._logger.info("Joining Game ...")
         pkt = hex_to_bytes('0BC60001F3310000000000000000000000000000000000000000')
         pkt += self.session_key
@@ -197,6 +192,4 @@ class MlsTcp(AbstractTcp):
 
         self.dme_session_key = hex_to_bytes(''.join([data.popleft() for _ in range(17)]))
         self.dme_access_key = hex_to_bytes(''.join([data.popleft() for _ in range(16)]))
-
-        self._logger.info(self._config)
 

@@ -14,20 +14,16 @@ class NetworkManager:
 
         # MAS
         self._mas = MasTcp(self.loop, config.mas_ip, config.mas_port, config.username, config.password)
-        self.loop.run_until_complete(self._mas.connect_tcp())
-        self.loop.run_until_complete(self._mas.begin_session())
-        self.loop.run_until_complete(self._mas.account_login())
+        self.loop.run_until_complete(self._mas.connect())
         self.loop.run_until_complete(self._mas.close())
 
         # MLS
         self._mls = MlsTcp(self.loop, config.mls_ip, config.mls_port, self._mas.session_key, self._mas.access_key)
-        self.loop.run_until_complete(self._mls.connect_to_mls())
-        self.loop.run_until_complete(self._mls.get_game_info(config.world_id))
-        self.loop.run_until_complete(self._mls.join_game())
-        self.loop.create_task(self.echo())
+        self.loop.run_until_complete(self._mls.connect(config.world_id))
+        self.loop.create_task(self._mls.echo())
 
         # DME TCP
-        
+
 
         
         # self._tcp_conn = DmeTcp(self.loop, self._config)

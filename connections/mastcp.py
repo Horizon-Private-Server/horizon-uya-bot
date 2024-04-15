@@ -23,12 +23,14 @@ class MasTcp(AbstractTcp):
         self.session_key = None
         self.access_key = None
 
+    async def connect(self):
+        await asyncio.wait_for(self.connect_tcp(), timeout=5.0)
+        await asyncio.wait_for(self.begin_session(), timeout=5.0)
+        await asyncio.wait_for(self.account_login(), timeout=5.0)
+
+
     async def connect_tcp(self):
-        await asyncio.wait_for(self._connect_tcp(), timeout=5.0)
-
-    async def _connect_tcp(self):
         self._logger.info("Sending connect TCP ...")
-
         pkt = hex_to_bytes('1240006B8F99EC1BAF06D2674284B5305EE6E38B1DE7331F2FBF31DE497228B7C52162F18DAE8913C40C43C0E890D14EEE16AD07C64FD9281D8B972D78BE78D1B290CE')
         self.queue(pkt)
 
@@ -84,9 +86,6 @@ class MasTcp(AbstractTcp):
             break
 
     async def begin_session(self):
-        await asyncio.wait_for(self._begin_session(), timeout=5.0)
-
-    async def _begin_session(self):
         self._logger.info("Beginning MAS session ...")
         pkt = hex_to_bytes('0B1E00010331000000000000000000000000000000000000000000000001000000')
         self.queue(pkt)
@@ -115,9 +114,6 @@ class MasTcp(AbstractTcp):
 
 
     async def account_login(self):
-        await asyncio.wait_for(self._account_login(), timeout=5.0)
-
-    async def _account_login(self):
 
         self._logger.info("Logging in ...")
         pkt = hex_to_bytes('0B6800010731001A00000000004DC81F00000000000000000000')

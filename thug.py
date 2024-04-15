@@ -47,15 +47,13 @@ class Thug:
 
         self.loop = asyncio.new_event_loop()
 
-
-
         self._network_manager = NetworkManager(self.loop, self._config)
-        print("SLEEPING!")
-        self.loop.run_until_complete(self.sleep())
-
-        return
 
         self._timer = TimeoutTimer(self.loop, self._config.start_time, self._config.timeout)
+
+        self.loop.run_until_complete(self.main())
+
+        return
 
 
 
@@ -72,7 +70,6 @@ class Thug:
 
 
 
-        self.loop.run_until_complete(self.main())
         return
 
     async def sleep(self):
@@ -80,20 +77,18 @@ class Thug:
 
     async def main(self):
         while self.is_alive():
-            #logger.info("Looping!")
-
-            await self._network_manager.update()
 
             await asyncio.sleep(self._loop_time)
 
         logger.info("Ending main routine!")
         await self._timer.kill()
+        await self._network_manager.kill()
 
         logger.info("Thug finished.")
 
     def is_alive(self):
         # Check if we have fully timed out
-        return self._timer.alive and self._network_manager.alive
+        return self._timer.alive and self._network_manager.is_alive()
         
 
         # Check if the network manager has timed out

@@ -32,9 +32,6 @@ class Config:
             "clan_tag": "",
             "team": "blue",
             "timeout": 3,
-            "map_prune_dist": 40,
-            "map_min_move_dist": 25,
-            "map_max_move_dist": 55,
         }
 
         for key, value in raw_dict.items():

@@ -36,21 +36,11 @@ class NetworkManager:
         self.loop.create_task(self._dmetcp.echo())
         self.loop.create_task(self._dmeudp.echo())
 
-        # self._tcp_conn = DmeTcp(self.loop, self._config)
 
-        # self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_1())
-        
-        # logger.info("Initializing DME UDP ...")
-        # self._udp_conn = DmeUdp(self.loop, self._config, self._config['dmeudp_ip'], self._config['dmeudp_port'])
+    def is_alive(self):
+        return self._mls.alive and self._dmetcp.alive and self._dmeudp.alive
 
-        # # Connect to DME world
-        # self.loop.run_until_complete(self._udp_conn.connect_to_dme_world(self._tcp_conn.get_player_id()))
-        # self.loop.run_until_complete(self._tcp_conn.connect_to_dme_world_stage_2())
-
-
-
-    async def update(self):
-        
-        pass
-
-
+    async def kill(self):
+        await self._mls.close()
+        await self._dmetcp.close()
+        self._dmeudp.close()

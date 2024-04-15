@@ -1,12 +1,14 @@
 import asyncio
 from queue import Queue
 import sys
+from datetime import datetime
 
 from butils.utils import *
 from butils.rtbufferdeframer import RtBufferDeframer
 
 class AbstractUdp:
     def __init__(self, loop, ip: str, port: int):
+        self.alive = True
         self.loop = loop
         self._logger = None
 
@@ -21,6 +23,9 @@ class AbstractUdp:
         self._write_queue = Queue()
 
         self._readwrite_time = 0.0001
+
+        self._last_echo_sent = datetime.now()
+        self._last_echo_recv = datetime.now()
 
     def connection_made(self, transport):
         self.transport = transport
@@ -41,7 +46,7 @@ class AbstractUdp:
                 self._read_queue.put(packet)
 
     async def write(self):
-        while True:
+        while self.alive:
             size = self._write_queue.qsize()
 
             if size != 0:
@@ -53,7 +58,16 @@ class AbstractUdp:
             await asyncio.sleep(self._readwrite_time)
 
     async def echo(self):
-        while True:
+        while self.alive:
+
+            # If we haven't gotten a response since the last ping, force close
+            if self._last_echo_recv == None:
+                self._logger.info("Force closing connection, no echo received!")
+                self.close()
+
+            self._last_echo_sent = datetime.now()
+            self._last_echo_recv = None
+
             self._write_queue.put(hex_to_bytes('050100A5'))
             await asyncio.sleep(30)
 
@@ -67,3 +81,8 @@ class AbstractUdp:
 
     def qsize(self):
         return self._read_queue.qsize()
+
+    def close(self):
+        self._logger.info("Closing connections ...")
+        self.alive = False   
+        self._logger.info("Connections closed!")

@@ -15,7 +15,7 @@ class DmeUdp(AbstractUdp):
         self._logger.setLevel(logging.DEBUG)
 
         self.loop.create_task(self.start())
-        self.loop.run_until_complete(asyncio.sleep(.5))
+        self.loop.run_until_complete(asyncio.sleep(.25))
         self.loop.create_task(self.write())
 
         self.world_id = world_id

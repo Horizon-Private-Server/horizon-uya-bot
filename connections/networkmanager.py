@@ -12,23 +12,23 @@ class NetworkManager:
         self.alive = True
         self.loop = loop
 
+        # MAS
         self._mas = MasTcp(self.loop, config.mas_ip, config.mas_port, config.username, config.password)
-
-
         self.loop.run_until_complete(self._mas.connect_tcp())
-
         self.loop.run_until_complete(self._mas.begin_session())
-
         self.loop.run_until_complete(self._mas.account_login())
-
         self.loop.run_until_complete(self._mas.close())
 
-        # Initialize connections
-        self._mls = MlsTcp(self.loop, self._config, self._mas_conn._session_key, self._mas_conn._access_key, self._config['mls_ip'], self._config['mls_port'])
+        # MLS
+        self._mls = MlsTcp(self.loop, config.mls_ip, config.mls_port, self._mas.session_key, self._mas.access_key)
+        self.loop.run_until_complete(self._mls.connect_to_mls())
+        self.loop.run_until_complete(self._mls.get_game_info(config.world_id))
+        self.loop.run_until_complete(self._mls.join_game())
+        self.loop.create_task(self.echo())
+
+        # DME TCP
         
-        
-        
-        
+
         
         # self._tcp_conn = DmeTcp(self.loop, self._config)
 

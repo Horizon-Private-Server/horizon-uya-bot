@@ -6,11 +6,9 @@ from butils.utils import *
 from butils.rtbufferdeframer import RtBufferDeframer
 
 class AbstractUdp:
-    def __init__(self, loop, config, ip: str, port: int):
+    def __init__(self, loop, ip: str, port: int):
         self.loop = loop
         self._logger = None
-
-        self._config = config
 
         self._deframer = RtBufferDeframer()
 

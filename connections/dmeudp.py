@@ -9,24 +9,29 @@ from medius.serializer import UdpSerializer
 from datetime import datetime
 
 class DmeUdp(AbstractUdp):
-    def __init__(self, loop, config, ip: str, port: int):
-        super().__init__(loop, config, ip, port)
+    def __init__(self, loop, ip: str, port: int, world_id: int, player_id: int):
+        super().__init__(loop, ip, port)
         self._logger = logging.getLogger('thug.dmeudp')
         self._logger.setLevel(logging.DEBUG)
 
         self.loop.create_task(self.start())
-        self.loop.run_until_complete(asyncio.sleep(1))
+        self.loop.run_until_complete(asyncio.sleep(.5))
         self.loop.create_task(self.write())
-        self.loop.create_task(self.echo())
 
-    async def connect_to_dme_world(self, player_id):
-        self._logger.info("Connecting to dme world ...")
+        self.world_id = world_id
+        self.player_id = player_id
+
+    async def connect(self):
+        await asyncio.wait_for(self.connect_to_dme_world(), timeout=5.0)
+
+    async def connect_to_dme_world(self):
+        self._logger.info("Connecting to UDP dme world ...")
         pkt = hex_to_bytes('161D00010801')
-        pkt += int_to_bytes_little(2, self._config['world_id'])
+        pkt += int_to_bytes_little(2, self.world_id)
         pkt += hex_to_bytes('BC290000')
         pkt += str_to_bytes(self._ip, 16)
         pkt += int_to_bytes_little(2, self._port)
-        pkt += int_to_bytes_little(2, player_id)
+        pkt += int_to_bytes_little(2, self.player_id)
 
         self.queue(pkt)
 

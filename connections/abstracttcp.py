@@ -30,6 +30,9 @@ class AbstractTcp:
         
 
     async def start(self):
+        await asyncio.wait_for(self._start(), timeout=5.0)
+
+    async def _start(self):
         self._logger.debug("Starting async open_connection ...")
         self._reader, self._writer = await asyncio.open_connection(self._ip, self._port)
         self._logger.debug("Done async open_connection ...")

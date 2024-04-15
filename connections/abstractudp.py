@@ -42,7 +42,9 @@ class AbstractUdp:
 
         for packet in packets:
             self._logger.debug(f"I | {bytes_to_hex(packet)}")
-            if packet[0] not in [0x05]: # 05 = echo, 07 = connected, 18 =
+            if packet[0] == 0x05:
+                self._last_echo_recv = datetime.now()
+            else: # 05 = echo, 07 = connected, 18 =
                 self._read_queue.put(packet)
 
     async def write(self):
@@ -69,7 +71,7 @@ class AbstractUdp:
             self._last_echo_recv = None
 
             self._write_queue.put(hex_to_bytes('050100A5'))
-            await asyncio.sleep(30)
+            await asyncio.sleep(15)
 
     def queue(self, data: bytes):
         self._write_queue.put(data)

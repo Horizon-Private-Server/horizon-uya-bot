@@ -21,7 +21,8 @@ class prototype:
         self._model = model
         self.game_state = game_state
 
-        self.game_state.player.coord = self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode)
+        # self.game_state.player.coord = self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode)
+        self.game_state.player.coord = [0,0,0]
         self.game_state.player.x_angle = 127
 
         self.tracking = self.game_state.player

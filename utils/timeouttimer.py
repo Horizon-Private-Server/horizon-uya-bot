@@ -19,7 +19,7 @@ class TimeoutTimer():
             t = datetime.now()
             if ((t - self._start_time).total_seconds()) / 60 > self._timeout:
                 self._logger.info("Timeout!")
-                self._logger.info(f"Start time: {self._start_time} | End time: {datetime.now().timestamp()}")
+                self._logger.info(f"Start time: {self._start_time} | End time: {t}")
                 self._logger.info(f"Total time (miuntes): {(t - self._start_time).total_seconds()/60}")
                 self._logger.info(f"Total time (seconds): {(t - self._start_time).total_seconds()}")
                 self.alive = False

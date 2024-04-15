@@ -9,7 +9,7 @@ from model.player_state import PlayerState
 from constants.constants import get_flag_location
 
 class GameState:
-    def __init__(self, gameinfo:dict, player:PlayerState, config:dict):
+    def __init__(self, gameinfo:dict, player:PlayerState):
         self.player = player
 
         self.players = {} # player id -> PlayerState
@@ -36,6 +36,11 @@ class GameState:
 
         # Point grid
         self.map = Map(self.map_name)
+
+    def start(self):
+        self.map.read_map()
+        self.player.coord = self.map.get_respawn_location(self.player.team, self.game_mode)
+
 
     def clear_flag(self, flag):
         if self.player.flag == flag:

@@ -28,23 +28,19 @@ siege_ctf_respawn_coords = {
 
 class Map:
     def __init__(self, map_name:str):
-
         self.map = map_name
-
-        start_time = datetime.now().timestamp()
-        self.G = self.read_map(map_name)
-        logger.info(f"Loaded map in {datetime.now().timestamp() - start_time} seconds!")
-
         self.path_cache = None
 
         self.cboot_factor = 5
         self.cboot_distance = 3000
 
-    def read_map(self, map_name):
-        logger.info("Loading map graph ...")
-        G = nx.read_edgelist(f"maps/graphs/{self.map}.edgelist",nodetype=eval, delimiter='|')
-        self.points = np.array(G.nodes)
-        return G
+    def read_map(self):
+        start_time = datetime.now()
+        logger.info(f"Loading map graph {self.map} ...")
+        self.G = nx.read_edgelist(f"maps/graphs/{self.map}.edgelist",nodetype=eval, delimiter='|')
+        self.points = np.array(self.G.nodes)
+        logger.info(f"Loaded map in {(datetime.now() - start_time).total_seconds()} seconds!")
+
 
     def path(self, src, dst):
         def search_heuristic(node1, node2):

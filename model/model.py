@@ -1,6 +1,6 @@
 import logging
 logger = logging.getLogger('thug.model')
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 import sys
 
@@ -20,32 +20,59 @@ from model.bots import *
 
 from constants.constants import parse_object_id
 
+from medius.serializer import UdpSerializer
+from medius.serializer import TcpSerializer
 
 class Model:
-    def __init__(self, config, loop, tcp_conn, udp_conn):
+    def __init__(self, loop, network_manager, gameinfo, bot_class, account_id, player_id, team, username, skin, clan_tag, bolt):
         logger.info("Initialzing model ...")
         self.alive = True
-        self._config = config
 
         self._loop = loop
-        self._tcp = tcp_conn
-        self._udp = udp_conn
 
+        self._network = network_manager
+        self.dmetcp_queue = queue.Queue()
+        self.dmeudp_queue = queue.Queue()
 
-        player = PlayerState(self._tcp._player_id, config['account_id'], config['team'], username=config['username'], skin=config['skin'], clan_tag=config['clan_tag'], rank=config['bolt'])
-        self.game_state = GameState(self._config['gameinfo'], player, self._config)
-        self.bot = eval(f"{config['bot_class']}.{config['bot_class']}(self, self.game_state)")
+        player = PlayerState(player_id, account_id, team, username=username, skin=skin, clan_tag=clan_tag, rank=bolt)
+        self.game_state = GameState(gameinfo, player)
+        self.bot = eval(f"{bot_class}.{bot_class}(self, self.game_state)")
 
         self._loop.create_task(self._tcp_flusher())
         self._loop.create_task(self._udp_flusher())
-        self.dmetcp_queue = queue.Queue()
-        self.dmeudp_queue = queue.Queue()
+        self._loop.create_task(self._tcp_reader())
+        self._loop.create_task(self._udp_reader())
+
+
+    async def _tcp_reader(self):
+        while self.alive:
+            if self._network._dmetcp.qsize() != 0:
+                packet = self._network._dmetcp.dequeue()
+                logger.info("TCP READER PACKET:" + str(packet))
+                try:
+                    serialized = TcpSerializer[packet[0]]['serializer'].serialize(packet)
+                    self.process(serialized)
+                except:
+                    logger.exception(f"Error processing DME TCP packet: {packet}")
+            await asyncio.sleep(0.0001)
+
+    async def _udp_reader(self):
+        while self.alive:
+            if self._network._dmeudp.qsize() != 0:
+                packet = self._network._dmeudp.dequeue()
+                try:
+                    serialized = UdpSerializer[packet[0]]['serializer'].serialize(packet)
+                    self.process(serialized)
+                except:
+                    logger.exception(f"Error processing DME UDP packet: {packet}")
+            await asyncio.sleep(0.0001)
+
 
     def process(self, serialized: dict):
         '''
         PROCESS RT PACKETS
         '''
-        #logger.debug(f"Processing: {serialized}")
+        logger.debug(f"Processing: {serialized}")
 
         if serialized['packet'] == 'medius.rt.clientappsingle':
             for dme_packet in serialized['packets']:
@@ -99,6 +126,7 @@ class Model:
             self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready')])
 
         if dme_packet.name == 'tcp_000D_game_started':
+            self.game_state.start()
             self._loop.create_task(self.send_player_data())
             self.game_state.state = 'active'
 
@@ -182,7 +210,7 @@ class Model:
 
     async def send_player_data(self):
         # It takes 13 seconds to load from game start into actual game
-        await asyncio.sleep(18)
+        # await asyncio.sleep(18)
 
         # Aquatos Sewers
         test_map = {
@@ -291,7 +319,7 @@ class Model:
                             pkt = ClientAppSingleSerializer.build(destination, pkt.to_bytes())
                         else:
                             pkt = ClientAppBroadcastSerializer.build(pkt.to_bytes())
-                        self._tcp.queue(rtpacket_to_bytes(pkt))
+                        self._network._dmetcp.queue(rtpacket_to_bytes(pkt))
 
                 await asyncio.sleep(0.00001)
             except:
@@ -319,10 +347,16 @@ class Model:
                         else:
                             pkt = ClientAppBroadcastSerializer.build(pkt.to_bytes())
 
-                        self._udp.queue(rtpacket_to_bytes(pkt))
+                        self._network._dmeudp.queue(rtpacket_to_bytes(pkt))
 
                 await asyncio.sleep(0.00001)
             except:
                 logger.exception("UDP FLUSHER ERROR")
                 self.alive = False
                 break
+
+
+    async def kill(self):
+        logger.info(f"Killing Model ...")
+        self.alive = False                        
+        logger.info(f"Killed.")

@@ -145,7 +145,7 @@ class MlsTcp(AbstractTcp):
         gameinfo['game_host_type'] = ''.join([data.popleft() for _ in range(4)])
         if gameinfo['game_status'] != 1 or gameinfo['player_count'] == 8:
             self._logger.info("Invalid game settings.")
-            sys.exit(1)
+            raise Exception("Invalid game settings!")
 
         game = {'game_name': gameinfo['game_name']}
         game['weapons'] = weaponParser(gameinfo['player_skill_level'])

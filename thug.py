@@ -51,6 +51,19 @@ class Thug:
 
         self._timer = TimeoutTimer(self.loop, self._config.start_time, self._config.timeout)
 
+        self._model = Model(self.loop, 
+                            self._network_manager, 
+                            self._network_manager._mls.gameinfo, 
+                            config.bot_class,
+                            config.account_id, 
+                            self._network_manager._dmetcp.player_id, 
+                            config.team, 
+                            config.username,
+                            config.skin,
+                            config.clan_tag,
+                            config.bolt
+                            )
+
         self.loop.run_until_complete(self.main())
 
         return
@@ -72,8 +85,6 @@ class Thug:
 
         return
 
-    async def sleep(self):
-        await asyncio.sleep(50000)
 
     async def main(self):
         while self.is_alive():
@@ -83,37 +94,16 @@ class Thug:
         logger.info("Ending main routine!")
         await self._timer.kill()
         await self._network_manager.kill()
+        await self._model.kill()
+
+        await asyncio.sleep(30)
 
         logger.info("Thug finished.")
 
     def is_alive(self):
         # Check if we have fully timed out
-        return self._timer.alive and self._network_manager.is_alive()
-        
+        return self._timer.alive and self._network_manager.is_alive() and self._model.alive
 
-        # Check if the network manager has timed out
-
-        # Check if the model quit
-
-        return False
-
-
-
-
-
-
-
-
-
-# AWS Lambda handler
-def handler(event, context):
-    print(event)
-    try:
-        Thug(config = event)
-    except:
-        logger.exception("Thug error!")
-        return 1
-    return 0
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Run Horizon's UYA Bot. (Thug)")

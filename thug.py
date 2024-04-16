@@ -66,28 +66,11 @@ class Thug:
 
         self.loop.run_until_complete(self.main())
 
-        return
-
-
-
-
-        logger.info(self._config)
-
-        #self.loop.run_until_complete(self._tcp_conn.main(self._model))
-
-
-        self._model = Model(self._config, self.loop, self._tcp_conn, self._udp_conn)
-
-        self.loop.create_task(self._udp_conn.main(self._model))
-        self.loop.run_until_complete(self._tcp_conn.main(self._model))
-
-
-
-        return
-
 
     async def main(self):
         while self.is_alive():
+
+            await self._model.update()
 
             await asyncio.sleep(self._loop_time)
 

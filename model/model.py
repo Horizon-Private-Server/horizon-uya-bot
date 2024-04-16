@@ -34,6 +34,8 @@ class Model:
         self.dmetcp_queue = queue.Queue()
         self.dmeudp_queue = queue.Queue()
 
+        self._seen_first_player_movement = False
+
         player = PlayerState(player_id, account_id, team, username=username, skin=skin, clan_tag=clan_tag, rank=bolt)
         self.game_state = GameState(gameinfo, player)
         self.bot = eval(f"{bot_class}.{bot_class}(self, self.game_state)")
@@ -43,6 +45,27 @@ class Model:
         self._loop.create_task(self._tcp_reader())
         self._loop.create_task(self._udp_reader())
 
+        self._loop.create_task(self.movement_update())
+
+
+    async def update(self):
+        # Update and send movement information when ready. 
+        pass
+
+    async def movement_update(self):
+        while self.alive and self._seen_first_player_movement == False:
+            await asyncio.sleep(1)
+
+        while self.alive:
+            packet_num = self.game_state.player.gen_packet_num()
+            data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': self.game_state.player.x_angle, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': self.game_state.player.x_angle, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': self.game_state.player.x_angle, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': self.game_state.player.x_angle, 'buffer': '00', 'coord': self.game_state.player.coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
+
+            if self.game_state.player.animation != None:
+                data['flush_type'] = 16
+                data['animation'] = self.game_state.player.animation
+
+            self.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
+            await asyncio.sleep(.068)
 
     async def _tcp_reader(self):
         while self.alive:
@@ -164,6 +187,9 @@ class Model:
             self.game_state.tnw_gamesetting_update(src_player, dme_packet.data)
 
         if dme_packet.name == 'udp_0209_movement_update':
+            if self._seen_first_player_movement == False:
+                self._seen_first_player_movement = True
+
             self.game_state.movement_update(src_player, dme_packet.data)
 
         if dme_packet.name in ['udp_020E_shot_fired']:

@@ -71,9 +71,6 @@ class prototype:
                 # Run objective
                 self.objective()
 
-                # Update movement
-                self.send_movement()
-
                 # Sleep for the loop
                 await asyncio.sleep(0.03)
             except:
@@ -221,16 +218,7 @@ class prototype:
             self.game_state.player.respawn_time = datetime.now().timestamp() + self.respawn_time
 
 
-    def send_movement(self):
-        packet_num = self.game_state.player.gen_packet_num()
 
-        data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': self.game_state.player.x_angle, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': self.game_state.player.x_angle, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': self.game_state.player.x_angle, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': self.game_state.player.x_angle, 'buffer': '00', 'coord': self.game_state.player.coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
-
-        if self.game_state.player.animation != None:
-            data['flush_type'] = 16
-            data['animation'] = self.game_state.player.animation
-
-        self._model.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
     def __str__(self):
         return "prototype class"

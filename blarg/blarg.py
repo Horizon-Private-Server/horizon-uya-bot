@@ -3,6 +3,7 @@ import websockets
 import json
 import os
 import argparse
+from datetime import datetime
 
 import sys
 sys.path.append("..")
@@ -93,6 +94,10 @@ class Blarg:
                 self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")
 
     async def read_websocket(self):
+
+        p1_counter = 0
+        p2_counter = 0
+
         uri = f"ws://{self._config['server_ip']}:8765"
         async with websockets.connect(uri,ping_interval=None) as websocket:
             while True:
@@ -103,9 +108,21 @@ class Blarg:
                     self.process(json.loads(data))
                 else:
                     try:
-                        print(data)
                         for data_point in json.loads(data):
-                            self.process(data_point)
+                            if '"0209' in json.dumps(data_point):
+                                print(datetime.now(), data_point)
+
+                                if '"src": 0' in json.dumps(data_point):
+                                    p1_counter += 1
+                                elif '"src": 1' in json.dumps(data_point):
+                                    p2_counter += 1
+
+                            if p1_counter > 5000 or p2_counter > 5000:
+                                print(f"P1COUNTER: {p1_counter}")
+                                print(f"P2COUNTER: {p2_counter}")
+                                return
+                            #print(data_point)
+                            #self.process(data_point)
                     except:
                         self._logger.exception("error")
 

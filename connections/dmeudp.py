@@ -56,14 +56,3 @@ class DmeUdp(AbstractUdp):
                 break
 
         self._logger.info("Connected!")
-
-    async def main(self, model):
-        while model.alive:
-            if self.qsize() != 0:
-                packet = self.dequeue()
-                try:
-                    serialized = UdpSerializer[packet[0]]['serializer'].serialize(packet)
-                    model.process(serialized)
-                except:
-                    self._logger.exception(f"Error processing DME UDP packet")
-            await asyncio.sleep(0.0001)

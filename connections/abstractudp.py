@@ -24,8 +24,6 @@ class AbstractUdp:
 
         self._readwrite_time = 0.0001
 
-        self._last_echo_sent = datetime.now()
-        self._last_echo_recv = datetime.now()
 
     def connection_made(self, transport):
         self.transport = transport
@@ -43,7 +41,7 @@ class AbstractUdp:
         for packet in packets:
             self._logger.debug(f"I | {bytes_to_hex(packet)}")
             if packet[0] == 0x05:
-                self._last_echo_recv = datetime.now()
+                pass
             else: # 05 = echo, 07 = connected, 18 =
                 self._read_queue.put(packet)
 
@@ -61,15 +59,6 @@ class AbstractUdp:
 
     async def echo(self):
         while self.alive:
-
-            # If we haven't gotten a response since the last ping, force close
-            if self._last_echo_recv == None:
-                self._logger.info("Force closing connection, no echo received!")
-                self.close()
-
-            self._last_echo_sent = datetime.now()
-            self._last_echo_recv = None
-
             self._write_queue.put(hex_to_bytes('050100A5'))
             await asyncio.sleep(15)
 

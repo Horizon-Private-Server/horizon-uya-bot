@@ -18,7 +18,9 @@ from medius.dme_serializer import UdpSerializer as udp_map
 
 from butils.utils import *
 
-ip = ''
+with open("config.json",'r') as f:
+    config = json.loads(f.read())
+ip = config['test']
 
 async def read_websocket():
     

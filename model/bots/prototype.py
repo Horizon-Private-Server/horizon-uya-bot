@@ -3,7 +3,7 @@ import random
 from scipy.spatial import distance
 from datetime import datetime
 
-from constants.constants import ANIMATION_MAP
+from constants.constants import ANIMATION_MAP, MAIN_BOT_LOOP_TIMER
 from medius.dme_packets import *
 from butils.utils import *
 
@@ -71,39 +71,57 @@ class prototype:
                 # Run objective
                 self.objective()
 
+                # Send movement
+                self.send_movement()
+
                 # Sleep for the loop
-                await asyncio.sleep(0.03)
+                await asyncio.sleep(MAIN_BOT_LOOP_TIMER)
             except:
                 logger.exception("PROTOTYPE ERROR")
                 self._model.alive = False
                 break
+
+    def send_movement(self):
+        if self.game_state.players[0].coord == [0,0,0]:
+            return
+
+        packet_num = self.game_state.player.gen_packet_num()
+        data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': self.game_state.player.x_angle, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': self.game_state.player.x_angle, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': self.game_state.player.x_angle, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': self.game_state.player.x_angle, 'buffer': '00', 'coord': self.game_state.player.coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
+
+        if self.game_state.player.animation != None:
+            data['flush_type'] = 16
+            data['animation'] = self.game_state.player.animation
+
+        self._model.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
     def objective(self):
         # first determine the state of the flag etc
 
         # update angle/coord
         if not self.game_state.player.is_dead:
-            if self.game_state.player.movement_packet_num % 4 == 0:
+            #if self.game_state.player.movement_packet_num % 4 == 0:
 
-                self.tracking = self._model.get_closest_enemy_player()
+            self.tracking = self._model.get_closest_enemy_player()
 
-                # if we are at 300 distance, we can strafe around instead of walking toward them
-                if calculate_distance(self.game_state.player.coord, self.tracking.coord) > 600 or self.follow_player == True:
-                    new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord)
-                else:
-                    new_coord = self.game_state.map.get_random_coord_connected(self.game_state.player.coord)
+            # if we are at 300 distance, we can strafe around instead of walking toward them
+            if calculate_distance(self.game_state.player.coord, self.tracking.coord) > 600 or self.follow_player == True:
+                new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord)
+                dist_diff = calculate_distance(self.game_state.player.coord, new_coord)
+                logger.info(f"DISTANCE BETWEEN SELECTED AND CURRENT POINT: {dist_diff}")
+            else:
+                new_coord = self.game_state.map.get_random_coord_connected(self.game_state.player.coord)
 
-                if new_coord[2] > self.game_state.player.coord[2]:
-                    self.game_state.player.animation = 'jump'
-                elif new_coord != self.game_state.player.coord:
-                    self.game_state.player.animation = 'forward'
-                else:
-                    self.game_state.player.animation = None
+            if new_coord[2] > self.game_state.player.coord[2]:
+                self.game_state.player.animation = 'jump'
+            elif new_coord != self.game_state.player.coord:
+                self.game_state.player.animation = 'forward'
+            else:
+                self.game_state.player.animation = None
 
-                self.game_state.player.coord = new_coord
+            self.game_state.player.coord = new_coord
 
         # Update camera angle
-        if self.game_state.player.movement_packet_num % 5 == 0:
+        # if self.game_state.player.movement_packet_num % 5 == 0:
             self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.tracking.coord)
 
         # Fire weapon

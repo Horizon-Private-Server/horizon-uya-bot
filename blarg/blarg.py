@@ -3,6 +3,7 @@ import websockets
 import json
 import os
 import argparse
+import time
 from datetime import datetime
 
 import sys
@@ -109,20 +110,8 @@ class Blarg:
                 else:
                     try:
                         for data_point in json.loads(data):
-                            if '"0209' in json.dumps(data_point):
-                                print(datetime.now(), data_point)
-
-                                if '"src": 0' in json.dumps(data_point):
-                                    p1_counter += 1
-                                elif '"src": 1' in json.dumps(data_point):
-                                    p2_counter += 1
-
-                            if p1_counter > 5000 or p2_counter > 5000:
-                                print(f"P1COUNTER: {p1_counter}")
-                                print(f"P2COUNTER: {p2_counter}")
-                                return
                             #print(data_point)
-                            #self.process(data_point)
+                            self.process(data_point)
                     except:
                         self._logger.exception("error")
 
@@ -133,7 +122,7 @@ def read_config(target, config_file='config.json'):
         return config
 
 if __name__ == '__main__':
-
+    time.sleep(5)
     parser = argparse.ArgumentParser(description="Run Horizon's UYA Bot. (Thug)")
     parser.add_argument('--target', type=str, default='test', help='Use prod or test target')
 

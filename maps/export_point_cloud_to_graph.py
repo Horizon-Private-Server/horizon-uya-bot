@@ -6,18 +6,23 @@ import matplotlib.pyplot as plt
 from scipy.spatial import distance
 import os
 import sys
+from datetime import datetime
 
 figsize = (12, 12)
-map_name = 'blackwater_docks'
+map_name = 'marcadia_palace'
 display_raw_points = False
 display_downsampled = False
 plot_connected_graph = False
 write_graph = True
 
+'''
+10/20 pretty good
+'''
+
 # Adjust this in order to make the grid further apart or closer together
-point_cloud_voxel_size = 50
+point_cloud_voxel_size = 20
 # Adjust this to connect closer/farther points
-distance_connected_variance = 40
+distance_connected_variance = 20
 
 print("-- Loading in point cloud ...")
 with open(os.path.join(f'point_clouds',f'{map_name}.json'), 'r') as f:
@@ -87,6 +92,7 @@ if display_downsampled == True:
 
 ## Generate the graph
 print("-- Generating graph ...")
+start_time = datetime.now()
 G = nx.Graph()
 
 for i in range(len(nodes)):
@@ -104,10 +110,16 @@ for i in range(len(nodes)):
         # Calculate the distance between this connected point and
     #print("Nodes in G: ", G.nodes(data=True))
 print("Done.")
+total_time = (end_time - start_time).total_seconds()
+print(f"Took {total_time} seconds to generate graph!")
 
 if plot_connected_graph:
     print("-- Plotting Graph ...")
     # The graph to visualize
+
+    #nx.draw(G, with_labels=False, node_color='skyblue', font_color='black', font_weight='bold')
+    #plt.show()
+
     xs = [n[0] for n in G]
     ys = [n[1] for n in G]
     zs = [n[2] for n in G]
@@ -139,9 +151,15 @@ if plot_connected_graph:
     ax.set_ylabel("y")
     ax.set_zlabel("z")
     ax.view_init(80, -60)
+    print("Plotted!")
     plt.tight_layout()
     plt.show()
 
 if write_graph:
     print("-- Writing Graph to graphs folder ...")
+    start_time = datetime.now()
     nx.write_edgelist(G, os.path.join('graphs', f"{map_name}.edgelist"), delimiter='|')
+    end_time = datetime.now()
+    total_time = (end_time - start_time).total_seconds()
+    print(f"Took {total_time} seconds to write graph!")
+    #nx.write_graphml(G, os.path.join('graphs', f"{map_name}.graphml"))

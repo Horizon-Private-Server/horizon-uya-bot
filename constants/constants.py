@@ -1,3 +1,7 @@
+
+# Movement generally is 0.068 seconds between each movement packet
+MAIN_BOT_LOOP_TIMER = 0.068
+
 CTF_FLAG_ID_MAP = {
     'command_center': {'131000F7': 'red_flag', '141000F7': 'blue_flag'},
     'aquatos_sewers': {'121000F7': 'red_flag', '131000F7': 'blue_flag'},

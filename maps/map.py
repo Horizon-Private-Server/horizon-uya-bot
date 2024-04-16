@@ -26,6 +26,9 @@ siege_ctf_respawn_coords = {
     "marcadia_palace": {"red": [33990, 54644, 7413], "blue": [27500, 54131, 7424]},
 }
 
+def search_heuristic(node1, node2):
+    return distance.cdist([node1], [node2], 'euclidean')[0]
+
 class Map:
     def __init__(self, map_name:str):
         self.map = map_name
@@ -43,23 +46,22 @@ class Map:
 
 
     def path(self, src, dst):
-        def search_heuristic(node1, node2):
-            return distance.cdist([node1], [node2], 'euclidean')[0]
+
 
         src = tuple(src)
         dst = tuple(dst)
 
-        use_cboot = calculate_distance(src, dst) > self.cboot_distance
+        # use_cboot = calculate_distance(src, dst) > self.cboot_distance
 
-        if self.path_cache != None and len(self.path_cache) != 0:
-            if calculate_distance(src, self.path_cache[0]) < 100 and calculate_distance(dst, self.path_cache[-1]) < 100:
-                if not use_cboot:
-                    return self.path_cache.pop(0)
-                else: # Use cboot
-                    if len(self.path_cache) > self.cboot_factor:
-                        self.path_cache = self.path_cache[self.cboot_factor:]
-                        return self.path_cache.pop(0)
-                    return self.path_cache.pop(0)
+        # if self.path_cache != None and len(self.path_cache) != 0:
+        #     if calculate_distance(src, self.path_cache[0]) < 100 and calculate_distance(dst, self.path_cache[-1]) < 100:
+        #         if not use_cboot:
+        #             return self.path_cache.pop(0)
+        #         else: # Use cboot
+        #             if len(self.path_cache) > self.cboot_factor:
+        #                 self.path_cache = self.path_cache[self.cboot_factor:]
+        #                 return self.path_cache.pop(0)
+        #             return self.path_cache.pop(0)
 
         if not self.G.has_node(src):
             return src
@@ -74,16 +76,16 @@ class Map:
             if len(path) == 1:
                 return path[0]
             elif len(path) > 1:
-                if use_cboot:
-                    if (len(path)-1) > self.cboot_factor:
-                        self.path_cache = path[self.cboot_factor:]
-                        return self.path_cache.pop(0)
-                    else:
-                        self.path_cache = path[1:]
-                        return path[1]
-                else:
-                    self.path_cache = path[1:]
-                    return path[1]
+                # if use_cboot:
+                #     if (len(path)-1) > self.cboot_factor:
+                #         self.path_cache = path[self.cboot_factor:]
+                #         return self.path_cache.pop(0)
+                #     else:
+                #         self.path_cache = path[1:]
+                #         return path[1]
+                # else:
+                self.path_cache = path[1:]
+                return path[1]
             else:
                 raise Exception(f"Unknown path length: {path}")
         except nx.exception.NetworkXNoPath:

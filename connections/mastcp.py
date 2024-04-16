@@ -15,7 +15,7 @@ class MasTcp(AbstractTcp):
         self._password = password
 
         self._logger = logging.getLogger('thug.mastcp')
-        self._logger.setLevel(logging.DEBUG)
+        self._logger.setLevel(logging.INFO)
 
         self._logger.info("Opening MAS...")
         self.loop.run_until_complete(self.start())

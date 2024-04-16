@@ -11,7 +11,7 @@ class DmeTcp(AbstractTcp):
     def __init__(self, loop, ip, port, session_key, access_key, world_id):
         super().__init__(loop, ip, port)
         self._logger = logging.getLogger('thug.dmetcp')
-        self._logger.setLevel(logging.DEBUG)
+        self._logger.setLevel(logging.INFO)
 
         self.session_key = session_key
         self.access_key = access_key

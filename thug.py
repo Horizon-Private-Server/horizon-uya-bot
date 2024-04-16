@@ -69,10 +69,7 @@ class Thug:
 
     async def main(self):
         while self.is_alive():
-
-            await self._model.update()
-
-            await asyncio.sleep(self._loop_time)
+            await asyncio.sleep(5)
 
         logger.info("Ending main routine!")
         await self._timer.kill()

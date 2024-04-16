@@ -22,7 +22,7 @@ class MlsTcp(AbstractTcp):
         self.dme_port = None
 
         self._logger = logging.getLogger('thug.mlstcp')
-        self._logger.setLevel(logging.DEBUG)
+        self._logger.setLevel(logging.INFO)
 
         self.loop.run_until_complete(self.start())
         

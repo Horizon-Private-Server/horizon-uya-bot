@@ -9,20 +9,16 @@ import sys
 from datetime import datetime
 
 figsize = (12, 12)
-map_name = 'marcadia_palace'
+map_name = 'bakisi_isles'
 display_raw_points = False
 display_downsampled = False
 plot_connected_graph = False
 write_graph = True
 
-'''
-10/20 pretty good
-'''
-
 # Adjust this in order to make the grid further apart or closer together
-point_cloud_voxel_size = 20
+point_cloud_voxel_size = 10
 # Adjust this to connect closer/farther points
-distance_connected_variance = 20
+distance_connected_variance = [20,40]
 
 print("-- Loading in point cloud ...")
 with open(os.path.join(f'point_clouds',f'{map_name}.json'), 'r') as f:
@@ -96,22 +92,36 @@ start_time = datetime.now()
 G = nx.Graph()
 
 for i in range(len(nodes)):
+    if (i+1) % 10000 == 0:
+        print(f"Processed {i+1} nodes.")
     this_nearest_distance = nearest_distances[i]
     this_node = nodes[i]
     distances = distance.cdist(nodes, [this_node], 'euclidean')
     # Get all coordinates within moveable distances
-    moveables = (distances < this_nearest_distance+distance_connected_variance)
+
+    # print(this_node)
+    # print(len(distances))
+    # print(type(distances))
+    # print(distances)    
+    # print(distance_mask)
+    # print(len(nodes))
+    # sys.exit()
+
+    #moveables = (distances < this_nearest_distance+distance_connected_variance)
+    moveables = (distances < distance_connected_variance[1]) & (distances > distance_connected_variance[0])
     points_connected = nodes[moveables.flatten(),:]
     distances = distances[moveables.flatten()]
 
     for i in range(len(distances)):
         if tuple(this_node) != tuple(points_connected[i]):
             G.add_edge(tuple(this_node), tuple(points_connected[i]), weight=distances[i][0])
-        # Calculate the distance between this connected point and
-    #print("Nodes in G: ", G.nodes(data=True))
+
+
 print("Done.")
-total_time = (end_time - start_time).total_seconds()
-print(f"Took {total_time} seconds to generate graph!")
+end_time = datetime.now()
+print(f"Total nodes: {G.number_of_nodes()} | edges: {G.number_of_edges()} ")
+total_time = (end_time - start_time).total_seconds() / 60
+print(f"Took {total_time} minutes to generate graph!")
 
 if plot_connected_graph:
     print("-- Plotting Graph ...")

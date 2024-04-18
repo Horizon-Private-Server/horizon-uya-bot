@@ -17,10 +17,22 @@ flag_drop_map = {
 }
 
 
+'''
+020C
+620C0000
+38CBBC00
+
+001000F7 -- first_obj_id
+131000F7 -- object id
+02 -- counter 
+03 -- new master?
+
+'''
+
 subtype_map = {
     '10401F00': '?_crate_destroyed',
-    '41401F00': 'weapon_pickup',
-    '41441F00': 'weapon_pickup_unk?_p1',
+    '41401F00': 'item_pickup',
+    '41441F00': 'item_pickup_unk?_p1',
     '00401F00': 'crate_destroyed',
     '02401F00': 'crate_respawn',
     '02441F00': 'crate_respawn_p1?',
@@ -36,23 +48,23 @@ subtype_map = {
     '02591F00': 'p6_flag_drop',
     '025D1F00': 'p7_flag_drop',
 
-    '61000000': 'p0_confirm',
-    '61040000': 'p1_confirm',
-    '61080000': 'p2_confirm',
-    '610C0000': 'p3_confirm',
-    '61100000': 'p4_confirm',
-    '61140000': 'p5_confirm',
-    '61180000': 'p6_confirm',
-    '611C0000': 'p7_confirm',
+    '61000000': 'p0_assign_to',
+    '61040000': 'p1_assign_to',
+    '61080000': 'p2_assign_to',
+    '610C0000': 'p3_assign_to',
+    '61100000': 'p4_assign_to',
+    '61140000': 'p5_assign_to',
+    '61180000': 'p6_assign_to',
+    '611C0000': 'p7_assign_to',
 
-    '73000000': 'p0_req_confirmation',
-    '73040000': 'p1_req_confirmation',
-    '73080000': 'p2_req_confirmation',
-    '730C0000': 'p3_req_confirmation',
-    '73100000': 'p4_req_confirmation',
-    '73140000': 'p5_req_confirmation',
-    '73180000': 'p6_req_confirmation',
-    '731C0000': 'p7_req_confirmation',
+    '73000000': 'p0_change_owner_req',
+    '73040000': 'p1_change_owner_req',
+    '73080000': 'p2_change_owner_req',
+    '730C0000': 'p3_change_owner_req',
+    '73100000': 'p4_change_owner_req',
+    '73140000': 'p5_change_owner_req',
+    '73180000': 'p6_change_owner_req',
+    '731C0000': 'p7_change_owner_req',
 
     '40401F00': 'p0_object_update',
     '40441F00': 'p1_object_update',
@@ -74,13 +86,7 @@ subtype_map = {
 
 }
 
-'''
-020C
-40441F00
-17680C00
-141000F7
-01000000
-'''
+
 
 class tcp_020C_info:
     def __init__(self, subtype:str=None,
@@ -100,6 +106,9 @@ class tcp_020C_info:
     @classmethod
     def serialize(self, data: deque):
         #print(''.join(list(data)))
+
+        print(dequeue_to_str(data))
+
         subtype = ''.join([data.popleft() for i in range(4)])
         subtype = subtype_map[subtype]
         timestamp = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
@@ -109,44 +118,46 @@ class tcp_020C_info:
 
         if subtype in ['?_crate_destroyed_and_pickup', '?_crate_destroyed']:
             data_dict['weapon_spawned'] = WEAPON_MAP[data.popleft()]
-        elif subtype == 'weapon_pickup':
-            data_dict['weapon_pickup_unk'] =  ''.join([data.popleft() for i in range(4)])
+        elif subtype == 'item_pickup':
+            data_dict['item_pickup_unk'] =  ''.join([data.popleft() for i in range(4)])
         elif 'object_update' in subtype:
             data_dict['object_update_unk'] =  ''.join([data.popleft() for i in range(4)])
         elif 'flag_update' in subtype:
             data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
         elif 'flag_drop' in subtype:
             data_dict['flag_drop_unk'] =  ''.join([data.popleft() for i in range(16)])
-        elif subtype in ['p0_confirm', 'p1_confirm', 'p2_confirm', 'p3_confirm', 'p4_confirm', 'p5_confirm', 'p6_confirm', 'p7_confirm']:
+        elif subtype in ['p0_assign_to', 'p1_assign_to', 'p2_assign_to', 'p3_assign_to', 'p4_assign_to', 'p5_assign_to', 'p6_assign_to', 'p7_assign_to']:
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
-            data_dict['unk'] = ''.join([data.popleft() for i in range(2)])
-        elif subtype in ['p0_req_confirmation', 'p1_req_confirmation', 'p2_req_confirmation', 'p3_req_confirmation', 'p4_req_confirmation', 'p5_req_confirmation', 'p6_req_confirmation', 'p7_req_confirmation']:
+            data_dict['counter'] = ''.join([data.popleft() for i in range(1)])
+            data_dict['master'] = ''.join([data.popleft() for i in range(1)])
+        elif subtype in ['p0_change_owner_req', 'p1_change_owner_req', 'p2_change_owner_req', 'p3_change_owner_req', 'p4_change_owner_req', 'p5_change_owner_req', 'p6_change_owner_req', 'p7_change_owner_req']:
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
-            data_dict['buf'] = ''.join([data.popleft() for i in range(1)])
-            data_dict['unk'] = ''.join([data.popleft() for i in range(2)])
+            data_dict['new_owner'] = ''.join([data.popleft() for i in range(1)])
+            data_dict['counter'] = ''.join([data.popleft() for i in range(1)])
+            data_dict['master'] = ''.join([data.popleft() for i in range(1)])
         elif subtype == 'crate_respawn_p1?':
             pass
-        elif subtype == 'weapon_pickup_unk?_p1':
+        elif subtype == 'item_pickup_unk?_p1':
             data_dict['unk'] =  ''.join([data.popleft() for i in range(4)])
 
         return tcp_020C_info(subtype, timestamp, object_id, data_dict)
 
     def to_bytes(self):
-        if self.subtype in ['p0_confirm', 'p1_confirm', 'p2_confirm', 'p3_confirm', 'p4_confirm', 'p5_confirm', 'p6_confirm', 'p7_confirm']:
+        if self.subtype in ['p0_assign_to', 'p1_assign_to', 'p2_assign_to', 'p3_assign_to', 'p4_assign_to', 'p5_assign_to', 'p6_assign_to', 'p7_assign_to']:
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
                 hex_to_bytes(self.object_id) + \
                 hex_to_bytes(self.data['object_id']) + \
-                hex_to_bytes(self.data['unk'])
-        elif self.subtype in ['p0_req_confirmation', 'p1_req_confirmation', 'p2_req_confirmation', 'p3_req_confirmation', 'p4_req_confirmation', 'p5_req_confirmation', 'p6_req_confirmation', 'p7_req_confirmation']:
+                hex_to_bytes(self.data['master'])
+        elif self.subtype in ['p0_change_owner_req', 'p1_change_owner_req', 'p2_change_owner_req', 'p3_change_owner_req', 'p4_change_owner_req', 'p5_change_owner_req', 'p6_change_owner_req', 'p7_change_owner_req']:
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
                 hex_to_bytes(self.object_id) + \
                 hex_to_bytes(self.data['object_id']) + \
-                hex_to_bytes('00') + \
-                hex_to_bytes(self.data['unk'])
+                hex_to_bytes(self.data['new_owner']) + \
+                hex_to_bytes(self.data['master'])
         elif 'flag_drop' in self.subtype:
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \

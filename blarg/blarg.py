@@ -95,10 +95,6 @@ class Blarg:
                 self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")
 
     async def read_websocket(self):
-
-        p1_counter = 0
-        p2_counter = 0
-
         uri = f"ws://{self._config['server_ip']}:8765"
         async with websockets.connect(uri,ping_interval=None) as websocket:
             while True:
@@ -106,14 +102,15 @@ class Blarg:
                 self._logger.debug(f"{data}")
 
                 if self._config['fail_on_error'] == 'True':
-                    self.process(json.loads(data))
+                    for data_point in json.loads(data):
+                        self.process(data_point)
                 else:
                     try:
                         for data_point in json.loads(data):
                             #print(data_point)
                             self.process(data_point)
                     except:
-                        self._logger.exception("error")
+                        self._logger.exception(f"error processing: {data_point}")
 
 def read_config(target, config_file='config.json'):
     with open(config_file, 'r') as f:
@@ -122,7 +119,6 @@ def read_config(target, config_file='config.json'):
         return config
 
 if __name__ == '__main__':
-    time.sleep(5)
     parser = argparse.ArgumentParser(description="Run Horizon's UYA Bot. (Thug)")
     parser.add_argument('--target', type=str, default='test', help='Use prod or test target')
 

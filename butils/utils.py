@@ -1,7 +1,14 @@
 from collections import deque
 import math
 import traceback
+from copy import deepcopy
 
+def dequeue_to_str(d):
+    a = deepcopy(d)
+    res = ''
+    while len(a) > 0:
+        res += a.popleft()
+    return res
 
 def short_bytes_to_int(byte1, byte2):
     data = byte2 + byte1

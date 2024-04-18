@@ -2,6 +2,7 @@ import asyncio
 import random
 from scipy.spatial import distance
 from datetime import datetime
+from collections import defaultdict
 
 from constants.constants import ANIMATION_MAP, MAIN_BOT_LOOP_TIMER
 from medius.dme_packets import *
@@ -50,29 +51,28 @@ class prototype:
             'lava': 10
         }
 
+        self._misc = defaultdict(int)
+
     async def main_loop(self):
         while self._model.alive:
             try:
-                #print(self.game_state)
+                if self.game_state.players[0].coord == [0,0,0]:
+                    pass
+                else:
+                    # Randomly pick a valid weapon if no weapon is selected
+                    if self.game_state.player.weapon == None:
+                        self.change_weapon()
 
-                # Wait for players to join
-                if len(self.game_state.players) == 0:
-                    await asyncio.sleep(0.03)
-                    continue
+                    # Respawn
+                    if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
+                        self.respawn()
 
-                # Randomly pick a valid weapon if no weapon is selected
-                if self.game_state.player.weapon == None:
-                    self.change_weapon()
+                    # Run objective
+                    #self.objective()
+                    self.patrol([34161, 54135, 7413],[27114, 54160, 7413])
 
-                # Respawn
-                if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
-                    self.respawn()
-
-                # Run objective
-                self.objective()
-
-                # Send movement
-                self.send_movement()
+                    # Send movement
+                    self.send_movement()
 
                 # Sleep for the loop
                 await asyncio.sleep(MAIN_BOT_LOOP_TIMER)
@@ -94,6 +94,25 @@ class prototype:
 
         self._model.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
+
+    def patrol(self, coord1, coord2):
+        
+        if 'patrol' not in self._misc.keys():
+            self._misc['patrol'] = coord1
+
+        if calculate_distance(self.game_state.player.coord, coord1) < 70:
+            self._misc['patrol'] = coord2
+        elif calculate_distance(self.game_state.player.coord, coord2) < 70:
+            self._misc['patrol'] = coord1
+    
+        # Red flag marcadia over lip: [34161, 54135, 7413]
+        # Blue flag marcadia over lip: [27114, 54160, 7413]
+        new_coord = self.game_state.map.path(self.game_state.player.coord, self._misc['patrol'])
+        self.game_state.player.animation = self.get_animation(self.game_state.player.coord, new_coord)
+        self.game_state.player.coord = new_coord
+        self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self._misc['patrol'])
+
+
     def objective(self):
         # first determine the state of the flag etc
 
@@ -107,16 +126,11 @@ class prototype:
             if calculate_distance(self.game_state.player.coord, self.tracking.coord) > 600 or self.follow_player == True:
                 new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord)
                 dist_diff = calculate_distance(self.game_state.player.coord, new_coord)
-                logger.info(f"DISTANCE BETWEEN SELECTED AND CURRENT POINT: {dist_diff}")
+                # logger.info(f"DISTANCE BETWEEN SELECTED AND CURRENT POINT: {dist_diff}")
             else:
                 new_coord = self.game_state.map.get_random_coord_connected(self.game_state.player.coord)
 
-            if new_coord[2] > self.game_state.player.coord[2]:
-                self.game_state.player.animation = 'jump'
-            elif new_coord != self.game_state.player.coord:
-                self.game_state.player.animation = 'forward'
-            else:
-                self.game_state.player.animation = None
+            self.game_state.player.animation = self.get_animation(self.game_state.player.coord, new_coord)
 
             self.game_state.player.coord = new_coord
 
@@ -126,6 +140,13 @@ class prototype:
 
         # Fire weapon
         self.fire_weapon()
+
+    def get_animation(self, old_coord, new_coord):
+        if new_coord[2] > old_coord[2]:
+            return 'jump'
+        elif new_coord != old_coord:
+            return 'forward'
+        return None
 
 
     def respawn(self):
@@ -151,7 +172,7 @@ class prototype:
                 object_id=self.tracking.player_id
             else:
                 object_id=-1
-            self._model.dmeudp_queue.put(['B', udp_020E_shot_fired.udp_020E_shot_fired(map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+            self._model.dmeudp_queue.put(['B', tcp_020E_shot_fired.tcp_020E_shot_fired(map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
             self.posthook_weapon_fired()
 

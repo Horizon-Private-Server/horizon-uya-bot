@@ -53,15 +53,14 @@ class Map:
 
         # use_cboot = calculate_distance(src, dst) > self.cboot_distance
 
-        # if self.path_cache != None and len(self.path_cache) != 0:
-        #     if calculate_distance(src, self.path_cache[0]) < 100 and calculate_distance(dst, self.path_cache[-1]) < 100:
-        #         if not use_cboot:
-        #             return self.path_cache.pop(0)
-        #         else: # Use cboot
-        #             if len(self.path_cache) > self.cboot_factor:
-        #                 self.path_cache = self.path_cache[self.cboot_factor:]
-        #                 return self.path_cache.pop(0)
-        #             return self.path_cache.pop(0)
+        if self.path_cache != None and len(self.path_cache) != 0:
+            if calculate_distance(src, self.path_cache[0]) < 100 and calculate_distance(dst, self.path_cache[-1]) < 100:
+                return self.path_cache.pop(0)
+                # else: # Use cboot
+                #     if len(self.path_cache) > self.cboot_factor:
+                #         self.path_cache = self.path_cache[self.cboot_factor:]
+                #         return self.path_cache.pop(0)
+                #     return self.path_cache.pop(0)
 
         if not self.G.has_node(src):
             return src

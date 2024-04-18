@@ -166,7 +166,7 @@ class Model:
         if dme_packet.name == 'udp_0209_movement_update':
             self.game_state.movement_update(src_player, dme_packet.data)
 
-        if dme_packet.name in ['udp_020E_shot_fired']:
+        if dme_packet.name in ['tcp_020E_shot_fired']:
             self.bot.process_shot_fired(src_player, dme_packet)
 
         if dme_packet.name == 'udp_0001_timer_update' and dme_packet.unk1 == '00010000':
@@ -256,7 +256,7 @@ class Model:
 
         self.dmetcp_queue.put(['B', tcp_0205_unk.tcp_0205_unk()])
 
-        self._loop.create_task(self.c_confirmations())
+        #self._loop.create_task(self.c_confirmations())
         self._loop.create_task(self.bot.main_loop())
 
     async def c_confirmations(self):

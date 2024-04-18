@@ -1,0 +1,33 @@
+
+BLUE FLAG MARCADIA:
+
+0 -> 2
+2 -> 0 | tcp_020C_info; subtype:p2_req_confirmation timestamp:9835337 object_id:001000F7 data:{'object_id': '141000F7', 'buf': '02', 'counter': '06', 'unk': '02'}
+0 -> 2 | tcp_020C_info; subtype:p0_assign_to timestamp:9835462 object_id:001000F7 data:{'object_id': '141000F7', 'counter': '06', 'unk': '02'}
+
+2 -> 1:
+2 -> 1 | tcp_020C_info; subtype:p2_assign_to timestamp:9999718 object_id:001000F7 data:{'object_id': '141000F7', 'counter': '07', 'unk': '02'}
+
+1 -> 2:
+2 -> 1 | tcp_020C_info; subtype:p2_req_confirmation timestamp:10032368 object_id:001000F7 data:{'object_id': '141000F7', 'buf': '02', 'counter': '08', 'unk': '02'}
+1 -> 2 | tcp_020C_info; subtype:p1_assign_to timestamp:10032460 object_id:001000F7 data:{'object_id': '141000F7', 'counter': '08', 'unk': '02'}
+
+
+2 -> 1:
+2 -> 1 | tcp_020C_info; subtype:p2_assign_to timestamp:10063165 object_id:001000F7 data:{'object_id': '141000F7', 'counter': '09', 'unk': '02'}
+
+1 -> 2:
+2 -> 1 | tcp_020C_info; subtype:p2_req_confirmation timestamp:10219572 object_id:001000F7 data:{'object_id': '141000F7', 'buf': '02', 'counter': '0A', 'unk': '02'}
+1 -> 2 | tcp_020C_info; subtype:p1_assign_to timestamp:10219688 object_id:001000F7 data:{'object_id': '141000F7', 'counter': '0A', 'unk': '02'}
+
+2 -> 0:
+2 -> 0 | tcp_020C_info; subtype:p2_assign_to timestamp:10254657 object_id:001000F7 data:{'object_id': '141000F7', 'counter': '0B', 'unk': '02'}
+
+0 -> 1:
+2 -> 0 | tcp_020C_info; subtype:p2_req_confirmation timestamp:10293312 object_id:001000F7 data:{'object_id': '141000F7', 'buf': '01', 'counter': '0C', 'unk': '02'}
+61000000AC109D00001000F7141000F70C02
+0 -> 1 | tcp_020C_info; subtype:p0_assign_to timestamp:10293420 object_id:001000F7 data:{'object_id': '141000F7', 'counter': '0C', 'unk': '02'}
+
+1 -> 0:
+2 -> 1 | tcp_020C_info; subtype:p2_req_confirmation timestamp:10369921 object_id:001000F7 data:{'object_id': '141000F7', 'buf': '00', 'counter': '0D', 'unk': '02'}
+1 -> 0 | tcp_020C_info; subtype:p1_assign_to timestamp:10370004 object_id:001000F7 data:{'object_id': '141000F7', 'counter': '0D', 'unk': '02'}

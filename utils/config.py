@@ -18,6 +18,7 @@ class Config:
 
     def _set_env_vars(self):
         raw_dict = {
+            "local": False,
             "bot_class": os.getenv("BOT_CLASS"),
             "account_id": int(os.getenv("ACCOUNT_ID")),
             "username": os.getenv("USERNAME"),
@@ -39,9 +40,9 @@ class Config:
 
     def _set_from_file(self, config_file):
         # This will always be local debugging
-        result = {}
         with open(config_file, 'r') as f:
             result = json.loads(f.read())
+            result['local'] = True
             for key, value in result.items():
                 self.__dict__[key] = value
         self._authenticate()

@@ -22,7 +22,7 @@ flag_drop_map = {
 620C0000
 38CBBC00
 
-001000F7 -- first_obj_id
+001000F7 -- object type?
 131000F7 -- object id
 02 -- counter 
 03 -- new master?
@@ -91,7 +91,7 @@ subtype_map = {
 class tcp_020C_info:
     def __init__(self, subtype:str=None,
                        timestamp:int=None,
-                       object_id:str=None,
+                       object_type:str=None,
                        data:dict=None
                        ):
 
@@ -99,7 +99,7 @@ class tcp_020C_info:
         self.id = b'\x02\x0C'
         self.subtype = subtype
         self.timestamp = timestamp
-        self.object_id = object_id
+        self.object_type = object_type
         self.data = data
 
 
@@ -112,7 +112,7 @@ class tcp_020C_info:
         subtype = ''.join([data.popleft() for i in range(4)])
         subtype = subtype_map[subtype]
         timestamp = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        object_id = ''.join([data.popleft() for i in range(4)])
+        object_type = ''.join([data.popleft() for i in range(4)])
 
         data_dict = {}
 
@@ -140,21 +140,22 @@ class tcp_020C_info:
         elif subtype == 'item_pickup_unk?_p1':
             data_dict['unk'] =  ''.join([data.popleft() for i in range(4)])
 
-        return tcp_020C_info(subtype, timestamp, object_id, data_dict)
+        return tcp_020C_info(subtype, timestamp, object_type, data_dict)
 
     def to_bytes(self):
         if self.subtype in ['p0_assign_to', 'p1_assign_to', 'p2_assign_to', 'p3_assign_to', 'p4_assign_to', 'p5_assign_to', 'p6_assign_to', 'p7_assign_to']:
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
-                hex_to_bytes(self.object_id) + \
+                hex_to_bytes(self.object_type) + \
                 hex_to_bytes(self.data['object_id']) + \
+                hex_to_bytes(self.data['counter']) + \
                 hex_to_bytes(self.data['master'])
         elif self.subtype in ['p0_change_owner_req', 'p1_change_owner_req', 'p2_change_owner_req', 'p3_change_owner_req', 'p4_change_owner_req', 'p5_change_owner_req', 'p6_change_owner_req', 'p7_change_owner_req']:
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
-                hex_to_bytes(self.object_id) + \
+                hex_to_bytes(self.object_type) + \
                 hex_to_bytes(self.data['object_id']) + \
                 hex_to_bytes(self.data['new_owner']) + \
                 hex_to_bytes(self.data['master'])
@@ -162,11 +163,11 @@ class tcp_020C_info:
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
-                hex_to_bytes(self.object_id) + \
+                hex_to_bytes(self.object_type) + \
                 hex_to_bytes(self.data['object_id']) + \
                 hex_to_bytes('00') + \
                 hex_to_bytes(self.data['unk'])
 
     def __str__(self):
         return f"{self.name}; subtype:{self.subtype} " + \
-                f"timestamp:{self.timestamp} object_id:{self.object_id} data:{self.data}"
+                f"timestamp:{self.timestamp} object_type:{self.object_type} data:{self.data}"

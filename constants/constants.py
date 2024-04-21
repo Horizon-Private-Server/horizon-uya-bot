@@ -32,6 +32,18 @@ def get_flag_location(map='marcadia_palace', team='red'):
     return [0,0,0]
 
 
+DEATHMATCH_MAP = {
+    0: 'blue',
+    1: 'red',
+    2: 'green',
+    3: 'orange',
+    4: 'yellow',
+    5: 'purple',
+    6: 'aqua',
+    7: 'pink',
+}
+
+
 
 TEAM_MAP = {
     '00': 'blue',

@@ -108,9 +108,8 @@ class prototype:
         # Red flag marcadia over lip: [34161, 54135, 7413]
         # Blue flag marcadia over lip: [27114, 54160, 7413]
         new_coord = self.game_state.map.path(self.game_state.player.coord, self._misc['patrol'])
-        self.game_state.player.animation = self.get_animation(self.game_state.player.coord, new_coord)
+        self.update_animation_and_angle(self.game_state.player.coord, new_coord, self.game_state.players[0].coord)
         self.game_state.player.coord = new_coord
-        self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self._misc['patrol'])
 
 
     def objective(self):
@@ -141,12 +140,32 @@ class prototype:
         # Fire weapon
         self.fire_weapon()
 
-    def get_animation(self, old_coord, new_coord):
+    def update_animation_and_angle(self, old_coord, new_coord, target_coord):
+        #target_coord = [30741, 58062, 7251]
+        self.game_state.player.x_angle = calculate_angle(new_coord, target_coord)
+        if old_coord == new_coord:
+            self.game_state.player.animation = None
+            return
+
+        strafe_magnitude = get_strafe_magnitude(old_coord, new_coord, target_coord)
+        forward_direction = get_forward_direction(old_coord, new_coord, target_coord)
+        strafe_direction = get_strafe_direction(old_coord, new_coord, target_coord)
+
+        if strafe_magnitude == 'neutral': # Forwards or backwards
+            self.game_state.player.animation = forward_direction
+        elif strafe_magnitude == 'partial':
+            self.game_state.player.animation = f'{forward_direction}-{strafe_direction}'
+            #self.game_state.player.animation = f'forward-{strafe_direction}'
+        elif strafe_magnitude == 'strafe':
+            self.game_state.player.animation = strafe_direction
+
+        logger.info(f"{self.game_state.player.animation} | {strafe_magnitude} | {forward_direction} | {strafe_direction}")
+
+
         if new_coord[2] > old_coord[2]:
-            return 'jump'
-        elif new_coord != old_coord:
-            return 'forward'
-        return None
+            self.game_state.player.animation = 'jump'
+        # elif new_coord != old_coord:
+        #     self.game_state.player.animation = 'forward'
 
 
     def respawn(self):

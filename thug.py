@@ -15,6 +15,7 @@ from butils.utils import *
 
 from utils.timeouttimer import TimeoutTimer
 from utils.config import Config
+from utils.localapi import LocalApi
 
 import time
 import sys
@@ -63,6 +64,9 @@ class Thug:
                             config.clan_tag,
                             config.bolt
                             )
+        
+            # Set local API for remote injection of packets
+        self.local_api = LocalApi(self.loop, self._model, self._config.account_id) if self._config.local else None
 
         self.loop.run_until_complete(self.main())
 
@@ -75,6 +79,8 @@ class Thug:
         await self._timer.kill()
         await self._network_manager.kill()
         await self._model.kill()
+        if self.local_api:
+            await self.local_api.kill()
 
         await asyncio.sleep(30)
 

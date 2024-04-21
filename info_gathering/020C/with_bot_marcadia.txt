@@ -24,3 +24,4 @@
 2024-04-18 17:14:26,945 blarg | INFO | 0 -> 4 | tcp_020C_info; subtype:p0_assign_to timestamp:17786298 object_id:001000F7 data:{'object_id': '141000F7', 'counter': '0C', 'master': '00'}
 73000000B5800F01001000F7141000F7000D00
 2024-04-18 17:14:33,901 blarg | INFO | 0 -> 4 | tcp_020C_info; subtype:p0_change_owner_req timestamp:17793205 object_id:001000F7 data:{'object_id': '141000F7', 'new_owner': '00', 'counter': '0D', 'master': '00'}
+2024-04-18 12:36:54,296 blarg | INFO | 1 -> 0 | tcp_020C_info; subtype:p1_confirm timestamp:1142926 object_id:001000F7 data:{'object_id': '131000F7', 'unk': '0401'}

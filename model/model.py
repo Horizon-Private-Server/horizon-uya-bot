@@ -26,6 +26,7 @@ from medius.serializer import TcpSerializer
 class Model:
     def __init__(self, loop, network_manager, gameinfo, bot_class, account_id, player_id, team, username, skin, clan_tag, bolt):
         logger.info("Initialzing model ...")
+        logger.info(f"GAME INFO: {gameinfo}")
         self.alive = True
 
         self._loop = loop
@@ -173,31 +174,31 @@ class Model:
             self.dmeudp_queue.put([src_player, udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1="0000FFFF")])
             self.dmeudp_queue.put([src_player, udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1="00010000")])
 
-        if dme_packet.name == 'tcp_020C_info' and 'req_confirmation' in dme_packet.subtype:
-            data = {'object_id': dme_packet.data['object_id'], 'unk': dme_packet.data['unk']}
-            self.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data=data)])
+        # if dme_packet.name == 'tcp_020C_info' and 'req_confirmation' in dme_packet.subtype:
+        #     data = {'object_id': dme_packet.data['object_id'], 'unk': dme_packet.data['unk']}
+        #     self.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data=data)])
 
-        if dme_packet.name == 'tcp_020C_info' and '_object_update' in dme_packet.subtype:
-            # Flag Pickup
-            object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
-            if object == 'red_flag' or object == 'blue_flag':
-                self.game_state.players[src_player].flag = object
+        # if dme_packet.name == 'tcp_020C_info' and '_object_update' in dme_packet.subtype:
+        #     # Flag Pickup
+        #     object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
+        #     if object == 'red_flag' or object == 'blue_flag':
+        #         self.game_state.players[src_player].flag = object
 
-        if dme_packet.name == 'tcp_020C_info' and 'flag_drop' in dme_packet.subtype:
-            # Flag Dropped
-            object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
-            if object == 'red_flag' or object == 'blue_flag':
-                for player_id in self.game_state.players.keys():
-                    if self.game_state.players[player_id].flag == object:
-                        self.game_state.players[player_id].flag = None
+        # if dme_packet.name == 'tcp_020C_info' and 'flag_drop' in dme_packet.subtype:
+        #     # Flag Dropped
+        #     object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
+        #     if object == 'red_flag' or object == 'blue_flag':
+        #         for player_id in self.game_state.players.keys():
+        #             if self.game_state.players[player_id].flag == object:
+        #                 self.game_state.players[player_id].flag = None
 
-        if dme_packet.name == 'tcp_020C_info' and 'flag_update' in dme_packet.subtype:
-            # Flag Returned or Flag Captured
-            object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
-            if object == 'red_flag' or object == 'blue_flag':
-                if '_capture' in dme_packet.data['flag_update_type'] or dme_packet.data['flag_update_type'] == 'flag_return':
-                    # Find players that have redflag/blueflag and set to None
-                    self.game_state.clear_flag(object)
+        # if dme_packet.name == 'tcp_020C_info' and 'flag_update' in dme_packet.subtype:
+        #     # Flag Returned or Flag Captured
+        #     object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
+        #     if object == 'red_flag' or object == 'blue_flag':
+        #         if '_capture' in dme_packet.data['flag_update_type'] or dme_packet.data['flag_update_type'] == 'flag_return':
+        #             # Find players that have redflag/blueflag and set to None
+        #             self.game_state.clear_flag(object)
 
 
         '''

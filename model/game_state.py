@@ -6,7 +6,7 @@ from maps.map import Map
 
 from model.player_state import PlayerState
 
-from constants.constants import get_flag_location
+from constants.constants import get_flag_location, DEATHMATCH_MAP
 
 class GameState:
     def __init__(self, gameinfo:dict, player:PlayerState):
@@ -38,6 +38,12 @@ class GameState:
         self.map = Map(self.map_name)
 
     def start(self):
+        if self.game_info['game_mode'] == 'Deathmatch' and self.game_info['submode'] == 'FFA':
+            # Set deathmatch teams
+            self.player.team = DEATHMATCH_MAP[self.player.player_id]
+            for player_id in self.players.keys():
+                self.players[player_id].team = DEATHMATCH_MAP[player_id]
+
         self.map.read_map()
         self.player.coord = self.map.get_respawn_location(self.player.team, self.game_mode)
 

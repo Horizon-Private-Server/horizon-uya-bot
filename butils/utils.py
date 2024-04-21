@@ -180,3 +180,81 @@ def find_closest_node_from_list(src, dsts):
             min_dist = edist
             min_idx = i
     return min_idx
+
+
+
+    
+
+def get_strafe_magnitude(P1, P2, P3):
+    # Convert points to numpy arrays for easier computation
+    P1 = np.array(P1)
+    P2 = np.array(P2)
+    P3 = np.array(P3)
+    
+    # Calculate direction vector from P1 to P2
+    dir_P1_to_P2 = P2 - P1
+    
+    # Calculate vector from P3 to P1
+    vector_P3_to_P1 = P1 - P3
+    
+    # Project dir_P1_to_P2 onto the plane perpendicular to vector_P3_to_P1
+    perpendicular_component = dir_P1_to_P2 - np.dot(dir_P1_to_P2, vector_P3_to_P1) / np.dot(vector_P3_to_P1, vector_P3_to_P1) * vector_P3_to_P1
+    
+    # Calculate magnitude of perpendicular component
+    magnitude_perpendicular = np.linalg.norm(perpendicular_component)
+    
+    if magnitude_perpendicular < 15:
+        return 'neutral'
+    elif magnitude_perpendicular < 22:
+        return 'partial'
+    else:
+        return 'strafe'
+
+
+def get_forward_direction(P1, P2, P3):
+    # Convert points to numpy arrays for easier computation
+    P1 = np.array(P1)
+    P2 = np.array(P2)
+    P3 = np.array(P3)
+    
+    # Calculate direction vector from P1 to P2
+    dir_P1_to_P2 = P2 - P1
+    
+    # Calculate vector from P3 to P1
+    vector_P3_to_P1 = P1 - P3
+    
+    # Calculate difference vector from P1 to P2
+    delta_vector = P2 - P1
+    
+    # Compute dot product to determine direction relative to P3
+    dot_product = np.dot(delta_vector, vector_P3_to_P1)
+
+    if dot_product > 0:
+        return 'backward'
+    else:
+        return 'forward'
+    
+
+def get_strafe_direction(P1, P2, P3):
+    # Convert points to numpy arrays for easier computation
+    P1 = np.array(P1)
+    P2 = np.array(P2)
+    P3 = np.array(P3)
+    
+    # Calculate direction vector from P1 to P2
+    dir_P1_to_P2 = P2 - P1
+    
+    # Calculate vector from P3 to P1
+    vector_P3_to_P1 = P1 - P3
+    
+    # Project dir_P1_to_P2 onto the plane perpendicular to vector_P3_to_P1
+    perpendicular_component = dir_P1_to_P2 - np.dot(dir_P1_to_P2, vector_P3_to_P1) / np.dot(vector_P3_to_P1, vector_P3_to_P1) * vector_P3_to_P1
+    
+    # Compute cross product between vector_P3_to_P1 and dir_P1_to_P2
+    cross_product = np.cross(vector_P3_to_P1, dir_P1_to_P2)
+    
+    # Determine the sign of the z-component of the cross product to determine direction
+    if cross_product[2] > 0:
+        return "right"
+    # elif cross_product[2] < 0:
+    return "left"

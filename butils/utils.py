@@ -183,33 +183,89 @@ def find_closest_node_from_list(src, dsts):
 
 
 
-    
 
-def get_strafe_magnitude(P1, P2, P3):
-    # Convert points to numpy arrays for easier computation
-    P1 = np.array(P1)
-    P2 = np.array(P2)
-    P3 = np.array(P3)
-    
-    # Calculate direction vector from P1 to P2
-    dir_P1_to_P2 = P2 - P1
-    
-    # Calculate vector from P3 to P1
-    vector_P3_to_P1 = P1 - P3
-    
-    # Project dir_P1_to_P2 onto the plane perpendicular to vector_P3_to_P1
-    perpendicular_component = dir_P1_to_P2 - np.dot(dir_P1_to_P2, vector_P3_to_P1) / np.dot(vector_P3_to_P1, vector_P3_to_P1) * vector_P3_to_P1
-    
-    # Calculate magnitude of perpendicular component
-    magnitude_perpendicular = np.linalg.norm(perpendicular_component)
-    
-    if magnitude_perpendicular < 15:
-        return 'neutral'
-    elif magnitude_perpendicular < 22:
-        return 'partial'
-    else:
-        return 'strafe'
 
+# Calculate the strafe angle between three points.
+'''
+perpendicular left/right strafe between 70 and 90 
+forwards movement < 30
+backwards movement > 160
+forward strafe = between 30 and 70
+backward strafe = between 110 and 160
+
+
+standard joystick:
+forward = 90 | 0
+forward right = 180 | 27
+forward left = 14 | 19
+
+right strafe = 180 | 90
+left stafe = 0 | 90
+
+backward = 90 | 180
+backward right = 157 | 174
+backward left = 21 | 172
+'''
+def strafe_joystick_input(strafe_angle, direction):
+    # Pure left/right strafe
+    strafe_angle_min = 70
+    strafe_angle_max = 110
+    if strafe_angle_min <= strafe_angle <= strafe_angle_max:
+        if direction == 'left':
+            return [0, 90]
+        elif direction == 'right':
+            return [180, 90]
+    
+    pure_forward_back_scale = 15
+    # Pure forward
+    if strafe_angle < (0+pure_forward_back_scale):
+        return [90,0]
+    # Pure backwards
+    if strafe_angle > (180-pure_forward_back_scale):
+        return [90,180]
+
+    # Mixed forward movement
+    if strafe_angle < 90:
+        # 0 more forward, 90 more left
+        if direction == 'left': # (forward) [90, 0] -> (left) [0, 90]
+            return [14, 19]
+        elif direction == 'right': # (forward) [90,0] -> (right) [180, 90]
+            return [180, 27]
+
+    # Mixed backwards movement
+    if strafe_angle > 90:
+        if direction == 'left': # (backward) [90,180] -> (left) [0, 90] 
+            return [21, 172]
+        elif direction == 'right': # (backward) [90,180] ->  (right) [180, 90]
+            return [157, 174]
+
+
+
+
+def compute_strafe_angle(P1, P2, P3):
+    # Vector from P1 to P2
+    v1 = (P2[0] - P1[0], P2[1] - P1[1])
+    
+    # Vector from P1 to P3
+    v2 = (P3[0] - P1[0], P3[1] - P1[1])
+    
+    # Calculate dot product of v1 and v2
+    dot_product = v1[0] * v2[0] + v1[1] * v2[1]
+    
+    # Calculate magnitudes of v1 and v2
+    mag_v1 = math.sqrt(v1[0]**2 + v1[1]**2)
+    mag_v2 = math.sqrt(v2[0]**2 + v2[1]**2)
+    
+    # Calculate cosine of the angle between v1 and v2
+    cos_theta = dot_product / (mag_v1 * mag_v2)
+    
+    # Calculate the angle in radians
+    angle_rad = math.acos(cos_theta)
+    
+    # Convert angle from radians to degrees
+    angle_deg = math.degrees(angle_rad)
+    
+    return angle_deg
 
 def get_forward_direction(P1, P2, P3):
     # Convert points to numpy arrays for easier computation
@@ -258,3 +314,22 @@ def get_strafe_direction(P1, P2, P3):
         return "right"
     # elif cross_product[2] < 0:
     return "left"
+
+
+def scale_255_to_180(value):
+    # Ensure value is within the range 0-255
+    value = max(0, min(255, value))
+    
+    # Scale the value from 0-255 to 0-180
+    scaled_value = (value / 255) * 180
+    
+    return int(scaled_value)
+
+def scale_180_to_255(value):
+    # Ensure value is within the range 0-180
+    value = max(0, min(180, value))
+    
+    # Scale the value from 0-180 to 0-255
+    scaled_value = (value / 180) * 255
+    
+    return int(scaled_value)  # Convert to integer for whole number result

@@ -40,7 +40,10 @@ class udp_0209_movement_update:
 
         results['packet_num'] = int(data.popleft(), 16)
         results['flush_type'] = int(data.popleft(), 16) # flush type -- if there are buttons or total flush
-        results['last'] = ''.join([data.popleft() for i in range(8)])
+        results['left_joystick_x'] = scale_255_to_180(hex_to_int_little(''.join([data.popleft() for i in range(1)])))
+        results['left_joystick_y'] = scale_255_to_180(hex_to_int_little(''.join([data.popleft() for i in range(1)])))
+        results['left_joystick_repeats'] = ''.join([data.popleft() for i in range(6)])
+
         # Tests
         assert results['buffer'] == '00'
 
@@ -67,7 +70,7 @@ class udp_0209_movement_update:
             if len(data) > 17:
                 results['button'] = ''.join([data.popleft() for i in range(len(data)-17)]) # this is wrong
                 results['flush'] = ''.join([data.popleft() for i in range(17)])
-# 2022-03-09 14:36:32,713 blarg | INFO | 0 | udp_0209_movement_update; data:{'r1': '7F', 'cam1_y': 128, 'cam1_x': 46, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 128, 'cam2_x': 46, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 128, 'cam3_x': 46, 'v_drv': '00', 'r4': '7F', 'cam4_y': 128, 'cam4_x': 46, 'buffer': '00', 'coord': [21629, 24276, 2174], 'packet_num': 76, 'flush_type': 16, 'last': '5806580658065806', 'type': 'movement', 'button': 'B673020E03004008D7385100FFFFFFFF0FA2A843D510BD', 'flush': '4313B10B4279DE9F437B18AA437A950B42'}
+# 2022-03-09 14:36:32,713 blarg | INFO | 0 | udp_0209_movement_update; data:{'r1': '7F', 'cam1_y': 128, 'cam1_x': 46, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 128, 'cam2_x': 46, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 128, 'cam3_x': 46, 'v_drv': '00', 'r4': '7F', 'cam4_y': 128, 'cam4_x': 46, 'buffer': '00', 'coord': [21629, 24276, 2174], 'packet_num': 76, 'flush_type': 16, 'left_joystick': '5806580658065806', 'type': 'movement', 'button': 'B673020E03004008D7385100FFFFFFFF0FA2A843D510BD', 'flush': '4313B10B4279DE9F437B18AA437A950B42'}
 
 
             elif len(data) < 17:
@@ -78,11 +81,11 @@ class udp_0209_movement_update:
         ## Flush type / button / animation debugging
         # if 'flush' in results.keys():
         #     if 'button' in results.keys():
-        #         print(results['coord'], results['button'], results['last'], results['flush_type'], results['flush'])
+        #         print(results['coord'], results['button'], results['left_joystick'], results['flush_type'], results['flush'])
         #     else:
-        #         print(results['coord'], results['last'], results['flush_type'], results['flush'])
+        #         print(results['coord'], results['left_joystick'], results['flush_type'], results['flush'])
         # elif 'button' in results.keys():
-        #     print(results['coord'], results['button'], results['last'], results['flush_type'])
+        #     print(results['coord'], results['button'], results['left_joystick'], results['flush_type'])
 
         ## Camera debugging
         # if 'button' in results.keys():
@@ -90,7 +93,7 @@ class udp_0209_movement_update:
         # if 'flush' in results.keys():
         #     del results['flush']
         # del results['type']
-        # del results['last']
+        # del results['left_joystick']
 
         # keys = ['coord', 'cam1_y', 'cam1_x', 'cam2_y', 'cam2_x', 'cam3_y', 'cam3_x', 'cam4_y', 'cam4_x']
         # test = [results.get(key) for key in keys]
@@ -121,8 +124,15 @@ class udp_0209_movement_update:
             int_to_bytes_little(2, int(self.data['coord'][1])) + \
             int_to_bytes_little(2, int(self.data['coord'][2])) + \
             int_to_bytes_little(1, self.data['packet_num']) + \
-            int_to_bytes_little(1, self.data['flush_type']) + \
-            hex_to_bytes(self.data['last'])
+            int_to_bytes_little(1, self.data['flush_type'])
+
+        if 'left_joystick_x' in self.data.keys():
+            joystick_x = int_to_bytes_little(1, scale_180_to_255(self.data['left_joystick_x']))
+            joystick_y = int_to_bytes_little(1, scale_180_to_255(self.data['left_joystick_y']))
+            res += joystick_x + joystick_y + joystick_x + joystick_y + joystick_x + joystick_y + joystick_x + joystick_y
+        else:
+            res += hex_to_bytes('7F7F7F7F7F7F7F7F')
+
         if 'animation' in self.data.keys():
             res += hex_to_bytes(ANIMATION_MAP[self.data['animation']])
         return res

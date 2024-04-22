@@ -86,11 +86,15 @@ class prototype:
             return
 
         packet_num = self.game_state.player.gen_packet_num()
-        data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': self.game_state.player.x_angle, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': self.game_state.player.x_angle, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': self.game_state.player.x_angle, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': self.game_state.player.x_angle, 'buffer': '00', 'coord': self.game_state.player.coord, 'packet_num': packet_num, 'flush_type': 0, 'last': '7F7F7F7F7F7F7F7F', 'type': 'movement'}
+        data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': self.game_state.player.x_angle, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': self.game_state.player.x_angle, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': self.game_state.player.x_angle, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': self.game_state.player.x_angle, 'buffer': '00', 'coord': self.game_state.player.coord, 'packet_num': packet_num, 'flush_type': 0, 'type': 'movement'}
 
         if self.game_state.player.animation != None:
             data['flush_type'] = 16
             data['animation'] = self.game_state.player.animation
+
+        if self.game_state.player.left_joystick_x != None:
+            data['left_joystick_x'] = self.game_state.player.left_joystick_x
+            data['left_joystick_y'] = self.game_state.player.left_joystick_y
 
         self._model.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
@@ -142,14 +146,27 @@ class prototype:
 
     def update_animation_and_angle(self, old_coord, new_coord, target_coord):
         #target_coord = [30741, 58062, 7251]
+
         self.game_state.player.x_angle = calculate_angle(new_coord, target_coord)
         if old_coord == new_coord:
             self.game_state.player.animation = None
+            self.game_state.player.left_joystick_x = None
+            self.game_state.player.left_joystick_y = None
             return
 
-        strafe_magnitude = get_strafe_magnitude(old_coord, new_coord, target_coord)
-        forward_direction = get_forward_direction(old_coord, new_coord, target_coord)
+        if new_coord[2] > old_coord[2]:
+            self.game_state.player.animation = 'jump'
+
+        angle = compute_strafe_angle(old_coord, new_coord, target_coord)
         strafe_direction = get_strafe_direction(old_coord, new_coord, target_coord)
+        strafe_angle_joystick = strafe_joystick_input(angle, strafe_direction)
+
+        self.game_state.player.left_joystick_x = strafe_angle_joystick[0]
+        self.game_state.player.left_joystick_y = strafe_angle_joystick[1]
+
+        logger.info(f"{self.game_state.player.animation} | {strafe_angle_joystick} | {angle:3.0f} | {strafe_direction}")
+        return
+
 
         if strafe_magnitude == 'neutral': # Forwards or backwards
             self.game_state.player.animation = forward_direction
@@ -159,11 +176,10 @@ class prototype:
         elif strafe_magnitude == 'strafe':
             self.game_state.player.animation = strafe_direction
 
-        logger.info(f"{self.game_state.player.animation} | {strafe_magnitude} | {forward_direction} | {strafe_direction}")
+        logger.info(f"{self.game_state.player.animation:} | {strafe_magnitude} | {forward_direction} | {strafe_direction}")
 
 
-        if new_coord[2] > old_coord[2]:
-            self.game_state.player.animation = 'jump'
+
         # elif new_coord != old_coord:
         #     self.game_state.player.animation = 'forward'
 

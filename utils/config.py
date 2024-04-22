@@ -77,8 +77,6 @@ class Config:
                 if game_name_to_join in game['GameName']:
                     print("ID:", game['Id'], "GameId:", game['GameId'])
                     return game['GameId']
-                else:
-                    raise Exception(f"Got unknown error on get_active_games: {response.status_code}")
             raise Exception("Unknown game found.")
 
     def __str__(self):

@@ -28,6 +28,9 @@ class PlayerState:
         self.reset_health()
         self.respawn_time = None
 
+        self.left_joystick_x = None
+        self.left_joystick_y = None
+
         self.flag = None
 
     def reset_health(self):

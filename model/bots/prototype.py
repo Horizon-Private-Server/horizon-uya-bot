@@ -145,6 +145,8 @@ class prototype:
         self.fire_weapon()
 
     def update_animation_and_angle(self, old_coord, new_coord, target_coord):
+        # Start with no animation
+        self.game_state.player.animation = None
         target_coord = [30741, 58062, 7251]
 
         self.game_state.player.x_angle = calculate_angle(new_coord, target_coord)
@@ -156,6 +158,11 @@ class prototype:
 
         if new_coord[2] > old_coord[2]:
             self.game_state.player.animation = 'jump'
+
+        if random.random() > .5:
+            self.game_state.player.animation = 'crouch'
+
+
 
         angle = compute_strafe_angle(old_coord, new_coord, target_coord)
         strafe_direction = get_strafe_direction(old_coord, new_coord, target_coord)

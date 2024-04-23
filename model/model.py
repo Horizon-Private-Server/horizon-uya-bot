@@ -257,6 +257,9 @@ class Model:
 
         self.dmetcp_queue.put(['B', tcp_0205_unk.tcp_0205_unk()])
 
+        # Charge boots
+        self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_update'}})])
+
         #self._loop.create_task(self.c_confirmations())
         self._loop.create_task(self.bot.main_loop())
 

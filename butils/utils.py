@@ -227,20 +227,41 @@ def strafe_joystick_input(strafe_angle, direction):
     # Mixed forward movement
     if strafe_angle < 90:
         # 0 more forward, 90 more left
-        if direction == 'left': # (forward) [90, 0] -> (left) [0, 90]
-            return [14, 19]
+        if direction == 'left': 
+            # (forward) [90, 0] -> (left) [0, 90]
+
+            x_val = scale_strafe_angle(strafe_angle, pure_forward_back_scale, strafe_angle_min, -50, 0)
+            y_val = scale_strafe_angle(strafe_angle, pure_forward_back_scale, strafe_angle_min, 0, 40)
+            return [x_val, y_val]
         elif direction == 'right': # (forward) [90,0] -> (right) [180, 90]
-            return [180, 27]
+            # Deadzone from 90->130
+            x_val = scale_strafe_angle(strafe_angle, pure_forward_back_scale, strafe_angle_min, 130, 180)
+            # Deadzone from 30-90
+            y_val = scale_strafe_angle(strafe_angle, pure_forward_back_scale, strafe_angle_min, 0, 30)
+            return [x_val, y_val]
+            #return [180, 27]
 
     # Mixed backwards movement
     if strafe_angle > 90:
         if direction == 'left': # (backward) [90,180] -> (left) [0, 90] 
-            return [21, 172]
+            x_val = scale_strafe_angle(strafe_angle, strafe_angle_max, 180-pure_forward_back_scale, -40, 0)
+            y_val = scale_strafe_angle(strafe_angle, strafe_angle_max, 180-pure_forward_back_scale, -180, -150)
+            return [x_val, y_val]
+            #return [21, 172]
         elif direction == 'right': # (backward) [90,180] ->  (right) [180, 90]
-            return [157, 174]
+            x_val = scale_strafe_angle(strafe_angle, strafe_angle_max, 180-pure_forward_back_scale, 130, 180)
+            y_val = scale_strafe_angle(strafe_angle, strafe_angle_max, 180-pure_forward_back_scale, -180, -140)
+            return [x_val, y_val]
+            #return [157, 174]
 
-
-
+def scale_strafe_angle(strafe_angle, strafe_angle_min, strafe_angle_max, new_min, new_max):
+    # Calculate the relative position of input_number within the input range
+    relative_position = (strafe_angle - strafe_angle_min) / (strafe_angle_max - strafe_angle_min)
+    
+    # Scale this relative position to the output range
+    scaled_value = new_min + relative_position * (new_max - new_min)
+    
+    return abs(int(scaled_value))
 
 def compute_strafe_angle(P1, P2, P3):
     # Vector from P1 to P2

@@ -138,6 +138,15 @@ class tcp_0003_broadcast_lobby_state:
                 hex_to_bytes({v: k for k, v in WEAPON_MAP.items()}[self.data['msg0']['weapon_changed_to']]) + \
                 hex_to_bytes("000000")
 
+        elif self.data['msg0']['type'] == 'weapon_update': ## Charge boots
+            # 08C80C08C8 -> Charge boots
+            return self.id + \
+                hex_to_bytes('00') + \
+                int_to_bytes_little(1, self.data['num_messages']) + \
+                hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
+                hex_to_bytes('0A') + \
+                hex_to_bytes("08C80C08C8")
+
         elif self.data['msg0']['type'] == '09_timer_update':
             # 01 is the unk1
             return self.id + \

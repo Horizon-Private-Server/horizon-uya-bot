@@ -2,6 +2,8 @@ from butils.utils import *
 
 from medius.dme_packets import *
 
+packets_both_tcp_and_udp = {'020E'}
+
 TcpSerializer = {
 	'0003': tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state,
 	'0004': tcp_0004_tnw.tcp_0004_tnw,
@@ -17,7 +19,7 @@ TcpSerializer = {
 	'0205': tcp_0205_unk.tcp_0205_unk,
 	'020A': tcp_020A_player_respawned.tcp_020A_player_respawned,
 	'020C': tcp_020C_info.tcp_020C_info,
-	'020E': tcp_020E_shot_fired.tcp_020E_shot_fired,
+	'020E': packet_020E_shot_fired.packet_020E_shot_fired,
 	'0210': tcp_0210_player_joined.tcp_0210_player_joined,
 	'0211': tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change,
 	'0212': tcp_0212_host_headset.tcp_0212_host_headset,
@@ -27,7 +29,7 @@ TcpSerializer = {
 UdpSerializer = {
 	'0200': udp_0200_player_died.udp_0200_player_died,
 	'0209': udp_0209_movement_update.udp_0209_movement_update,
-	'020E': udp_020E_shot_fired.udp_020E_shot_fired,
+	'020E': packet_020E_shot_fired.packet_020E_shot_fired,
 	'020F': udp_020F_player_damage_animation.udp_020F_player_damage_animation,
 	'0001': udp_0001_timer_update.udp_0001_timer_update,
 }
@@ -39,7 +41,10 @@ def dmetcp_serialize(data: bytes):
 	packets = []
 	while len(data) != 0:
 		dme_id = data.popleft() + data.popleft() # E.g. '0201'
-		packets.append(TcpSerializer[dme_id].serialize(data))
+		if dme_id in packets_both_tcp_and_udp: # Has both
+			packets.append(TcpSerializer[dme_id].serialize('tcp', data))
+		else:
+			packets.append(TcpSerializer[dme_id].serialize(data))
 	return packets
 
 def dmeudp_serialize(data: bytes):
@@ -49,5 +54,8 @@ def dmeudp_serialize(data: bytes):
 	packets = []
 	while len(data) != 0:
 		dme_id = data.popleft() + data.popleft() # E.g. '0201'
-		packets.append(UdpSerializer[dme_id].serialize(data))
+		if dme_id in packets_both_tcp_and_udp: # Has both
+			packets.append(UdpSerializer[dme_id].serialize('udp', data))
+		else:
+			packets.append(UdpSerializer[dme_id].serialize(data))
 	return packets

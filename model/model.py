@@ -167,7 +167,7 @@ class Model:
         if dme_packet.name == 'udp_0209_movement_update':
             self.game_state.movement_update(src_player, dme_packet.data)
 
-        if dme_packet.name in ['tcp_020E_shot_fired']:
+        if dme_packet.name in ['packet_020E_shot_fired']:
             self.bot.process_shot_fired(src_player, dme_packet)
 
         if dme_packet.name == 'udp_0001_timer_update' and dme_packet.unk1 == '00010000':

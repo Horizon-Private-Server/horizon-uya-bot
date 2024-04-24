@@ -70,8 +70,8 @@ WEAPON_MAP_SRC = {
     'hyper': '0{}',
 }
 
-class tcp_020E_shot_fired:
-    def __init__(self, map:str=None, weapon:str=None,
+class packet_020E_shot_fired:
+    def __init__(self, network:str, map:str=None, weapon:str=None,
                            src_player:int=None,
                            unk1:str='08',
                            time:int=None,
@@ -84,7 +84,8 @@ class tcp_020E_shot_fired:
                            unk7:int=0
                         ):
 
-        self.name = os.path.basename(__file__).strip(".py")
+        self.name = os.path.basename(__file__).split(".py")[0]
+        self.network = network
         self.id = b'\x02\x0E'
         self.map = map
         self.weapon = weapon
@@ -100,7 +101,7 @@ class tcp_020E_shot_fired:
         self.unk7 = unk7
 
     @classmethod
-    def serialize(self, data: deque):
+    def serialize(self, network, data: deque):
         weapon = WEAPON_MAP[data.popleft()]
         t = data.popleft()
         src_player = hex_to_int_little(data.popleft())
@@ -109,12 +110,14 @@ class tcp_020E_shot_fired:
         time = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
         moby_id = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
 
-        if moby_id in standard_object_id_map.keys():
-            object_id = standard_object_id_map[moby_id]
-        elif moby_id in alt_object_id_map.keys():
-            object_id = alt_object_id_map[moby_id]
-        else:
-            object_id = moby_id
+        # if moby_id in standard_object_id_map.keys():
+        #     object_id = standard_object_id_map[moby_id]
+        # elif moby_id in alt_object_id_map.keys():
+        #     object_id = alt_object_id_map[moby_id]
+        # else:
+        #     object_id = moby_id
+
+        object_id = moby_id
 
         unk2 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
         unk3 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
@@ -123,7 +126,7 @@ class tcp_020E_shot_fired:
         unk6 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
         unk7 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
 
-        return tcp_020E_shot_fired('', weapon, src_player, unk1, time, object_id, unk2, unk3, unk4, unk5, unk6, unk7)
+        return packet_020E_shot_fired(network, '', weapon, src_player, unk1, time, object_id, unk2, unk3, unk4, unk5, unk6, unk7)
 
     def to_bytes(self):
 
@@ -147,6 +150,6 @@ class tcp_020E_shot_fired:
             int_to_bytes_little(4, self.unk7)
 
     def __str__(self):
-        return f"{self.name}; map:{self.map} weapon:{self.weapon} src_player:{self.src_player} unk1:{self.unk1} time:{self.time} object_id:{self.object_id} " + \
+        return f"{self.network}_{self.name}; map:{self.map} weapon:{self.weapon} src_player:{self.src_player} unk1:{self.unk1} time:{self.time} object_id:{self.object_id} " + \
                 f"unk2:{self.unk2} unk3:{self.unk3} unk4:{self.unk4} unk5:{self.unk5} unk6:{self.unk6} " + \
                 f"unk7:{self.unk7}"

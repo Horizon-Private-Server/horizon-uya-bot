@@ -122,10 +122,10 @@ class MasTcp(AbstractTcp):
         pkt += self.session_key
 
         # Username
-        pkt += str_to_bytes(self._username, 10)
+        pkt += str_to_bytes(self._username, 14)
         
         # UNK
-        pkt += hex_to_bytes('C4D8240000000000EBFFFF7F08020000B0D82400FF00')
+        pkt += hex_to_bytes('00000000EBFFFF7F08020000B0D82400FF00')
 
         # PASSWORD
         pkt += str_to_bytes(self._password, 10)

@@ -107,7 +107,7 @@ class tcp_020C_info:
     def serialize(self, data: deque):
         #print(''.join(list(data)))
 
-        print(dequeue_to_str(data))
+        #print(dequeue_to_str(data))
 
         subtype = ''.join([data.popleft() for i in range(4)])
         subtype = subtype_map[subtype]

@@ -59,6 +59,9 @@ class prototype:
                 if self.game_state.players[0].coord == [0,0,0]:
                     pass
                 else:
+
+                    self.tracking = self.game_state.players[0]
+
                     # Randomly pick a valid weapon if no weapon is selected
                     if self.game_state.player.weapon == None:
                         self.change_weapon()
@@ -70,6 +73,9 @@ class prototype:
                     # Run objective
                     #self.objective()
                     self.patrol([34161, 54135, 7413],[27114, 54160, 7413])
+
+                    # Fire weapon
+                    self.fire_weapon()
 
                     # Send movement
                     self.send_movement()
@@ -145,9 +151,11 @@ class prototype:
         self.fire_weapon()
 
     def update_animation_and_angle(self, old_coord, new_coord, target_coord):
+        # target_coord = [30741, 58062, 7251]
+
+
         # Start with no animation
         self.game_state.player.animation = None
-        target_coord = [30741, 58062, 7251]
 
         self.game_state.player.x_angle = calculate_angle(new_coord, target_coord)
         if old_coord == new_coord:
@@ -159,8 +167,8 @@ class prototype:
         if new_coord[2] > old_coord[2]:
             self.game_state.player.animation = 'jump'
 
-        if random.random() > .5:
-            self.game_state.player.animation = 'crouch'
+        # if random.random() > .5:
+        #     self.game_state.player.animation = 'crouch'
 
 
 
@@ -214,7 +222,7 @@ class prototype:
                 object_id=self.tracking.player_id
             else:
                 object_id=-1
-            self._model.dmeudp_queue.put(['B', tcp_020E_shot_fired.tcp_020E_shot_fired(map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+            self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
 
             self.posthook_weapon_fired()
 

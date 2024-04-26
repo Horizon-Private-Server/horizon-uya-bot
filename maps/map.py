@@ -8,6 +8,7 @@ import random
 import sys
 
 from butils.utils import *
+from maps.transforms import LocalTransform
 
 import logging
 logger = logging.getLogger("thug.map")
@@ -33,6 +34,7 @@ class Map:
     def __init__(self, map_name:str):
         self.map = map_name
         self.path_cache = None
+        self.local_transform = None
 
         self.cboot_factor = 5
         self.cboot_distance = 3000
@@ -43,6 +45,9 @@ class Map:
         self.G = nx.read_edgelist(f"maps/graphs/{self.map}.edgelist",nodetype=eval, delimiter='|')
         self.points = np.array(self.G.nodes)
         logger.info(f"Loaded map in {(datetime.now() - start_time).total_seconds()} seconds!")
+
+        logger.info(f"Loading map local transformation ...")
+        self.local_transform = LocalTransform(self.map)
 
 
     def path(self, src, dst):

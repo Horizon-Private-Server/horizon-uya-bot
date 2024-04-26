@@ -85,7 +85,7 @@ class prototype:
                     self.update_animation_and_angle([28752, 54612, 7413], [28752, 54612, 7413], [27149, 54243, 7421])
 
                     # Fire weapon
-                    #self.fire_weapon()
+                    self.fire_weapon()
 
                     # Send movement
                     self.send_movement()
@@ -245,10 +245,12 @@ class prototype:
             unk2 = "00000000" # not needed for flux, needed for gravity
             unk3 = "00000000" # not needed for flux, unknown for gravity
             unk4 = "00000000" # not needed for flux
-            unk5 = "0000CE00" # makes flux curve left
-            unk6 = "00005344" # makes flux go backwards
-            unk7 = "0000EE42" # last 2 bytes critical, first 2 bytes don't matter
+            local_player_coord = self.game_state.map.transform_global_to_local(self.game_state.players[0].coord)
 
+            logger.info(f"TRANSFORMING: {self.game_state.players[0].coord} -> {local_player_coord}")
+            local_x = local_player_coord[0] # makes flux curve left
+            local_y = local_player_coord[1] # makes flux go backwards
+            local_z = local_player_coord[2]+2 # last 2 bytes critical, first 2 bytes don't matter
 
             # unk2 = hex_to_int_little("FF6EEF43")
             # unk3 = hex_to_int_little("60E95444")
@@ -263,7 +265,7 @@ class prototype:
             # unk6 = 0
             # unk7 = 0
 
-            self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=unk2, unk3=unk3, unk4=unk4, unk5=unk5, unk6=unk6, unk7=unk7)])
+            self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=unk2, unk3=unk3, unk4=unk4, local_x=local_x, local_y=local_y, local_z=local_z)])
 
             self.posthook_weapon_fired()
 

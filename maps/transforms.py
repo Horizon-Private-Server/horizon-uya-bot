@@ -7,175 +7,163 @@ from scipy.linalg import orthogonal_procrustes
 import os
 
 class LocalTransform():
-    def __init__(self, map_name, debug=False, write_transforms=False):
+    def __init__(self, map_name, debug=False, retrain=False, write_transforms=False):
         self._map_name = map_name
-        self._debug = debug
-
         self.script_dir = os.path.dirname(__file__)
+        
+        self._S = np.diag(np.array([0.00750688, 0.00450012, 0.03800826]))
+        self._t = np.array([17145.18909699, 17245.74244416, 16840.92433734])
 
-        if debug:
+        if retrain:
             # Retrain on points
-            R, t = self.read_and_train(map_name)
+            S, t = self.read_and_train()
         else:
-            R = np.load(os.path.join(self.script_dir, 'local_coordinates', f'{map_name}_R.npy'))
+            S = np.load(os.path.join(self.script_dir, 'local_coordinates', f'{map_name}_S.npy'))
             t = np.load(os.path.join(self.script_dir, 'local_coordinates', f'{map_name}_t.npy'))
 
-        self.R = R
-        self.t = t
-
         if write_transforms:
-            np.save(f'local_coordinates/{map_name}_R.npy', R)
+            np.save(f'local_coordinates/{map_name}_S.npy', S)
             np.save(f'local_coordinates/{map_name}_t.npy', t)
 
+        self.S = S
+        self.t = t
 
-    def global_to_local_transformation(global_coords, local_coords):
-        """
-        Approximates the transformation matrix to transform from global space to local space.
+        print(self.S)
+        print(self.t)
 
-        Parameters:
-        - global_coords: A Nx3 numpy array of global coordinates (N points).
-        - local_coords: A Nx3 numpy array of corresponding local coordinates.
+        if debug:
+            self.plot_predicted()
 
-        Returns:
-        - R: 3x3 numpy array representing the rotation matrix.
-        - t: 1x3 numpy array representing the translation vector.
-        """
 
-        # Calculate centroids (mean) of global and local coordinates
-        centroid_global = np.mean(global_coords, axis=0)
-        centroid_local = np.mean(local_coords, axis=0)
+    def transform_global_to_local(self, point):
+        return self.transform_point(point, self.S, self.t)
 
-        # Centering the coordinates around the centroids
-        centered_global = global_coords - centroid_global
-        centered_local = local_coords - centroid_local
-
-        # Compute covariance matrix H
-        H = np.dot(centered_global.T, centered_local)
-
-        # Perform Singular Value Decomposition (SVD) on H
-        U, S, Vt = np.linalg.svd(H)
-
-        # Calculate optimal rotation matrix R
-        R = np.dot(U, Vt)
-
-        # Ensure R is a proper rotation matrix (det(R) = 1)
-        if np.linalg.det(R) < 0:
-            Vt[2, :] *= -1  # Flip the last row of Vt
-            R = np.dot(U, Vt)
-
-        # Calculate translation vector t
-        t = centroid_local - np.dot(R, centroid_global)
-
-        return R, t
-
-    def transform_raw_global(self, map_name, point):
-        new_point = point
-
-        if map_name == 'marcadia_palace':
-            new_point[0] = new_point[0] * .5
-            new_point[1] = new_point[1] - 39000
-            new_point[2] = new_point[2] + 10000
-
-        return new_point
-
-    def read_and_train(self, map_name):
-        with open(f'local_coordinates/{map_name}.json', 'r') as f:
+    def read_points(self):
+        with open(f'local_coordinates/{self._map_name}.json', 'r') as f:
             inputs = json.loads(f.read())
-            print(len(inputs))
             for i in range(len(inputs)):
-                inputs[i][0] = self.transform_raw_global(map_name, inputs[i][0])
+                inputs[i][0] = inputs[i][0]
 
         global_coords = np.array([z[0] for z in inputs])
         local_coords = np.array([z[1] for z in inputs])
 
-        R, t = self.estimate_transformation(global_coords, local_coords)
+        return global_coords, local_coords
 
-        print("Rotation Matrix R:")
-        print(R)
-        print("\nTranslation Vector t:")
-        print(t)
+    def read_and_train(self):
+        global_coords, local_coords = self.read_points()
 
-        pred_dists = defaultdict(list)
-        for transform_func in [self.estimate_transformation]:
-            print(transform_func.__name__)
+        if type(self._S) is not None:
+            print("RETRAIN!")
+            global_coords = [self.transform_point(coord, self._S, self._t) for coord in global_coords]
 
-            R, t = transform_func(global_coords, local_coords)
+        S, t = self.estimate_transformation(global_coords, local_coords)
 
-            # Transform coordinate from global to local space
-            for global_coord, local_coord in inputs:
-                pred_local = self.global_to_local_single(global_coord, R, t)
-                dist = self.euclidean_distance(local_coord, pred_local)
-                pred_dists[transform_func.__name__].append(dist)
-                print(global_coord, local_coord, pred_local, dist)
+        if type(self._S) is not None:
+            S, t = self.combine_S_t([self._S, S], [self._t, t])
 
-        for key, value in pred_dists.items():
-            print(key, np.mean(value))
+        return S, t
 
-        # fig = plt.figure()
-        # ax = fig.add_subplot(111, projection="3d")
-        # ax.set_title("Raw points")
-        # xs = [n[1][0] for n in inputs]
-        # ys = [n[1][1] for n in inputs]
-        # zs = [n[1][2] for n in inputs]
-        # ax.scatter(xs, ys, zs, s=1, c='tab:blue')
-        # xlim = ax.get_xlim()
-        # zlim = ax.get_zlim()
-        # xdiff = (xlim[1] - xlim[0]) / 2
+    def plot_predicted(self):
+        global_coords, local_coords = self.read_points()
 
-        # zmid = zlim[0] + ((zlim[1] - zlim[0]) / 2)
+        pred_dists = []
+        preds = []
+        # Transform coordinate from global to local space
+        for i in range(len(global_coords)):
+            global_coord = global_coords[i]
+            local_coord = local_coords[i]
 
-        # zlim = [zmid - xdiff, zmid + xdiff]
+            pred_local = self.transform_point(global_coord, self.S, self.t).astype(int)
+            preds.append(pred_local)
+            dist = self.euclidean_distance(local_coord, pred_local)
+            pred_dists.append(dist)
+            #print(global_coord, local_coord, pred_local, dist)
 
-        # ax.set_zlim3d(zlim[0], zlim[1])
-        # ax.set_xlabel("x")
-        # ax.set_ylabel("y")
-        # ax.set_zlabel("z")
-        # plt.tight_layout()
-        # plt.show()
+        print("Avg distance error: ", np.mean(pred_dists))
 
-        return R, t
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection="3d")
+        ax.set_title("Raw points")
+        xs = [n[0] for n in local_coords]
+        ys = [n[1] for n in local_coords]
+        zs = [n[2] for n in local_coords]
+        ax.scatter(xs, ys, zs, s=1, c='tab:blue')
+        xs = [n[0] for n in preds]
+        ys = [n[1] for n in preds]
+        zs = [n[2] for n in preds]
+        ax.scatter(xs, ys, zs, s=1, c='tab:red')
+        xlim = ax.get_xlim()
+        zlim = ax.get_zlim()
+        xdiff = (xlim[1] - xlim[0]) / 2
+
+        zmid = zlim[0] + ((zlim[1] - zlim[0]) / 2)
+
+        zlim = [zmid - xdiff, zmid + xdiff]
+
+        ax.set_zlim3d(zlim[0], zlim[1])
+        ax.set_xlabel("x")
+        ax.set_ylabel("y")
+        ax.set_zlabel("z")
+        plt.tight_layout()
+        plt.show()
+
 
 
 
     def transform_error(self, params, global_coords, local_coords):
-        R = params[:9].reshape((3, 3))
-        t = params[9:]
-        
-        transformed_global = np.dot(global_coords, R.T) + t
+        S = np.diag(params[:3])  # Scaling matrix
+        t = params[3:]  # Translation vector
+
+        transformed_global = np.dot(global_coords, S.T) + t
         error = np.linalg.norm(transformed_global - local_coords)
         
         return error
 
+
     def estimate_transformation(self, global_coords, local_coords):
-        params0 = np.random.rand(12)  # Initial guess for parameters (R and t)
-        #params0 = initial_estimate(global_coords, local_coords)
+        params0 = np.random.rand(6)  # Initial guess for parameters (S and t)
         result = least_squares(self.transform_error, params0, args=(global_coords, local_coords), method='dogbox', ftol=1e-8, xtol=1e-8, max_nfev=100000)
+
+        print("Result X:", result.x)
+
+        S = np.diag(result.x[:3])  # Extract scaling matrix
+        t = result.x[3:]  # Extract translation vector
+
+        print("Result S:", S)
+        print("Result t:", t)
         
-        R = result.x[:9].reshape((3, 3))
-        t = result.x[9:]
-        
-        return R, t
+        # #scaling_factors = np.array([0.55395726, 0.31147699, 2.32106206])
+        # scaling_factors = np.array([0.0075, 0.0045, .038])
+
+        # # Create the scaling matrix
+        # S = np.diag(scaling_factors)
+
+        # print(S)
+
+        # t = [17145, 17245, 16840]
 
 
-    def global_to_local_single(self, coord_global, R, t):
+        return S, t
+
+    def transform_point(self, point, S, t):
         """
-        Transforms a single coordinate from global space to local space using rotation matrix R and translation vector t.
+        Transform a single point from global coordinates to local coordinates.
 
-        Parameters:
-        - coord_global: A 1x3 numpy array representing the coordinate in global space.
-        - R: 3x3 numpy array representing the rotation matrix.
-        - t: 1x3 numpy array representing the translation vector.
+        Args:
+        point (numpy array): The point coordinates in global coordinates, shape (3,).
+        S (numpy array): Scaling matrix, shape (3, 3).
+        R (numpy array): Rotation matrix, shape (3, 3).
+        t (numpy array): Translation vector, shape (3,).
 
         Returns:
-        - coord_local: A 1x3 numpy array representing the coordinate in local space.
+        numpy array: The transformed point coordinates in local coordinates, shape (3,).
         """
-        # Ensure coord_global is a 1x3 numpy array
-        coord_global = np.array(coord_global).reshape(3,)
+        scaled_point = np.dot(S, point)
 
-        # Apply rotation and translation
-        coord_local = np.dot(R, coord_global) + t
+        # Apply translation
+        translated_point = scaled_point + t
 
-        return coord_local
+        return translated_point
 
 
     def euclidean_distance(self, point1, point2):
@@ -202,6 +190,25 @@ class LocalTransform():
         return distance
 
 
+    def combine_S_t(self, scaling_matrices, translation_vectors):
+        # Combine scaling matrices
+        # combined_S = np.eye(3)  # Identity matrix as initial value
+        # for S in scaling_matrices:
+        #     combined_S = np.dot(combined_S, S)
+
+        # # Combine translation vectors
+        # combined_t = np.zeros(3)
+        # for t in translation_vectors:
+        #     combined_t += t
+
+        # return combined_S, combined_t
+        # Combine scaling matrices
+        combined_S = np.dot(scaling_matrices[1], scaling_matrices[0])
+
+        # Combine translation vectors
+        combined_t = np.dot(scaling_matrices[1], translation_vectors[0]) + translation_vectors[1]
+
+        return combined_S, combined_t
 
 if __name__ == '__main__':
-    LocalTransform('marcadia_palace', debug=False, write_transforms=False)
+    LocalTransform('marcadia_palace', debug=True, retrain=False, write_transforms=False)

@@ -148,6 +148,11 @@ class Map:
     def __str__(self):
         return f"Map(name={self.map})"
 
+    def transform_global_to_local(self, point):
+        transformed = self.local_transform.transform_global_to_local(point)
+        return [int(transformed[0]), int(transformed[1]), int(transformed[2])]
+    
+
 if __name__ == '__main__':
     print("Reading map")
     map = Map('aquatos_sewers')

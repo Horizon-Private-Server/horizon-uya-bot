@@ -79,9 +79,9 @@ class packet_020E_shot_fired:
                            unk2:int=0,
                            unk3:int=0,
                            unk4:int=0,
-                           unk5:int=0,
-                           unk6:int=0,
-                           unk7:int=0
+                           local_x:int=0,
+                           local_y:int=0,
+                           local_z:int=0
                         ):
 
         self.name = os.path.basename(__file__).split(".py")[0]
@@ -96,9 +96,9 @@ class packet_020E_shot_fired:
         self.unk2 = unk2
         self.unk3 = unk3
         self.unk4 = unk4
-        self.unk5 = unk5
-        self.unk6 = unk6
-        self.unk7 = unk7
+        self.local_x = local_x
+        self.local_y = local_y
+        self.local_z = local_z
 
     @classmethod
     def serialize(self, network, data: deque):
@@ -119,21 +119,24 @@ class packet_020E_shot_fired:
 
         object_id = moby_id
 
-        unk2 = ''.join([data.popleft() for i in range(4)])
-        unk3 = ''.join([data.popleft() for i in range(4)])
-        unk4 = ''.join([data.popleft() for i in range(4)])
-        unk5 = ''.join([data.popleft() for i in range(4)])
-        unk6 = ''.join([data.popleft() for i in range(4)])
-        unk7 = ''.join([data.popleft() for i in range(4)])
+        # unk2 = ''.join([data.popleft() for i in range(4)])
+        # unk3 = ''.join([data.popleft() for i in range(4)])
+        # unk4 = ''.join([data.popleft() for i in range(4)])
+        # local_x = ''.join([data.popleft() for i in range(4)])
+        # local_y = ''.join([data.popleft() for i in range(4)])
+        # local_z = ''.join([data.popleft() for i in range(4)])
 
-        # unk2 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        # unk3 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        # unk4 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        # unk5 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        # unk6 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        # unk7 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        unk2 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        unk3 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        unk4 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        # local_x = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        # local_y = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        # local_z = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        local_x = ''.join([data.popleft() for i in range(4)])
+        local_y = ''.join([data.popleft() for i in range(4)])
+        local_z = ''.join([data.popleft() for i in range(4)])
 
-        return packet_020E_shot_fired(network, '', weapon, src_player, unk1, time, object_id, unk2, unk3, unk4, unk5, unk6, unk7)
+        return packet_020E_shot_fired(network, '', weapon, src_player, unk1, time, object_id, unk2, unk3, unk4, local_x, local_y, local_z)
 
     def to_bytes(self):
 
@@ -152,11 +155,11 @@ class packet_020E_shot_fired:
             hex_to_bytes(self.unk2) + \
             hex_to_bytes(self.unk3) + \
             hex_to_bytes(self.unk4) + \
-            hex_to_bytes(self.unk5) + \
-            hex_to_bytes(self.unk6) + \
-            hex_to_bytes(self.unk7)
+            hex_to_bytes("0000") + int_to_bytes_little(2, self.local_x) + \
+            hex_to_bytes("0000") + int_to_bytes_little(2, self.local_y) + \
+            hex_to_bytes("0000") + int_to_bytes_little(2, self.local_z)
 
     def __str__(self):
         return f"{self.network}_{self.name}; map:{self.map} weapon:{self.weapon} src_player:{self.src_player} unk1:{self.unk1} time:{self.time} object_id:{self.object_id} " + \
-                f"unk2:{self.unk2} unk3:{self.unk3} unk4:{self.unk4} unk5:{self.unk5} unk6:{self.unk6} " + \
-                f"unk7:{self.unk7}"
+                f"unk2:{self.unk2} unk3:{self.unk3} unk4:{self.unk4} local_x:{self.local_x} local_y:{self.local_y} " + \
+                f"local_z:{self.local_z}"

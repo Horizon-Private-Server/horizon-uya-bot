@@ -72,10 +72,20 @@ class prototype:
 
                     # Run objective
                     #self.objective()
-                    self.patrol([34161, 54135, 7413],[27114, 54160, 7413])
+                    #self.game_state.player.coord = [28593, 54682, 7413]
+
+                    # Patrol marc flag to flag
+                    #self.patrol([34161, 54135, 7413],[27114, 54160, 7413])
+
+                    # Patrol marc 1 base:
+                    #self.patrol([28450, 55272, 7413], [28752, 54612, 7413], [27149, 54243, 7421])
+
+                    #new_coord = self.game_state.map.path(self.game_state.player.coord, self._misc['patrol'])
+                    self.game_state.player.coord = [28752, 54612, 7413]
+                    self.update_animation_and_angle([28752, 54612, 7413], [28752, 54612, 7413], [27149, 54243, 7421])
 
                     # Fire weapon
-                    self.fire_weapon()
+                    #self.fire_weapon()
 
                     # Send movement
                     self.send_movement()
@@ -105,7 +115,7 @@ class prototype:
         self._model.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
 
-    def patrol(self, coord1, coord2):
+    def patrol(self, coord1, coord2, target):
         
         if 'patrol' not in self._misc.keys():
             self._misc['patrol'] = coord1
@@ -118,7 +128,7 @@ class prototype:
         # Red flag marcadia over lip: [34161, 54135, 7413]
         # Blue flag marcadia over lip: [27114, 54160, 7413]
         new_coord = self.game_state.map.path(self.game_state.player.coord, self._misc['patrol'])
-        self.update_animation_and_angle(self.game_state.player.coord, new_coord, self.game_state.players[0].coord)
+        self.update_animation_and_angle(self.game_state.player.coord, new_coord, target)
         self.game_state.player.coord = new_coord
 
 
@@ -148,12 +158,9 @@ class prototype:
             self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.tracking.coord)
 
         # Fire weapon
-        self.fire_weapon()
+        #self.fire_weapon()
 
     def update_animation_and_angle(self, old_coord, new_coord, target_coord):
-        # target_coord = [30741, 58062, 7251]
-
-
         # Start with no animation
         self.game_state.player.animation = None
 
@@ -173,6 +180,9 @@ class prototype:
 
 
         angle = compute_strafe_angle(old_coord, new_coord, target_coord)
+
+        #logger.info(f"{old_coord} | {new_coord} | {target_coord}")
+
         strafe_direction = get_strafe_direction(old_coord, new_coord, target_coord)
         strafe_angle_joystick = strafe_joystick_input(angle, strafe_direction)
 
@@ -219,10 +229,41 @@ class prototype:
             # Weapon was fired.
 
             if hit_bool: # player was hit
-                object_id=self.tracking.player_id
+                #object_id=self.tracking.player_id
+                object_id=-1
             else:
                 object_id=-1
-            self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=0, unk3=0, unk4=0, unk5=0, unk6=0, unk7=0)])
+
+            # unk2 = hex_to_int_little("00000000") # not needed for flux, needed for gravity
+            # unk3 = hex_to_int_little("00000000") # not needed for flux, unknown for gravity
+            # unk4 = hex_to_int_little("00000000") # not needed for flux
+            # unk5 = hex_to_int_little("0000EF43") # makes flux curve left
+            # unk6 = hex_to_int_little("00005C44") # makes flux go backwards
+            # unk7 = hex_to_int_little("0000EA42") # last 2 bytes critical, first 2 bytes don't matter
+
+
+            unk2 = "00000000" # not needed for flux, needed for gravity
+            unk3 = "00000000" # not needed for flux, unknown for gravity
+            unk4 = "00000000" # not needed for flux
+            unk5 = "0000CE00" # makes flux curve left
+            unk6 = "00005344" # makes flux go backwards
+            unk7 = "0000EE42" # last 2 bytes critical, first 2 bytes don't matter
+
+
+            # unk2 = hex_to_int_little("FF6EEF43")
+            # unk3 = hex_to_int_little("60E95444")
+            # unk4 = hex_to_int_little("D99EE942")
+            # unk5 = hex_to_int_little("E44BEF43")
+            # unk6 = hex_to_int_little("5BBC5C44")
+            # unk7 = hex_to_int_little("F5C4EA42")
+            # unk2 = 0
+            # unk3 = 0
+            # unk4 = 0
+            # unk5 = 0
+            # unk6 = 0
+            # unk7 = 0
+
+            self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=unk2, unk3=unk3, unk4=unk4, unk5=unk5, unk6=unk6, unk7=unk7)])
 
             self.posthook_weapon_fired()
 

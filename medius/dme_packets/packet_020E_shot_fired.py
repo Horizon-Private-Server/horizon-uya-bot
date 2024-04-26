@@ -119,12 +119,19 @@ class packet_020E_shot_fired:
 
         object_id = moby_id
 
-        unk2 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        unk3 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        unk4 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        unk5 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        unk6 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-        unk7 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        unk2 = ''.join([data.popleft() for i in range(4)])
+        unk3 = ''.join([data.popleft() for i in range(4)])
+        unk4 = ''.join([data.popleft() for i in range(4)])
+        unk5 = ''.join([data.popleft() for i in range(4)])
+        unk6 = ''.join([data.popleft() for i in range(4)])
+        unk7 = ''.join([data.popleft() for i in range(4)])
+
+        # unk2 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        # unk3 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        # unk4 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        # unk5 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        # unk6 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+        # unk7 = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
 
         return packet_020E_shot_fired(network, '', weapon, src_player, unk1, time, object_id, unk2, unk3, unk4, unk5, unk6, unk7)
 
@@ -142,12 +149,12 @@ class packet_020E_shot_fired:
             hex_to_bytes(self.unk1) + \
             int_to_bytes_little(4, self.time) + \
             int_to_bytes_little(4, object_id) + \
-            int_to_bytes_little(4, self.unk2) + \
-            int_to_bytes_little(4, self.unk3) + \
-            int_to_bytes_little(4, self.unk4) + \
-            int_to_bytes_little(4, self.unk5) + \
-            int_to_bytes_little(4, self.unk6) + \
-            int_to_bytes_little(4, self.unk7)
+            hex_to_bytes(self.unk2) + \
+            hex_to_bytes(self.unk3) + \
+            hex_to_bytes(self.unk4) + \
+            hex_to_bytes(self.unk5) + \
+            hex_to_bytes(self.unk6) + \
+            hex_to_bytes(self.unk7)
 
     def __str__(self):
         return f"{self.network}_{self.name}; map:{self.map} weapon:{self.weapon} src_player:{self.src_player} unk1:{self.unk1} time:{self.time} object_id:{self.object_id} " + \

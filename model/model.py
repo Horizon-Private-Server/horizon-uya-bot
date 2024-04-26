@@ -263,21 +263,21 @@ class Model:
         #self._loop.create_task(self.c_confirmations())
         self._loop.create_task(self.bot.main_loop())
 
-    async def c_confirmations(self):
-        bot_player_idx = self.game_state.player.player_id
+    # async def c_confirmations(self):
+    #     bot_player_idx = self.game_state.player.player_id
 
-        cpu_player_ids = [player_id for player_id in self.game_state.players.keys() if len(self.game_state.players[player_id].username) == 7 and self.game_state.players[player_id].username[0:3] == 'CPU']
+    #     cpu_player_ids = [player_id for player_id in self.game_state.players.keys() if len(self.game_state.players[player_id].username) == 7 and self.game_state.players[player_id].username[0:3] == 'CPU']
 
 
-        min_bot_player_idx = min(cpu_player_ids) if len(cpu_player_ids) > 0 else 99999
+    #     min_bot_player_idx = min(cpu_player_ids) if len(cpu_player_ids) > 0 else 99999
 
-        if len(cpu_player_ids) != 0 and bot_player_idx > min_bot_player_idx:
-            return
+    #     if len(cpu_player_ids) != 0 and bot_player_idx > min_bot_player_idx:
+    #         return
 
-        for i in range(1,100):
-            d = bytes_to_hex(int_to_bytes_little(1,i))
-            data = {'object_id': f'{d}1000F7', 'unk': '0200'}
-            self.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data=data)])
+    #     for i in range(1,100):
+    #         d = bytes_to_hex(int_to_bytes_little(1,i))
+    #         data = {'object_id': f'{d}1000F7', 'unk': '0200'}
+    #         self.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data=data)])
 
     async def _timer_update(self, unk_0D):
         self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'unk_0D', 'unk2': unk_0D}})])

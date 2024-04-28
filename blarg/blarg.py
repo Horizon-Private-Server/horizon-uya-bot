@@ -20,8 +20,26 @@ from medius.dme_serializer import TcpSerializer as tcp_map
 from medius.dme_serializer import UdpSerializer as udp_map
 from medius.dme_serializer import packets_both_tcp_and_udp
 from constants.constants import get_blitz_angle
+from maps.transforms import LocalTransform
 
 from butils.utils import *
+
+t = LocalTransform('marcadia_palace', debug=False, retrain=False, write_transforms=False)
+
+def translate_value(value):
+    old_min = 77
+    old_max = 177
+    new_min = 175
+    new_max = 0
+
+    # Normalize the value from the old range
+    normalized_value = (value - old_min) / (old_max - old_min)
+    
+    # Map the normalized value to the new range
+    new_value = new_min + normalized_value * (new_max - new_min)
+    
+    return new_value
+
 
 class Blarg:
     def __init__(self, config: dict):
@@ -103,15 +121,20 @@ class Blarg:
             if packet_id in self._config['exclude']:
                 continue
 
-            if packet_id == '0209':
+            if packet_id == '0209' and packet['src'] == 1:
                 self._recent_movement = serialized.data
 
             if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] != 'False': # and packet_id not in ['0209', '0213']:
                 #self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")
 
                 if serialized.unk1 == '08':
-                    self._logger.info(f"{packet['src']} -> {packet['dst']} | DEBUGGING ANGLES {self._recent_movement['cam3_x']} | {serialized.local_x_2} | {serialized.local_y_2} | {serialized.local_z_2} | {get_blitz_angle(self._recent_movement['cam3_x'])}")
-                    #self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized} | {self._recent_movement}")
+                    #self._logger.info(f"{packet['src']} -> {packet['dst']} | DEBUGGING ANGLES {self._recent_movement['cam1_y']}|{serialized.local_z_2}")
+                    local_coord = [serialized.local_x, serialized.local_y, serialized.local_z]
+                    local_transform = t.transform_local_to_global(local_coord)
+
+                    dist = calculate_distance(self._recent_movement['coord'], local_transform)
+                    self._logger.info(f"{packet['src']} -> {packet['dst']} | {dist}")
+                    #print(f"{translate_value(self._recent_movement['cam1_y'])} | {self._recent_movement['coord']} | {local_transform}")
 
 
                 # unk5 = serialized.unk5[4:]

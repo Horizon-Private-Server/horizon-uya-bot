@@ -127,7 +127,7 @@ class MlsTcp(AbstractTcp):
         if callback != '00000000':
             self._logger.debug(callback)
             self._logger.debug("Game Info Returned Error!")
-            sys.exit(1)
+            raise Exception(f"Game Info Returned Error(callback: {callback})")
 
         gameinfo['app_id'] = ''.join([data.popleft() for _ in range(4)])
         gameinfo['min_players'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))

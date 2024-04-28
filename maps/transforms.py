@@ -28,15 +28,15 @@ class LocalTransform():
         self.S = S
         self.t = t
 
-        print(self.S)
-        print(self.t)
-
         if debug:
             self.plot_predicted()
 
 
     def transform_global_to_local(self, point):
         return self.transform_point(point, self.S, self.t)
+    
+    def transform_local_to_global(self, point):
+        return self.transform_point_reverse(point, self.S, self.t)
 
     def read_points(self):
         with open(f'local_coordinates/{self._map_name}.json', 'r') as f:
@@ -164,6 +164,26 @@ class LocalTransform():
         translated_point = scaled_point + t
 
         return translated_point
+
+    def transform_point_reverse(self, point, S, t):
+        """
+        Transform a single point from local coordinates to global coordinates.
+
+        Args:
+        point (numpy array): The point coordinates in local coordinates, shape (3,).
+        S (numpy array): Scaling matrix, shape (3, 3).
+        t (numpy array): Translation vector, shape (3,).
+
+        Returns:
+        numpy array: The transformed point coordinates in global coordinates, shape (3,).
+        """
+        # Reverse translation
+        translated_point = point - t
+
+        # Reverse scaling
+        inverse_S = np.linalg.inv(S)
+        unscaled_point = np.dot(inverse_S, translated_point).astype(int)
+        return [unscaled_point[0], unscaled_point[1], unscaled_point[2]]
 
 
     def euclidean_distance(self, point1, point2):

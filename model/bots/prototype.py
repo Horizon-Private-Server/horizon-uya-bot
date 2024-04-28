@@ -4,7 +4,7 @@ from scipy.spatial import distance
 from datetime import datetime
 from collections import defaultdict
 
-from constants.constants import ANIMATION_MAP, MAIN_BOT_LOOP_TIMER, get_blitz_angle
+from constants.constants import ANIMATION_MAP, MAIN_BOT_LOOP_TIMER, get_blitz_angle, get_grav_timing
 from medius.dme_packets import *
 from butils.utils import *
 
@@ -72,7 +72,6 @@ class prototype:
 
                     # Run objective
                     #self.objective()
-                    #self.game_state.player.coord = [28593, 54682, 7413]
 
                     # Patrol marc flag to flag
                     self.patrol([34161, 54135, 7413],[27114, 54160, 7413], self.game_state.players[0].coord)
@@ -82,13 +81,12 @@ class prototype:
 
                     #new_coord = self.game_state.map.path(self.game_state.player.coord, self._misc['patrol'])
                     
-                    
                     # Marc sitting next to base
                     #self.game_state.player.coord = [28752, 54612, 7413]
                     #self.update_animation_and_angle([28752, 54612, 7413], [28752, 54612, 7413], [27149, 54243, 7421])
 
                     # Fire weapon
-                    self.fire_weapon()
+                    #self.fire_weapon()
 
                     # Send movement
                     self.send_movement()
@@ -259,45 +257,90 @@ class prototype:
         self.game_state.player.weapon = weapon
 
     def process_shot_fired(self, src_player, packet_data):
-
         # Player is Alive, and the teammate who shot was on the enemy team. The object hit was us.
-        # ---- N60, Rocket, Flux
-        if not self.game_state.player.is_dead and self.game_state.players[src_player].team != self.game_state.player.team and packet_data.object_id == self.game_state.player.player_id:
+        if self.game_state.player.is_dead or self.game_state.players[src_player].team == self.game_state.player.team:
+            return
+        
+        damage = 0
 
+        if packet_data.weapon == 'blitz' and packet_data.unk1 == '08' and calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 2089: # 2089 minimum for 7 damage
+            # The player shooting angle needs to be aiming at the player
+            angle_needed = calculate_angle(self.game_state.players[src_player].coord, self.game_state.player.coord)
+            players_angle = self.game_state.players[src_player].cam_x
+
+            # 5 angle threshold between what is needed to hit
+            if abs(players_angle - angle_needed) > 10: 
+                return
+
+            logger.info(f"Blitz weapon fired distance: {angle_needed} | {players_angle}")
+            if calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 245: # 245 minimum for 54 damage
+                damage = 54
+            elif calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 541: # 541 minimum for 26 damage
+                damage = 26
+            elif calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 739: # 739 minimum for 14 damage
+                damage = 14
+            else:
+                damage = 7
+
+        elif packet_data.weapon == 'grav' and packet_data.unk1 == '08': # 2089 minimum for 7 damage
+            # Get the player's coordinate. Calculate distance of that to 
+            src_player_coord = self.game_state.players[src_player].coord
+
+            local_coord = [packet_data.local_x, packet_data.local_y, packet_data.local_z]
+            dest_coord = self.game_state.map.transform_local_to_global(local_coord)
+            
+            dist = calculate_distance(src_player_coord, dest_coord)
+            time_to_explode = get_grav_timing(dist)
+
+            logger.info(f"Grav: time to explode: {time_to_explode}")
+
+            if time_to_explode != -1:
+                self._model._loop.create_task(self.process_grav_bomb_explode(time_to_explode, dest_coord, src_player, 'grav'))
+
+        # ---- N60, Rocket, Flux
+        elif packet_data.object_id == self.game_state.player.player_id:
             # If the opposite player is ALSO a CPU, we need to check the distance to ensure that they are close enough to do dmg
             if self.game_state.players[src_player].username[0:3] == 'CPU' and calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) > self.cpu_damage_min_dist:
                 return
 
-            self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
-
             if packet_data.weapon == 'flux':
-                self.game_state.player.health -= 87
-                self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+                damage -= 87
             elif packet_data.weapon == 'n60':
-                self.game_state.player.health -= 5
-                self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+                damage -= 5
             elif packet_data.weapon == 'rocket':
-                self.game_state.player.health -= 60
-                self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
-            else:
-                return
+                damage -= 60
 
-            self.check_if_dead(src_player, packet_data)
+        if damage != 0:
+            self.game_state.player.health -= damage
+            self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+            self.check_if_dead(src_player, packet_data.weapon)
+
 
         # ---- Gravity, Blitz, Lava
-        elif not self.game_state.player.is_dead and self.game_state.players[src_player].team != self.game_state.player.team and packet_data.weapon in ('grav', 'lava', 'blitz'):
-            # Check that the enemy player is within distance to hit us
-            if calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < self.cpu_damage_min_dist:
-                # Randomly take hit
-                if random.random() < self._close_weapon_self_dmg_rate[packet_data.weapon]:
-                    self.game_state.player.health -= self._close_weapon_self_dmg_amount[packet_data.weapon]
-                    self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
-                    self.check_if_dead(src_player, packet_data)
-            else: # player out of range
-                pass
+        # elif packet_data.weapon in ('grav', 'lava'):
+        #     # Check that the enemy player is within distance to hit us
+        #     if calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < self.cpu_damage_min_dist:
+        #         # Randomly take hit
+        #         if random.random() < self._close_weapon_self_dmg_rate[packet_data.weapon]:
+        #             self.game_state.player.health -= self._close_weapon_self_dmg_amount[packet_data.weapon]
+        #             self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+        #             self.check_if_dead(src_player, packet_data)
+        #     else: # player out of range
+        #         pass
+
+    async def process_grav_bomb_explode(self, time_to_explode, dest_coord, src_player, weapon):
+        await asyncio.sleep(time_to_explode)
+        # Check if our player is within distance of explosion
+        dist = calculate_distance(dest_coord, self.game_state.player.coord)
+        logger.info(f"DEST DIST: {dist}")
+        # 460 threshold
+        if dist <= 460:
+            self.game_state.player.health -= 60
+            self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+            self.check_if_dead(src_player, weapon)
 
 
-    def check_if_dead(self, src_player, packet_data):
+    def check_if_dead(self, src_player, weapon):
         # ---- Process health now
         if self.game_state.player.health < 0:
 
@@ -319,7 +362,7 @@ class prototype:
             #self._model._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes(f"00030001{test_map[self.game_state.player.player_id]}000700000000"))))
             self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'src': self.game_state.player.player_id, 'num_messages': 1, 'msg0': {'type': 'health_update', 'health': 0}})])
 
-            self._model.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=src_player, killed_id=self.game_state.player.player_id, weapon=packet_data.weapon)])
+            self._model.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=src_player, killed_id=self.game_state.player.player_id, weapon=weapon)])
 
             self.game_state.player.respawn_time = datetime.now().timestamp() + self.respawn_time
 

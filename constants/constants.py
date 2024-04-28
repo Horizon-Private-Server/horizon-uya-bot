@@ -8,6 +8,9 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(script_dir, 'blitz_angles.json') ,'r') as f:
     BLITZ_ANGLES = json.loads(f.read())
 
+with open(os.path.join(script_dir, 'grav_dist_to_time.json') ,'r') as f:
+    GRAV_TIMING = json.loads(f.read())
+
 CTF_FLAG_ID_MAP = {
     'command_center': {'131000F7': 'red_flag', '141000F7': 'blue_flag'},
     'aquatos_sewers': {'121000F7': 'red_flag', '131000F7': 'blue_flag'},
@@ -39,6 +42,15 @@ def get_flag_location(map='marcadia_palace', team='red'):
 
 def get_blitz_angle(x_angle):
     return BLITZ_ANGLES[str(x_angle)]
+
+def get_grav_timing(distance):
+    '''
+    Return the time in seconds for a gravity bomb to explode at a specific location given the distance between the caster
+    and the destination location
+    '''
+    if str(int(distance)) not in GRAV_TIMING.keys():
+        return -1
+    return GRAV_TIMING[str(int(distance))]
 
 DEATHMATCH_MAP = {
     0: 'blue',

@@ -152,6 +152,10 @@ class Map:
         transformed = self.local_transform.transform_global_to_local(point)
         return [int(transformed[0]), int(transformed[1]), int(transformed[2])]
     
+    def transform_local_to_global(self, point):
+        transformed = self.local_transform.transform_local_to_global(point)
+        return [int(transformed[0]), int(transformed[1]), int(transformed[2])]
+    
 
 if __name__ == '__main__':
     print("Reading map")

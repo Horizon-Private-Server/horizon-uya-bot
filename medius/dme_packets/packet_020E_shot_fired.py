@@ -122,14 +122,12 @@ class packet_020E_shot_fired:
         time = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
         moby_id = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
 
-        # if moby_id in standard_object_id_map.keys():
-        #     object_id = standard_object_id_map[moby_id]
-        # elif moby_id in alt_object_id_map.keys():
-        #     object_id = alt_object_id_map[moby_id]
-        # else:
-        #     object_id = moby_id
-
-        object_id = moby_id
+        if moby_id in standard_object_id_map.keys():
+            object_id = standard_object_id_map[moby_id]
+        elif moby_id in alt_object_id_map.keys():
+            object_id = alt_object_id_map[moby_id]
+        else:
+            object_id = moby_id
 
         unk2 = ''.join([data.popleft() for i in range(2)])
         local_x = hex_to_int_little(''.join([data.popleft() for i in range(2)]))

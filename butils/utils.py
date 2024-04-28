@@ -265,27 +265,31 @@ def scale_strafe_angle(strafe_angle, strafe_angle_min, strafe_angle_max, new_min
 
 def compute_strafe_angle(P1, P2, P3):
     # Vector from P1 to P2
-    v1 = (P2[0] - P1[0], P2[1] - P1[1])
-    
-    # Vector from P1 to P3
-    v2 = (P3[0] - P1[0], P3[1] - P1[1])
-    
-    # Calculate dot product of v1 and v2
-    dot_product = v1[0] * v2[0] + v1[1] * v2[1]
-    
-    # Calculate magnitudes of v1 and v2
-    mag_v1 = math.sqrt(v1[0]**2 + v1[1]**2)
-    mag_v2 = math.sqrt(v2[0]**2 + v2[1]**2)
-    
-    # Calculate cosine of the angle between v1 and v2
-    cos_theta = dot_product / (mag_v1 * mag_v2)
-    
-    # Calculate the angle in radians
-    angle_rad = math.acos(cos_theta)
-    
-    # Convert angle from radians to degrees
-    angle_deg = math.degrees(angle_rad)
-    
+    try:
+        v1 = (P2[0] - P1[0], P2[1] - P1[1])
+        
+        # Vector from P1 to P3
+        v2 = (P3[0] - P1[0], P3[1] - P1[1])
+        
+        # Calculate dot product of v1 and v2
+        dot_product = v1[0] * v2[0] + v1[1] * v2[1]
+        
+        # Calculate magnitudes of v1 and v2
+        mag_v1 = math.sqrt(v1[0]**2 + v1[1]**2)
+        mag_v2 = math.sqrt(v2[0]**2 + v2[1]**2)
+        
+        # Calculate cosine of the angle between v1 and v2
+        cos_theta = dot_product / (mag_v1 * mag_v2)
+        
+        # Calculate the angle in radians
+        angle_rad = math.acos(cos_theta)
+        
+        # Convert angle from radians to degrees
+        angle_deg = math.degrees(angle_rad)
+
+    except ZeroDivisionError as e:
+        return 90
+
     return angle_deg
 
 def get_forward_direction(P1, P2, P3):

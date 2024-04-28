@@ -2,10 +2,17 @@ from datetime import datetime
 import random
 
 class Arsenal:
-    def __init__(self, weapons:list=['flux', 'rocket', 'grav', 'n60'], enabled:bool=True):
+    def __init__(self, weapons:list=['flux', 'blitz', 'rocket', 'grav', 'n60'], enabled:bool=True):
         self.enabled = enabled
         self.weapons = {
             'flux':
+                {
+                    'cooldown': 1.45,
+                    'shoot_rate': 1,
+                    'hit_rate': 0,
+                    'last_ts_fired': datetime.now().timestamp()
+                },
+            'blitz':
                 {
                     'cooldown': 1.45,
                     'shoot_rate': 1,

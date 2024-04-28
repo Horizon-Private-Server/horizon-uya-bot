@@ -75,17 +75,20 @@ class prototype:
                     #self.game_state.player.coord = [28593, 54682, 7413]
 
                     # Patrol marc flag to flag
-                    #self.patrol([34161, 54135, 7413],[27114, 54160, 7413])
+                    self.patrol([34161, 54135, 7413],[27114, 54160, 7413], self.game_state.players[0].coord)
 
                     # Patrol marc 1 base:
                     #self.patrol([28450, 55272, 7413], [28752, 54612, 7413], [27149, 54243, 7421])
 
                     #new_coord = self.game_state.map.path(self.game_state.player.coord, self._misc['patrol'])
-                    self.game_state.player.coord = [28752, 54612, 7413]
-                    self.update_animation_and_angle([28752, 54612, 7413], [28752, 54612, 7413], [27149, 54243, 7421])
+                    
+                    
+                    # Marc sitting next to base
+                    #self.game_state.player.coord = [28752, 54612, 7413]
+                    #self.update_animation_and_angle([28752, 54612, 7413], [28752, 54612, 7413], [27149, 54243, 7421])
 
                     # Fire weapon
-                    self.fire_weapon()
+                    # self.fire_weapon()
 
                     # Send movement
                     self.send_movement()
@@ -98,7 +101,7 @@ class prototype:
                 break
 
     def send_movement(self):
-        if self.game_state.players[0].coord == [0,0,0]:
+        if self.game_state.players[0].coord == [0,0,0] or self.game_state.player.is_dead:
             return
 
         packet_num = self.game_state.player.gen_packet_num()
@@ -177,36 +180,14 @@ class prototype:
         # if random.random() > .5:
         #     self.game_state.player.animation = 'crouch'
 
-
-
         angle = compute_strafe_angle(old_coord, new_coord, target_coord)
-
-        #logger.info(f"{old_coord} | {new_coord} | {target_coord}")
-
         strafe_direction = get_strafe_direction(old_coord, new_coord, target_coord)
         strafe_angle_joystick = strafe_joystick_input(angle, strafe_direction)
 
         self.game_state.player.left_joystick_x = strafe_angle_joystick[0]
         self.game_state.player.left_joystick_y = strafe_angle_joystick[1]
 
-        logger.info(f"{self.game_state.player.animation} | {strafe_angle_joystick} | {angle:3.0f} | {strafe_direction}")
-        return
-
-
-        if strafe_magnitude == 'neutral': # Forwards or backwards
-            self.game_state.player.animation = forward_direction
-        elif strafe_magnitude == 'partial':
-            self.game_state.player.animation = f'{forward_direction}-{strafe_direction}'
-            #self.game_state.player.animation = f'forward-{strafe_direction}'
-        elif strafe_magnitude == 'strafe':
-            self.game_state.player.animation = strafe_direction
-
-        logger.info(f"{self.game_state.player.animation:} | {strafe_magnitude} | {forward_direction} | {strafe_direction}")
-
-
-
-        # elif new_coord != old_coord:
-        #     self.game_state.player.animation = 'forward'
+        # logger.info(f"{self.game_state.player.animation} | {strafe_angle_joystick} | {angle:3.0f} | {strafe_direction}")
 
 
     def respawn(self):
@@ -242,30 +223,40 @@ class prototype:
             # unk7 = hex_to_int_little("0000EA42") # last 2 bytes critical, first 2 bytes don't matter
 
 
-            unk2 = "00000000" # not needed for flux, needed for gravity
-            unk3 = "00000000" # not needed for flux, unknown for gravity
-            unk4 = "00000000" # not needed for flux
+            unk2 = "0000" # not needed for flux, needed for gravity
+            unk3 = "0000" # not needed for flux, unknown for gravity
+            unk4 = "0000" # not needed for flux
             local_player_coord = self.game_state.map.transform_global_to_local(self.game_state.players[0].coord)
 
-            logger.info(f"TRANSFORMING: {self.game_state.players[0].coord} -> {local_player_coord}")
+            #logger.info(f"TRANSFORMING: {self.game_state.players[0].coord} -> {local_player_coord}")
+            unk5 = "0000"
             local_x = local_player_coord[0] # makes flux curve left
+            unk6 = "0000"
             local_y = local_player_coord[1] # makes flux go backwards
-            local_z = local_player_coord[2]+2 # last 2 bytes critical, first 2 bytes don't matter
+            unk7 = "0000"
+            local_z = local_player_coord[2] # last 2 bytes critical, first 2 bytes don't matter
 
-            # unk2 = hex_to_int_little("FF6EEF43")
-            # unk3 = hex_to_int_little("60E95444")
-            # unk4 = hex_to_int_little("D99EE942")
-            # unk5 = hex_to_int_little("E44BEF43")
-            # unk6 = hex_to_int_little("5BBC5C44")
-            # unk7 = hex_to_int_little("F5C4EA42")
-            # unk2 = 0
-            # unk3 = 0
-            # unk4 = 0
-            # unk5 = 0
-            # unk6 = 0
-            # unk7 = 0
 
-            self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=unk2, unk3=unk3, unk4=unk4, local_x=local_x, local_y=local_y, local_z=local_z)])
+            # unk2:0000 local_x:0 unk3:4084  local_y:48 unk4:0000 local_z:0 unk5:889A local_x:15731 unk6:9364  local_y:16254 unk7:7511 local_z:1581
+
+            unk2 = "0000" # not needed for flux, needed for gravity
+            local_x = 0
+            unk3 = "4084" # not needed for flux, unknown for gravity
+            local_y = 48
+            unk4 = "0000" # not needed for flux
+            local_z = 0
+
+            #logger.info(f"TRANSFORMING: {self.game_state.players[0].coord} -> {local_player_coord}")
+            unk5 = "889A"
+            local_x_2 = 15731 # makes flux curve left
+            unk6 = "9364"
+            local_y_2 = 16254 # makes flux go backwards
+            unk7 = "7511"
+            local_z_2 = 1581 # last 2 bytes critical, first 2 bytes don't matter
+
+            self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=unk2, local_x=local_x, unk3=unk3, local_y=local_y, unk4=unk4, local_z=local_z, unk5=unk5, local_x_2=local_x_2, unk6=unk6, local_y_2=local_y_2, unk7=unk7, local_z_2=local_z_2)])
+
+            #self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=unk2, local_x=local_x, unk3=unk3, local_y=local_y, unk4=unk4, local_z=local_z, unk5=unk5, local_x_2=local_x, unk6=unk6, local_y_2=local_y, unk7=unk7, local_z_2=local_z)])
 
             self.posthook_weapon_fired()
 

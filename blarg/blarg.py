@@ -5,6 +5,8 @@ import os
 import argparse
 import time
 from datetime import datetime
+import math
+
 
 import sys
 sys.path.append("..")
@@ -16,6 +18,8 @@ from collections import deque
 
 from medius.dme_serializer import TcpSerializer as tcp_map
 from medius.dme_serializer import UdpSerializer as udp_map
+from medius.dme_serializer import packets_both_tcp_and_udp
+from constants.constants import get_blitz_angle
 
 from butils.utils import *
 
@@ -36,6 +40,8 @@ class Blarg:
         self._logger.addHandler(filehandler)
 
         self._logger.setLevel(logging.DEBUG)
+
+        self._recent_movement = None
 
     def run(self):
         asyncio.new_event_loop().run_until_complete(self.read_websocket())
@@ -78,7 +84,10 @@ class Blarg:
                         self._logger.warning(f"Unknown {packet['type']} src:{packet['src']} packet id: {packet_id} | data: {packet['data']}")
                     break
                 else:
-                    serialized = tcp_map[packet_id].serialize(data)
+                    if packet_id in packets_both_tcp_and_udp:
+                        serialized = tcp_map[packet_id].serialize('tcp', data)
+                    else:
+                        serialized = tcp_map[packet_id].serialize(data)
 
             elif packet['type'] == 'udp':
                 if packet_id not in udp_map.keys():
@@ -86,13 +95,35 @@ class Blarg:
                         self._logger.warning(f"Unknown {packet['type']} src:{packet['src']} packet id: {packet_id} | data: {packet['data']}")
                     break
                 else:
-                    serialized = udp_map[packet_id].serialize(data)
+                    if packet_id in packets_both_tcp_and_udp:
+                        serialized = udp_map[packet_id].serialize('udp', data)
+                    else:
+                        serialized = udp_map[packet_id].serialize(data)
 
             if packet_id in self._config['exclude']:
                 continue
 
+            if packet_id == '0209':
+                self._recent_movement = serialized.data
+
             if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] != 'False': # and packet_id not in ['0209', '0213']:
-                self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")
+                #self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")
+
+                if serialized.unk1 == '08':
+                    self._logger.info(f"{packet['src']} -> {packet['dst']} | DEBUGGING ANGLES {self._recent_movement['cam3_x']} | {serialized.local_x_2} | {serialized.local_y_2} | {serialized.local_z_2} | {get_blitz_angle(self._recent_movement['cam3_x'])}")
+                    #self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized} | {self._recent_movement}")
+
+
+                # unk5 = serialized.unk5[4:]
+                # unk6 = serialized.unk6[4:]
+                # unk7 = serialized.unk7[4:]
+                # unk5_int = hex_to_int_little(unk5)
+                # unk6_int = hex_to_int_little(unk6)
+                # unk7_int = hex_to_int_little(unk7)
+                # # self._logger.info(f"{packet['src']} -> {packet['dst']} | {unk5} | {unk6} | {unk7} | ")
+                # res = f'[{self._coord},[{unk5_int},{unk6_int:05d},{unk7_int:05d}]],'
+                # print(res)
+
 
     async def read_websocket(self):
         uri = f"ws://{self._config['server_ip']}:8765"
@@ -111,6 +142,11 @@ class Blarg:
                             self.process(data_point)
                     except:
                         self._logger.exception(f"error processing: {data_point}")
+
+def scale_value(value):
+    # Scale value from range 0-255 to range 0-180
+    scaled_value = (value / 255) * 180
+    return scaled_value
 
 def read_config(target, config_file='config.json'):
     with open(config_file, 'r') as f:

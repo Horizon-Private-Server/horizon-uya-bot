@@ -18,6 +18,7 @@ class PlayerState:
         self.rank = rank_map[rank]
 
         self.coord = [0,0,0]
+        self.cam_x = 0
         self.movement_packet_num = 0
         self.time = 0
 

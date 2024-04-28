@@ -14,7 +14,7 @@ class Arsenal:
                 },
             'blitz':
                 {
-                    'cooldown': 1.45,
+                    'cooldown': .5,
                     'shoot_rate': 1,
                     'hit_rate': 0,
                     'last_ts_fired': datetime.now().timestamp()

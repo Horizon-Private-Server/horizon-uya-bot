@@ -76,6 +76,7 @@ class GameState:
         if src_player not in self.players.keys():
             return
         self.players[src_player].coord = movement_data['coord']
+        self.players[src_player].cam_x = movement_data['cam3_x']
         self.players[src_player].movement_packet_num = movement_data['packet_num']
 
         if self.players[src_player].flag == 'red_flag':

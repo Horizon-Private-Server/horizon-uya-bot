@@ -4,7 +4,7 @@ from scipy.spatial import distance
 from datetime import datetime
 from collections import defaultdict
 
-from constants.constants import ANIMATION_MAP, MAIN_BOT_LOOP_TIMER
+from constants.constants import ANIMATION_MAP, MAIN_BOT_LOOP_TIMER, get_blitz_angle
 from medius.dme_packets import *
 from butils.utils import *
 
@@ -88,7 +88,7 @@ class prototype:
                     #self.update_animation_and_angle([28752, 54612, 7413], [28752, 54612, 7413], [27149, 54243, 7421])
 
                     # Fire weapon
-                    # self.fire_weapon()
+                    self.fire_weapon()
 
                     # Send movement
                     self.send_movement()
@@ -215,44 +215,36 @@ class prototype:
             else:
                 object_id=-1
 
-            # unk2 = hex_to_int_little("00000000") # not needed for flux, needed for gravity
-            # unk3 = hex_to_int_little("00000000") # not needed for flux, unknown for gravity
-            # unk4 = hex_to_int_little("00000000") # not needed for flux
-            # unk5 = hex_to_int_little("0000EF43") # makes flux curve left
-            # unk6 = hex_to_int_little("00005C44") # makes flux go backwards
-            # unk7 = hex_to_int_little("0000EA42") # last 2 bytes critical, first 2 bytes don't matter
-
-
-            unk2 = "0000" # not needed for flux, needed for gravity
-            unk3 = "0000" # not needed for flux, unknown for gravity
-            unk4 = "0000" # not needed for flux
             local_player_coord = self.game_state.map.transform_global_to_local(self.game_state.players[0].coord)
-
-            #logger.info(f"TRANSFORMING: {self.game_state.players[0].coord} -> {local_player_coord}")
-            unk5 = "0000"
-            local_x = local_player_coord[0] # makes flux curve left
-            unk6 = "0000"
-            local_y = local_player_coord[1] # makes flux go backwards
-            unk7 = "0000"
-            local_z = local_player_coord[2] # last 2 bytes critical, first 2 bytes don't matter
-
-
-            # unk2:0000 local_x:0 unk3:4084  local_y:48 unk4:0000 local_z:0 unk5:889A local_x:15731 unk6:9364  local_y:16254 unk7:7511 local_z:1581
 
             unk2 = "0000" # not needed for flux, needed for gravity
             local_x = 0
-            unk3 = "4084" # not needed for flux, unknown for gravity
-            local_y = 48
+            unk3 = "0000" # not needed for flux, unknown for gravity
+            local_y = 0
             unk4 = "0000" # not needed for flux
             local_z = 0
+            unk5 = "0000"
+            unk6 = "0000"
+            unk7 = "0000"
 
-            #logger.info(f"TRANSFORMING: {self.game_state.players[0].coord} -> {local_player_coord}")
-            unk5 = "889A"
-            local_x_2 = 15731 # makes flux curve left
-            unk6 = "9364"
-            local_y_2 = 16254 # makes flux go backwards
-            unk7 = "7511"
-            local_z_2 = 1581 # last 2 bytes critical, first 2 bytes don't matter
+            local_x_2 = local_player_coord[0]
+            local_y_2 = local_player_coord[1]
+            local_z_2 = local_player_coord[2]
+            
+            if self.game_state.player.weapon == 'blitz':
+                # 1. Get the angle between the player and target
+                x_angle = calculate_angle(self.game_state.player.coord, self.game_state.players[0].coord)
+                # 2. Transform that to local coordinates
+                local_x, local_y = get_blitz_angle(x_angle)
+
+                local_x_2 = local_x
+                local_y_2 = local_y
+                local_z_2 = 15511 # Forward looking height
+            elif self.game_state.player.weapon == 'grav':
+                local_x = local_x_2
+                local_y = local_y_2
+                local_z = local_z_2
+
 
             self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=unk2, local_x=local_x, unk3=unk3, local_y=local_y, unk4=unk4, local_z=local_z, unk5=unk5, local_x_2=local_x_2, unk6=unk6, local_y_2=local_y_2, unk7=unk7, local_z_2=local_z_2)])
 

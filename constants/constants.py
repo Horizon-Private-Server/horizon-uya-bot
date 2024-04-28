@@ -1,6 +1,12 @@
+import json
+import os
 
 # Movement generally is 0.068 seconds between each movement packet
 MAIN_BOT_LOOP_TIMER = 0.068
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+with open(os.path.join(script_dir, 'blitz_angles.json') ,'r') as f:
+    BLITZ_ANGLES = json.loads(f.read())
 
 CTF_FLAG_ID_MAP = {
     'command_center': {'131000F7': 'red_flag', '141000F7': 'blue_flag'},
@@ -31,6 +37,8 @@ def get_flag_location(map='marcadia_palace', team='red'):
         return CTF_FLAG_LOCATIONS[map][team]
     return [0,0,0]
 
+def get_blitz_angle(x_angle):
+    return BLITZ_ANGLES[str(x_angle)]
 
 DEATHMATCH_MAP = {
     0: 'blue',

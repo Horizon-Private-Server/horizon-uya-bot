@@ -217,15 +217,9 @@ class prototype:
 
             local_player_coord = self.game_state.map.transform_global_to_local(self.game_state.players[0].coord)
 
-            unk2 = "0000" # not needed for flux, needed for gravity
             local_x = 0
-            unk3 = "0000" # not needed for flux, unknown for gravity
             local_y = 0
-            unk4 = "0000" # not needed for flux
             local_z = 0
-            unk5 = "0000"
-            unk6 = "0000"
-            unk7 = "0000"
 
             local_x_2 = local_player_coord[0]
             local_y_2 = local_player_coord[1]
@@ -245,10 +239,7 @@ class prototype:
                 local_y = local_y_2
                 local_z = local_z_2
 
-
-            self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=unk2, local_x=local_x, unk3=unk3, local_y=local_y, unk4=unk4, local_z=local_z, unk5=unk5, local_x_2=local_x_2, unk6=unk6, local_y_2=local_y_2, unk7=unk7, local_z_2=local_z_2)])
-
-            #self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', unk2=unk2, local_x=local_x, unk3=unk3, local_y=local_y, unk4=unk4, local_z=local_z, unk5=unk5, local_x_2=local_x, unk6=unk6, local_y_2=local_y, unk7=unk7, local_z_2=local_z)])
+            self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', local_x=local_x, local_y=local_y, local_z=local_z, local_x_2=local_x_2, local_y_2=local_y_2, local_z_2=local_z_2)])
 
             self.posthook_weapon_fired()
 

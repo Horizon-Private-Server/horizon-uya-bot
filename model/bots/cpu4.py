@@ -16,11 +16,8 @@ class cpu4(prototype):
     def __init__(self, model, game_state):
         super().__init__(model, game_state)
 
-        self.arsenal.weapons['flux']['hit_rate'] = 1
-        self.arsenal.weapons['rocket']['hit_rate'] = 1
-        self.arsenal.weapons['grav']['hit_rate'] = 1
-        self.arsenal.weapons['n60']['hit_rate'] = 1
-
+        self.arsenal.weapons['flux']['hit_rate'] = .3
+        self.arsenal.weapons['grav']['hit_rate'] = .3
 
         ###### Set the cycle
         weapon_order_list = list(self.game_state.weapons)
@@ -45,7 +42,7 @@ class cpu4(prototype):
 
         self.patrol(marc_points, circular=False)
 
-        self.fire_weapon()
+        self.fire_weapon(object_id = self.game_state.players[0].player_id)
 
 
     def __str__(self):

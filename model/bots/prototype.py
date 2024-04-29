@@ -151,36 +151,39 @@ class prototype:
         if weapon_fired_bool:
             # Weapon was fired.
 
-            if hit_bool: # object was hit
-                #object_id=object_id
-                object_id=-1
-            else:
-                object_id=-1
-
-            local_player_coord = self.game_state.map.transform_global_to_local(self.game_state.players[0].coord)
-
             local_x = 0
             local_y = 0
             local_z = 0
+            local_x_2 = 0
+            local_y_2 = 0
+            local_z_2 = 0
 
-            local_x_2 = local_player_coord[0]
-            local_y_2 = local_player_coord[1]
-            local_z_2 = local_player_coord[2]
-            
-            if self.game_state.player.weapon == 'blitz':
-                # 1. Get the angle between the player and target
-                x_angle = calculate_angle(self.game_state.player.coord, self.target)
-                # 2. Transform that to local coordinates
-                local_x, local_y = get_blitz_angle(x_angle)
+            if hit_bool: # object was hit
+                object_id=object_id
+            else:
+                object_id=-1
 
-                local_x_2 = local_x
-                local_y_2 = local_y
-                local_z_2 = 15511 # Forward looking height
-            elif self.game_state.player.weapon == 'grav':
-                local_x = local_x_2
-                local_y = local_y_2
-                local_z = local_z_2
-            #print(f"Firing {self.game_state.player.weapon}")
+                local_player_coord = self.game_state.map.transform_global_to_local(self.game_state.players[0].coord)
+
+                local_x_2 = local_player_coord[0]
+                local_y_2 = local_player_coord[1]
+                local_z_2 = local_player_coord[2]
+                
+                if self.game_state.player.weapon == 'blitz':
+                    # 1. Get the angle between the player and target
+                    x_angle = calculate_angle(self.game_state.player.coord, self.target)
+                    # 2. Transform that to local coordinates
+                    local_x, local_y = get_blitz_angle(x_angle)
+
+                    local_x_2 = local_x
+                    local_y_2 = local_y
+                    local_z_2 = 15511 # Forward looking height
+
+                elif self.game_state.player.weapon == 'grav':
+                    local_x = local_x_2
+                    local_y = local_y_2
+                    local_z = local_z_2
+
             self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', local_x=local_x, local_y=local_y, local_z=local_z, local_x_2=local_x_2, local_y_2=local_y_2, local_z_2=local_z_2)])
 
         if self.changing_weapons == False:
@@ -203,7 +206,6 @@ class prototype:
             weapon = random.choice(self.game_state.weapons)
         else:
             weapon = self.weapon_order.pop()
-            print(f"Popping new weapon {weapon}")
 
         self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
         self.game_state.player.weapon = weapon
@@ -245,8 +247,6 @@ class prototype:
             dist = calculate_distance(src_player_coord, dest_coord)
             time_to_explode = get_grav_timing(dist)
 
-            logger.info(f"Grav: time to explode: {time_to_explode}")
-
             if time_to_explode != -1:
                 self._model._loop.create_task(self.process_grav_bomb_explode(time_to_explode, dest_coord, src_player, 'grav'))
 
@@ -273,7 +273,6 @@ class prototype:
         await asyncio.sleep(time_to_explode)
         # Check if our player is within distance of explosion
         dist = calculate_distance(dest_coord, self.game_state.player.coord)
-        logger.info(f"DEST DIST: {dist}")
         # 460 threshold
         if dist <= 460:
             self.game_state.player.health -= 60

@@ -60,20 +60,6 @@ class prototype:
                     # Run objective
                     self.objective()
 
-                    # Patrol marc flag to flag
-
-                    # Patrol marc 1 base:
-                    #self.patrol([28450, 55272, 7413], [28752, 54612, 7413], [27149, 54243, 7421])
-
-                    #new_coord = self.game_state.map.path(self.game_state.player.coord, self._misc['patrol'])
-                    
-                    # Marc sitting next to base
-                    #self.game_state.player.coord = [28752, 54612, 7413]
-                    #self.update_animation_and_angle([28752, 54612, 7413], [28752, 54612, 7413], [27149, 54243, 7421])
-
-                    # Fire weapon
-                    #self.fire_weapon()
-
                     # Send movement
                     self.send_movement()
 
@@ -194,7 +180,7 @@ class prototype:
                 local_x = local_x_2
                 local_y = local_y_2
                 local_z = local_z_2
-
+            #print(f"Firing {self.game_state.player.weapon}")
             self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', local_x=local_x, local_y=local_y, local_z=local_z, local_x_2=local_x_2, local_y_2=local_y_2, local_z_2=local_z_2)])
 
         if self.changing_weapons == False:
@@ -213,26 +199,15 @@ class prototype:
         if self.game_state.weapons == []:
             weapon = 'wrench'
         elif len(self.game_state.weapons) == 1 or self.game_state.player.weapon == None:
+            print(len(self.game_state.weapons) == 1, self.game_state.player.weapon == None)
             weapon = random.choice(self.game_state.weapons)
         else:
-            weapon = self.weapon_order_map[self.game_state.player.weapon]
+            weapon = self.weapon_order.pop()
+            print(f"Popping new weapon {weapon}")
 
         self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
         self.game_state.player.weapon = weapon
 
-
-    def change_weapon(self):
-        self.weapon_switch_dt = datetime.now().timestamp()
-
-        if self.game_state.weapons == []:
-            weapon = 'wrench'
-        elif len(self.game_state.weapons) == 1:
-            weapon = random.choice(self.game_state.weapons)
-        else:
-            weapon = random.choice([weap for weap in self.game_state.weapons if weap != self.game_state.player.weapon])
-
-        self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
-        self.game_state.player.weapon = weapon
 
     def process_shot_fired(self, src_player, packet_data):
         # Player is Alive, and the teammate who shot was on the enemy team. The object hit was us.

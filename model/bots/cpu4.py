@@ -7,6 +7,7 @@ from datetime import datetime
 
 from model.bots.prototype import prototype
 from medius.dme_packets import *
+from butils.circularlist import CircularList
 
 import asyncio
 
@@ -22,19 +23,11 @@ class cpu4(prototype):
 
 
         ###### Set the cycle
-        weapon_order = list(self.game_state.weapons)
-        random.shuffle(weapon_order)
-        weapon_order_map = {}
-
-        if len(weapon_order) == 0:
-            pass
-        elif len(weapon_order) == 1:
-            weapon_order_map[weapon_order[0]] = weapon_order[0]
-        else:
-            for i in range(len(weapon_order)-1):
-                weapon_order_map[weapon_order[i]] = weapon_order[i+1]
-            weapon_order_map[weapon_order[-1]] = weapon_order[0]
-        self.weapon_order_map = weapon_order_map
+        weapon_order_list = list(self.game_state.weapons)
+        random.shuffle(weapon_order_list)
+        if set(weapon_order_list) == {'blitz', 'flux', 'grav'}:
+            weapon_order_list = ['grav', 'flux', 'blitz']
+        self.weapon_order = CircularList(weapon_order_list, circular=True, casttype=str)
 
 
 

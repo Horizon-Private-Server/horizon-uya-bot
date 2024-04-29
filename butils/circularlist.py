@@ -1,17 +1,17 @@
 
 
 class CircularList:
-    def __init__(self, items, circular=False):
+    def __init__(self, items, circular=False, casttype=tuple):
         self.circular = circular
         self.direction = 'forward'
         self.size = len(items)
+        self.casttype = casttype
         if self.size == 2:
             self.circular = True
         self.circular_list = [None] * self.size
         self.current_index = 0  # Pointer to the current position
         for item in items:
-            self.append(tuple(item))
-        print(self.circular, self.direction)
+            self.append(self.casttype(item))
 
     def append(self, item):
         """Append an item to the circular list."""
@@ -19,7 +19,6 @@ class CircularList:
         self.current_index = (self.current_index + 1) % self.size
 
     def pop(self):
-        print(self.circular, self.direction)
         if self.circular:
             """Pop an item from the circular list."""
             if self.current_index == 0:
@@ -39,8 +38,10 @@ class CircularList:
                 self.current_index -= 1
 
         item = self.circular_list[self.current_index]
-        return list(item)
-    
+        if self.casttype is tuple:
+            return list(item)
+        return self.casttype(item)
+
     def peek(self):
         return self.circular_list[self.current_index]
 
@@ -50,4 +51,4 @@ class CircularList:
         if len(other) != self.size:
             return False
         queue_set = set(self.circular_list)
-        return queue_set == set([tuple(a) for a in other])
+        return queue_set == set([self.casttype(a) for a in other])

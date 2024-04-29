@@ -7,6 +7,7 @@ from collections import defaultdict
 from constants.constants import ANIMATION_MAP, MAIN_BOT_LOOP_TIMER, get_blitz_angle, get_grav_timing
 from medius.dme_packets import *
 from butils.utils import *
+from butils.circularlist import CircularList
 
 from medius.rt.clientappsingle import ClientAppSingleSerializer
 from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
@@ -22,11 +23,11 @@ class prototype:
         self._model = model
         self.game_state = game_state
 
+        self.target = [0,0,0]
+
         # self.game_state.player.coord = self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode)
         self.game_state.player.coord = [0,0,0]
         self.game_state.player.x_angle = 127
-
-        self.tracking = self.game_state.player
 
         self.follow_player = False
 
@@ -39,29 +40,15 @@ class prototype:
         self.weapon_switch_fire_cooldown = .3
         self.weapon_switch_dt = datetime.now().timestamp()
 
-        self._close_weapon_self_dmg_rate = {
-            'grav': .4,
-            'blitz': .5,
-            'lava': .5
-        }
-
-        self._close_weapon_self_dmg_amount = {
-            'grav': 20,
-            'blitz': 10,
-            'lava': 10
-        }
+        self.changing_weapons = False
 
         self._misc = defaultdict(int)
 
     async def main_loop(self):
         while self._model.alive:
             try:
-                if self.game_state.players[0].coord == [0,0,0]:
-                    pass
-                else:
-
-                    self.tracking = self.game_state.players[0]
-
+                # Pass until we start getting movement data from P0
+                if self.game_state.players[0].coord != [0,0,0]:
                     # Randomly pick a valid weapon if no weapon is selected
                     if self.game_state.player.weapon == None:
                         self.change_weapon()
@@ -71,10 +58,9 @@ class prototype:
                         self.respawn()
 
                     # Run objective
-                    #self.objective()
+                    self.objective()
 
                     # Patrol marc flag to flag
-                    self.patrol([34161, 54135, 7413],[27114, 54160, 7413], self.game_state.players[0].coord)
 
                     # Patrol marc 1 base:
                     #self.patrol([28450, 55272, 7413], [28752, 54612, 7413], [27149, 54243, 7421])
@@ -116,56 +102,28 @@ class prototype:
         self._model.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
 
-    def patrol(self, coord1, coord2, target):
-        
+    def patrol(self, coords, circular=False):
         if 'patrol' not in self._misc.keys():
-            self._misc['patrol'] = coord1
+            self._misc['patrol'] = CircularList(coords, circular=circular)
+        elif self._misc['patrol'] != coords:
+            logger.info("GOT A NEW PATROL COORDINATE!")
+        
 
-        if calculate_distance(self.game_state.player.coord, coord1) < 70:
-            self._misc['patrol'] = coord2
-        elif calculate_distance(self.game_state.player.coord, coord2) < 70:
-            self._misc['patrol'] = coord1
-    
-        # Red flag marcadia over lip: [34161, 54135, 7413]
-        # Blue flag marcadia over lip: [27114, 54160, 7413]
-        new_coord = self.game_state.map.path(self.game_state.player.coord, self._misc['patrol'])
-        self.update_animation_and_angle(self.game_state.player.coord, new_coord, target)
+        if calculate_distance(self.game_state.player.coord, self._misc['patrol'].peek()) > 70:
+            patrol_coord = self._misc['patrol'].peek()
+        else:
+            patrol_coord = self._misc['patrol'].pop()
+
+        new_coord = self.game_state.map.path(self.game_state.player.coord, patrol_coord)
+        self.update_animation_and_angle(self.game_state.player.coord, new_coord)
         self.game_state.player.coord = new_coord
 
 
-    def objective(self):
-        # first determine the state of the flag etc
-
-        # update angle/coord
-        if not self.game_state.player.is_dead:
-            #if self.game_state.player.movement_packet_num % 4 == 0:
-
-            self.tracking = self._model.get_closest_enemy_player()
-
-            # if we are at 300 distance, we can strafe around instead of walking toward them
-            if calculate_distance(self.game_state.player.coord, self.tracking.coord) > 600 or self.follow_player == True:
-                new_coord = self.game_state.map.path(self.game_state.player.coord, self.tracking.coord)
-                dist_diff = calculate_distance(self.game_state.player.coord, new_coord)
-                # logger.info(f"DISTANCE BETWEEN SELECTED AND CURRENT POINT: {dist_diff}")
-            else:
-                new_coord = self.game_state.map.get_random_coord_connected(self.game_state.player.coord)
-
-            self.game_state.player.animation = self.get_animation(self.game_state.player.coord, new_coord)
-
-            self.game_state.player.coord = new_coord
-
-        # Update camera angle
-        # if self.game_state.player.movement_packet_num % 5 == 0:
-            self.game_state.player.x_angle = calculate_angle(self.game_state.player.coord, self.tracking.coord)
-
-        # Fire weapon
-        #self.fire_weapon()
-
-    def update_animation_and_angle(self, old_coord, new_coord, target_coord):
+    def update_animation_and_angle(self, old_coord, new_coord):
         # Start with no animation
         self.game_state.player.animation = None
 
-        self.game_state.player.x_angle = calculate_angle(new_coord, target_coord)
+        self.game_state.player.x_angle = calculate_angle(new_coord, self.target)
         if old_coord == new_coord:
             self.game_state.player.animation = None
             self.game_state.player.left_joystick_x = None
@@ -178,8 +136,8 @@ class prototype:
         # if random.random() > .5:
         #     self.game_state.player.animation = 'crouch'
 
-        angle = compute_strafe_angle(old_coord, new_coord, target_coord)
-        strafe_direction = get_strafe_direction(old_coord, new_coord, target_coord)
+        angle = compute_strafe_angle(old_coord, new_coord, self.target)
+        strafe_direction = get_strafe_direction(old_coord, new_coord, self.target)
         strafe_angle_joystick = strafe_joystick_input(angle, strafe_direction)
 
         self.game_state.player.left_joystick_x = strafe_angle_joystick[0]
@@ -195,7 +153,7 @@ class prototype:
         self.game_state.player.coord = self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode)
         self.game_state.player.is_dead = False
 
-    def fire_weapon(self):
+    def fire_weapon(self, object_id=None):
         if self.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench']:
             return
 
@@ -207,8 +165,8 @@ class prototype:
         if weapon_fired_bool:
             # Weapon was fired.
 
-            if hit_bool: # player was hit
-                #object_id=self.tracking.player_id
+            if hit_bool: # object was hit
+                #object_id=object_id
                 object_id=-1
             else:
                 object_id=-1
@@ -225,7 +183,7 @@ class prototype:
             
             if self.game_state.player.weapon == 'blitz':
                 # 1. Get the angle between the player and target
-                x_angle = calculate_angle(self.game_state.player.coord, self.game_state.players[0].coord)
+                x_angle = calculate_angle(self.game_state.player.coord, self.target)
                 # 2. Transform that to local coordinates
                 local_x, local_y = get_blitz_angle(x_angle)
 
@@ -239,10 +197,29 @@ class prototype:
 
             self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', local_x=local_x, local_y=local_y, local_z=local_z, local_x_2=local_x_2, local_y_2=local_y_2, local_z_2=local_z_2)])
 
-            self.posthook_weapon_fired()
+        if self.changing_weapons == False:
+            self._model._loop.create_task(self.change_weapon_timer())
 
-    def posthook_weapon_fired(self):
-        pass
+
+    async def change_weapon_timer(self):
+        self.changing_weapons = True
+        await asyncio.sleep(.3)
+        self.change_weapon()
+        self.changing_weapons = False
+
+    def change_weapon(self):
+        self.weapon_switch_dt = datetime.now().timestamp()
+
+        if self.game_state.weapons == []:
+            weapon = 'wrench'
+        elif len(self.game_state.weapons) == 1 or self.game_state.player.weapon == None:
+            weapon = random.choice(self.game_state.weapons)
+        else:
+            weapon = self.weapon_order_map[self.game_state.player.weapon]
+
+        self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
+        self.game_state.player.weapon = weapon
+
 
     def change_weapon(self):
         self.weapon_switch_dt = datetime.now().timestamp()
@@ -253,6 +230,7 @@ class prototype:
             weapon = random.choice(self.game_state.weapons)
         else:
             weapon = random.choice([weap for weap in self.game_state.weapons if weap != self.game_state.player.weapon])
+
         self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
         self.game_state.player.weapon = weapon
 
@@ -297,7 +275,7 @@ class prototype:
             if time_to_explode != -1:
                 self._model._loop.create_task(self.process_grav_bomb_explode(time_to_explode, dest_coord, src_player, 'grav'))
 
-        # ---- N60, Rocket, Flux
+        # -- Flux
         elif packet_data.object_id == self.game_state.player.player_id:
             # If the opposite player is ALSO a CPU, we need to check the distance to ensure that they are close enough to do dmg
             if self.game_state.players[src_player].username[0:3] == 'CPU' and calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) > self.cpu_damage_min_dist:
@@ -315,18 +293,6 @@ class prototype:
             self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
             self.check_if_dead(src_player, packet_data.weapon)
 
-
-        # ---- Gravity, Blitz, Lava
-        # elif packet_data.weapon in ('grav', 'lava'):
-        #     # Check that the enemy player is within distance to hit us
-        #     if calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < self.cpu_damage_min_dist:
-        #         # Randomly take hit
-        #         if random.random() < self._close_weapon_self_dmg_rate[packet_data.weapon]:
-        #             self.game_state.player.health -= self._close_weapon_self_dmg_amount[packet_data.weapon]
-        #             self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
-        #             self.check_if_dead(src_player, packet_data)
-        #     else: # player out of range
-        #         pass
 
     async def process_grav_bomb_explode(self, time_to_explode, dest_coord, src_player, weapon):
         await asyncio.sleep(time_to_explode)

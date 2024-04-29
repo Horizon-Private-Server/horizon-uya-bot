@@ -125,16 +125,16 @@ class Blarg:
                 self._recent_movement = serialized.data
 
             if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] != 'False': # and packet_id not in ['0209', '0213']:
-                #self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")
+                self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")
 
-                if serialized.unk1 == '08':
-                    #self._logger.info(f"{packet['src']} -> {packet['dst']} | DEBUGGING ANGLES {self._recent_movement['cam1_y']}|{serialized.local_z_2}")
-                    local_coord = [serialized.local_x, serialized.local_y, serialized.local_z]
-                    local_transform = t.transform_local_to_global(local_coord)
+                # if serialized.unk1 == '08':
+                #     #self._logger.info(f"{packet['src']} -> {packet['dst']} | DEBUGGING ANGLES {self._recent_movement['cam1_y']}|{serialized.local_z_2}")
+                #     local_coord = [serialized.local_x, serialized.local_y, serialized.local_z]
+                #     local_transform = t.transform_local_to_global(local_coord)
 
-                    dist = calculate_distance(self._recent_movement['coord'], local_transform)
-                    self._logger.info(f"{packet['src']} -> {packet['dst']} | {dist}")
-                    #print(f"{translate_value(self._recent_movement['cam1_y'])} | {self._recent_movement['coord']} | {local_transform}")
+                #     dist = calculate_distance(self._recent_movement['coord'], local_transform)
+                #     self._logger.info(f"{packet['src']} -> {packet['dst']} | {dist}")
+                #     #print(f"{translate_value(self._recent_movement['cam1_y'])} | {self._recent_movement['coord']} | {local_transform}")
 
 
                 # unk5 = serialized.unk5[4:]
@@ -186,3 +186,16 @@ if __name__ == '__main__':
 
     blarg = Blarg(config)
     blarg.run()
+
+
+    # with open('data.json', 'r', encoding='utf-8-sig') as f:
+    #     s = f.read()
+
+    #     data = json.loads(s)
+    #     print(len(data))
+    #     for data_point in data:
+    #         #print(data_point)
+    #         try:
+    #             blarg.process(data_point)
+    #         except:
+    #             print(f"error processing: {data_point}")

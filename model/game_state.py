@@ -5,6 +5,7 @@ import numpy as np
 from maps.map import Map
 
 from model.player_state import PlayerState
+from model.object_manager import ObjectManager
 
 from constants.constants import get_flag_location, DEATHMATCH_MAP
 
@@ -36,6 +37,8 @@ class GameState:
 
         # Point grid
         self.map = Map(self.map_name)
+
+        self.object_manager = ObjectManager(self.map_name, self.game_mode)
 
     def start(self):
         if self.game_info['game_mode'] == 'Deathmatch' and self.game_info['submode'] == 'FFA':

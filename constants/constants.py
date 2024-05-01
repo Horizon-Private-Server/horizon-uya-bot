@@ -1,6 +1,10 @@
 import json
 import os
 
+VALID_GAME_MODES = {
+    'marcadia_palace': {'Deathmatch'}
+}
+
 # Movement generally is 0.068 seconds between each movement packet
 MAIN_BOT_LOOP_TIMER = 0.068
 
@@ -25,8 +29,7 @@ CTF_FLAG_LOCATIONS = {
     'marcadia_palace': {'red': [34431, 53967, 7362], 'blue': [26813, 54001, 7364]},
 }
 
-def parse_object_id(object_id, map='marcadia_palace', nodes=True, base_defenses=True):
-
+def parse_object_id(object_id, map='marcadia_palace'):
     if map in {'command_center', 'aquatos_sewers', 'blackwater_docks', 'marcadia_palace'}:
         if object_id not in CTF_FLAG_ID_MAP[map].keys():
             return None

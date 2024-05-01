@@ -213,9 +213,12 @@ class prototype:
 
     def process_shot_fired(self, src_player, packet_data):
         # Player is Alive, and the teammate who shot was on the enemy team. The object hit was us.
-        if self.game_state.player.is_dead or self.game_state.players[src_player].team == self.game_state.player.team:
+        # if self.game_state.player.is_dead or self.game_state.players[src_player].team == self.game_state.player.team:
+        #     return
+
+        if self.game_state.player.is_dead:
             return
-        
+
         damage = 0
 
         if packet_data.weapon == 'blitz' and packet_data.unk1 == '08' and calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 2089: # 2089 minimum for 7 damage
@@ -227,7 +230,6 @@ class prototype:
             if abs(players_angle - angle_needed) > 10: 
                 return
 
-            logger.info(f"Blitz weapon fired distance: {angle_needed} | {players_angle}")
             if calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 245: # 245 minimum for 54 damage
                 damage = 54
             elif calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 541: # 541 minimum for 26 damage
@@ -253,18 +255,19 @@ class prototype:
         # -- Flux
         elif packet_data.object_id == self.game_state.player.player_id:
             # If the opposite player is ALSO a CPU, we need to check the distance to ensure that they are close enough to do dmg
-            if self.game_state.players[src_player].username[0:3] == 'CPU' and calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) > self.cpu_damage_min_dist:
-                return
+            # if self.game_state.players[src_player].username[0:3] == 'CPU' and calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) > self.cpu_damage_min_dist:
+            #     return
 
             if packet_data.weapon == 'flux':
-                damage -= 87
+                damage = 87
             elif packet_data.weapon == 'n60':
-                damage -= 5
+                damage = 5
             elif packet_data.weapon == 'rocket':
-                damage -= 60
+                damage = 60
 
         if damage != 0:
             self.game_state.player.health -= damage
+
             self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
             self.check_if_dead(src_player, packet_data.weapon)
 

@@ -16,8 +16,8 @@ class cpu4(prototype):
     def __init__(self, model, game_state):
         super().__init__(model, game_state)
 
-        self.arsenal.weapons['flux']['hit_rate'] = .3
-        self.arsenal.weapons['grav']['hit_rate'] = .3
+        self.arsenal.weapons['flux']['hit_rate'] = .1
+        self.arsenal.weapons['grav']['hit_rate'] = 1
 
         ###### Set the cycle
         weapon_order_list = list(self.game_state.weapons)
@@ -25,7 +25,6 @@ class cpu4(prototype):
         if set(weapon_order_list) == {'blitz', 'flux', 'grav'}:
             weapon_order_list = ['grav', 'flux', 'blitz']
         self.weapon_order = CircularList(weapon_order_list, circular=True, casttype=str)
-
 
 
     def objective(self):

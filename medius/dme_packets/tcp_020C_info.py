@@ -4,6 +4,8 @@ import os
 
 from constants.constants import WEAPON_MAP
 
+
+
 flag_drop_map = {
     '0100': 'p0_capture',
     '0101': 'p1_capture',
@@ -17,27 +19,7 @@ flag_drop_map = {
 }
 
 
-'''
-020C
-620C0000
-38CBBC00
-
-001000F7 -- object type?
-131000F7 -- object id
-02 -- counter 
-03 -- new master?
-
-'''
-
 subtype_map = {
-    '10401F00': '?_crate_destroyed',
-    '41401F00': 'item_pickup',
-    '41441F00': 'item_pickup_unk?_p1',
-    '00401F00': 'crate_destroyed',
-    '02401F00': 'crate_respawn',
-    '02441F00': 'crate_respawn_p1?',
-    '00000000': 'crate_destroyed_and_pickup',
-    '10000000': '?_crate_destroyed_and_pickup',
 
     '02411F00': 'p0_flag_drop',
     '02451F00': 'p1_flag_drop',
@@ -84,7 +66,79 @@ subtype_map = {
     '21180000': 'p6_flag_update',
     '211C0000': 'p7_flag_update',
 
+    '00401F00': 'p0_crate_destroyed',
+    '00441F00': 'p1_crate_destroyed',
+    '00481F00': 'p2_crate_destroyed',
+    '004C1F00': 'p3_crate_destroyed',
+    '00501F00': 'p4_crate_destroyed',
+    '00541F00': 'p5_crate_destroyed',
+    '00581F00': 'p6_crate_destroyed',
+    '005C1F00': 'p7_crate_destroyed',
+
+    '10401F00': 'p0_?_crate_destroyed',
+    '10441F00': 'p1_?_crate_destroyed',
+    '10481F00': 'p2_?_crate_destroyed',
+    '104C1F00': 'p3_?_crate_destroyed',
+    '10501F00': 'p4_?_crate_destroyed',
+    '10541F00': 'p5_?_crate_destroyed',
+    '10581F00': 'p6_?_crate_destroyed',
+    '105C1F00': 'p7_?_crate_destroyed',
+
+    '02401F00': 'p0_crate_respawn',
+    '02441F00': 'p1_crate_respawn',
+    '02481F00': 'p2_crate_respawn',
+    '024C1F00': 'p3_crate_respawn',
+    '02501F00': 'p4_crate_respawn',
+    '02541F00': 'p5_crate_respawn',
+    '02581F00': 'p6_crate_respawn',
+    '025C1F00': 'p7_crate_respawn',
+
+    '41401F00': 'p0_item_pickup',
+    '41441F00': 'p1_item_pickup',
+    '41481F00': 'p2_item_pickup',
+    '414C1F00': 'p3_item_pickup',
+    '41501F00': 'p4_item_pickup',
+    '41541F00': 'p5_item_pickup',
+    '41581F00': 'p6_item_pickup',
+    '415C1F00': 'p7_item_pickup',
+
+    '62000000': 'p0_unk_62',
+    '62040000': 'p1_unk_62',
+    '62080000': 'p2_unk_62',
+    '620C0000': 'p3_unk_62',
+    '62100000': 'p4_unk_62',
+    '62140000': 'p5_unk_62',
+    '62180000': 'p6_unk_62',
+    '621C0000': 'p7_unk_62',
+
+    '00000000': 'p0_crate_destroyed_and_pickup',
+    '00040000': 'p1_crate_destroyed_and_pickup',
+    '00080000': 'p2_crate_destroyed_and_pickup',
+    '000C0000': 'p3_crate_destroyed_and_pickup',
+    '00100000': 'p4_crate_destroyed_and_pickup',
+    '00140000': 'p5_crate_destroyed_and_pickup',
+    '00180000': 'p6_crate_destroyed_and_pickup',
+    '001C0000': 'p7_crate_destroyed_and_pickup',
+
+    '10000000': 'p0_?_crate_destroyed_and_pickup',
+    '10040000': 'p1_?_crate_destroyed_and_pickup',
+    '10080000': 'p2_?_crate_destroyed_and_pickup',
+    '100C0000': 'p3_?_crate_destroyed_and_pickup',
+    '10100000': 'p4_?_crate_destroyed_and_pickup',
+    '10140000': 'p5_?_crate_destroyed_and_pickup',
+    '10180000': 'p6_?_crate_destroyed_and_pickup',
+    '101C0000': 'p7_?_crate_destroyed_and_pickup',
+
+
 }
+
+'''
+020C
+10040000
+56430701
+081000F7
+05
+'''
 
 
 
@@ -116,46 +170,50 @@ class tcp_020C_info:
 
         data_dict = {}
 
-        if subtype in ['?_crate_destroyed_and_pickup', '?_crate_destroyed']:
+        if subtype[2:] in ['_?_crate_destroyed', '_?_crate_destroyed_and_pickup']:
             data_dict['weapon_spawned'] = WEAPON_MAP[data.popleft()]
-        elif subtype == 'item_pickup':
-            data_dict['item_pickup_unk'] =  ''.join([data.popleft() for i in range(4)])
-        elif 'object_update' in subtype:
+        elif subtype[2:] == '_object_update' in subtype:
             data_dict['object_update_unk'] =  ''.join([data.popleft() for i in range(4)])
-        elif 'flag_update' in subtype:
+        elif subtype[2:] == '_flag_update':
             data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
         elif 'flag_drop' in subtype:
             data_dict['flag_drop_unk'] =  ''.join([data.popleft() for i in range(16)])
-        elif subtype in ['p0_assign_to', 'p1_assign_to', 'p2_assign_to', 'p3_assign_to', 'p4_assign_to', 'p5_assign_to', 'p6_assign_to', 'p7_assign_to']:
+        elif subtype[2:] == '_assign_to':
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
             data_dict['counter'] = ''.join([data.popleft() for i in range(1)])
             data_dict['master'] = ''.join([data.popleft() for i in range(1)])
-        elif subtype in ['p0_change_owner_req', 'p1_change_owner_req', 'p2_change_owner_req', 'p3_change_owner_req', 'p4_change_owner_req', 'p5_change_owner_req', 'p6_change_owner_req', 'p7_change_owner_req']:
+        elif subtype[2:] == '_change_owner_req':
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
             data_dict['new_owner'] = ''.join([data.popleft() for i in range(1)])
             data_dict['counter'] = ''.join([data.popleft() for i in range(1)])
             data_dict['master'] = ''.join([data.popleft() for i in range(1)])
-        elif subtype == 'crate_respawn_p1?':
+        elif subtype[2:] == '_crate_respawn':
             pass
-        elif subtype == 'item_pickup_unk?_p1':
+        elif subtype[2:] == '_item_pickup':
             data_dict['unk'] =  ''.join([data.popleft() for i in range(4)])
+        elif subtype[2:] == '_unk_62':
+            data_dict['object_id'] =  ''.join([data.popleft() for i in range(4)])
+            data_dict['unk'] =  ''.join([data.popleft() for i in range(2)])
+
 
         return tcp_020C_info(subtype, timestamp, object_type, data_dict)
 
     def to_bytes(self):
         if self.subtype in ['p0_assign_to', 'p1_assign_to', 'p2_assign_to', 'p3_assign_to', 'p4_assign_to', 'p5_assign_to', 'p6_assign_to', 'p7_assign_to']:
+            # object type is always 001000F7
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
-                hex_to_bytes(self.object_type) + \
+                hex_to_bytes("001000F7") + \
                 hex_to_bytes(self.data['object_id']) + \
                 hex_to_bytes(self.data['counter']) + \
                 hex_to_bytes(self.data['master'])
         elif self.subtype in ['p0_change_owner_req', 'p1_change_owner_req', 'p2_change_owner_req', 'p3_change_owner_req', 'p4_change_owner_req', 'p5_change_owner_req', 'p6_change_owner_req', 'p7_change_owner_req']:
+            # object type is always 001000F7
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
-                hex_to_bytes(self.object_type) + \
+                hex_to_bytes("001000F7") + \
                 hex_to_bytes(self.data['object_id']) + \
                 hex_to_bytes(self.data['new_owner']) + \
                 hex_to_bytes(self.data['master'])

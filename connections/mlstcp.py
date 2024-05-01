@@ -6,6 +6,7 @@ from butils.utils import *
 from connections.abstracttcp import AbstractTcp
 
 from butils.gameinfo_parser import weaponParser, advancedRulesParser, mapParser, timeParser, gamerulesParser
+from constants.constants import VALID_GAME_MODES
 
 class MlsTcp(AbstractTcp):
     def __init__(self, loop, ip: str, port: int, session_key, access_key):
@@ -157,6 +158,11 @@ class MlsTcp(AbstractTcp):
         game['submode'] = submode
 
         self.gameinfo = game
+
+        if game['map'] not in VALID_GAME_MODES.keys():
+            raise Exception(f'Map {game["map"]} not in valid map settings!')
+        if game['game_mode'] not in VALID_GAME_MODES[game['map']]:
+            raise Exception(f'Game mode ({game["game_mode"]}) not supported for {game["map"]}')
 
 
     async def join_game(self, world_id):

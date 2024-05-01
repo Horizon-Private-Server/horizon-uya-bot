@@ -39,6 +39,8 @@ class Model:
 
         player = PlayerState(player_id, account_id, team, username=username, skin=skin, clan_tag=clan_tag, rank=bolt)
         self.game_state = GameState(gameinfo, player)
+        self.game_state.object_manager.set_model(self)
+
         self.bot = eval(f"{bot_class}.{bot_class}(self, self.game_state)")
 
         self._loop.create_task(self._tcp_flusher())

@@ -48,20 +48,19 @@ class prototype:
         while self._model.alive:
             try:
                 # Pass until we start getting movement data from P0
-                if self.game_state.players[0].coord != [0,0,0]:
                     # Randomly pick a valid weapon if no weapon is selected
-                    if self.game_state.player.weapon == None:
-                        self.change_weapon()
+                if self.game_state.player.weapon == None:
+                    self.change_weapon()
 
-                    # Respawn
-                    if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
-                        self.respawn()
+                # Respawn
+                if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
+                    self.respawn()
 
-                    # Run objective
-                    self.objective()
+                # Run objective
+                self.objective()
 
-                    # Send movement
-                    self.send_movement()
+                # Send movement
+                self.send_movement()
 
                 # Sleep for the loop
                 await asyncio.sleep(MAIN_BOT_LOOP_TIMER)
@@ -69,6 +68,7 @@ class prototype:
                 logger.exception("PROTOTYPE ERROR")
                 self._model.alive = False
                 break
+
 
     def send_movement(self):
         if self.game_state.players[0].coord == [0,0,0] or self.game_state.player.is_dead:
@@ -187,7 +187,7 @@ class prototype:
             self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', local_x=local_x, local_y=local_y, local_z=local_z, local_x_2=local_x_2, local_y_2=local_y_2, local_z_2=local_z_2)])
 
         if self.changing_weapons == False:
-            self._model._loop.create_task(self.change_weapon_timer())
+            self._model.loop.create_task(self.change_weapon_timer())
 
 
     async def change_weapon_timer(self):
@@ -202,7 +202,6 @@ class prototype:
         if self.game_state.weapons == []:
             weapon = 'wrench'
         elif len(self.game_state.weapons) == 1 or self.game_state.player.weapon == None:
-            print(len(self.game_state.weapons) == 1, self.game_state.player.weapon == None)
             weapon = random.choice(self.game_state.weapons)
         else:
             weapon = self.weapon_order.pop()
@@ -250,7 +249,7 @@ class prototype:
             time_to_explode = get_grav_timing(dist)
 
             if time_to_explode != -1:
-                self._model._loop.create_task(self.process_grav_bomb_explode(time_to_explode, dest_coord, src_player, 'grav'))
+                self._model.loop.create_task(self.process_grav_bomb_explode(time_to_explode, dest_coord, src_player, 'grav'))
 
         # -- Flux
         elif packet_data.object_id == self.game_state.player.player_id:

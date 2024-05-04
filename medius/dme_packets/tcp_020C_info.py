@@ -93,23 +93,23 @@ subtype_map = {
     '02581F00': 'p6_crate_respawn',
     '025C1F00': 'p7_crate_respawn',
 
-    '41401F00': 'p0_item_pickup',
-    '41441F00': 'p1_item_pickup',
-    '41481F00': 'p2_item_pickup',
-    '414C1F00': 'p3_item_pickup',
-    '41501F00': 'p4_item_pickup',
-    '41541F00': 'p5_item_pickup',
-    '41581F00': 'p6_item_pickup',
-    '415C1F00': 'p7_item_pickup',
+    '41401F00': 'p0_object_pickup',
+    '41441F00': 'p1_object_pickup',
+    '41481F00': 'p2_object_pickup',
+    '414C1F00': 'p3_object_pickup',
+    '41501F00': 'p4_object_pickup',
+    '41541F00': 'p5_object_pickup',
+    '41581F00': 'p6_object_pickup',
+    '415C1F00': 'p7_object_pickup',
 
-    '62000000': 'p0_unk_62',
-    '62040000': 'p1_unk_62',
-    '62080000': 'p2_unk_62',
-    '620C0000': 'p3_unk_62',
-    '62100000': 'p4_unk_62',
-    '62140000': 'p5_unk_62',
-    '62180000': 'p6_unk_62',
-    '621C0000': 'p7_unk_62',
+    '62000000': 'p0_object_update_req',
+    '62040000': 'p1_object_update_req',
+    '62080000': 'p2_object_update_req',
+    '620C0000': 'p3_object_update_req',
+    '62100000': 'p4_object_update_req',
+    '62140000': 'p5_object_update_req',
+    '62180000': 'p6_object_update_req',
+    '621C0000': 'p7_object_update_req',
 
     '00000000': 'p0_crate_destroyed_and_pickup',
     '00040000': 'p1_crate_destroyed_and_pickup',
@@ -180,44 +180,45 @@ class tcp_020C_info:
             data_dict['flag_drop_unk'] =  ''.join([data.popleft() for i in range(16)])
         elif subtype[2:] == '_assign_to':
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
-            data_dict['counter'] = ''.join([data.popleft() for i in range(1)])
-            data_dict['master'] = ''.join([data.popleft() for i in range(1)])
+            data_dict['counter'] = hex_to_int_little(''.join([data.popleft() for i in range(1)]))
+            data_dict['master'] = hex_to_int_little(''.join([data.popleft() for i in range(1)]))
         elif subtype[2:] == '_change_owner_req':
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
-            data_dict['new_owner'] = ''.join([data.popleft() for i in range(1)])
-            data_dict['counter'] = ''.join([data.popleft() for i in range(1)])
-            data_dict['master'] = ''.join([data.popleft() for i in range(1)])
+            data_dict['new_owner'] = hex_to_int_little(''.join([data.popleft() for i in range(1)]))
+            data_dict['counter'] = hex_to_int_little(''.join([data.popleft() for i in range(1)]))
+            data_dict['master'] = hex_to_int_little(''.join([data.popleft() for i in range(1)]))
         elif subtype[2:] == '_crate_respawn':
             pass
-        elif subtype[2:] == '_item_pickup':
+        elif subtype[2:] == '_object_pickup':
             data_dict['unk'] =  ''.join([data.popleft() for i in range(4)])
-        elif subtype[2:] == '_unk_62':
+        elif subtype[2:] == '_object_update_req':
             data_dict['object_id'] =  ''.join([data.popleft() for i in range(4)])
-            data_dict['unk'] =  ''.join([data.popleft() for i in range(2)])
-
+            data_dict['counter'] = hex_to_int_little(''.join([data.popleft() for i in range(1)]))
+            data_dict['master'] = hex_to_int_little(''.join([data.popleft() for i in range(1)]))
 
         return tcp_020C_info(subtype, timestamp, object_type, data_dict)
 
     def to_bytes(self):
-        if self.subtype in ['p0_assign_to', 'p1_assign_to', 'p2_assign_to', 'p3_assign_to', 'p4_assign_to', 'p5_assign_to', 'p6_assign_to', 'p7_assign_to']:
+        if self.subtype[2:] == '_assign_to':
             # object type is always 001000F7
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
                 hex_to_bytes("001000F7") + \
                 hex_to_bytes(self.data['object_id']) + \
-                hex_to_bytes(self.data['counter']) + \
-                hex_to_bytes(self.data['master'])
-        elif self.subtype in ['p0_change_owner_req', 'p1_change_owner_req', 'p2_change_owner_req', 'p3_change_owner_req', 'p4_change_owner_req', 'p5_change_owner_req', 'p6_change_owner_req', 'p7_change_owner_req']:
+                int_to_bytes_little(1, self.data['counter']) + \
+                int_to_bytes_little(1, self.data['master'])
+        elif self.subtype[2:] == '_change_owner_req':
             # object type is always 001000F7
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
                 hex_to_bytes("001000F7") + \
                 hex_to_bytes(self.data['object_id']) + \
-                hex_to_bytes(self.data['new_owner']) + \
-                hex_to_bytes(self.data['master'])
-        elif 'flag_drop' in self.subtype:
+                int_to_bytes_little(1, self.data['new_owner']) + \
+                int_to_bytes_little(1, self.data['counter']) + \
+                int_to_bytes_little(1, self.data['master'])
+        elif self.subtype[2:] == '_flag_drop':
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
@@ -225,6 +226,11 @@ class tcp_020C_info:
                 hex_to_bytes(self.data['object_id']) + \
                 hex_to_bytes('00') + \
                 hex_to_bytes(self.data['unk'])
+        elif self.subtype[2:] == '_crate_respawn':
+            return self.id + \
+                hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
+                int_to_bytes_little(4, self.timestamp) + \
+                hex_to_bytes(self.object_type)
 
     def __str__(self):
         return f"{self.name}; subtype:{self.subtype} " + \

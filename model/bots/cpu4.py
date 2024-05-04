@@ -16,8 +16,8 @@ class cpu4(prototype):
     def __init__(self, model, game_state):
         super().__init__(model, game_state)
 
-        self.arsenal.weapons['flux']['hit_rate'] = .1
-        self.arsenal.weapons['grav']['hit_rate'] = 1
+        self.arsenal.weapons['flux']['hit_rate'] = 0
+        self.arsenal.weapons['grav']['hit_rate'] = 0
 
         ###### Set the cycle
         weapon_order_list = list(self.game_state.weapons)
@@ -31,13 +31,18 @@ class cpu4(prototype):
 
         self.target = self.game_state.players[0].coord
 
-        marc_points = [
-            [32939, 54784, 7413],
-            [32418, 53872, 7413],
-            [31608, 54666, 7413],
-            [32540, 55641, 7407],
-        ]
+        # marc_points = [
+        #     [32939, 54784, 7413],
+        #     [32418, 53872, 7413],
+        #     [31608, 54666, 7413],
+        #     [32540, 55641, 7407],
+        # ]
 
+        marc_points = [
+            [33289, 56515, 7413],
+            [30680, 56370, 7413],
+            [27973, 56516, 7413],
+        ]
 
         self.patrol(marc_points, circular=False)
 

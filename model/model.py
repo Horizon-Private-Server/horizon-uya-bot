@@ -28,8 +28,8 @@ class Model:
         logger.info("Initialzing model ...")
         logger.info(f"GAME INFO: {gameinfo}")
         self.alive = True
-
-        self._loop = loop
+        username = 'TEST'
+        self.loop = loop
 
         self._network = network_manager
         self.dmetcp_queue = queue.Queue()
@@ -38,15 +38,14 @@ class Model:
         self._seen_first_player_movement = False
 
         player = PlayerState(player_id, account_id, team, username=username, skin=skin, clan_tag=clan_tag, rank=bolt)
-        self.game_state = GameState(gameinfo, player)
-        self.game_state.object_manager.set_model(self)
+        self.game_state = GameState(self, gameinfo, player)
 
         self.bot = eval(f"{bot_class}.{bot_class}(self, self.game_state)")
 
-        self._loop.create_task(self._tcp_flusher())
-        self._loop.create_task(self._udp_flusher())
-        self._loop.create_task(self._tcp_reader())
-        self._loop.create_task(self._udp_reader())
+        self.loop.create_task(self._tcp_flusher())
+        self.loop.create_task(self._udp_flusher())
+        self.loop.create_task(self._tcp_reader())
+        self.loop.create_task(self._udp_reader())
 
     async def _tcp_reader(self):
         while self.alive:
@@ -106,7 +105,7 @@ class Model:
                 self.dmetcp_queue.put([src_player, tcp_0016_player_connect_handshake.tcp_0016_player_connect_handshake(subtype='handshake', src_player=self.game_state.player.player_id, unk1='03000000000002')])
 
         if dme_packet.name == 'tcp_0018_initial_sync':
-            self._loop.create_task(self.send_tcp_0018(src_player))
+            self.loop.create_task(self.send_tcp_0018(src_player))
 
         if dme_packet.name == 'tcp_0010_initial_sync':
             self.dmetcp_queue.put([src_player, tcp_0010_initial_sync.tcp_0010_initial_sync(src=self.game_state.player.player_id)])
@@ -117,7 +116,7 @@ class Model:
             self.dmetcp_queue.put([0, tcp_000F_playername_update.tcp_000F_playername_update(unk1=self.game_state.player.player_id, unk2='00000000000003000300000000001A000000', username=self.game_state.player.username, unk3='000300')])
             self.dmetcp_queue.put(['B', tcp_000F_playername_update.tcp_000F_playername_update(unk1=self.game_state.player.player_id, unk2='00000000001003000300000000001A000000', username=self.game_state.player.username, unk3='000000')])
             self.dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined(account_id=self.game_state.player.account_id, skin1=self.game_state.player.skin, skin2=self.game_state.player.skin, username=self.game_state.player.username, username2=self.game_state.player.username, rank=self.game_state.player.rank, clan_tag=self.game_state.player.clan_tag)])
-            self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready')])
+            self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready', clan_tag=self.game_state.player.clan_tag)])
 
         if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and dme_packet.data['src'] == -1 and dme_packet.data['msg0']['type'] == 'ready/unready' and dme_packet.data['msg0'][f'p{self.game_state.player.player_id}'] == 'kicked':
             # Bot just got kicked
@@ -125,12 +124,12 @@ class Model:
             self.alive = False
 
         if dme_packet.name == 'tcp_0211_player_lobby_state_change' and src_player == 0 and dme_packet.ready == 'change team request':
-            new_team = self.game_state.player.change_teams(self.game_state.game_mode)
-            self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready')])
+            self.game_state.player.change_teams(self.game_state.game_mode)
+            self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready', clan_tag=self.game_state.player.clan_tag)])
 
         if dme_packet.name == 'tcp_000D_game_started':
             self.game_state.start()
-            self._loop.create_task(self.send_player_data())
+            self.loop.create_task(self.send_player_data())
             self.game_state.state = 'active'
 
         if dme_packet.name == 'udp_0001_timer_update':
@@ -158,7 +157,7 @@ class Model:
             self.game_state.players[src_player].reset_health()
 
         if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and "msg2" in dme_packet.data.keys() and dme_packet.data['msg2']['type'] == 'unk_0D':
-            self._loop.create_task(self._timer_update(dme_packet.data['msg2']['unk2']))
+            self.loop.create_task(self._timer_update(dme_packet.data['msg2']['unk2']))
 
         if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_PlayerData':
             self.game_state.tnw_playerdata_update(src_player, dme_packet.data)
@@ -176,36 +175,10 @@ class Model:
             self.dmeudp_queue.put([src_player, udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1="0000FFFF")])
             self.dmeudp_queue.put([src_player, udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1="00010000")])
 
-        # if dme_packet.name == 'tcp_020C_info' and 'req_confirmation' in dme_packet.subtype:
-        #     data = {'object_id': dme_packet.data['object_id'], 'unk': dme_packet.data['unk']}
-        #     self.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data=data)])
-
-        # if dme_packet.name == 'tcp_020C_info' and '_object_update' in dme_packet.subtype:
-        #     # Flag Pickup
-        #     object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
-        #     if object == 'red_flag' or object == 'blue_flag':
-        #         self.game_state.players[src_player].flag = object
-
-        # if dme_packet.name == 'tcp_020C_info' and 'flag_drop' in dme_packet.subtype:
-        #     # Flag Dropped
-        #     object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
-        #     if object == 'red_flag' or object == 'blue_flag':
-        #         for player_id in self.game_state.players.keys():
-        #             if self.game_state.players[player_id].flag == object:
-        #                 self.game_state.players[player_id].flag = None
-
-        # if dme_packet.name == 'tcp_020C_info' and 'flag_update' in dme_packet.subtype:
-        #     # Flag Returned or Flag Captured
-        #     object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
-        #     if object == 'red_flag' or object == 'blue_flag':
-        #         if '_capture' in dme_packet.data['flag_update_type'] or dme_packet.data['flag_update_type'] == 'flag_return':
-        #             # Find players that have redflag/blueflag and set to None
-        #             self.game_state.clear_flag(object)
+        if dme_packet.name == 'tcp_020C_info':
+            self.game_state.object_manager.object_update(src_player, dme_packet)
 
 
-        '''
-        2022-06-04 12:05:09,522 blarg | INFO | 0 -> -1 | tcp_020C_info; subtype:flag_update timestamp:750393 object_id:131000F7 data:{'flag_update_type': '0100'}
-        '''
 
     async def send_tcp_0018(self, src_player):
         await asyncio.sleep(3)
@@ -255,31 +228,26 @@ class Model:
 
         self.dmetcp_queue.put([0, tcp_000F_playername_update.tcp_000F_playername_update(unk1=1, unk2='000000000300030003000000000070410000', username=self.game_state.player.username, unk3='000000')])
 
-        self.dmetcp_queue.put(['B', tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(unk1='00000000', team='blue', skin='ratchet', ready='unk, player in-game ready(?)', username='', unk2='0000000000000000000000')])
+        self.dmetcp_queue.put(['B', tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(unk1='00000000', team='blue', skin='ratchet', ready='unk, player in-game ready(?)', username='', clan_tag='    ')])
 
         self.dmetcp_queue.put(['B', tcp_0205_unk.tcp_0205_unk()])
 
         # Charge boots
         self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_update'}})])
 
-        #self._loop.create_task(self.c_confirmations())
-        self._loop.create_task(self.bot.main_loop())
-
-    # async def c_confirmations(self):
-    #     bot_player_idx = self.game_state.player.player_id
-
-    #     cpu_player_ids = [player_id for player_id in self.game_state.players.keys() if len(self.game_state.players[player_id].username) == 7 and self.game_state.players[player_id].username[0:3] == 'CPU']
+        self.loop.create_task(self.wait_until_game_start())
 
 
-    #     min_bot_player_idx = min(cpu_player_ids) if len(cpu_player_ids) > 0 else 99999
+    async def wait_until_game_start(self):
+        # Wait until we have movement data
+        while self.alive and self.game_state.players[0].coord == [0,0,0]:
+            await asyncio.sleep(.1)
 
-    #     if len(cpu_player_ids) != 0 and bot_player_idx > min_bot_player_idx:
-    #         return
+        # Reset Object Masters
+        self.game_state.object_manager.reset_all_masters()
 
-    #     for i in range(1,100):
-    #         d = bytes_to_hex(int_to_bytes_little(1,i))
-    #         data = {'object_id': f'{d}1000F7', 'unk': '0200'}
-    #         self.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data=data)])
+        self.loop.create_task(self.bot.main_loop())
+
 
     async def _timer_update(self, unk_0D):
         self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'unk_0D', 'unk2': unk_0D}})])

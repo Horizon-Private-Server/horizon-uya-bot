@@ -5,6 +5,29 @@ VALID_GAME_MODES = {
     'marcadia_palace': {'Deathmatch'}
 }
 
+
+SPECIAL_SYMBOLS = {
+    'default': '08',
+    'blue': '00',
+    'green': '0A',
+    'pink': '0B',
+    'white': '0C',
+    'gray': '0D',
+    'black': '0E',
+    'cross': '10',
+    'circle': '11',
+    'triangle': '12',
+    'square': '13',
+    'l1': '14',
+    'r1': '15',
+    'l2': '16',
+    'r2': '17',
+    'analog_left': '18',
+    'analog_right': '19',
+    'select': '1A',
+}
+
+
 # Movement generally is 0.068 seconds between each movement packet
 MAIN_BOT_LOOP_TIMER = 0.068
 

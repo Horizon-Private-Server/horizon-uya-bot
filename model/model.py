@@ -28,7 +28,7 @@ class Model:
         logger.info("Initialzing model ...")
         logger.info(f"GAME INFO: {gameinfo}")
         self.alive = True
-        username = 'TEST'
+        username = 'i aM a nOOb'
         self.loop = loop
 
         self._network = network_manager

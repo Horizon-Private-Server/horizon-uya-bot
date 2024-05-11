@@ -20,7 +20,7 @@ logger.setLevel(logging.INFO)
 
 class prototype:
     def __init__(self, model, game_state):
-        self._model = model
+        self.model = model
         self.game_state = game_state
 
         self.target = [0,0,0]
@@ -45,12 +45,14 @@ class prototype:
         self._misc = defaultdict(int)
 
     async def main_loop(self):
-        while self._model.alive:
+        while self.model.alive:
             try:
                 # Pass until we start getting movement data from P0
                     # Randomly pick a valid weapon if no weapon is selected
                 if self.game_state.player.weapon == None:
                     self.change_weapon()
+
+                self.game_state.object_manager.loop_update()
 
                 # Respawn
                 if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
@@ -66,7 +68,7 @@ class prototype:
                 await asyncio.sleep(MAIN_BOT_LOOP_TIMER)
             except:
                 logger.exception("PROTOTYPE ERROR")
-                self._model.alive = False
+                self.model.alive = False
                 break
 
 
@@ -85,7 +87,7 @@ class prototype:
             data['left_joystick_x'] = self.game_state.player.left_joystick_x
             data['left_joystick_y'] = self.game_state.player.left_joystick_y
 
-        self._model.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
+        self.model.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
 
     def patrol(self, coords, circular=False):
@@ -135,7 +137,7 @@ class prototype:
     def respawn(self):
         self.game_state.player.weapon = None
         self.game_state.player.reset_health()
-        self._model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, map=self.game_state.map.map)])
+        self.model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, map=self.game_state.map.map)])
         self.game_state.player.coord = self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode)
         self.game_state.player.is_dead = False
 
@@ -184,10 +186,10 @@ class prototype:
                     local_y = local_y_2
                     local_z = local_z_2
 
-            self._model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', local_x=local_x, local_y=local_y, local_z=local_z, local_x_2=local_x_2, local_y_2=local_y_2, local_z_2=local_z_2)])
+            self.model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', local_x=local_x, local_y=local_y, local_z=local_z, local_x_2=local_x_2, local_y_2=local_y_2, local_z_2=local_z_2)])
 
         if self.changing_weapons == False:
-            self._model.loop.create_task(self.change_weapon_timer())
+            self.model.loop.create_task(self.change_weapon_timer())
 
 
     async def change_weapon_timer(self):
@@ -206,7 +208,7 @@ class prototype:
         else:
             weapon = self.weapon_order.pop()
 
-        self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
+        self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
         self.game_state.player.weapon = weapon
 
 
@@ -249,7 +251,7 @@ class prototype:
             time_to_explode = get_grav_timing(dist)
 
             if time_to_explode != -1:
-                self._model.loop.create_task(self.process_grav_bomb_explode(time_to_explode, dest_coord, src_player, 'grav'))
+                self.model.loop.create_task(self.process_grav_bomb_explode(time_to_explode, dest_coord, src_player, 'grav'))
 
         # -- Flux
         elif packet_data.object_id == self.game_state.player.player_id:
@@ -267,7 +269,7 @@ class prototype:
         if damage != 0:
             self.game_state.player.health -= damage
 
-            self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+            self.model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
             self.check_if_dead(src_player, packet_data.weapon)
 
 
@@ -278,7 +280,7 @@ class prototype:
         # 460 threshold
         if dist <= 460:
             self.game_state.player.health -= 60
-            self._model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+            self.model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
             self.check_if_dead(src_player, weapon)
 
 
@@ -301,10 +303,10 @@ class prototype:
                 7: '15'
             }
             # Death animation
-            #self._model._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes(f"00030001{test_map[self.game_state.player.player_id]}000700000000"))))
-            self._model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'src': self.game_state.player.player_id, 'num_messages': 1, 'msg0': {'type': 'health_update', 'health': 0}})])
+            #self.model._tcp.queue(rtpacket_to_bytes(ClientAppBroadcastSerializer.build(hex_to_bytes(f"00030001{test_map[self.game_state.player.player_id]}000700000000"))))
+            self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'src': self.game_state.player.player_id, 'num_messages': 1, 'msg0': {'type': 'health_update', 'health': 0}})])
 
-            self._model.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=src_player, killed_id=self.game_state.player.player_id, weapon=weapon)])
+            self.model.dmetcp_queue.put(['B', tcp_0204_player_killed.tcp_0204_player_killed(killer_id=src_player, killed_id=self.game_state.player.player_id, weapon=weapon)])
 
             self.game_state.player.respawn_time = datetime.now().timestamp() + self.respawn_time
 

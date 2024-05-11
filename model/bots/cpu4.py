@@ -16,8 +16,8 @@ class cpu4(prototype):
     def __init__(self, model, game_state):
         super().__init__(model, game_state)
 
-        self.arsenal.weapons['flux']['hit_rate'] = 0
-        self.arsenal.weapons['grav']['hit_rate'] = 0
+        self.arsenal.weapons['flux']['hit_rate'] = .2
+        self.arsenal.weapons['grav']['hit_rate'] = .3
 
         ###### Set the cycle
         weapon_order_list = list(self.game_state.weapons)
@@ -29,24 +29,31 @@ class cpu4(prototype):
 
     def objective(self):
 
+        logger.info(str(self.model.game_state.object_manager))
+
         self.target = self.game_state.players[0].coord
 
-        # marc_points = [
-        #     [32939, 54784, 7413],
-        #     [32418, 53872, 7413],
-        #     [31608, 54666, 7413],
-        #     [32540, 55641, 7407],
-        # ]
 
+        self.game_state.player.coord = [28009, 56248, 7413]
+
+        # Quad patrol near red base marcadia
         marc_points = [
-            [33289, 56515, 7413],
-            [30680, 56370, 7413],
-            [27973, 56516, 7413],
+            [32939, 54784, 7413],
+            [32418, 53872, 7413],
+            [31608, 54666, 7413],
+            [32540, 55641, 7407],
         ]
 
-        self.patrol(marc_points, circular=False)
+        # Moving across map by healthboxes marcadia
+        # marc_points = [
+        #     [33289, 56515, 7413],
+        #     [30680, 56370, 7413],
+        #     [27973, 56516, 7413],
+        # ]
 
-        self.fire_weapon(object_id = self.game_state.players[0].player_id)
+        #self.patrol(marc_points, circular=False)
+
+        #self.fire_weapon(object_id = self.game_state.players[0].player_id)
 
 
     def __str__(self):

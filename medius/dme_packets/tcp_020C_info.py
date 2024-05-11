@@ -189,8 +189,10 @@ class tcp_020C_info:
             data_dict['master'] = hex_to_int_little(''.join([data.popleft() for i in range(1)]))
         elif subtype[2:] == '_crate_respawn':
             pass
+        # The unk is 010000 for weapon boxes and health
         elif subtype[2:] == '_object_pickup':
-            data_dict['unk'] =  ''.join([data.popleft() for i in range(4)])
+            data_dict['unk'] =  ''.join([data.popleft() for i in range(3)])
+            data_dict['player_who_picked_up'] =  hex_to_int_little(data.popleft())
         elif subtype[2:] == '_object_update_req':
             data_dict['object_id'] =  ''.join([data.popleft() for i in range(4)])
             data_dict['counter'] = hex_to_int_little(''.join([data.popleft() for i in range(1)]))
@@ -218,6 +220,13 @@ class tcp_020C_info:
                 int_to_bytes_little(1, self.data['new_owner']) + \
                 int_to_bytes_little(1, self.data['counter']) + \
                 int_to_bytes_little(1, self.data['master'])
+        elif self.subtype[2:] == '_object_pickup':
+            return self.id + \
+                hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
+                int_to_bytes_little(4, self.timestamp) + \
+                hex_to_bytes(self.object_type) + \
+                hex_to_bytes("010000") + \
+                int_to_bytes_little(1, self.data['player_who_picked_up'])
         elif self.subtype[2:] == '_flag_drop':
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \

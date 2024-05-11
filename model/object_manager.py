@@ -12,9 +12,6 @@ OBJECT_TYPES = {
     'marcadia_palace': {
         '441000F7': 'red_flag',
         '431000F7': 'blue_flag',
-        '101000F7': 'red_health',
-        '0F1000F7': 'blue_health',
-        '0E1000F7': 'turret_health',
     },
     'command_center': {
         '131000F7': 'red_flag',
@@ -55,10 +52,9 @@ class ObjectManager():
         self.crates = dict()
 
         if self.map == 'marcadia_palace':
-            self.crates['101000F7'] = Crate(self.model, 'Red Base Health', '101000F7')
-            self.crates['0F1000F7'] = Crate(self.model, 'Blue Base Health', '0F1000F7')
-            self.crates['0E1000F7'] = Crate(self.model, 'Turret Health', '0E1000F7')
-
+            self.crates['101000F7'] = Crate(self.model, 'Red Base Health', '101000F7', [33415, 56406, 7413])
+            self.crates['0F1000F7'] = Crate(self.model, 'Blue Base Health', '0F1000F7', [27835, 56425, 7413])
+            self.crates['0E1000F7'] = Crate(self.model, 'Turret Health', '0E1000F7', [30627, 56543, 7594])
 
     def reset_all_masters(self):
         # Reset all the masters of all objects to P0
@@ -67,6 +63,24 @@ class ObjectManager():
             crate.master = 0
             data = {'new_owner': crate.owner, 'counter': 1, 'master': crate.master, 'object_id': crate.id}
             self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p0_change_owner_req', timestamp=self.game_state.player.time,data=data)])
+
+    def loop_update(self):
+        # We need to check the positions of each player in comparison to each object
+        for player_id, player in self.model.game_state.players.items():
+            for crate_id, crate in self.crates.items():
+                # We don't need to process if we aren't the owner
+                if crate.owner != self.game_state.player.player_id or crate.respawning == True:
+                    continue
+
+    
+                logger.info("We are the owner!!!!")
+
+                if crate.overlap(player.coord):
+                    logger.info("Sending crate overlap!!")
+                    # Send out object pickup
+                    data = {'player_who_picked_up': player_id}
+                    self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{player_id}_object_pickup', object_type=crate_id,timestamp=self.game_state.player.time,data=data)])
+                    self.model.loop.create_task(self.crates[crate_id].respawn())
 
 
     def object_update(self, src_player:int, dme_packet):
@@ -127,3 +141,12 @@ class ObjectManager():
         #             self.game_state.clear_flag(object)
 
         #self.game_state.object_manager.object_update(src_player, dme_packet)
+
+    def __str__(self):
+        result = '\nObjectManager:\n'
+
+        for crate in self.crates.values():
+            result += str(crate) + '\n'
+
+        result = result.strip()
+        return result

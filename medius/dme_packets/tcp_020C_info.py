@@ -5,6 +5,17 @@ import os
 from constants.constants import WEAPON_MAP
 
 
+player_object_pickup_map = {
+    0: 0,
+    16: 1,
+    32: 2,
+    48: 3,
+    64: 4,
+    80: 5,
+    96: 6,
+    112: 7
+}
+
 
 flag_drop_map = {
     '0100': 'p0_capture',
@@ -192,7 +203,8 @@ class tcp_020C_info:
         # The unk is 010000 for weapon boxes and health
         elif subtype[2:] == '_object_pickup':
             data_dict['unk'] =  ''.join([data.popleft() for i in range(3)])
-            data_dict['player_who_picked_up'] =  hex_to_int_little(data.popleft())
+            #data_dict['player_who_picked_up'] =  hex_to_int_little(data.popleft())
+            data_dict['player_who_picked_up'] =  player_object_pickup_map[hex_to_int_little(data.popleft())]
         elif subtype[2:] == '_object_update_req':
             data_dict['object_id'] =  ''.join([data.popleft() for i in range(4)])
             data_dict['counter'] = hex_to_int_little(''.join([data.popleft() for i in range(1)]))
@@ -226,7 +238,7 @@ class tcp_020C_info:
                 int_to_bytes_little(4, self.timestamp) + \
                 hex_to_bytes(self.object_type) + \
                 hex_to_bytes("010000") + \
-                int_to_bytes_little(1, self.data['player_who_picked_up'])
+                int_to_bytes_little(1, {v: k for k, v in player_object_pickup_map.items()}[self.data['player_who_picked_up']])
         elif self.subtype[2:] == '_flag_drop':
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \

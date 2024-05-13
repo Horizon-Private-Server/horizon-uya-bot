@@ -4,7 +4,7 @@ logger.setLevel(logging.INFO)
 
 from model.objects.flag import Flag
 from model.objects.crate import Crate
-#from model.objects.Health import Health
+from model.objects.healthcrate import HealthCrate
 
 from medius.dme_packets import *
 
@@ -49,16 +49,16 @@ class ObjectManager():
             self.blue_flag = None
         
         # Object ID -> Crate
-        self.crates = dict()
+        self.health_crates = dict()
 
         if self.map == 'marcadia_palace':
-            self.crates['101000F7'] = Crate(self.model, 'Red Base Health', '101000F7', [33415, 56406, 7413])
-            self.crates['0F1000F7'] = Crate(self.model, 'Blue Base Health', '0F1000F7', [27835, 56425, 7413])
-            self.crates['0E1000F7'] = Crate(self.model, 'Turret Health', '0E1000F7', [30627, 56543, 7594])
+            self.health_crates['101000F7'] = HealthCrate(self.model, 'Red Base Health', '101000F7', [33415, 56406, 7413])
+            self.health_crates['0F1000F7'] = HealthCrate(self.model, 'Blue Base Health', '0F1000F7', [27835, 56425, 7413])
+            self.health_crates['0E1000F7'] = HealthCrate(self.model, 'Turret Health', '0E1000F7', [30627, 56543, 7594])
 
     def reset_all_masters(self):
         # Reset all the masters of all objects to P0
-        for crate in self.crates.values():
+        for crate in self.health_crates.values():
             crate.owner = 0
             crate.master = 0
             data = {'new_owner': crate.owner, 'counter': 1, 'master': crate.master, 'object_id': crate.id}
@@ -67,20 +67,18 @@ class ObjectManager():
     def loop_update(self):
         # We need to check the positions of each player in comparison to each object
         for player_id, player in self.model.game_state.players.items():
-            for crate_id, crate in self.crates.items():
+            for crate_id, crate in self.health_crates.items():
                 # We don't need to process if we aren't the owner
                 if crate.owner != self.game_state.player.player_id or crate.respawning == True:
                     continue
 
-    
-                logger.info("We are the owner!!!!")
-
                 if crate.overlap(player.coord):
-                    logger.info("Sending crate overlap!!")
                     # Send out object pickup
                     data = {'player_who_picked_up': player_id}
-                    self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{player_id}_object_pickup', object_type=crate_id,timestamp=self.game_state.player.time,data=data)])
-                    self.model.loop.create_task(self.crates[crate_id].respawn())
+                    self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_pickup', object_type=crate_id,timestamp=self.game_state.player.time,data=data)])
+                    self.model.loop.create_task(self.health_crates[crate_id].respawn())
+                    self.model.game_state.players[player_id].reset_health()
+
 
 
     def object_update(self, src_player:int, dme_packet):
@@ -89,30 +87,34 @@ class ObjectManager():
             pass # We don't care if just the box was broken
 
         elif dme_packet.subtype[2:] == '_object_pickup':
-            if dme_packet.object_type not in self.crates:
+            if dme_packet.object_type not in self.health_crates:
                 logger.warning(f"Unknown object id on object pickup (from {src_player}): {dme_packet}")
-            else:
-                self.model.loop.create_task(self.crates[dme_packet.object_type].respawn())
+            else: # Picked up health
+                if dme_packet.data['player_who_picked_up'] == self.model.game_state.player.player_id:
+                    self.model.game_state.player.reset_health()
+                else:
+                    self.model.game_state.players[dme_packet.data['player_who_picked_up']].reset_health()
+                self.model.loop.create_task(self.health_crates[dme_packet.object_type].respawn())
 
         elif dme_packet.subtype[2:] == '_crate_destroyed_and_pickup':
-            if dme_packet.object_type not in self.crates:
+            if dme_packet.object_type not in self.health_crates:
                 logger.warning(f"Unknown object id on object crate_destroyed_and_pickup (from {src_player}): {dme_packet}")
             else:
-                self.model.loop.create_task(self.crates[dme_packet.object_type].respawn())
+                self.model.loop.create_task(self.health_crates[dme_packet.object_type].respawn())
 
         elif dme_packet.subtype[2:] == '_change_owner_req':
-            if dme_packet.data['object_id'] not in self.crates:
+            if dme_packet.data['object_id'] not in self.health_crates:
                 logger.warning(f"Unknown object id on change owner request (from {src_player}): {dme_packet}")
             else:
-                self.crates[dme_packet.data['object_id']].owner = dme_packet.data['new_owner']
-                data = {'object_id': dme_packet.data['object_id'], 'counter': 1, 'master': self.crates[dme_packet.data['object_id']].master}
+                self.health_crates[dme_packet.data['object_id']].owner = dme_packet.data['new_owner']
+                data = {'object_id': dme_packet.data['object_id'], 'counter': 1, 'master': self.health_crates[dme_packet.data['object_id']].master}
                 self.model.dmetcp_queue.put([src_player, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])
 
         elif dme_packet.subtype[2:] == '_assign_to':
-            if dme_packet.data['object_id'] not in self.crates:
+            if dme_packet.data['object_id'] not in self.health_crates:
                 logger.warning(f"Unknown object id on assign_to (from {src_player}): {dme_packet}")
             else:
-                self.crates[dme_packet.data['object_id']].owner = self.model.game_state.player.player_id
+                self.health_crates[dme_packet.data['object_id']].owner = self.model.game_state.player.player_id
 
         # if dme_packet.name == 'tcp_020C_info' and 'req_confirmation' in dme_packet.subtype:
         #     data = {'object_id': dme_packet.data['object_id'], 'unk': dme_packet.data['unk']}
@@ -145,7 +147,7 @@ class ObjectManager():
     def __str__(self):
         result = '\nObjectManager:\n'
 
-        for crate in self.crates.values():
+        for crate in self.health_crates.values():
             result += str(crate) + '\n'
 
         result = result.strip()

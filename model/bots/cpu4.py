@@ -28,7 +28,7 @@ class cpu4(prototype):
 
 
     def objective(self):
-
+        logger.info(str(self.model.game_state))
         logger.info(str(self.model.game_state.object_manager))
 
         self.target = self.game_state.players[0].coord

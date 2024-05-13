@@ -118,11 +118,6 @@ class Model:
             self.dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined(account_id=self.game_state.player.account_id, skin1=self.game_state.player.skin, skin2=self.game_state.player.skin, username=self.game_state.player.username, username2=self.game_state.player.username, rank=self.game_state.player.rank, clan_tag=self.game_state.player.clan_tag)])
             self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready', clan_tag=self.game_state.player.clan_tag)])
 
-        if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and dme_packet.data['src'] == -1 and dme_packet.data['msg0']['type'] == 'ready/unready' and dme_packet.data['msg0'][f'p{self.game_state.player.player_id}'] == 'kicked':
-            # Bot just got kicked
-            # tcp_0003_broadcast_lobby_state; data:{'unk1': '01', 'num_messages': 1, 'src': -1, 'msg0': {'type': 'ready/unready', 'p0': False, 'p1': False, 'p2': False, 'p3': False, 'p4': False, 'p5': False, 'p6': False, 'p7': False}}
-            self.alive = False
-
         if dme_packet.name == 'tcp_0211_player_lobby_state_change' and src_player == 0 and dme_packet.ready == 'change team request':
             self.game_state.player.change_teams(self.game_state.game_mode)
             self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready', clan_tag=self.game_state.player.clan_tag)])
@@ -142,22 +137,28 @@ class Model:
                 logger.info("Host has left! Exiting ...")
                 self.alive = False
 
-        if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and dme_packet.data['num_messages'] == 1 and dme_packet.data['msg0']['type'] == 'timer_update':
-            self.game_state.player.time = dme_packet.data['msg0']['time']
 
-        if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and dme_packet.data['num_messages'] == 1 and dme_packet.data['msg0']['type'] == 'health_update':
-            self.game_state.players[src_player].health = dme_packet.data['msg0']['health']
-            if self.game_state.players[src_player].health == 0:
-                self.game_state.players[src_player].is_dead = True
-            else:
-                self.game_state.players[src_player].is_dead = False
+        if dme_packet.name == 'tcp_0003_broadcast_lobby_state':
+            msgs = [key for key in dme_packet.data.keys() if key[0:3] == 'msg']
+
+            for msg in msgs:
+                if src_player == 0 and dme_packet.data['src'] == -1 and dme_packet.data[msg]['type'] == 'ready/unready' and dme_packet.data[msg][f'p{self.game_state.player.player_id}'] == 'kicked':
+                    self.alive = False
+                if src_player == 0 and dme_packet.data[msg]['type'] == 'timer_update':
+                    self.game_state.player.time = dme_packet.data[msg]['time']
+                if dme_packet.data[msg]['type'] == 'health_update':
+                    self.game_state.players[src_player].health = dme_packet.data['msg0']['health']
+                    if self.game_state.players[src_player].health == 0:
+                        self.game_state.players[src_player].is_dead = True
+                    else:
+                        self.game_state.players[src_player].is_dead = False
+                if dme_packet.data[msg]['type'] == 'unk_0D':
+                    self.loop.create_task(self._timer_update(dme_packet.data[msg]['unk2']))
+
 
         if dme_packet.name == 'tcp_020A_player_respawned':
             self.game_state.players[src_player].is_dead = False
             self.game_state.players[src_player].reset_health()
-
-        if dme_packet.name == 'tcp_0003_broadcast_lobby_state' and src_player == 0 and "msg2" in dme_packet.data.keys() and dme_packet.data['msg2']['type'] == 'unk_0D':
-            self.loop.create_task(self._timer_update(dme_packet.data['msg2']['unk2']))
 
         if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_PlayerData':
             self.game_state.tnw_playerdata_update(src_player, dme_packet.data)

@@ -22,10 +22,8 @@ class Crate(UyaObject):
         await asyncio.sleep(45)
 
         if self.model.game_state.player.player_id == self.owner:
-            logger.info("SENDING RESPAWN!")
             self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.model.game_state.player.player_id}_crate_respawn', timestamp=self.model.game_state.player.time, object_type=self.id, data={})])
 
-        logger.info(f"NOT SENDING RESPAWN: {self.model.game_state.player.player_id} | {self.owner}")
         self.respawning = False
 
     def __str__(self):

@@ -86,24 +86,24 @@ class tcp_0003_broadcast_lobby_state:
                     val = data.popleft()
                     data.popleft()
                     sub_message[f'p{player_id}'] = SKIN_MAP[val]
-            elif broadcast_type == '07':
+            elif broadcast_type == '07': # Health
                 sub_message['type'] = 'health_update'
                 raw_hp = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
                 sub_message['health'] = HP_MAP[raw_hp] if raw_hp in HP_MAP else 100
-            elif broadcast_type == '09':
+            elif broadcast_type == '09': # Timer
                 sub_message['type'] = '09_timer_update'
                 if len(data) == 2:
                     sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
                 else:
                     sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-            elif broadcast_type == '0D':
+            elif broadcast_type == '0D': # UNK 0D
                 sub_message['type'] = 'unk_0D'
                 sub_message['unk2'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-            elif broadcast_type == '0A':
+            elif broadcast_type == '0A': # Weapon update
                 sub_message['type'] = 'weapon_update'
                 sub_message['unk1'] = ''.join([data.popleft() for i in range(5)])
                 packet[f'msg{i}'] = sub_message
-            elif broadcast_type == '00':
+            elif broadcast_type == '00': # UNK
                 if len(data) == 3:
                     sub_message['type'] = 'unk00'
                     sub_message['unk1'] = ''.join([data.popleft() for i in range(3)])
@@ -111,7 +111,7 @@ class tcp_0003_broadcast_lobby_state:
                     sub_message['type'] = 'settings_update'
                     sub_message['unk1'] = ''.join([data.popleft() for i in range(283)])
                 packet[f'msg{i}'] = sub_message
-            elif broadcast_type == '08':
+            elif broadcast_type == '08': # Weapon Changed
                 sub_message['type'] = 'weapon_changed'
                 weap_changed_to = data.popleft()
                 if weap_changed_to == '00':

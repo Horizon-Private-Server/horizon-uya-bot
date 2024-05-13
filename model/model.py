@@ -125,12 +125,14 @@ class Model:
         if dme_packet.name == 'tcp_000D_game_started':
             self.game_state.start()
             self.loop.create_task(self.send_player_data())
+            self.loop.create_task(self.timer_update())
             self.game_state.state = 'active'
 
         if dme_packet.name == 'udp_0001_timer_update':
             if src_player == 0:
                 self.game_state.player.time = dme_packet.time
             self.game_state.time_update(src_player, dme_packet.time)
+
 
         if dme_packet.name == 'tcp_0012_player_left':
             if src_player == 0:
@@ -144,16 +146,17 @@ class Model:
             for msg in msgs:
                 if src_player == 0 and dme_packet.data['src'] == -1 and dme_packet.data[msg]['type'] == 'ready/unready' and dme_packet.data[msg][f'p{self.game_state.player.player_id}'] == 'kicked':
                     self.alive = False
-                if src_player == 0 and dme_packet.data[msg]['type'] == 'timer_update':
-                    self.game_state.player.time = dme_packet.data[msg]['time']
+                if dme_packet.data[msg]['type'] == 'timer_update':
+                    self.game_state.time_update(src_player, dme_packet.data[msg]['time'])
+                    if src_player == 0:
+                        self.game_state.player.time = dme_packet.data[msg]['time']
+
                 if dme_packet.data[msg]['type'] == 'health_update':
-                    self.game_state.players[src_player].health = dme_packet.data['msg0']['health']
+                    self.game_state.players[src_player].health = dme_packet.data[msg]['health']
                     if self.game_state.players[src_player].health == 0:
                         self.game_state.players[src_player].is_dead = True
                     else:
                         self.game_state.players[src_player].is_dead = False
-                if dme_packet.data[msg]['type'] == 'unk_0D':
-                    self.loop.create_task(self._timer_update(dme_packet.data[msg]['unk2']))
 
 
         if dme_packet.name == 'tcp_020A_player_respawned':
@@ -234,7 +237,7 @@ class Model:
         self.dmetcp_queue.put(['B', tcp_0205_unk.tcp_0205_unk()])
 
         # Charge boots
-        self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_update'}})])
+        self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 2, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_update_0A'}, 'msg1': {'type': 'weapon_update_0C'}})])
 
         self.loop.create_task(self.wait_until_game_start())
 
@@ -250,13 +253,10 @@ class Model:
         self.loop.create_task(self.bot.main_loop())
 
 
-    async def _timer_update(self, unk_0D):
-        self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'unk_0D', 'unk2': unk_0D}})])
-
+    async def timer_update(self):
         while self.alive:
             try:
                 self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': '09_timer_update', 'time': self.game_state.player.time}})])
-
                 await asyncio.sleep(1)
             except:
                 logger.exception("TIMER UPDATE ERROR")

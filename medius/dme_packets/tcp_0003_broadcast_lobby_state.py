@@ -36,11 +36,19 @@ player_id_map = {
 }
 '''
 0003
-00
 01
-0100
 0A
-F8CA
+0000
+00466F7572426F6C7400000000000000000020614D2061206E4F4F6200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000043505500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020F00FFFFFFFFFFFFFFFFFFFFFFFFFFFF030000FFFFFFFFFFFFFFFFFFFFFFFFFFFF040000FFFFFFFFFFFFFFFFFFFFFFFFFFFF050000000000000000000000000000000006010000001002000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1100C0A844000080BF000080BF000080BF000080BF000080BF000080BF000080BF120000AF43000080BF000080BF000080BF000080BF000080BF000080BF000080BF
+
+0003
+01
+02
+0000
+05
+08000000000000000000000000000000
+07
+BD2B0600
 '''
 class tcp_0003_broadcast_lobby_state:
     def __init__(self, data:dict):
@@ -50,13 +58,10 @@ class tcp_0003_broadcast_lobby_state:
 
     @classmethod
     def serialize(self, data: deque):
-        # Length is #messages * 17
         packet = {}
         packet['base_type'] = data.popleft()
         assert packet['base_type'] in {'01', '00'}
         packet['num_messages'] = bytes_to_int_little(hex_to_bytes(data.popleft()))
-        if packet['num_messages'] != 1:
-            packet['num_messages'] -= 1
 
         packet['src'] = player_id_map[data.popleft() + data.popleft()]
 
@@ -67,50 +72,49 @@ class tcp_0003_broadcast_lobby_state:
                 break
             broadcast_type = data.popleft()
 
-            if broadcast_type == '05': # Ready/Unready
-                ready_unready_map = {'00': 'unready', '06': 'ready', '05': 'kicked', '06': 'unk_06_loading_in', '07': 'unk_07_loading_in', '08': 'unk_08_in_game'}
-                sub_message['type'] = 'ready/unready'
-                for player_id in range(8):
-                    val = data.popleft()
-                    data.popleft()
-                    sub_message[f'p{player_id}'] = ready_unready_map[val]
-            elif broadcast_type == '03': # Color
-                sub_message['type'] = 'colors'
-                for player_id in range(8):
-                    val = data.popleft()
-                    data.popleft()
-                    sub_message[f'p{player_id}'] = TEAM_MAP[val]
+            if broadcast_type == '00': # UNK
+                sub_message['type'] = 'usernames'
+                sub_message['usernames'] = ''.join([data.popleft() for i in range(128)])
+
+            elif broadcast_type == '01': # unk_01
+                sub_message['type'] = 'clan_tags'
+                sub_message['clan_tags'] = ''.join([data.popleft() for i in range(64)])
+
             elif broadcast_type == '02': # Skins
                 sub_message['type'] = 'skins'
                 for player_id in range(8):
                     val = data.popleft()
                     data.popleft()
                     sub_message[f'p{player_id}'] = SKIN_MAP[val]
+
+            elif broadcast_type == '03': # Color
+                sub_message['type'] = 'colors'
+                for player_id in range(8):
+                    val = data.popleft()
+                    data.popleft()
+                    sub_message[f'p{player_id}'] = TEAM_MAP[val]
+
+            elif broadcast_type == '04': # Unk
+                sub_message['type'] = 'unk_04'
+                sub_message['unk1'] = ''.join([data.popleft() for i in range(16)])
+
+            elif broadcast_type == '05': # Ready/Unready
+                ready_unready_map = {'00': 'unready', '06': 'ready', '05': 'kicked', '06': 'unk_06_loading_in', '07': 'unk_07_loading_in', '08': 'unk_08_in_game'}
+                sub_message['type'] = 'ready/unready'
+                for player_id in range(8):
+                    val = data.popleft()
+                    data.popleft()
+                    sub_message[f'p{player_id}'] = ready_unready_map[val]
+
+            elif broadcast_type == '06': # Unk
+                sub_message['type'] = 'unk_06'
+                sub_message['unk1'] = ''.join([data.popleft() for i in range(18)])
+
             elif broadcast_type == '07': # Health
                 sub_message['type'] = 'health_update'
                 raw_hp = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
                 sub_message['health'] = HP_MAP[raw_hp] if raw_hp in HP_MAP else 100
-            elif broadcast_type == '09': # Timer
-                sub_message['type'] = '09_timer_update'
-                if len(data) == 2:
-                    sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
-                else:
-                    sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-            elif broadcast_type == '0D': # UNK 0D
-                sub_message['type'] = 'unk_0D'
-                sub_message['unk2'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
-            elif broadcast_type == '0A': # Weapon update
-                sub_message['type'] = 'weapon_update'
-                sub_message['unk1'] = ''.join([data.popleft() for i in range(5)])
-                packet[f'msg{i}'] = sub_message
-            elif broadcast_type == '00': # UNK
-                if len(data) == 3:
-                    sub_message['type'] = 'unk00'
-                    sub_message['unk1'] = ''.join([data.popleft() for i in range(3)])
-                else:
-                    sub_message['type'] = 'settings_update'
-                    sub_message['unk1'] = ''.join([data.popleft() for i in range(283)])
-                packet[f'msg{i}'] = sub_message
+
             elif broadcast_type == '08': # Weapon Changed
                 sub_message['type'] = 'weapon_changed'
                 weap_changed_to = data.popleft()
@@ -118,8 +122,39 @@ class tcp_0003_broadcast_lobby_state:
                     sub_message['weapon_changed_to'] = 'NA'
                 else:
                     sub_message['weapon_changed_to'] = WEAPON_MAP[weap_changed_to]
-
                 sub_message['unk1'] = ''.join([data.popleft() for i in range(3)])
+
+            elif broadcast_type == '09': # Timer
+                sub_message['type'] = '09_timer_update'
+                if len(data) == 2:
+                    sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+                else:
+                    sub_message['time'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+
+            elif broadcast_type == '11': # Unk
+                sub_message['type'] = 'bolt_modifier'
+                sub_message['bolt_modifier'] = ''.join([data.popleft() for i in range(32)])
+
+            elif broadcast_type == '12': # Unk
+                sub_message['type'] = 'bolt_skill'
+                sub_message['bolt_skill'] = ''.join([data.popleft() for i in range(32)])
+
+            elif broadcast_type == '0A': # Weapon update 0A
+                sub_message['type'] = 'weapon_update_0A'
+                sub_message['unk1'] = ''.join([data.popleft() for i in range(2)])
+
+            elif broadcast_type == '0C': # Weapon update 0C
+                sub_message['type'] = 'weapon_update_0C'
+                sub_message['unk1'] = ''.join([data.popleft() for i in range(2)])
+
+            elif broadcast_type == '0D': # Cross hair lockon (required for morph)
+                sub_message['type'] = 'crosshair_lockon'
+                sub_message['unk1'] = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
+
+            elif broadcast_type == 'FF': # Unk
+                sub_message['type'] = 'unk_FF'
+                sub_message['unk1'] = ''.join([data.popleft() for i in range(18)])
+
             else:
                 raise Exception(f'{broadcast_type} not known!')
 
@@ -128,53 +163,46 @@ class tcp_0003_broadcast_lobby_state:
         return tcp_0003_broadcast_lobby_state(packet)
 
     def to_bytes(self):
-        if self.data['msg0']['type'] == 'weapon_changed':
-            # 01 is the unk1
-            return self.id + \
-                hex_to_bytes('00') + \
-                int_to_bytes_little(1, self.data['num_messages']) + \
-                hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
-                hex_to_bytes('08') + \
-                hex_to_bytes({v: k for k, v in WEAPON_MAP.items()}[self.data['msg0']['weapon_changed_to']]) + \
-                hex_to_bytes("000000")
 
-        elif self.data['msg0']['type'] == 'weapon_update': ## Charge boots
-            # 08C80C08C8 -> Charge boots
-            return self.id + \
+        result = self.id + \
                 hex_to_bytes('00') + \
                 int_to_bytes_little(1, self.data['num_messages']) + \
-                hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
-                hex_to_bytes('0A') + \
-                hex_to_bytes("08C80C08C8")
+                hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']])
 
-        elif self.data['msg0']['type'] == '09_timer_update':
-            # 01 is the unk1
-            return self.id + \
-                hex_to_bytes('00') + \
-                int_to_bytes_little(1, self.data['num_messages']) + \
-                hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
-                hex_to_bytes('09') + \
-                int_to_bytes_little(4, self.data['msg0']['time'])
+        msgs = [key for key in self.data.keys() if key[0:3] == 'msg']
 
-        elif self.data['msg0']['type'] == 'unk_0D':
-            # 01 is the unk1
-            return self.id + \
-                hex_to_bytes('00') + \
-                int_to_bytes_little(1, self.data['num_messages']) + \
-                hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
-                hex_to_bytes('0D') + \
-                int_to_bytes_little(4, self.data['msg0']['unk2'])
+        for msg in msgs:
+            if self.data[msg]['type'] == 'weapon_changed':
+                # 01 is the unk1
+                result += hex_to_bytes('08') + \
+                    hex_to_bytes({v: k for k, v in WEAPON_MAP.items()}[self.data[msg]['weapon_changed_to']]) + \
+                    hex_to_bytes("000000")
 
-        elif self.data['msg0']['type'] == 'health_update':
-            # 01 is the unk1
-            return self.id + \
-                hex_to_bytes('00') + \
-                int_to_bytes_little(1, self.data['num_messages']) + \
-                hex_to_bytes({v: k for k, v in player_id_map.items()}[self.data['src']]) + \
-                hex_to_bytes('07') + \
-                int_to_bytes_little(4, {v: k for k, v in HP_MAP.items()}[self.data['msg0']['health']])
-        else:
-            raise Exception()
+            elif self.data[msg]['type'] == 'weapon_update_0A': ## Charge boots
+                # 08C8 -> Charge boots
+                result += hex_to_bytes('0A') + hex_to_bytes("08C8")
+
+            elif self.data[msg]['type'] == 'weapon_update_0C': ## Charge boots
+                # 08C8 -> Charge boots
+                result += hex_to_bytes('0C') + hex_to_bytes("08C8")
+
+            elif self.data[msg]['type'] == '09_timer_update':
+                # 01 is the unk1
+                result += hex_to_bytes('09') + \
+                    int_to_bytes_little(4, self.data[msg]['time'])
+
+            elif self.data[msg]['type'] == 'crosshair_lockon':
+               result += hex_to_bytes('0D') + \
+                    int_to_bytes_little(4, self.data[msg]['unk1'])
+
+            elif self.data[msg]['type'] == 'health_update':
+                # 01 is the unk1
+                result += hex_to_bytes('07') + \
+                    int_to_bytes_little(4, {v: k for k, v in HP_MAP.items()}[self.data[msg]['health']])
+            else:
+                raise Exception()
+            
+        return result
 
     def __str__(self):
         return f"{self.name}; data:{self.data}"

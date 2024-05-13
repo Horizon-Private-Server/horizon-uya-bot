@@ -31,8 +31,9 @@ class cpu4(prototype):
         logger.info(str(self.model.game_state))
         logger.info(str(self.model.game_state.object_manager))
 
-        self.target = self.game_state.players[0].coord
+        target_player_id = 0
 
+        self.target = self.game_state.players[target_player_id].coord
 
         self.game_state.player.coord = [28009, 56248, 7413]
 
@@ -53,7 +54,7 @@ class cpu4(prototype):
 
         #self.patrol(marc_points, circular=False)
 
-        #self.fire_weapon(object_id = self.game_state.players[0].player_id)
+        #self.fire_weapon(object_id = self.game_state.players[target_player_id].player_id)
 
 
     def __str__(self):

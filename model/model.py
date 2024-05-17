@@ -158,10 +158,12 @@ class Model:
                     else:
                         self.game_state.players[src_player].is_dead = False
 
+                if dme_packet.data[msg]['type'] == 'weapon_upgraded':
+                    self.game_state.players[src_player].set_weapon_upgrades(dme_packet.data[msg])
+
 
         if dme_packet.name == 'tcp_020A_player_respawned':
-            self.game_state.players[src_player].is_dead = False
-            self.game_state.players[src_player].reset_health()
+            self.game_state.players[src_player].respawn()
 
         if dme_packet.name == 'tcp_0004_tnw' and dme_packet.tnw_type == 'tNW_PlayerData':
             self.game_state.tnw_playerdata_update(src_player, dme_packet.data)

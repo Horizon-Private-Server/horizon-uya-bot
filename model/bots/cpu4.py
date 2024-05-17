@@ -16,8 +16,8 @@ class cpu4(prototype):
     def __init__(self, model, game_state):
         super().__init__(model, game_state)
 
-        self.arsenal.weapons['flux']['hit_rate'] = .2
-        self.arsenal.weapons['grav']['hit_rate'] = .3
+        self.game_state.player.arsenal.weapons['flux']['hit_rate'] = .2
+        self.game_state.player.arsenal.weapons['grav']['hit_rate'] = .3
 
         ###### Set the cycle
         weapon_order_list = list(self.game_state.weapons)
@@ -54,9 +54,23 @@ class cpu4(prototype):
 
         #self.patrol(marc_points, circular=False)
 
-        #self.fire_weapon(object_id = self.game_state.players[target_player_id].player_id)
+        self.fire_weapon(object_id = self.game_state.players[target_player_id].player_id)
 
 
     def __str__(self):
         return "cpu4"
+
+
+# func transition_to(target_state_name: String, msg: Dictionary = {}) -> void:
+# 	# Safety check, you could use an assert() here to report an error if the state name is incorrect.
+# 	# We don't use an assert here to help with code reuse. If you reuse a state in different state machines
+# 	# but you don't want them all, they won't be able to transition to states that aren't in the scene tree.
+# 	if not has_node(target_state_name):
+# 		return
+
+# 	state.exit()
+# 	state = get_node(target_state_name)
+# 	print("Transitioning to:", state.get_name())
+# 	state.enter(msg)
+# 	emit_signal("transitioned", state.name)
 

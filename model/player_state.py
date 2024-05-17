@@ -1,4 +1,11 @@
+from model.arsenal import Arsenal
 
+VALID_HP ={
+    100,93,86,80,73,66,60,53,46,40,33,26,20,13,6,0
+}
+
+def get_closest_hp(input_number):
+    return min(VALID_HP, key=lambda x: abs(x - input_number))
 
 class PlayerState:
     def __init__(self, player_id:int=None, account_id:int=None, team:str=None, username:str=None, skin:str=None, clan_tag:str=None, rank:int=0):
@@ -26,6 +33,7 @@ class PlayerState:
         self.is_dead = False
         self.animation = None
         self._default_health = 100
+        self.health = self._default_health
         self.reset_health()
         self.respawn_time = None
 
@@ -33,6 +41,13 @@ class PlayerState:
         self.left_joystick_y = None
 
         self.flag = None
+
+        self.arsenal = Arsenal()
+
+    def take_damage(self, damage):
+        self.health -= damage
+        self.health = max(self.health,0)
+        self.health = get_closest_hp(self.health)
 
     def reset_health(self):
         self.health = self._default_health
@@ -43,6 +58,14 @@ class PlayerState:
             self.movement_packet_num = 0
             return 0
         return self.movement_packet_num - 1
+
+    def respawn(self):
+        self.is_dead = False
+        self.reset_health()
+        self.arsenal.reset_upgrades()
+
+    def set_weapon_upgrades(self, weapons:dict):
+        self.arsenal.set_weapon_upgrades(weapons)
 
     def change_teams(self, game_mode):
         team_change_map = {
@@ -68,4 +91,4 @@ class PlayerState:
 
     def __str__(self):
         return f"PlayerState; username: {self.username} player_id:{self.player_id} account_id:{self.account_id} team:{self.team} health:{self.health} is_dead:{self.is_dead}  weapon:{self.weapon} " + \
-                f"coord:{self.coord} movement_packet_num:{self.movement_packet_num} time:{self.time} flag:{self.flag}"
+                f"coord:{self.coord} movement_packet_num:{self.movement_packet_num} time:{self.time} flag:{self.flag} arsenal: {self.arsenal}"

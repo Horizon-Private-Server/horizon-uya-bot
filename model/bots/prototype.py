@@ -12,7 +12,6 @@ from butils.circularlist import CircularList
 from medius.rt.clientappsingle import ClientAppSingleSerializer
 from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
 
-from model.arsenal import Arsenal
 
 import logging
 logger = logging.getLogger('thug.model.prototype')
@@ -30,8 +29,6 @@ class prototype:
         self.game_state.player.x_angle = 127
 
         self.follow_player = False
-
-        self.arsenal = Arsenal()
 
         self.cpu_damage_min_dist = 800
 
@@ -142,13 +139,13 @@ class prototype:
         self.game_state.player.is_dead = False
 
     def fire_weapon(self, object_id=None):
-        if self.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench']:
+        if self.game_state.player.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench']:
             return
 
         if datetime.now().timestamp() - self.weapon_switch_dt < self.weapon_switch_fire_cooldown:
             return
 
-        weapon_fired_bool, hit_bool = self.arsenal.fire_weapon(self.game_state.player.weapon)
+        weapon_fired_bool, hit_bool = self.game_state.player.arsenal.fire_weapon(self.game_state.player.weapon)
 
         if weapon_fired_bool:
             # Weapon was fired.
@@ -165,7 +162,8 @@ class prototype:
             else:
                 object_id=-1
 
-                local_player_coord = self.game_state.map.transform_global_to_local(self.game_state.players[0].coord)
+                target_coord = self.target
+                local_player_coord = self.game_state.map.transform_global_to_local(target_coord)
 
                 local_x_2 = local_player_coord[0]
                 local_y_2 = local_player_coord[1]
@@ -232,13 +230,13 @@ class prototype:
                 return
 
             if calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 245: # 245 minimum for 54 damage
-                damage = 54
+                damage = 54 if self.game_state.players[src_player].arsenal.weapons['blitz']['upgrade'] == 'v1' else 100 #v2
             elif calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 541: # 541 minimum for 26 damage
-                damage = 26
+                damage = 26 if self.game_state.players[src_player].arsenal.weapons['blitz']['upgrade'] == 'v1' else 47 # v2
             elif calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 739: # 739 minimum for 14 damage
-                damage = 14
+                damage = 14 # 
             else:
-                damage = 7
+                damage = 7 if self.game_state.players[src_player].arsenal.weapons['blitz']['upgrade'] == 'v1' else 47 # 14 v2
 
         elif packet_data.weapon == 'grav' and packet_data.unk1 == '08': # 2089 minimum for 7 damage
             # Get the player's coordinate. Calculate distance of that to 
@@ -260,14 +258,11 @@ class prototype:
             #     return
 
             if packet_data.weapon == 'flux':
-                damage = 87
-            elif packet_data.weapon == 'n60':
-                damage = 5
-            elif packet_data.weapon == 'rocket':
-                damage = 60
+                damage = 87 if self.game_state.players[src_player].arsenal.weapons['flux']['upgrade'] == 'v1' else 100 # v2
 
         if damage != 0:
-            self.game_state.player.health -= damage
+            self.game_state.player.take_damage(damage)
+            self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'src': self.game_state.player.player_id, 'num_messages': 1, 'msg0': {'type': 'health_update', 'health': self.game_state.player.health}})])
 
             self.model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
             self.check_if_dead(src_player, packet_data.weapon)
@@ -279,14 +274,15 @@ class prototype:
         dist = calculate_distance(dest_coord, self.game_state.player.coord)
         # 460 threshold
         if dist <= 460:
-            self.game_state.player.health -= 60
+            dmg = 60 if self.game_state.players[src_player].arsenal.weapons['grav']['upgrade'] == 'v1' else 94
+            self.game_state.player.take_damage(dmg)
             self.model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
             self.check_if_dead(src_player, weapon)
 
 
     def check_if_dead(self, src_player, weapon):
         # ---- Process health now
-        if self.game_state.player.health < 0:
+        if self.game_state.player.health <= 0:
 
             self.game_state.player.is_dead = True
             self.game_state.player.animation = None

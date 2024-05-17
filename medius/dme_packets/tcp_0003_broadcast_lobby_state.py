@@ -34,22 +34,19 @@ player_id_map = {
     '1200': 6,
     '1500': 7,
 }
-'''
-0003
-01
-0A
-0000
-00466F7572426F6C7400000000000000000020614D2061206E4F4F6200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000043505500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000020F00FFFFFFFFFFFFFFFFFFFFFFFFFFFF030000FFFFFFFFFFFFFFFFFFFFFFFFFFFF040000FFFFFFFFFFFFFFFFFFFFFFFFFFFF050000000000000000000000000000000006010000001002000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1100C0A844000080BF000080BF000080BF000080BF000080BF000080BF000080BF120000AF43000080BF000080BF000080BF000080BF000080BF000080BF000080BF
 
-0003
-01
-02
-0000
-05
-08000000000000000000000000000000
-07
-BD2B0600
-'''
+weapon_v2_index_map = {
+    0: 'lava',
+    1: 'mine',
+    2: 'grav',
+    3: 'rocket',
+    4: 'flux',
+    5: 'blitz',
+    6: 'n60',
+    14: 'morph',
+}
+
+
 class tcp_0003_broadcast_lobby_state:
     def __init__(self, data:dict):
         self.name = os.path.basename(__file__).strip(".py")
@@ -142,6 +139,12 @@ class tcp_0003_broadcast_lobby_state:
             elif broadcast_type == '0A': # Weapon update 0A
                 sub_message['type'] = 'weapon_update_0A'
                 sub_message['unk1'] = ''.join([data.popleft() for i in range(2)])
+
+            elif broadcast_type == '0B': # Weapon upgrade 0B
+                sub_message['type'] = 'weapon_upgraded'
+                bitmask = hex_to_bit_string(''.join([data.popleft() for i in range(2)]))
+                for weapon_index, weapon_name in weapon_v2_index_map.items():
+                    sub_message[weapon_name] = 'v2' if bitmask[weapon_index] == '1' else 'v1'
 
             elif broadcast_type == '0C': # Weapon update 0C
                 sub_message['type'] = 'weapon_update_0C'

@@ -1,0 +1,811 @@
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_0003_broadcast_lobby_state.py", line 140, in serialize
+    sub_message['bolt_skill'] = ''.join([data.popleft() for i in range(32)])
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_0003_broadcast_lobby_state.py", line 140, in <listcomp>
+    sub_message['bolt_skill'] = ''.join([data.popleft() for i in range(32)])
+IndexError: pop from an empty deque
+2024-05-13 18:02:56,584 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C80461F00B8371E00001000F714100017FC1A0000010000109905C6436718A54300306B440000000000000000000080BF0A000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:03:06,149 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C21040000195A1E00121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:03:06,873 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001DCE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00425D1E00001000F715100007FC1A000001000000F47FC843AE5FA64300306B440000000000000000000080BF0A000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:03:29,599 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F0047B61E00001000F714200007FC1A00000100000047C2C543F03CA54300306B440000000000000000000080BF0A000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:03:44,572 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C210000009BF01E00121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:03:46,586 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F007DF81E00001000F715200007FC1A000001000000498AC743661D9543946F6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:03:55,206 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C80461F0097151F00001000F716100017FC1A000001000010749CC8430B61A84300306B440000000000000000000080BF0A000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:04:15,273 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F0084681F00001000F716200007FC1A000001000000B069C84367BE8A4353426B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:04:32,264 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001DCE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F000EAB1F00001000F717100007FC1A0000010000003ABAC7436F4FA64300306B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:04:39,109 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C2104000080C41F00121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:04:43,894 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A0100017D4FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F0024D71F00001000F716300017FC1A000001000010266EC943CA858A43286D6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:05:05,457 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001CDE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F009C2C2000001000F715300007FC1A000001000000AD9BC7435C2EBC43FA636B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:05:18,176 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C80461F00BD592000001000F716400017FC1A000001000010AF6DC9431092B643016D6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:05:35,459 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C21040000799C2000121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:05:36,628 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F0069A62000001000F714300007FC1A0000010000000232CC434D66A94300306B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:05:46,641 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F0083CD2000001000F715400007FC1A000001000000C56BC9438702B243646C6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:05:54,512 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C2100000046EC2000131000F70000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0000'
+2024-05-13 18:05:57,891 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C80461F0091F92000001000F717200017FC1A000001000010801FC9433CE4A443122F6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:06:18,926 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A010001F64FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F002F4A2100001000F716500017FC1A00000100001096DDC8430A48B343BF496B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:06:25,020 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F0056632100001000F717300007FC1A000001000000FBFCC743D8379A43A54D6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:06:30,452 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C80461F0063782100001000F716600017FC1A000001000010A861C94337A6B04327696B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:06:37,029 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A0000012AE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F0053922100001000F717400007FC1A000001000000B9C7C74385869543E65B6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:06:43,505 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C80461F0091AA2100001000F716700017FC1A0000010000108742C9438A64AE432F5F6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:06:54,173 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A0000012BE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F0052D52100001000F716800007FC1A0000010000002E60C94389218C43855A6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:07:02,204 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A010001774FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F00E7F22100001000F715500017FC1A000001000010435ECE438328BA431D496B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:07:14,816 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C210400000B242200121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:07:15,788 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A0000016FE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00C7292200001000F716900007FC1A0000010000003429C8430A31A44365456B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:07:29,268 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F005F5E2200001000F716A00007FC1A00000100000059B0C743DEC9A94300306B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:07:57,201 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001DBE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F0098CB2200001000F714400007FC1A00000100000076CAC743D268AE43065B6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:08:03,083 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C2100000067E22200131000F70000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0000'
+2024-05-13 18:08:04,821 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A010001214FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F002EE92200001000F715600017FC1A0000010000106572C9432117B643846E6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:08:16,544 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F0020172300001000F714500007FC1A000001000000EB8FC7430D569943C66D6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:08:30,377 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001CCE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00164D2300001000F715700007FC1A000001000000CAD2C743CF7CB6435B586B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:08:35,591 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C210000006B612300131000F70000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0000'
+2024-05-13 18:08:37,215 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A010001074FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F00B4672300001000F715800017FC1A0000010000109B7BC743B27EA9438F2E6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:08:44,596 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F009C842300001000F716B00007FC1A000001000000EBE5C84364B296439D4A6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:08:50,045 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001F3E36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00EC992300001000F717500007FC1A000001000000E8F3C843E26EBA43C8416B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:09:21,944 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A010001A54FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F007D162400001000F714600017FC1A000001000010F193CB43FD6C8D43FB416B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:09:35,546 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A010001714FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F00AA4B2400001000F717600017FC1A000001000010B515C943CB68B443D3506B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:09:44,767 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A010001FB4FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F00B46F2400001000F716C00017FC1A000001000010D77AC94392B5944338716B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:09:59,954 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F000BAB2400001000F717700007FC1A000001000000FAC4C643EF8EBB4362636B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:10:06,310 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A0100013E4FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F00BFC32400001000F715900017FC1A00000100001057DBC74312D289439E556B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:10:12,075 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C210000004BDA2400121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:10:13,976 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001DDE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00C9E12400001000F715A00007FC1A000001000000FE9BC843EB6C8A43EA426B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:10:30,968 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C80461F0032242500001000F717800017FC1A00000100001076B7C943A31AAC4300306B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:10:40,869 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A010001444FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F00D74A2500001000F715B00017FC1A0000010000100E1ACA43ED7C8E439E626B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:10:47,962 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C2104000079662500121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:10:49,623 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001F2E36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00EC6C2500001000F717900007FC1A000001000000C46CC943638EBE43B66C6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:12:32,727 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001FCE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00BCFF2600001000F717A00007FC1A000001000000B3EAC743646B8C43F8426B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:13:21,665 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F00F1BE2700001000F717B00007FC1A0000010000008D5EC843A6B88B4300406B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:13:32,223 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A0100014A4FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F0029E82700001000F715C00017FC1A00000100001088CDC743D989B4430A5A6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:13:38,551 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001D7E36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F0006012800001000F717C00007FC1A000001000000026BC943EF5F9043266C6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:13:46,682 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A010001244FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F00BA202800001000F715D00017FC1A00000100001079DBC8432D00B44387496B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:14:02,229 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A0100010C4FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F00665D2800001000F717D00017FC1A00000100001084DECD431EE38D43534A6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:14:02,593 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A0000013FE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00EF5E2800001000F714700007FC1A000001000000D665C74374CB8D432D476B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:14:12,947 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C80461F002C872800001000F716D00017FC1A0000010000106D40CB4362F4A84300306B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:14:53,869 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A0000013FE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F0022272900001000F717E00007FC1A0000010000000C00C843BE62BA4300406B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:15:08,070 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A010001E74FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F00875E2900001000F717F00017FC1A0000010000106CABC743E41C8E43CC426B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:15:20,425 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F00E28E2900001000F715E00007FC1A00000100000079AAC74378B6BB433F556B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:15:32,565 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C80461F003ABE2900001000F717000117FC1A0000010000106FCDCA43BE4B8E4322626B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:15:37,381 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C2104000041D12900121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:15:38,614 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F00EBD52900001000F714800007FC1A000001000000CFBEC8436E0EB6438A466B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:15:48,038 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A0000016BE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00BDFA2900001000F714900007FC1A0000010000003631C943433ABA43BB436B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:16:08,541 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A010001714FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F00DC4A2A00001000F717100117FC1A000001000010D418C843524991439E486B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:16:17,041 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A0000011EE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00226C2A00001000F714A00007FC1A0000010000005436C8438DCFBC43AC476B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:16:31,000 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F007CA22A00001000F717200107FC1A000001000000106DC8439D779F43F9416B440000000000000000000080BF0B00000000030002010007000070410800000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:16:36,025 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A0100010D4FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F0032B62A00001000F715F00017FC1A0000010000100D7DCE43C45CBA43AB436B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:16:42,669 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F002BD02A00001000F717300107FC1A0000010000001982C9434A818F43FC696B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:16:50,872 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A00000118E36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F002AF02A00001000F714B00007FC1A0000010000001BCEC7438C04BD43DB596B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:16:58,561 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020A0100015F4FE6C84300808D43CC446B440000000000000000DB0FC93F00000100020C80461F003D0E2B00001000F718100017FC1A0000010000107D01C943B6A693437D4D6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:16:58,781 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C210000001F0F2B00131000F70000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0000'
+2024-05-13 18:17:04,517 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C2104000081252B00121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:17:05,513 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001F4E36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F0062292B00001000F719100007FC1A0000010000002D85C74351EC894337716B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:17:16,766 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C80461F0047552B00001000F716E00017FC1A000001000010D61CCA43ED35A84300306B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:17:25,491 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C210400006D772B00121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:17:26,313 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A0000012BE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00A77A2B00001000F715000107FC1A000001000000F54DC8435BB0AC43DF426B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:17:33,099 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A00000191E36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F002D952B00001000F714C00007FC1A000001000000A3CBC6434272BB432F596B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:17:48,689 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C80461F00E1D12B00001000F715100117FC1A0000010000107F68C94397E0A243586B6B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80461F00'
+2024-05-13 18:17:59,633 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C21040000C3FC2B00121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:18:00,286 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A00000128E36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F0056FF2B00001000F716F00007FC1A0000010000001E2AC943638EBE435D576B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:18:10,119 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F00C9252C00001000F714D00007FC1A0000010000006157C943821CB343DC656B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:18:19,328 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A00000146E36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00C2492C00001000F714E00007FC1A000001000000A746C9435FDCAF4381606B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:18:28,717 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C21040000736E2C00131000F70000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0000'
+2024-05-13 18:18:37,696 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '020C2104000093912C00121000F70001'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 189, in serialize
+    data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
+KeyError: '0001'
+2024-05-13 18:18:39,458 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A00000174E36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F006B982C00001000F714F00007FC1A0000010000006376C843CEC5B84300406B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:18:46,284 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 1, 'dst': -1, 'data': '0003000103000B0200'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_0003_broadcast_lobby_state.py", line 159, in serialize
+    raise Exception(f'{broadcast_type} not known!')
+Exception: 0B not known!
+2024-05-13 18:19:07,703 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020C80421F009F062D00001000F714000107FC1A0000010000009AE1C743081EB94340486B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:19:55,672 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A000001EAE36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F001DC22D00001000F714100107FC1A0000010000001C0DC943AEC0BA4300406B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'
+2024-05-13 18:20:34,764 blarg | ERROR | error processing: {'type': 'tcp', 'dme_world_id': 24, 'src': 0, 'dst': -1, 'data': '020A00000133E36DC7430A7EBA43B2446B440000000000000000DB0FC9BF00000100020C80421F00BD5A2E00001000F714200107FC1A0000010000007683C9439EBBAA4300306B440000000000000000000080BF0B000000'}
+Traceback (most recent call last):
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 168, in read_websocket
+    self.process(data_point)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/blarg.py", line 108, in process
+    serialized = tcp_map[packet_id].serialize(data)
+  File "/Users/johnjanecek/Documents/horizon/horizon-uya-bot/blarg/../medius/dme_packets/tcp_020C_info.py", line 178, in serialize
+    subtype = subtype_map[subtype]
+KeyError: '80421F00'

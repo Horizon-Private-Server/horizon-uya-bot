@@ -7,6 +7,7 @@ class Arsenal:
         self.weapons = {
             'flux':
                 {
+                    'upgrade': 'v1',
                     'cooldown': 1.45,
                     'shoot_rate': 1,
                     'hit_rate': 0,
@@ -14,28 +15,16 @@ class Arsenal:
                 },
             'blitz':
                 {
+                    'upgrade': 'v1',
                     'cooldown': .5,
-                    'shoot_rate': 1,
-                    'hit_rate': 0,
-                    'last_ts_fired': datetime.now().timestamp()
-                },
-            'rocket':
-                {
-                    'cooldown': 1.7,
                     'shoot_rate': 1,
                     'hit_rate': 0,
                     'last_ts_fired': datetime.now().timestamp()
                 },
             'grav':
                 {
+                    'upgrade': 'v1',
                     'cooldown': 1.43,
-                    'shoot_rate': 1,
-                    'hit_rate': 0,
-                    'last_ts_fired': datetime.now().timestamp()
-                },
-            'n60':
-                {
-                    'cooldown': .25,
                     'shoot_rate': 1,
                     'hit_rate': 0,
                     'last_ts_fired': datetime.now().timestamp()
@@ -57,6 +46,14 @@ class Arsenal:
                 hit_bool = True
 
         return weapon_fired_bool, hit_bool
+
+    def set_weapon_upgrades(self, upgrades:dict):
+        for weapon_name in self.weapons.keys():
+            self.weapons[weapon_name]['upgrade'] = upgrades[weapon_name]
+
+    def reset_upgrades(self):
+        for weapon_name in self.weapons.keys():
+            self.weapons[weapon_name]['upgrade'] = 'v1'
 
     def __str__(self):
         return f"Arsenal; enabled:{self.enabled} weapons:{self.weapons}"

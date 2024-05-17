@@ -69,11 +69,11 @@ class tcp_0003_broadcast_lobby_state:
                 break
             broadcast_type = data.popleft()
 
-            if broadcast_type == '00': # UNK
+            if broadcast_type == '00': # usernames
                 sub_message['type'] = 'usernames'
                 sub_message['usernames'] = ''.join([data.popleft() for i in range(128)])
 
-            elif broadcast_type == '01': # unk_01
+            elif broadcast_type == '01': # clan tags
                 sub_message['type'] = 'clan_tags'
                 sub_message['clan_tags'] = ''.join([data.popleft() for i in range(64)])
 

@@ -76,13 +76,14 @@ class prototype:
         packet_num = self.game_state.player.gen_packet_num()
         data = {'r1': '7F', 'cam1_y': 127, 'cam1_x': self.game_state.player.x_angle, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': self.game_state.player.x_angle, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': self.game_state.player.x_angle, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': self.game_state.player.x_angle, 'buffer': '00', 'coord': self.game_state.player.coord, 'packet_num': packet_num, 'flush_type': 0, 'type': 'movement'}
 
-        if self.game_state.player.animation != None:
-            data['flush_type'] = 16
-            data['animation'] = self.game_state.player.animation
+        if not self.game_state.player.stunned:
+            if self.game_state.player.animation != None:
+                data['flush_type'] = 16
+                data['animation'] = self.game_state.player.animation
 
-        if self.game_state.player.left_joystick_x != None:
-            data['left_joystick_x'] = self.game_state.player.left_joystick_x
-            data['left_joystick_y'] = self.game_state.player.left_joystick_y
+            if self.game_state.player.left_joystick_x != None:
+                data['left_joystick_x'] = self.game_state.player.left_joystick_x
+                data['left_joystick_y'] = self.game_state.player.left_joystick_y
 
         self.model.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
@@ -101,10 +102,13 @@ class prototype:
 
         new_coord = self.game_state.map.path(self.game_state.player.coord, patrol_coord)
         self.update_animation_and_angle(self.game_state.player.coord, new_coord)
-        self.game_state.player.coord = new_coord
+        self.game_state.player.set_coord(new_coord)
 
 
     def update_animation_and_angle(self, old_coord, new_coord):
+        if self.game_state.player.stunned:
+            return
+
         # Start with no animation
         self.game_state.player.animation = None
 
@@ -135,8 +139,12 @@ class prototype:
         self.game_state.player.weapon = None
         self.game_state.player.reset_health()
         self.model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, map=self.game_state.map.map)])
-        self.game_state.player.coord = self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode)
+        self.game_state.player.set_coord(self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode))
         self.game_state.player.is_dead = False
+        
+        data_packet = self.game_state.player.arsenal.dump_upgrades()
+        data_packet['type'] = 'weapon_upgraded'
+        self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': data_packet})])
 
     def fire_weapon(self, object_id=None):
         if self.game_state.player.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench']:
@@ -264,8 +272,18 @@ class prototype:
             self.game_state.player.take_damage(damage)
             self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'src': self.game_state.player.player_id, 'num_messages': 1, 'msg0': {'type': 'health_update', 'health': self.game_state.player.health}})])
 
-            self.model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+            if damage > 10 and self.game_state.player.health > 0:
+                self.game_state.player.stunned = True
+                self.model.loop.create_task(self.reset_stun())
+                self.model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
+
             self.check_if_dead(src_player, packet_data.weapon)
+
+    async def reset_stun(self):
+        # stun time
+        stun_time = .5
+        await asyncio.sleep(stun_time)
+        self.game_state.player.stunned = False
 
 
     async def process_grav_bomb_explode(self, time_to_explode, dest_coord, src_player, weapon):
@@ -274,8 +292,10 @@ class prototype:
         dist = calculate_distance(dest_coord, self.game_state.player.coord)
         # 460 threshold
         if dist <= 460:
+            self.game_state.player.arsenal.reset_upgrades()
             dmg = 60 if self.game_state.players[src_player].arsenal.weapons['grav']['upgrade'] == 'v1' else 94
             self.game_state.player.take_damage(dmg)
+            self.game_state.player.animation = None
             self.model.dmeudp_queue.put(['B', udp_020F_player_damage_animation.udp_020F_player_damage_animation(src_player=self.game_state.player.player_id)])
             self.check_if_dead(src_player, weapon)
 
@@ -283,6 +303,8 @@ class prototype:
     def check_if_dead(self, src_player, weapon):
         # ---- Process health now
         if self.game_state.player.health <= 0:
+
+            self.game_state.player.arsenal.reset_upgrades()
 
             self.game_state.player.is_dead = True
             self.game_state.player.animation = None

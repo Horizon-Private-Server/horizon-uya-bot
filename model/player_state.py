@@ -37,6 +37,8 @@ class PlayerState:
         self.reset_health()
         self.respawn_time = None
 
+        self.stunned = False
+
         self.left_joystick_x = None
         self.left_joystick_y = None
 
@@ -58,14 +60,17 @@ class PlayerState:
             self.movement_packet_num = 0
             return 0
         return self.movement_packet_num - 1
+    
+    def set_coord(self, new_coord):
+        if self.stunned:
+            return
+        self.coord = new_coord
 
     def respawn(self):
         self.is_dead = False
         self.reset_health()
         self.arsenal.reset_upgrades()
 
-    def set_weapon_upgrades(self, weapons:dict):
-        self.arsenal.set_weapon_upgrades(weapons)
 
     def change_teams(self, game_mode):
         team_change_map = {

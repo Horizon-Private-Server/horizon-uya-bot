@@ -110,6 +110,14 @@ class Model:
         if dme_packet.name == 'tcp_0010_initial_sync':
             self.dmetcp_queue.put([src_player, tcp_0010_initial_sync.tcp_0010_initial_sync(src=self.game_state.player.player_id)])
 
+        if dme_packet.name == 'tcp_0204_player_killed' and dme_packet.killer_id == self.game_state.player.player_id:
+            # We killed someone! Lets see if we get a v2
+            if self.game_state.player.arsenal.killed_player(dme_packet.weapon):
+                # Send that we upgraded!
+                data_packet = self.game_state.player.arsenal.dump_upgrades()
+                data_packet['type'] = 'weapon_upgraded'
+                self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': data_packet})])
+
         if dme_packet.name == 'tcp_0009_set_timer' and src_player == 0:
             self.game_state.player.time = dme_packet.time
 
@@ -159,7 +167,7 @@ class Model:
                         self.game_state.players[src_player].is_dead = False
 
                 if dme_packet.data[msg]['type'] == 'weapon_upgraded':
-                    self.game_state.players[src_player].set_weapon_upgrades(dme_packet.data[msg])
+                    self.game_state.players[src_player].arsenal.set_weapon_upgrades(dme_packet.data[msg])
 
 
         if dme_packet.name == 'tcp_020A_player_respawned':

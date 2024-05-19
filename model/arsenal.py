@@ -8,6 +8,7 @@ class Arsenal:
             'flux':
                 {
                     'upgrade': 'v1',
+                    'kills': 0,
                     'cooldown': 1.45,
                     'shoot_rate': 1,
                     'hit_rate': 0,
@@ -16,6 +17,7 @@ class Arsenal:
             'blitz':
                 {
                     'upgrade': 'v1',
+                    'kills': 0,
                     'cooldown': .5,
                     'shoot_rate': 1,
                     'hit_rate': 0,
@@ -24,6 +26,7 @@ class Arsenal:
             'grav':
                 {
                     'upgrade': 'v1',
+                    'kills': 0,
                     'cooldown': 1.43,
                     'shoot_rate': 1,
                     'hit_rate': 0,
@@ -54,6 +57,34 @@ class Arsenal:
     def reset_upgrades(self):
         for weapon_name in self.weapons.keys():
             self.weapons[weapon_name]['upgrade'] = 'v1'
+            self.weapons[weapon_name]['kills'] = 0
+            
+
+    def dump_upgrades(self):
+        result = {
+            'lava': 'v1',
+            'mine': 'v1',
+            'grav': 'v1',
+            'rocket': 'v1',
+            'flux': 'v1',
+            'blitz': 'v1',
+            'n60': 'v1',
+            'morph': 'v1',
+        }
+        for weapon in self.weapons.keys():
+            result[weapon] = self.weapons[weapon]['upgrade']
+
+        return result
+
+    def killed_player(self, weapon:str) -> bool:
+        '''
+        Return true if we upgrade
+        '''
+        self.weapons[weapon]['kills'] += 1
+        if self.weapons[weapon]['kills'] == 3:
+            self.weapons[weapon]['upgrade'] = 'v2'
+            return True
+        return False
 
     def __str__(self):
         return f"Arsenal; enabled:{self.enabled} weapons:{self.weapons}"

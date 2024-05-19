@@ -45,7 +45,15 @@ weapon_v2_index_map = {
     6: 'n60',
     14: 'morph',
 }
+'''
 
+0003
+00
+01
+0300
+120000
+
+'''
 
 class tcp_0003_broadcast_lobby_state:
     def __init__(self, data:dict):
@@ -184,6 +192,16 @@ class tcp_0003_broadcast_lobby_state:
             elif self.data[msg]['type'] == 'weapon_update_0A': ## Charge boots
                 # 08C8 -> Charge boots
                 result += hex_to_bytes('0A') + hex_to_bytes("08C8")
+
+
+            elif self.data[msg]['type'] == 'weapon_upgraded': ## Charge boots
+                result += hex_to_bytes('0B')
+                base_bits = list('0000000000000000')
+                for k, v in weapon_v2_index_map.items():
+                    if self.data[msg][v] == 'v2':
+                        base_bits[k] = '1'
+                hex_v2s = bit_string_to_2_bytes_hex(''.join(base_bits))
+                result += hex_to_bytes(hex_v2s)
 
             elif self.data[msg]['type'] == 'weapon_update_0C': ## Charge boots
                 # 08C8 -> Charge boots

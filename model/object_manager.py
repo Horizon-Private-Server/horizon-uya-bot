@@ -61,8 +61,11 @@ class ObjectManager():
         for crate in self.health_crates.values():
             crate.owner = 0
             crate.master = 0
-            data = {'new_owner': crate.owner, 'counter': 1, 'master': crate.master, 'object_id': crate.id}
+            data = {'new_owner': crate.owner, 'counter': crate.counter, 'master': crate.master, 'object_id': crate.id}
             self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p0_change_owner_req', timestamp=self.game_state.player.time,data=data)])
+
+            data = {'object_id': crate.id, 'counter': crate.counter, 'master': 0}
+            self.model.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])
 
     def loop_update(self):
         # We need to check the positions of each player in comparison to each object
@@ -107,7 +110,8 @@ class ObjectManager():
                 logger.warning(f"Unknown object id on change owner request (from {src_player}): {dme_packet}")
             else:
                 self.health_crates[dme_packet.data['object_id']].owner = dme_packet.data['new_owner']
-                data = {'object_id': dme_packet.data['object_id'], 'counter': 1, 'master': self.health_crates[dme_packet.data['object_id']].master}
+                self.health_crates[dme_packet.data['object_id']].counter = dme_packet.data['counter']
+                data = {'object_id': dme_packet.data['object_id'], 'counter': self.health_crates[dme_packet.data['object_id']].counter, 'master': self.health_crates[dme_packet.data['object_id']].master}
                 self.model.dmetcp_queue.put([src_player, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])
 
         elif dme_packet.subtype[2:] == '_assign_to':
@@ -115,6 +119,7 @@ class ObjectManager():
                 logger.warning(f"Unknown object id on assign_to (from {src_player}): {dme_packet}")
             else:
                 self.health_crates[dme_packet.data['object_id']].owner = self.model.game_state.player.player_id
+                self.health_crates[dme_packet.data['object_id']].counter = dme_packet.data['counter']
 
         # if dme_packet.name == 'tcp_020C_info' and 'req_confirmation' in dme_packet.subtype:
         #     data = {'object_id': dme_packet.data['object_id'], 'unk': dme_packet.data['unk']}

@@ -16,8 +16,8 @@ class cpu4(prototype):
     def __init__(self, model, game_state):
         super().__init__(model, game_state)
 
-        self.game_state.player.arsenal.weapons['flux']['hit_rate'] = .2
-        self.game_state.player.arsenal.weapons['grav']['hit_rate'] = .3
+        self.game_state.player.arsenal.weapons['flux']['hit_rate'] = .3
+        self.game_state.player.arsenal.weapons['grav']['hit_rate'] = .2
 
         ###### Set the cycle
         weapon_order_list = list(self.game_state.weapons)
@@ -35,7 +35,7 @@ class cpu4(prototype):
 
         self.target = self.game_state.players[target_player_id].coord
 
-        self.game_state.player.coord = [28009, 56248, 7413]
+        #self.game_state.player.coord = [32689, 55927, 7413]
 
         # Quad patrol near red base marcadia
         marc_points = [
@@ -52,7 +52,7 @@ class cpu4(prototype):
         #     [27973, 56516, 7413],
         # ]
 
-        #self.patrol(marc_points, circular=False)
+        self.patrol(marc_points, circular=False)
 
         self.fire_weapon(object_id = self.game_state.players[target_player_id].player_id)
 

@@ -49,8 +49,7 @@ class GameState:
                 self.players[player_id].team = DEATHMATCH_MAP[player_id]
 
         self.map.read_map()
-        self.player.coord = self.map.get_respawn_location(self.player.team, self.game_mode)
-
+        self.player.set_coord(self.map.get_respawn_location(self.player.team, self.game_mode))
 
     def clear_flag(self, flag):
         if self.player.flag == flag:
@@ -79,7 +78,7 @@ class GameState:
     def movement_update(self, src_player:int, movement_data:dict):
         if src_player not in self.players.keys():
             return
-        self.players[src_player].coord = movement_data['coord']
+        self.players[src_player].set_coord(movement_data['coord'])
         self.players[src_player].cam_x = movement_data['cam3_x']
         self.players[src_player].movement_packet_num = movement_data['packet_num']
 

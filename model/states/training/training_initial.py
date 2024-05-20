@@ -11,7 +11,7 @@ class training_initial(State):
 
     def update(self):
 
-        print(self.starting_coord, self.state_machine.game_state.player.coord, calculate_distance(self.starting_coord, self.state_machine.game_state.player.coord))
+        #print(self.starting_coord, self.state_machine.game_state.player.coord, calculate_distance(self.starting_coord, self.state_machine.game_state.player.coord))
 
         if self.starting_coord == [0,0,0]:
             self.starting_coord = self.state_machine.game_state.player.coord

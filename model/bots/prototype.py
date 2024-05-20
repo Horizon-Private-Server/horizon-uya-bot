@@ -67,7 +67,7 @@ class Prototype:
         self.state.enter(msg)
 
     def state_update(self):
-        #logger.info(str(self.model.game_state))
+        logger.info(str(self.model.game_state))
 
         self.state.update()
         return

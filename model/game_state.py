@@ -42,12 +42,6 @@ class GameState:
         self.object_manager = ObjectManager(self.model, self, self.map_name, self.game_mode)
 
     def start(self):
-        if self.game_info['game_mode'] == 'Deathmatch' and self.game_info['submode'] == 'FFA':
-            # Set deathmatch teams
-            self.player.team = DEATHMATCH_MAP[self.player.player_id]
-            for player_id in self.players.keys():
-                self.players[player_id].team = DEATHMATCH_MAP[player_id]
-
         self.map.read_map()
         self.player.set_coord(self.map.get_respawn_location(self.player.team, self.game_mode))
 
@@ -88,25 +82,40 @@ class GameState:
             self.blue_flag_loc = movement_data['coord']
 
     def tnw_playerdata_update(self, src_player:int, tnw_playerdata: dict):
+        # No longer needed since we update on gamesetting
+        '''
         if src_player in self.players.keys():
             self.players[src_player].player_id = src_player
             self.players[src_player].account_id = tnw_playerdata['account_id_1']
             self.players[src_player].team = tnw_playerdata['team']
         else:
             self.players[src_player] = PlayerState(player_id=src_player, account_id=tnw_playerdata['account_id_1'], team=tnw_playerdata['team'])
+        '''
+        return
+
 
     def tnw_gamesetting_update(self, src_player:int, tnw_gamesetting: dict):
-        for player_idx in range(8):
-            if player_idx == self.player.player_id:
-                continue
+        '''
+2024-05-19 21:38:20,749 blarg | INFO | 0 -> -1 | tcp_0004_tnw; tnw_type:tNW_GameSetting data:{'unk1': '00010000040000000000FF41C5EFA50000000000', 'p0_username': 'FourBolt', 'p1_username': 'Ceejee', 'p2_username': 'Jumper', 'p3_username': 'raZorX', 'p4_username': 'sombra', 'p5_username': 'Fatallica', 'p6_username': 'cameron', 'p7_username': 'Nelo', 'p0_clan_tag': '', 'p1_clan_tag': '\x0cCPU', 'p2_clan_tag': '\x0cCPU', 'p3_clan_tag': '\x0cCPU', 'p4_clan_tag': '\x0cCPU', 'p5_clan_tag': '\x0cCPU', 'p6_clan_tag': '\x0cCPU', 'p7_clan_tag': '\x0cCPU', 'p0_skin': 'skrunch', 'p1_skin': 'ninja', 'p2_skin': 'buginoid', 'p3_skin': 'buginoid', 'p4_skin': 'gladiola', 'p5_skin': 'trooper', 'p6_skin': 'beach bunny', 'p7_skin': 'trooper', 'p0_team': 'blue', 'p1_team': 'red', 'p2_team': 'green', 'p3_team': 'orange', 'p4_team': 'yellow', 'p5_team': 'purple', 'p6_team': 'aqua', 'p7_team': 'pink', 'unk2': '000001000200030004000500060007000700060006000600060006000600060008000000FFFFFFFFFE3DA80031000000020000000000000000000000000000', 'nodes': False, 'unk3': '000101000001001903150101010000010200000070030000710300007303000074030000760300007503000072030000', 'p0_bolt_modifier': 'FA27DF44', 'p1_bolt_modifier': 'C8C8D444', 'p2_bolt_modifier': 'C8C8D444', 'p3_bolt_modifier': 'C8C8D444', 'p4_bolt_modifier': 'C8C8D444', 'p5_bolt_modifier': 'C8C8D444', 'p6_bolt_modifier': 'C8C8D444', 'p7_bolt_modifier': 'C8C8D444', 'p0_bolt_skill': '0000AA43', 'p1_bolt_skill': '00808943', 'p2_bolt_skill': '00808943', 'p3_bolt_skill': '00808943', 'p4_bolt_skill': '00808943', 'p5_bolt_skill': '00808943', 'p6_bolt_skill': '00808943', 'p7_bolt_skill': '00808943'}
 
+        '''
+        self.players = {}
+        for player_idx in range(8):
             username = tnw_gamesetting[f'p{player_idx}_username']
-            if username != '':
-                # Update username
-                if player_idx in self.players.keys():
-                    self.players[player_idx].username = username
-                else:
-                    self.players[player_idx] = PlayerState(player_id=player_idx, username = username)
+            team = tnw_gamesetting[f'p{player_idx}_team']
+            clan_tag = tnw_gamesetting[f'p{player_idx}_clan_tag']
+            skin = tnw_gamesetting[f'p{player_idx}_skin']
+
+
+            if username == self.player.username:
+                self.player.player_id = player_idx
+                self.player.team = team
+            elif username == '' or username == None:
+                continue
+            else:
+                # Real player
+                self.players[player_idx] = PlayerState(player_id=player_idx, account_id=0, team=team, username=username, skin=skin, clan_tag=clan_tag, rank=1)
+
         self.nodes = tnw_gamesetting['nodes']
 
     def __str__(self):

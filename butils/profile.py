@@ -33,7 +33,10 @@ class Profile:
         skins = [skin.strip() for skin in self.skins.split(",") if skin.strip()]
         self.skin = random.choice(skins)
 
-        alts = [alt.strip() for alt in self.alts.split(",") if alt.strip()] + [self.username]
+        if self.alts:
+            alts = [alt.strip() for alt in self.alts.split(",") if alt.strip()] + [self.username]
+        else:
+            alts = [self.username]
         self.username = random.choice(alts)
 
     def __str__(self):

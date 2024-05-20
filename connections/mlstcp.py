@@ -23,17 +23,19 @@ class MlsTcp(AbstractTcp):
         self.dme_port = None
 
         self._logger = logging.getLogger('thug.mlstcp')
-        self._logger.setLevel(logging.INFO)
+        self._logger.setLevel(logging.DEBUG)
 
         self.loop.run_until_complete(self.start())
         
         
     async def connect(self, world_id):
-        await asyncio.wait_for(self.connect_to_mls(), timeout=5.0)
+        await asyncio.wait_for(self.connect_to_mls(), timeout=50.0)
         await asyncio.wait_for(self.get_game_info(world_id), timeout=5.0)
         await asyncio.wait_for(self.join_game(world_id), timeout=5.0)
 
     async def connect_to_mls(self):
+        # Need to let server process access token
+        await asyncio.sleep(2)
         self._logger.info("Connecting to MLS ...")
 
         pkt = hex_to_bytes('1240006B8F99EC1BAF06D2674284B5305EE6E38B1DE7331F2FBF31DE497228B7C52162F18DAE8913C40C43C0E890D14EEE16AD07C64FD9281D8B972D78BE78D1B290CE')

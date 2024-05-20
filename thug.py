@@ -52,6 +52,7 @@ class Thug:
         self._model = Model(self.loop, 
                             self._network_manager, 
                             self._network_manager._mls.gameinfo, 
+                            self._config.bot_mode,
                             self._profile,
                             config.account_id, 
                             self._network_manager._dmetcp.player_id

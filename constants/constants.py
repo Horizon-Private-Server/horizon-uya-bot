@@ -164,6 +164,9 @@ WEAPON_MAP = {
 }
 
 
+# crouch spam: 
+# 8C
+# 84E7
 # FLUSH: 16
 ANIMATION_MAP = {
     'forward': '4B',
@@ -178,5 +181,7 @@ ANIMATION_MAP = {
     'crouch': '9C', # side flip: use flush = 148, spam crouch: 32
     'shoot': 'BD',
     'forward-shoot': '45D2',
-    'jump-shoot': 'B77B'
+    'jump-shoot': 'B77B',
+    'aim': '8C',
+    'aim-crouch': '84E7',
 }

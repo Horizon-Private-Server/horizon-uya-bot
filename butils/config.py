@@ -20,6 +20,7 @@ class Config:
         raw_dict = {
             "local": False,
             "profile_id": int(os.getenv("PROFILE_ID")),
+            "bot_mode": os.getenv("BOT_MODE"),
             "account_id": int(os.getenv("ACCOUNT_ID")),
             "account_name": os.getenv("USERNAME"),
             "password": os.getenv("PASSWORD"),

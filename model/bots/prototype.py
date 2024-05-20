@@ -12,17 +12,20 @@ from butils.circularlist import CircularList
 from medius.rt.clientappsingle import ClientAppSingleSerializer
 from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
 
-from model.states import *
+
+from model.states.training import *
+
 
 import logging
 logger = logging.getLogger('thug.model.prototype')
 logger.setLevel(logging.INFO)
 
 class Prototype:
-    def __init__(self, model, profile, game_state):
+    def __init__(self, model, profile, bot_mode, game_state):
         self.model = model
         self.profile = profile
         self.game_state = game_state
+        self.bot_mode = bot_mode
 
         self.target = [0,0,0]
 
@@ -54,10 +57,21 @@ class Prototype:
             weapon_order_list = ['grav', 'flux', 'blitz']
         self.weapon_order = CircularList(weapon_order_list, circular=True, casttype=str)
 
+        if 'training' in bot_mode:
+            self.state = training_initial.training_initial(self)
+
+    def transition_state(self, new_state:str, msg: dict=dict()):
+        logger.info(f"Transitioning from {self.state} to {new_state}")
+        self.state.exit()
+        self.state = eval(f"{new_state}.{new_state}(self)")
+        self.state.enter(msg)
 
     def state_update(self):
-        logger.info(str(self.model.game_state))
-        logger.info(str(self.model.game_state.object_manager))
+        #logger.info(str(self.model.game_state))
+
+        self.state.update()
+        return
+
 
         target_player_id = 0
 
@@ -80,9 +94,9 @@ class Prototype:
         #     [27973, 56516, 7413],
         # ]
 
-        #self.patrol(marc_points, circular=False)
+        self.patrol(marc_points, circular=False)
 
-        #self.fire_weapon(object_id = self.game_state.players[target_player_id].player_id)
+        self.fire_weapon(object_id = self.game_state.players[target_player_id].player_id)
 
 
     async def main_loop(self):
@@ -99,7 +113,7 @@ class Prototype:
                 if self.game_state.player.is_dead and datetime.now().timestamp() > self.game_state.player.respawn_time:
                     self.respawn()
 
-                # Run objective
+                # Run states
                 self.state_update()
 
                 # Send movement
@@ -136,7 +150,8 @@ class Prototype:
         if 'patrol' not in self._misc.keys():
             self._misc['patrol'] = CircularList(coords, circular=circular)
         elif self._misc['patrol'] != coords:
-            logger.info("GOT A NEW PATROL COORDINATE!")
+            self._misc['patrol'] = CircularList(coords, circular=circular)
+
         
 
         if calculate_distance(self.game_state.player.coord, self._misc['patrol'].peek()) > 70:
@@ -346,7 +361,7 @@ class Prototype:
 
     def check_if_dead(self, src_player, weapon):
         # ---- Process health now
-        if self.game_state.player.health <= 0:
+        if self.game_state.player.health <= 0 and self.game_state.player.is_dead == False:
 
             self.game_state.player.arsenal.reset_upgrades()
 

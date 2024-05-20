@@ -26,10 +26,10 @@ from medius.serializer import TcpSerializer
 import pandas as pd
 
 class Model:
-    def __init__(self, loop, network_manager, gameinfo, profile, account_id, player_id):
+    def __init__(self, loop, network_manager, gameinfo, bot_mode, profile, account_id, player_id):
         logger.info("Initialzing model ...")
         logger.info(f"GAME INFO: {gameinfo}")
-        logger.info(f"Using profile: {profile}")
+        logger.info(f"Using profile: {bot_mode} | {profile}")
 
         self.alive = True
         self.loop = loop
@@ -45,7 +45,7 @@ class Model:
         player = PlayerState(player_id, account_id, username=self.profile.username, skin=self.profile.skin, clan_tag='[white]CPU', rank=self.profile.bolt)
         self.game_state = GameState(self, gameinfo, player)
 
-        self.bot = prototype.Prototype(self, self.profile, self.game_state)
+        self.bot = prototype.Prototype(self, self.profile, bot_mode, self.game_state)
 
         self.loop.create_task(self._tcp_flusher())
         self.loop.create_task(self._udp_flusher())

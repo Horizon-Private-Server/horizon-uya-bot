@@ -2,6 +2,9 @@
 
 class CircularList:
     def __init__(self, items, circular=False, casttype=tuple):
+
+        assert len(items) > 1
+
         self.circular = circular
         self.direction = 'forward'
         self.size = len(items)

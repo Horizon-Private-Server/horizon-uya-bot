@@ -42,4 +42,4 @@ class Profile:
             if not attr.startswith('_'):
                 val = eval(f"self.{attr}")
                 result += f'{attr}:{val} '
-        return result
+        return result.strip()

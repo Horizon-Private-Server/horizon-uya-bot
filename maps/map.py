@@ -111,6 +111,20 @@ class Map:
 
     def get_random_coord_connected(self, coord):
         return list(random.choice(list(self.G.neighbors(tuple(coord)))))
+    
+    def get_random_coord_nearby(self, coord, dist=500):
+        variance = 100
+        dist_min = dist-variance
+        dist_max = dist+variance
+        distances = distance.cdist(self.points, [coord], 'euclidean').flatten()
+        # logger.info(coord)
+        # logger.info(sum(distances < dist_max))
+        # logger.info(sum(distances < dist_min))
+        # logger.info(sum((distances < dist_max) & (distances > dist_min)))
+        points = self.points[np.where((distances < dist_max) & (distances > dist_min))]
+        point_chosen = list(tuple(random.choice(points)))
+        logger.info(f"Distance from coord: {calculate_distance(coord, point_chosen)}")
+        return point_chosen
 
     def get_random_coord_connected_close(self, src_coord, dst_coord):
         if not self.G.has_node(src_coord):

@@ -13,7 +13,7 @@ class NetworkManager:
         self.loop = loop
 
         # MAS
-        self._mas = MasTcp(self.loop, config.mas_ip, config.mas_port, config.username, config.password)
+        self._mas = MasTcp(self.loop, config.mas_ip, config.mas_port, config.account_name, config.password)
         self.loop.run_until_complete(self._mas.connect())
         self.loop.run_until_complete(self._mas.close())
 

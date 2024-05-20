@@ -19,19 +19,15 @@ class Config:
     def _set_env_vars(self):
         raw_dict = {
             "local": False,
-            "bot_class": os.getenv("BOT_CLASS"),
+            "profile_id": int(os.getenv("PROFILE_ID")),
             "account_id": int(os.getenv("ACCOUNT_ID")),
-            "username": os.getenv("USERNAME"),
+            "account_name": os.getenv("USERNAME"),
             "password": os.getenv("PASSWORD"),
             "world_id": int(os.getenv("WORLD_ID")),
-            "bolt": int(os.getenv("BOLT")),
             "mas_ip": os.getenv("MAS_IP"),
             "mas_port": int(os.getenv("MAS_PORT")),
             "mls_ip": os.getenv("MLS_IP"),
             "mls_port": int(os.getenv("MLS_PORT")),
-            "skin": "random",
-            "clan_tag": "",
-            "team": "blue",
             "timeout": 3,
         }
 

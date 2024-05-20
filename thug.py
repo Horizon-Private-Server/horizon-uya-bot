@@ -15,6 +15,7 @@ from butils.utils import *
 
 from butils.timeouttimer import TimeoutTimer
 from butils.config import Config
+from butils.profile import Profile
 from butils.localapi import LocalApi
 
 import time
@@ -37,12 +38,6 @@ class Thug:
         logger.info("Initializing ...")
         self._config = config
 
-        if self._config.skin == 'random':
-            skins = list(SKIN_MAP.values())
-            skins.remove('NA')
-            random.shuffle(skins)
-            self._config.skin = skins[0]
-
         self._config.start_time = datetime.now()
         self._loop_time = .001
 
@@ -51,18 +46,15 @@ class Thug:
         self._network_manager = NetworkManager(self.loop, self._config)
 
         self._timer = TimeoutTimer(self.loop, self._config.start_time, self._config.timeout)
+        
+        self._profile = Profile(self._config.profile_id)
 
         self._model = Model(self.loop, 
                             self._network_manager, 
                             self._network_manager._mls.gameinfo, 
-                            config.bot_class,
+                            self._profile,
                             config.account_id, 
-                            self._network_manager._dmetcp.player_id, 
-                            config.team, 
-                            config.username,
-                            config.skin,
-                            config.clan_tag,
-                            config.bolt
+                            self._network_manager._dmetcp.player_id
                             )
         
             # Set local API for remote injection of packets

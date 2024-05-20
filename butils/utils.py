@@ -3,6 +3,16 @@ import math
 import traceback
 from copy import deepcopy
 
+def bit_string_to_2_bytes_hex(bit_string):
+    # Ensure the bit string is exactly 16 bits (2 bytes) long
+    if len(bit_string) != 16:
+        raise ValueError("Bit string must be exactly 16 bits long")
+
+    # Split the bit string into 4-bit segments and convert each to a hex digit
+    hex_string = ''.join(f'{int(bit_string[i:i+4], 2):x}' for i in range(0, 16, 4))
+    
+    return hex_string.upper()
+
 def dequeue_to_str(d):
     a = deepcopy(d)
     res = ''
@@ -145,6 +155,10 @@ def hex_to_int_little(hex: str):
 def hex_to_str(data: str):
     return bytes_to_str(hex_to_bytes(data))
 
+def hex_to_bit_string(hex_string):
+    # Convert each hex character to a 4-bit binary string
+    binary_string = ''.join(f'{int(c, 16):04b}' for c in hex_string)
+    return binary_string
 
 ############ Math functions
 

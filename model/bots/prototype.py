@@ -12,14 +12,16 @@ from butils.circularlist import CircularList
 from medius.rt.clientappsingle import ClientAppSingleSerializer
 from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
 
+from model.states import *
 
 import logging
 logger = logging.getLogger('thug.model.prototype')
 logger.setLevel(logging.INFO)
 
-class prototype:
-    def __init__(self, model, game_state):
+class Prototype:
+    def __init__(self, model, profile, game_state):
         self.model = model
+        self.profile = profile
         self.game_state = game_state
 
         self.target = [0,0,0]
@@ -41,6 +43,48 @@ class prototype:
 
         self._misc = defaultdict(int)
 
+
+        self.game_state.player.arsenal.weapons['flux']['hit_rate'] = .3
+        self.game_state.player.arsenal.weapons['grav']['hit_rate'] = .2
+
+        ###### Set the cycle
+        weapon_order_list = list(self.game_state.weapons)
+        random.shuffle(weapon_order_list)
+        if set(weapon_order_list) == {'blitz', 'flux', 'grav'}:
+            weapon_order_list = ['grav', 'flux', 'blitz']
+        self.weapon_order = CircularList(weapon_order_list, circular=True, casttype=str)
+
+
+    def state_update(self):
+        logger.info(str(self.model.game_state))
+        logger.info(str(self.model.game_state.object_manager))
+
+        target_player_id = 0
+
+        self.target = self.game_state.players[target_player_id].coord
+
+        #self.game_state.player.coord = [32689, 55927, 7413]
+
+        # Quad patrol near red base marcadia
+        marc_points = [
+            [32939, 54784, 7413],
+            [32418, 53872, 7413],
+            [31608, 54666, 7413],
+            [32540, 55641, 7407],
+        ]
+
+        # Moving across map by healthboxes marcadia
+        # marc_points = [
+        #     [33289, 56515, 7413],
+        #     [30680, 56370, 7413],
+        #     [27973, 56516, 7413],
+        # ]
+
+        #self.patrol(marc_points, circular=False)
+
+        #self.fire_weapon(object_id = self.game_state.players[target_player_id].player_id)
+
+
     async def main_loop(self):
         while self.model.alive:
             try:
@@ -56,7 +100,7 @@ class prototype:
                     self.respawn()
 
                 # Run objective
-                self.objective()
+                self.state_update()
 
                 # Send movement
                 self.send_movement()

@@ -23,24 +23,29 @@ from constants.constants import parse_object_id, MAIN_BOT_LOOP_TIMER
 from medius.serializer import UdpSerializer
 from medius.serializer import TcpSerializer
 
+import pandas as pd
+
 class Model:
-    def __init__(self, loop, network_manager, gameinfo, bot_class, account_id, player_id, team, username, skin, clan_tag, bolt):
+    def __init__(self, loop, network_manager, gameinfo, profile, account_id, player_id):
         logger.info("Initialzing model ...")
         logger.info(f"GAME INFO: {gameinfo}")
+        logger.info(f"Using profile: {profile}")
+
         self.alive = True
-        username = 'i aM a nOOb'
         self.loop = loop
 
         self._network = network_manager
         self.dmetcp_queue = queue.Queue()
         self.dmeudp_queue = queue.Queue()
 
+        self.profile = profile
+
         self._seen_first_player_movement = False
 
-        player = PlayerState(player_id, account_id, team, username=username, skin=skin, clan_tag=clan_tag, rank=bolt)
+        player = PlayerState(player_id, account_id, username=self.profile.username, skin=self.profile.skin, clan_tag='[white]CPU', rank=self.profile.bolt)
         self.game_state = GameState(self, gameinfo, player)
 
-        self.bot = eval(f"{bot_class}.{bot_class}(self, self.game_state)")
+        self.bot = prototype.Prototype(self, self.profile, self.game_state)
 
         self.loop.create_task(self._tcp_flusher())
         self.loop.create_task(self._udp_flusher())

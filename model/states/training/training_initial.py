@@ -19,6 +19,7 @@ class training_initial(State):
         self.state_machine.target = self.state_machine.game_state.players[0].coord
 
         if self.state_machine.bot_mode == 'training idle':
+            self.state_machine.update_animation_and_angle(self.state_machine.game_state.player.coord, self.state_machine.game_state.player.coord)
             return
         
         elif self.state_machine.bot_mode == 'training passive':

@@ -20,8 +20,8 @@ class TimeoutTimer():
             if ((t - self._start_time).total_seconds()) / 60 > self._timeout:
                 self._logger.info("Timeout!")
                 self._logger.info(f"Start time: {self._start_time} | End time: {t}")
-                self._logger.info(f"Total time (miuntes): {(t - self._start_time).total_seconds()/60}")
-                self._logger.info(f"Total time (seconds): {(t - self._start_time).total_seconds()}")
+                self._logger.info(f"Total time (min): {(t - self._start_time).total_seconds()/60}")
+                self._logger.info(f"Total time (sec): {(t - self._start_time).total_seconds()}")
                 self.alive = False
             await asyncio.sleep(10)
 

@@ -29,7 +29,7 @@ class Config:
             "mas_port": int(os.getenv("MAS_PORT")),
             "mls_ip": os.getenv("MLS_IP"),
             "mls_port": int(os.getenv("MLS_PORT")),
-            "timeout": 3,
+            "timeout": 180,
         }
 
         for key, value in raw_dict.items():

@@ -29,7 +29,7 @@ class MlsTcp(AbstractTcp):
         
         
     async def connect(self, world_id):
-        await asyncio.wait_for(self.connect_to_mls(), timeout=50.0)
+        await asyncio.wait_for(self.connect_to_mls(), timeout=7.0)
         await asyncio.wait_for(self.get_game_info(world_id), timeout=5.0)
         await asyncio.wait_for(self.join_game(world_id), timeout=5.0)
 

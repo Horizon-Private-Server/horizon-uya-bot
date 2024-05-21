@@ -1,4 +1,4 @@
-FROM python:3.9-slim-buster as build-image
+FROM python:3.10-slim-buster as build-image
 
 ARG FUNCTION_DIR=/code
 RUN mkdir -p ${FUNCTION_DIR}

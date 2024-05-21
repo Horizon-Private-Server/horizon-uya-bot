@@ -119,7 +119,7 @@ SKIN_MAP = {
     '0C': 'beach bunny',
     '0D': 'robo rooster',
     '0E': 'buginoid',
-    '0F': 'branius',
+    '0F': 'brainius',
     '10': 'skrunch',
     '11': 'bones',
     '12': 'nefarious',

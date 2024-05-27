@@ -174,7 +174,6 @@ class Model:
                 if dme_packet.data[msg]['type'] == 'weapon_upgraded':
                     self.game_state.players[src_player].arsenal.set_weapon_upgrades(dme_packet.data[msg])
 
-
         if dme_packet.name == 'tcp_020A_player_respawned':
             self.game_state.players[src_player].respawn()
 
@@ -267,7 +266,21 @@ class Model:
         # Reset Object Masters
         self.game_state.object_manager.reset_all_masters()
 
+        self.loop.create_task(self.check_if_game_is_over())
         self.loop.create_task(self.bot.main_loop())
+
+    async def check_if_game_is_over(self):
+        while self.alive:
+            try:
+                if (datetime.now() - self.game_state.players[0].coord_timestamp).total_seconds() > 2.5:
+                    self.alive = False
+                    logger.info("Didn't receive 0209 Update for host! Exiting!")
+                    break
+                await asyncio.sleep(.5)
+            except:
+                logger.exception("check_if_game_is_over ERROR")
+                self.alive = False
+                break
 
 
     async def timer_update(self):

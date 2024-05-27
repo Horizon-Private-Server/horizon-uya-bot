@@ -1,4 +1,5 @@
 from model.arsenal import Arsenal
+from datetime import datetime
 
 VALID_HP ={
     100,93,86,80,73,66,60,53,46,40,33,26,20,13,6,0
@@ -24,6 +25,7 @@ class PlayerState:
         }
         self.rank = rank_map[rank]
 
+        self.coord_timestamp = datetime.now()
         self.coord = [0,0,0]
         self.cam_x = 0
         self.movement_packet_num = 0
@@ -62,6 +64,8 @@ class PlayerState:
         return self.movement_packet_num - 1
     
     def set_coord(self, new_coord):
+        self.coord_timestamp = datetime.now()
+
         if self.stunned:
             return
         self.coord = new_coord

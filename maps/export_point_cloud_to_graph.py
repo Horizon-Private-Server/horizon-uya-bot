@@ -7,6 +7,7 @@ from scipy.spatial import distance
 import os
 import sys
 from datetime import datetime
+from scipy.spatial.distance import euclidean
 
 maps = [
     'aquatos_sewers',
@@ -21,14 +22,16 @@ maps = [
     # 'outpost_x12',
 ]
 
+display_raw_points = False
+display_downsampled = False
+plot_connected_graph = False
+write_graph = True
+
 
 for map_name in maps:
     print(f"******* Processing map: {map_name}")
     figsize = (12, 12)
-    display_raw_points = False
-    display_downsampled = False
-    plot_connected_graph = False
-    write_graph = True
+
 
     # Adjust this in order to make the grid further apart or closer together
     point_cloud_voxel_size = 10
@@ -137,6 +140,61 @@ for map_name in maps:
     print(f"Total nodes: {G.number_of_nodes()} | edges: {G.number_of_edges()} ")
     total_time = (end_time - start_time).total_seconds() / 60
     print(f"Took {total_time} minutes to generate graph!")
+
+    ## Connect disconnected components
+    print("-- Fixing disconnected components ...")
+    start_time = datetime.now()
+    # Find all connected components
+    components = list(nx.connected_components(G))
+    print(f"Number of components: {len(components)}")
+    for i, component in enumerate(components):
+        print(f"Component {i+1}: {len(component)}")
+    component_gt_limit = 20
+    num_components_gt = 0
+    for component in components:
+        if len(component) > component_gt_limit:
+            num_components_gt += 1
+    
+    if num_components_gt > 1:
+        raise Exception(f"Found too many components with > {component_gt_limit} nodes!")
+
+    # While there is more than one component
+    while len(components) > 1:
+        print("Adding edges to components...")
+        # Initialize the minimum distance and the edge to add
+        min_distance = float('inf')
+        edge_to_add = None
+        
+        # Iterate over all pairs of components
+        for i in range(len(components)):
+            for j in range(i + 1, len(components)):
+                comp1 = components[i]
+                comp2 = components[j]
+                
+                # Iterate over all pairs of nodes (one from each component)
+                for node1 in comp1:
+                    for node2 in comp2:
+                        calc_dist = euclidean(node1, node2)
+                        
+                        # Update the minimum distance and edge to add
+                        if calc_dist < min_distance:
+                            min_distance = calc_dist
+                            edge_to_add = (node1, node2)
+        
+        # Add the edge with the minimum distance
+        if edge_to_add:
+            G.add_edge(*edge_to_add)
+        
+        # Recalculate the components
+        components = list(nx.connected_components(G))
+
+    print("Done.")
+    end_time = datetime.now()
+    print(f"Total nodes: {G.number_of_nodes()} | edges: {G.number_of_edges()} ")
+    total_time = (end_time - start_time).total_seconds() / 60
+    print(f"Took {total_time} minutes to fix components!")
+
+
 
     if plot_connected_graph:
         print("-- Plotting Graph ...")

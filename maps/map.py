@@ -44,7 +44,7 @@ class Map:
         logger.info(f"Loading map graph {self.map} ...")
         self.G = nx.read_edgelist(f"maps/graphs/{self.map}.edgelist",nodetype=eval, delimiter='|')
 
-        assert list(nx.connected_components(self.G)) == 1
+        assert len(list(nx.connected_components(self.G))) == 1
 
         self.points = np.array(self.G.nodes)
         logger.info(f"Loaded map in {(datetime.now() - start_time).total_seconds()} seconds!")

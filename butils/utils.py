@@ -295,6 +295,9 @@ def compute_strafe_angle(P1, P2, P3):
         # Calculate cosine of the angle between v1 and v2
         cos_theta = dot_product / (mag_v1 * mag_v2)
         
+        # Prevent domain errors
+        cos_theta = max(-1, min(1, cos_theta))
+
         # Calculate the angle in radians
         angle_rad = math.acos(cos_theta)
         

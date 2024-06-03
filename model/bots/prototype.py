@@ -57,8 +57,7 @@ class Prototype:
             weapon_order_list = ['grav', 'flux', 'blitz']
         self.weapon_order = CircularList(weapon_order_list, circular=True, casttype=str)
 
-        if 'training' in bot_mode:
-            self.state = training_initial.training_initial(self)
+        self.state = None
 
     def transition_state(self, new_state:str, msg: dict=dict()):
         logger.info(f"Transitioning from {self.state} to {new_state}")
@@ -67,7 +66,12 @@ class Prototype:
         self.state.enter(msg)
 
     def state_update(self):
-        logger.info(str(self.model.game_state))
+        if self.state == None:
+            if 'training' in self.bot_mode:
+                self.state = training_initial.training_initial(self)
+                self.state.enter(None)
+
+        #logger.info(str(self.model.game_state))
 
         self.state.update()
         return
@@ -287,20 +291,29 @@ class Prototype:
 
         damage = 0
 
-        if packet_data.weapon == 'blitz' and packet_data.unk1 == '08' and calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 2089: # 2089 minimum for 7 damage
+        player_distance = calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord)
+
+
+        if packet_data.weapon == 'blitz' and packet_data.unk1 == '08' and player_distance < 2089: # 2089 minimum for 7 damage
             # The player shooting angle needs to be aiming at the player
             angle_needed = calculate_angle(self.game_state.players[src_player].coord, self.game_state.player.coord)
             players_angle = self.game_state.players[src_player].cam_x
 
-            # 5 angle threshold between what is needed to hit
-            if abs(players_angle - angle_needed) > 10: 
+
+            # Make this higher to make it easier to hit
+            short_dist_thresh = 60
+            long_distance_thresh = 10
+            if player_distance > 400 and abs(players_angle - angle_needed) > long_distance_thresh:
+                return
+            elif player_distance < 400 and abs(players_angle - angle_needed) > short_dist_thresh:
                 return
 
-            if calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 245: # 245 minimum for 54 damage
+
+            if player_distance < 245: # 245 minimum for 54 damage
                 damage = 54 if self.game_state.players[src_player].arsenal.weapons['blitz']['upgrade'] == 'v1' else 100 #v2
-            elif calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 541: # 541 minimum for 26 damage
+            elif player_distance < 541: # 541 minimum for 26 damage
                 damage = 26 if self.game_state.players[src_player].arsenal.weapons['blitz']['upgrade'] == 'v1' else 47 # v2
-            elif calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) < 739: # 739 minimum for 14 damage
+            elif player_distance < 739: # 739 minimum for 14 damage
                 damage = 14 # 
             else:
                 damage = 7 if self.game_state.players[src_player].arsenal.weapons['blitz']['upgrade'] == 'v1' else 47 # 14 v2
@@ -387,6 +400,7 @@ class Prototype:
 
             self.game_state.player.respawn_time = datetime.now().timestamp() + self.respawn_time
 
+            self.game_state.player_killed(src_player)
 
 
 

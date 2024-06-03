@@ -31,6 +31,11 @@ class Model:
         logger.info(f"GAME INFO: {gameinfo}")
         logger.info(f"Using profile: {bot_mode} | {profile}")
 
+        if set(gameinfo['weapons']) != set(['flux','grav','blitz']):
+            logger.info(f"Game info weapons not matching required: {gameinfo['weapons']}")
+            self.alive = False
+            return
+
         self.alive = True
         self.loop = loop
 
@@ -122,7 +127,10 @@ class Model:
                 data_packet = self.game_state.player.arsenal.dump_upgrades()
                 data_packet['type'] = 'weapon_upgraded'
                 self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': data_packet})])
-
+        
+        if dme_packet.name == 'tcp_0204_player_killed':
+            self.game_state.player_killed(dme_packet.killer_id)
+  
         if dme_packet.name == 'tcp_0009_set_timer' and src_player == 0:
             self.game_state.player.time = dme_packet.time
 
@@ -266,16 +274,24 @@ class Model:
         # Reset Object Masters
         self.game_state.object_manager.reset_all_masters()
 
+        self.game_state.game_started()
+
         self.loop.create_task(self.check_if_game_is_over())
         self.loop.create_task(self.bot.main_loop())
 
     async def check_if_game_is_over(self):
         while self.alive:
             try:
-                if (datetime.now() - self.game_state.players[0].coord_timestamp).total_seconds() > 2.5:
+                if (datetime.now() - self.game_state.players[0].coord_timestamp).total_seconds() > 20:
                     self.alive = False
                     logger.info("Didn't receive 0209 Update for host! Exiting!")
                     break
+
+                if self.game_state.timed_out():
+                    self.alive = False
+                    logger.info("Time's up! Exiting!")
+                    break
+
                 await asyncio.sleep(.5)
             except:
                 logger.exception("check_if_game_is_over ERROR")
@@ -361,7 +377,8 @@ class Model:
                 break
 
 
-    async def kill(self):
+    async def kill(self, delay=0):
+        await asyncio.sleep(delay)
         logger.info(f"Killing Model ...")
         self.alive = False                        
         logger.info(f"Killed.")

@@ -1,6 +1,12 @@
+import logging
+logger = logging.getLogger('thug.game_state')
+logger.setLevel(logging.INFO)
+
 import os
 import json
 import numpy as np
+from collections import defaultdict
+from datetime import datetime
 
 from maps.map import Map
 
@@ -36,6 +42,8 @@ class GameState:
         self.red_flag_loc = get_flag_location(map=self.map_name, team='red')
         self.blue_flag_loc = get_flag_location(map=self.map_name, team='blue')
 
+        self.start_time = datetime.now()
+
         # Point grid
         self.map = Map(self.map_name)
 
@@ -44,6 +52,16 @@ class GameState:
     def start(self):
         self.map.read_map()
         self.player.set_coord(self.map.get_respawn_location(self.player.team, self.game_mode))
+
+    def game_started(self):
+        # Actual game has started
+        self.start_time = datetime.now()
+
+    def timed_out(self):
+        if self.game_info['game_length'] != None:
+            if ((datetime.now() - self.start_time).total_seconds() / 60) > self.game_info['game_length']:
+                return True
+        return False
 
     def clear_flag(self, flag):
         if self.player.flag == flag:
@@ -63,6 +81,26 @@ class GameState:
         if src_player not in self.players.keys():
             return
         del self.players[src_player]
+
+    def player_killed(self, killer_id: int):
+        if killer_id == self.player.player_id:
+            self.player.total_kills += 1
+        else:
+            self.players[killer_id].total_kills += 1
+        
+        if self.game_mode == 'Deathmatch' and self.game_info['frag'] != None:
+            # Add up total score per team. See if it reaches frag
+            team_scores = defaultdict(int)
+            team_scores[self.player.team] += self.player.total_kills
+            for player in self.players.values():
+                team_scores[player.team] += player.total_kills
+            
+            for total_score in team_scores.values():
+                if total_score >= self.game_info['frag']:
+                    logger.info(f"Got more kills than frag limit ({self.game_info['frag']})!")
+                    self.model.loop.create_task(self.model.kill(delay=5))
+                    return
+
 
     def time_update(self, src_player: int, time: int):
         if src_player not in self.players.keys():
@@ -123,7 +161,8 @@ class GameState:
 =============================================
                 GameState
 ---------------------------------------------
-Map:{self.map} GameMode:{self.game_mode} Nodes:{self.nodes}
+{self.map} {self.game_mode} TimeLim:{self.game_info['game_length']}
+Frag:{self.game_info['frag']} CapLim:{self.game_info['cap_limit']}
 State:{self.state} PlayerCount:{len(self.players)+1}
 Red Flag:{self.red_flag_loc} Blue Flag:{self.blue_flag_loc}
 ---------------------------------------------

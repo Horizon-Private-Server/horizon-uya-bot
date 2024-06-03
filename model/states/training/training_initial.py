@@ -6,17 +6,19 @@ class training_initial(State):
     def __init__(self, state_machine):
         super().__init__(state_machine)
 
-        self.starting_coord = [0,0,0]
+    def enter(self, msg:dict):
+        self.starting_coord = self.state_machine.game_state.player.coord
+        self.state_machine.target = self.state_machine.game_state.players[0].coord
         self.patrol_coords = []
 
     def update(self):
-
-        #print(self.starting_coord, self.state_machine.game_state.player.coord, calculate_distance(self.starting_coord, self.state_machine.game_state.player.coord))
-
-        if self.starting_coord == [0,0,0]:
-            self.starting_coord = self.state_machine.game_state.player.coord
-
         self.state_machine.target = self.state_machine.game_state.players[0].coord
+
+        target_distance = calculate_distance(self.state_machine.game_state.player.coord, self.state_machine.target)
+        # Target too far!
+        if target_distance > 1800:
+            self.state_machine.transition_state('training_target_toofar', {})
+            return
 
         if self.state_machine.bot_mode == 'training idle':
             self.state_machine.update_animation_and_angle(self.state_machine.game_state.player.coord, self.state_machine.game_state.player.coord)

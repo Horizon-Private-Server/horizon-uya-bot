@@ -159,6 +159,23 @@ class MlsTcp(AbstractTcp):
         game['game_mode'] = game_mode
         game['submode'] = submode
 
+        game['frag'] = None
+        game['cap_limit'] = None
+        
+        if game['game_length'] == 'no_time_limit':
+            game['game_length'] = None
+        else:
+            game['game_length'] = int(game['game_length'].split("_")[0])
+
+        binary = bin(gameinfo['generic_field_3'])[2:]
+        length = len(binary)
+        leftover = 32 - length
+        binary_full = leftover * '0' + binary
+        game['cap_limit'] = int(binary_full[5:9], 2)
+        game['frag'] = int(binary_full[10:13], 2) * 5
+        if game['frag'] == 0:
+            game['frag'] = None
+
         self.gameinfo = game
 
         if game['map'] not in VALID_GAME_MODES.keys():

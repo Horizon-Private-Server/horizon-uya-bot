@@ -38,6 +38,7 @@ class Profile:
         else:
             alts = [self.username]
         self.username = random.choice(alts)
+        self.username = self.username[:14]
 
     def __str__(self):
         result = 'Profile; '

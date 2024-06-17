@@ -59,6 +59,9 @@ class Prototype:
 
         self.state = None
 
+        # Warn if we go over this. Normal is 0.068
+        self._state_update_max_time = 0.08
+
     def transition_state(self, new_state:str, msg: dict=dict()):
         logger.info(f"Transitioning from {self.state} to {new_state}")
         self.state.exit()
@@ -106,11 +109,12 @@ class Prototype:
     async def main_loop(self):
         while self.model.alive:
             try:
-                # Pass until we start getting movement data from P0
-                    # Randomly pick a valid weapon if no weapon is selected
-                if self.game_state.player.weapon == None:
-                    self.change_weapon()
+                state_update_start_time = datetime.now()
 
+                if self.game_state.player.weapon == None:
+                    self.set_initial_weapon()
+
+                # Update game objects
                 self.game_state.object_manager.loop_update()
 
                 # Respawn
@@ -125,6 +129,11 @@ class Prototype:
 
                 # Sleep for the loop
                 await asyncio.sleep(MAIN_BOT_LOOP_TIMER)
+
+                # Check metrics
+                state_update_end_time = datetime.now()
+                if ((state_update_end_time - state_update_start_time).total_seconds()) > self._state_update_max_time:
+                    logger.warning(f"State update took too long: {(state_update_end_time - state_update_start_time).total_seconds()}")
             except:
                 logger.exception("PROTOTYPE ERROR")
                 self.model.alive = False
@@ -210,7 +219,7 @@ class Prototype:
         self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': data_packet})])
 
     def fire_weapon(self, object_id=None):
-        if self.game_state.player.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench']:
+        if self.game_state.player.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench', 'hyper']:
             return
 
         if datetime.now().timestamp() - self.weapon_switch_dt < self.weapon_switch_fire_cooldown:
@@ -402,7 +411,10 @@ class Prototype:
 
             self.game_state.player_killed(src_player)
 
-
+    def set_initial_weapon(self):
+        weapon = 'hyper'
+        self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
+        self.game_state.player.weapon = weapon
 
     def __str__(self):
         return "prototype class"

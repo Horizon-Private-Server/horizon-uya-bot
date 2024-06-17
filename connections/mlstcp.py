@@ -179,9 +179,9 @@ class MlsTcp(AbstractTcp):
         gameinfo['generic_field_3'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
         gameinfo['game_status'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
         gameinfo['game_host_type'] = ''.join([data.popleft() for _ in range(4)])
-        if check_game_settings and gameinfo['game_status'] != 1 or gameinfo['player_count'] == 8:
-            self._logger.info("Invalid game settings.")
-            raise Exception("Invalid game settings!")
+        if check_game_settings and (gameinfo['game_status'] != 1 or gameinfo['player_count'] == 8):
+            self._logger.info(f"Invalid game settings: {gameinfo}")
+            raise Exception(f"Invalid game settings: {gameinfo}")
 
         game = {'game_name': gameinfo['game_name']}
         game['weapons'] = weaponParser(gameinfo['player_skill_level'])

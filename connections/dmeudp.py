@@ -9,10 +9,10 @@ from medius.serializer import UdpSerializer
 from datetime import datetime
 
 class DmeUdp(AbstractUdp):
-    def __init__(self, loop, ip: str, port: int, world_id: int, player_id: int):
+    def __init__(self, loop, dmeudp_log_level, ip: str, port: int, world_id: int, player_id: int):
         super().__init__(loop, ip, port)
         self._logger = logging.getLogger('thug.dmeudp')
-        self._logger.setLevel(logging.INFO)
+        self._logger.setLevel(dmeudp_log_level)
 
         self.loop.create_task(self.start())
         self.loop.run_until_complete(asyncio.sleep(.25))

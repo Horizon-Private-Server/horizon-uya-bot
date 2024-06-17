@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+import logging
 
 class Config:
     def __init__(self, config_file):
@@ -30,6 +31,11 @@ class Config:
             "mls_ip": os.getenv("MLS_IP"),
             "mls_port": int(os.getenv("MLS_PORT")),
             "timeout": 180,
+            "mls_log_level": logging.DEBUG,
+            "mas_log_level": logging.DEBUG,
+            "dmetcp_log_level": logging.DEBUG,
+            "dmeudp_log_level": logging.DEBUG,
+            "model_log_level": logging.DEBUG,
         }
 
         for key, value in raw_dict.items():
@@ -41,18 +47,22 @@ class Config:
             result = json.loads(f.read())
             result['local'] = True
             for key, value in result.items():
+                if 'log_level' in key:
+                    if value == 'debug':
+                        value = logging.DEBUG
+                    elif value == 'info':
+                        value = logging.INFO
+
                 self.__dict__[key] = value
         self._authenticate()
 
         self.world_id = self._get_active_games(result['game_name_to_join'])
-
 
     def _authenticate(self):
         data = {
         "AccountName": self._MIDDLEWARE_USERNAME_UYA,
         "Password": self._MIDDLEWARE_PASSWORD_UYA
         }
-
         response = requests.post(self._MIDDLEWARE_ENDPOINT_UYA + "Account/authenticate", json=data, verify=False)
         if response.status_code == 200:
             print("Authenticated API!")

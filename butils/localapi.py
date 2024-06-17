@@ -33,3 +33,6 @@ class LocalApi():
 
         await site.start()
         port_select = site._server.sockets[0].getsockname()[1]
+
+    async def kill(self):
+        return

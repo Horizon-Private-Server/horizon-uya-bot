@@ -8,10 +8,10 @@ from connections.abstracttcp import AbstractTcp
 from medius.serializer import TcpSerializer
 
 class DmeTcp(AbstractTcp):
-    def __init__(self, loop, ip, port, session_key, access_key, world_id):
+    def __init__(self, loop, dmetcp_log_level, ip, port, session_key, access_key, world_id):
         super().__init__(loop, ip, port)
         self._logger = logging.getLogger('thug.dmetcp')
-        self._logger.setLevel(logging.INFO)
+        self._logger.setLevel(dmetcp_log_level)
 
         self.session_key = session_key
         self.access_key = access_key
@@ -64,7 +64,6 @@ class DmeTcp(AbstractTcp):
                 raise Exception('Unknown response!')
 
             elif data[0] == 0x07:
-                self._logger.info(bytes_to_hex(data))
                 self.player_id = bytes_to_int_little(data[6:8])
                 self.player_count = bytes_to_int_little(data[8:10])
                 break
@@ -82,7 +81,7 @@ class DmeTcp(AbstractTcp):
                 raise Exception('Unknown response!')
 
             elif data[0] == 0x18:
-                self._logger.info(bytes_to_hex(data))
+                pass
 
             data = bytes_to_hex(data)
             data = deque([data[i:i+2] for i in range(0,len(data),2)])

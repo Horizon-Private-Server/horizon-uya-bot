@@ -13,20 +13,20 @@ class NetworkManager:
         self.loop = loop
 
         # MAS
-        self._mas = MasTcp(self.loop, config.mas_ip, config.mas_port, config.account_name, config.password)
+        self._mas = MasTcp(self.loop, config.mas_log_level, config.mas_ip, config.mas_port, config.account_name, config.password)
         self.loop.run_until_complete(self._mas.connect())
         self.loop.run_until_complete(self._mas.close())
 
         # MLS
-        self._mls = MlsTcp(self.loop, config.mls_ip, config.mls_port, self._mas.session_key, self._mas.access_key)
+        self._mls = MlsTcp(self.loop, config.mls_log_level, config.mls_ip, config.mls_port, self._mas.session_key, self._mas.access_key)
         self.loop.run_until_complete(self._mls.connect(config.world_id))
 
         # DME TCP
-        self._dmetcp = DmeTcp(self.loop, self._mls.dme_ip, self._mls.dme_port, self._mls.dme_session_key, self._mls.dme_access_key, config.world_id)
+        self._dmetcp = DmeTcp(self.loop, config.dmetcp_log_level, self._mls.dme_ip, self._mls.dme_port, self._mls.dme_session_key, self._mls.dme_access_key, config.world_id)
         self.loop.run_until_complete(self._dmetcp.connect())
 
         # DME UDP
-        self._dmeudp = DmeUdp(self.loop, self._dmetcp.dmeudp_ip, self._dmetcp.dmeudp_port, config.world_id, self._dmetcp.player_id)
+        self._dmeudp = DmeUdp(self.loop, config.dmeudp_log_level, self._dmetcp.dmeudp_ip, self._dmetcp.dmeudp_port, config.world_id, self._dmetcp.player_id)
         self.loop.run_until_complete(self._dmeudp.connect())
 
         # DME TCP FINAL

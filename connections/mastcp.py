@@ -8,14 +8,14 @@ from connections.abstracttcp import AbstractTcp
 from butils.gameinfo_parser import weaponParser, advancedRulesParser, mapParser, timeParser, gamerulesParser
 
 class MasTcp(AbstractTcp):
-    def __init__(self, loop, ip: str, port: int, username: str, password: str):
+    def __init__(self, loop, mas_log_level, ip: str, port: int, username: str, password: str):
         super().__init__(loop, ip, port)
 
         self._username = username
         self._password = password
 
         self._logger = logging.getLogger('thug.mastcp')
-        self._logger.setLevel(logging.INFO)
+        self._logger.setLevel(mas_log_level)
 
         self._logger.info("Opening MAS...")
         self.loop.run_until_complete(self.start())

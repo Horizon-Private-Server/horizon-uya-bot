@@ -38,6 +38,8 @@ class Thug:
         logger.info("Initializing ...")
         self._config = config
 
+        logger.info(f"Using config: {config}")
+
         self._config.start_time = datetime.now()
         self._loop_time = .001
 

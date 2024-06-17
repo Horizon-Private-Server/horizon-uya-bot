@@ -9,7 +9,7 @@ from butils.gameinfo_parser import weaponParser, advancedRulesParser, mapParser,
 from constants.constants import VALID_GAME_MODES
 
 class MlsTcp(AbstractTcp):
-    def __init__(self, loop, ip: str, port: int, session_key, access_key):
+    def __init__(self, loop, mls_log_level, ip: str, port: int, session_key, access_key):
         super().__init__(loop, ip, port)
 
         self.access_key = access_key
@@ -23,7 +23,7 @@ class MlsTcp(AbstractTcp):
         self.dme_port = None
 
         self._logger = logging.getLogger('thug.mlstcp')
-        self._logger.setLevel(logging.DEBUG)
+        self._logger.setLevel(mls_log_level)
 
         self.loop.run_until_complete(self.start())
         
@@ -124,10 +124,11 @@ class MlsTcp(AbstractTcp):
             break
 
     async def check_game_info_alive(self, world_id):
+        await asyncio.sleep(15)
         while self.alive:
             await asyncio.sleep(30)
             self.clear_queue()
-            self._logger.info("Getting Game Info ...")
+            self._logger.debug("Checking if game info is valid ...")
             pkt = hex_to_bytes('0B2E00013331000000000000000000000000000000C01D480000')
             pkt += self.session_key
             pkt += hex_to_bytes("0000")
@@ -143,20 +144,17 @@ class MlsTcp(AbstractTcp):
                     await asyncio.sleep(.0001)
                     continue
                 try:
-                    self.serialize_game_info(data)
-                except:
+                    self.serialize_game_info(data, check_game_settings=False)
+                except Exception as e:
+                    self._logger.info("Game info no longer valid! Exiting!")
                     self.alive = False
                     return
                 break
 
-    def serialize_game_info(self, raw_gameinfo0):
+    def serialize_game_info(self, raw_gameinfo0, check_game_settings=True):
         gameinfo = {}
         raw_gameinfo0 = bytes_to_hex(raw_gameinfo0)
-        self._logger.info(raw_gameinfo0)
-
-        # 0A8E01013431000000000000000000000000000000000000000000000000000000BC290000000000000800000001000000EA0000010100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000466F7572426F6C7427732020202020202020303030303030323830303030000000000000000000000000000000000000000000000000000000000000000000000000000028000000000000005050E0E10100000004000000
-
-        # 0A7200000805000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+        #self._logger.info(raw_gameinfo0)
 
         data = deque([raw_gameinfo0[i:i+2] for i in range(0,len(raw_gameinfo0),2)])
         buf = ''.join([data.popleft() for _ in range(29)])
@@ -181,7 +179,7 @@ class MlsTcp(AbstractTcp):
         gameinfo['generic_field_3'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
         gameinfo['game_status'] = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
         gameinfo['game_host_type'] = ''.join([data.popleft() for _ in range(4)])
-        if gameinfo['game_status'] != 1 or gameinfo['player_count'] == 8:
+        if check_game_settings and gameinfo['game_status'] != 1 or gameinfo['player_count'] == 8:
             self._logger.info("Invalid game settings.")
             raise Exception("Invalid game settings!")
 

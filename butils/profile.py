@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import random
 import numpy as np
+from constants.constants import SKIN_MAP
 
 class Profile:
     def __init__(self, profile_id):
@@ -12,6 +13,18 @@ class Profile:
 
         df = pd.read_csv(profiles)
         df = df.replace({np.nan: None})
+
+        # Check each skin is valid:
+        skins = list(df.skins.values)
+        all_skins = []
+        for skin in skins:
+            for s in skin.split(","):
+                s = s.strip()
+                all_skins.append(s)
+        all_skins = set(all_skins)
+        for skin in all_skins:
+            if skin not in SKIN_MAP.values():
+                raise Exception(f"Skin: {skin} not in SKIN_MAP!")
 
         result = df[df['profile'] == profile_id]
         result = result.to_dict(orient='records')[0]

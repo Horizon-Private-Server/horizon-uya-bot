@@ -33,6 +33,9 @@ class MlsTcp(AbstractTcp):
         await asyncio.wait_for(self.get_game_info(world_id), timeout=5.0)
         await asyncio.wait_for(self.join_game(world_id), timeout=5.0)
 
+        self.loop.create_task(self.check_game_info_alive(world_id))
+
+
     async def connect_to_mls(self):
         # Need to let server process access token
         await asyncio.sleep(2)
@@ -117,12 +120,44 @@ class MlsTcp(AbstractTcp):
                 await asyncio.sleep(.0001)
                 continue
 
-            self.serialize_game_info(data)
+            self.gameinfo = self.serialize_game_info(data)
             break
+
+    async def check_game_info_alive(self, world_id):
+        while self.alive:
+            await asyncio.sleep(30)
+            self.clear_queue()
+            self._logger.info("Getting Game Info ...")
+            pkt = hex_to_bytes('0B2E00013331000000000000000000000000000000C01D480000')
+            pkt += self.session_key
+            pkt += hex_to_bytes("0000")
+            pkt += int_to_bytes_little(4, world_id)
+
+            self.queue(pkt)
+
+            while True:
+                # Check the result
+                data = self.dequeue()
+
+                if data == None:
+                    await asyncio.sleep(.0001)
+                    continue
+                try:
+                    self.serialize_game_info(data)
+                except:
+                    self.alive = False
+                    return
+                break
 
     def serialize_game_info(self, raw_gameinfo0):
         gameinfo = {}
         raw_gameinfo0 = bytes_to_hex(raw_gameinfo0)
+        self._logger.info(raw_gameinfo0)
+
+        # 0A8E01013431000000000000000000000000000000000000000000000000000000BC290000000000000800000001000000EA0000010100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000466F7572426F6C7427732020202020202020303030303030323830303030000000000000000000000000000000000000000000000000000000000000000000000000000028000000000000005050E0E10100000004000000
+
+        # 0A7200000805000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
         data = deque([raw_gameinfo0[i:i+2] for i in range(0,len(raw_gameinfo0),2)])
         buf = ''.join([data.popleft() for _ in range(29)])
 
@@ -176,13 +211,12 @@ class MlsTcp(AbstractTcp):
         if game['frag'] == 0:
             game['frag'] = None
 
-        self.gameinfo = game
-
         if game['map'] not in VALID_GAME_MODES.keys():
             raise Exception(f'Map {game["map"]} not in valid map settings!')
         if game['game_mode'] not in VALID_GAME_MODES[game['map']]:
             raise Exception(f'Game mode ({game["game_mode"]}) not supported for {game["map"]}')
 
+        return game
 
     async def join_game(self, world_id):
         self._logger.info("Joining Game ...")
@@ -205,6 +239,9 @@ class MlsTcp(AbstractTcp):
             self.serialize_join_game(data)
             break
 
+    def clear_queue(self):
+        while self.dequeue() != None:
+            continue
 
     def serialize_join_game(self, raw_joingame):
         raw_joingame = bytes_to_hex(raw_joingame)

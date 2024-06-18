@@ -34,6 +34,7 @@ class PlayerState:
         self.weapon = None
         self.is_dead = False
         self.animation = None
+        self.prev_animation = None
         self._default_health = 100
         self.health = self._default_health
         self.reset_health()

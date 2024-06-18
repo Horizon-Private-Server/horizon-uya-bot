@@ -132,8 +132,9 @@ class Prototype:
 
                 # Check metrics
                 state_update_end_time = datetime.now()
-                if ((state_update_end_time - state_update_start_time).total_seconds()) > self._state_update_max_time:
-                    logger.warning(f"State update took too long: {(state_update_end_time - state_update_start_time).total_seconds()}")
+                time_diff = (state_update_end_time - state_update_start_time).total_seconds()
+                if time_diff > self._state_update_max_time:
+                    logger.warning(f"State update took too long -- off by {round(percent_difference(time_diff, 0.068)):3d}% -- {time_diff:.3f} s")
             except:
                 logger.exception("PROTOTYPE ERROR")
                 self.model.alive = False
@@ -158,6 +159,8 @@ class Prototype:
 
         self.model.dmeudp_queue.put(['B', udp_0209_movement_update.udp_0209_movement_update(data=data)])
 
+        self.game_state.player.prev_animation = self.game_state.player.animation
+        self.game_state.player.animation = None
 
     def patrol(self, coords, circular=False):
         if 'patrol' not in self._misc.keys():
@@ -165,19 +168,17 @@ class Prototype:
         elif self._misc['patrol'] != coords:
             self._misc['patrol'] = CircularList(coords, circular=circular)
 
-        
-
         if calculate_distance(self.game_state.player.coord, self._misc['patrol'].peek()) > 70:
             patrol_coord = self._misc['patrol'].peek()
         else:
             patrol_coord = self._misc['patrol'].pop()
 
         new_coord = self.game_state.map.path(self.game_state.player.coord, patrol_coord)
-        self.update_animation_and_angle(self.game_state.player.coord, new_coord)
+        self.update_joystick_input_and_angle(self.game_state.player.coord, new_coord)
         self.game_state.player.set_coord(new_coord)
 
 
-    def update_animation_and_angle(self, old_coord, new_coord):
+    def update_joystick_input_and_angle(self, old_coord, new_coord):
         if self.game_state.player.stunned:
             return
 
@@ -194,8 +195,8 @@ class Prototype:
         if new_coord[2] > old_coord[2]:
             self.game_state.player.animation = 'jump'
 
-        # if random.random() > .5:
-        #     self.game_state.player.animation = 'crouch'
+        if self.game_state.player.prev_animation != 'crouch' and calculate_distance(old_coord, new_coord) > 95:
+            self.game_state.player.animation = 'crouch'
 
         angle = compute_strafe_angle(old_coord, new_coord, self.target)
         strafe_direction = get_strafe_direction(old_coord, new_coord, self.target)

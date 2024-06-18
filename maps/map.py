@@ -53,8 +53,9 @@ class Map:
         self.local_transform = LocalTransform(self.map)
 
 
-    def path(self, src, dst):
-
+    def path(self, src, dst, chargeboot=False):
+        # When chargeboot = True, we want to move ~ 110
+        cboot_dist = 110
 
         src = tuple(src)
         dst = tuple(dst)
@@ -83,16 +84,11 @@ class Map:
             if len(path) == 1:
                 return path[0]
             elif len(path) > 1:
-                # if use_cboot:
-                #     if (len(path)-1) > self.cboot_factor:
-                #         self.path_cache = path[self.cboot_factor:]
-                #         return self.path_cache.pop(0)
-                #     else:
-                #         self.path_cache = path[1:]
-                #         return path[1]
-                # else:
-                self.path_cache = path[1:]
-                return path[1]
+                path.pop(0)
+                if chargeboot:
+                    while len(path) > 1 and calculate_distance(src, path[0]) < cboot_dist:
+                        path.pop(0)
+                return path[0]
             else:
                 raise Exception(f"Unknown path length: {path}")
         except nx.exception.NetworkXNoPath:
@@ -120,13 +116,8 @@ class Map:
         dist_min = dist-variance
         dist_max = dist+variance
         distances = distance.cdist(self.points, [coord], 'euclidean').flatten()
-        # logger.info(coord)
-        # logger.info(sum(distances < dist_max))
-        # logger.info(sum(distances < dist_min))
-        # logger.info(sum((distances < dist_max) & (distances > dist_min)))
         points = self.points[np.where((distances < dist_max) & (distances > dist_min))]
         point_chosen = list(tuple(random.choice(points)))
-        logger.info(f"Distance from coord: {calculate_distance(coord, point_chosen)}")
         return point_chosen
 
     def get_random_coord_connected_close(self, src_coord, dst_coord):

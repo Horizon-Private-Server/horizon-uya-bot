@@ -21,7 +21,7 @@ class training_initial(State):
             return
 
         if self.state_machine.bot_mode == 'training idle':
-            self.state_machine.update_animation_and_angle(self.state_machine.game_state.player.coord, self.state_machine.game_state.player.coord)
+            self.state_machine.update_joystick_input_and_angle(self.state_machine.game_state.player.coord, self.state_machine.game_state.player.coord)
             return
         
         elif self.state_machine.bot_mode == 'training passive':

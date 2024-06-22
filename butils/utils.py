@@ -375,3 +375,9 @@ def scale_180_to_255(value):
     scaled_value = (value / 180) * 255
     
     return int(scaled_value)  # Convert to integer for whole number result
+
+def percent_difference(number1, number2):
+    difference = abs(number1 - number2)
+    average = (number1 + number2) / 2
+    percent_diff = (difference / average) * 100
+    return percent_diff

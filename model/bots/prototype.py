@@ -14,6 +14,7 @@ from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
 
 
 from model.states.training import *
+from model.states.dm import *
 
 
 import logging
@@ -69,13 +70,21 @@ class Prototype:
         self.state.enter(msg)
 
     def state_update(self):
+        # If we are dead, don't update.
+        if self.game_state.player.is_dead:
+            return
+
         if self.state == None:
             if 'training' in self.bot_mode:
                 self.state = training_initial.training_initial(self)
-                self.state.enter(None)
+            elif self.bot_mode == 'dynamic':
+                if self.game_state.game_mode == 'Deathmatch':
+                    self.state = dm_initial.dm_initial(self)
+
+
 
         #logger.info(str(self.model.game_state))
-
+        self.state.enter(None)
         self.state.update()
         return
 

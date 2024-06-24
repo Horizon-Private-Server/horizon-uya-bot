@@ -71,8 +71,13 @@ class Flag(UyaObject):
         self.color = color
         self.map = map
         self.location = flag_map[map][color]['location']
+        self.initial_location = list(flag_map[map][color]['location'])
         self.id = flag_map[map][color]['id']
-        
+        self.holder = None
+
+    def reset(self):
+        self.location = list(self.initial_location)
+        self.holder = None
 
     def __str__(self):
-        return f"Flag [{self.color}]; id:{self.id} master:{self.master} owner:{self.owner} loc:{self.location}"
+        return f"Flag [{self.color}]; holder:{self.holder} id:{self.id} master:{self.master} owner:{self.owner} loc:{self.location}"

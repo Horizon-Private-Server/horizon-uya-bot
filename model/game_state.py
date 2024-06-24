@@ -44,6 +44,9 @@ class GameState:
         # Point grid
         self.map = Map(self.map_name)
 
+        self.red_caps = 0
+        self.blue_caps = 0
+
         self.object_manager = ObjectManager(self.model, self, self.map_name, self.game_mode)
 
     def start(self):
@@ -59,20 +62,6 @@ class GameState:
             if ((datetime.now() - self.start_time).total_seconds() / 60) > self.game_info['game_length']:
                 return True
         return False
-
-    def clear_flag(self, flag):
-        if self.player.flag == flag:
-            self.player.flag = None
-            return
-
-        for player_id in self.players.keys():
-            if self.players[player_id].flag == flag:
-                self.players[player_id].flag = None
-
-        if flag == 'red_flag':
-            self.red_flag_loc = get_flag_location(map=self.map_name, team='red')
-        elif flag == 'blue_flag':
-            self.blue_flag_loc = get_flag_location(map=self.map_name, team='blue')
 
     def player_left(self, src_player:int):
         if src_player not in self.players.keys():
@@ -161,6 +150,7 @@ class GameState:
 {self.map} {self.game_mode} TimeLim:{self.game_info['game_length']}
 Frag:{self.game_info['frag']} CapLim:{self.game_info['cap_limit']}
 State:{self.state} PlayerCount:{len(self.players)+1}
+Caps- Blue:{self.blue_caps} Red:{self.red_caps}
 ---------------------------------------------
 {self.player}
 ---------------------------------------------

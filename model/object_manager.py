@@ -7,6 +7,7 @@ from model.objects.crate import Crate
 from model.objects.healthcrate import HealthCrate
 
 from medius.dme_packets import *
+from butils.utils import *
 
 OBJECT_TYPES = {
     'marcadia_palace': {
@@ -151,33 +152,44 @@ class ObjectManager():
                 self.blue_flag.owner = self.model.game_state.player.player_id
                 self.blue_flag.counter = dme_packet.data['counter']
 
-        # if dme_packet.name == 'tcp_020C_info' and 'req_confirmation' in dme_packet.subtype:
-        #     data = {'object_id': dme_packet.data['object_id'], 'unk': dme_packet.data['unk']}
-        #     self.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_confirm', timestamp=self.game_state.player.time, object_id='001000F7', data=data)])
+        elif dme_packet.subtype[2:] == '_flag_update' and (dme_packet.data['flag_update_type'][2:] == '_flag_save' or dme_packet.data['flag_update_type'] == 'flag_return'):
+            # Flag Save by player or timeout
+            if dme_packet.object_type == self.red_flag.id:
+                self.red_flag.reset()
+            elif dme_packet.object_type == self.blue_flag.id:
+                self.blue_flag.reset()
 
-        # if dme_packet.name == 'tcp_020C_info' and '_object_update' in dme_packet.subtype:
-        #     # Flag Pickup
-        #     object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
-        #     if object == 'red_flag' or object == 'blue_flag':
-        #         self.game_state.players[src_player].flag = object
+        elif dme_packet.subtype[2:] == '_flag_update' and dme_packet.data['flag_update_type'][2:] == '_capture':
+            # Flag Capture
+            if dme_packet.object_type == self.red_flag.id:
+                self.game_state.blue_caps += 1
+                self.red_flag.reset()
+            elif dme_packet.object_type == self.blue_flag.id:
+                self.game_state.red_caps += 1
+                self.blue_flag.reset()
 
-        # if dme_packet.name == 'tcp_020C_info' and 'flag_drop' in dme_packet.subtype:
-        #     # Flag Dropped
-        #     object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
-        #     if object == 'red_flag' or object == 'blue_flag':
-        #         for player_id in self.game_state.players.keys():
-        #             if self.game_state.players[player_id].flag == object:
-        #                 self.game_state.players[player_id].flag = None
+        elif dme_packet.subtype[2:] == '_object_update':
+            ### Flag Pickup
+            if dme_packet.object_type == self.red_flag.id:
+                player_who_picked_up = hex_to_int_little(dme_packet.data['object_update_unk'])
+                # Set the player to be holding the flag
+                self.red_flag.holder = player_who_picked_up
+            elif dme_packet.object_type == self.blue_flag.id:
+                player_who_picked_up = hex_to_int_little(dme_packet.data['object_update_unk'])
+                self.blue_flag.holder = player_who_picked_up
 
-        # if dme_packet.name == 'tcp_020C_info' and 'flag_update' in dme_packet.subtype:
-        #     # Flag Returned or Flag Captured
-        #     object = parse_object_id(dme_packet.object_id, map=self.game_state.map.map)
-        #     if object == 'red_flag' or object == 'blue_flag':
-        #         if '_capture' in dme_packet.data['flag_update_type'] or dme_packet.data['flag_update_type'] == 'flag_return':
-        #             # Find players that have redflag/blueflag and set to None
-        #             self.game_state.clear_flag(object)
+            #logger.info(self.game_state)
 
-        #self.game_state.object_manager.object_update(src_player, dme_packet)
+        elif dme_packet.subtype[2:] == '_flag_drop':
+            ### Flag Drop
+            location = [dme_packet.data['local_x'], dme_packet.data['local_y'], dme_packet.data['local_z']]
+            location = self.game_state.map.transform_local_to_global(location)
+            if dme_packet.object_type == self.red_flag.id:
+                self.red_flag.holder = None
+                self.red_flag.location = location
+            elif dme_packet.object_type == self.blue_flag.id:
+                self.blue_flag.holder = None
+                self.blue_flag.location = location
 
 
     def __str__(self):

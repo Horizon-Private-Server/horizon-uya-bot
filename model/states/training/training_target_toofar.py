@@ -5,7 +5,7 @@ class training_target_toofar(State):
     def __init__(self, state_machine):
         super().__init__(state_machine)
         self._min_dist = 1400
-        #self._min_dist = 100
+        self._min_dist = 100
 
     def enter(self, msg:dict):
         self.state_machine.target = self.state_machine.game_state.players[0].coord

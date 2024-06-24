@@ -27,6 +27,14 @@ flag_drop_map = {
     '0106': 'p6_capture',
     '0107': 'p7_capture',
     '00FF': 'flag_return',
+    '0000': 'p0_flag_save',
+    '0001': 'p1_flag_save',
+    '0002': 'p2_flag_save',
+    '0003': 'p3_flag_save',
+    '0004': 'p4_flag_save',
+    '0005': 'p5_flag_save',
+    '0006': 'p6_flag_save',
+    '0007': 'p7_flag_save',
 }
 
 
@@ -188,7 +196,13 @@ class tcp_020C_info:
         elif subtype[2:] == '_flag_update':
             data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
         elif 'flag_drop' in subtype:
-            data_dict['flag_drop_unk'] =  ''.join([data.popleft() for i in range(16)])
+            data_dict['unk1'] = ''.join([data.popleft() for i in range(2)])
+            data_dict['local_x'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+            data_dict['unk2'] = ''.join([data.popleft() for i in range(2)])
+            data_dict['local_y'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+            data_dict['unk3'] = ''.join([data.popleft() for i in range(2)])
+            data_dict['local_z'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+            data_dict['unk4'] = ''.join([data.popleft() for i in range(4)])
         elif subtype[2:] == '_assign_to':
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])
             data_dict['counter'] = hex_to_int_little(''.join([data.popleft() for i in range(1)]))

@@ -305,11 +305,9 @@ class Prototype:
 
     def process_shot_fired(self, src_player, packet_data):
         # Player is Alive, and the teammate who shot was on the enemy team. The object hit was us.
-        # if self.game_state.player.is_dead or self.game_state.players[src_player].team == self.game_state.player.team:
-        #     return
-
-        if self.game_state.player.is_dead:
+        if self.game_state.player.is_dead or self.game_state.players[src_player].team == self.game_state.player.team:
             return
+
 
         damage = 0
 

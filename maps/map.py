@@ -24,7 +24,7 @@ siege_ctf_respawn_coords = {
     "command_center": {"red": [21523, 24181, 2174], "blue": [20766, 22551, 2174]},
     'aquatos_sewers': {"red": [12680, 17857, 6736], "blue": [17312, 12087, 6379]},
     "blackwater_docks": {"red": [25773, 18112, 60224], "blue": [25527, 23871, 60224]},
-    "marcadia_palace": {"red": [33990, 54644, 7413], "blue": [27500, 54131, 7424]},
+    "marcadia_palace": {"red": [34240, 54416, 7413], "blue": [27093, 54161, 7413]},
 }
 
 def search_heuristic(node1, node2):

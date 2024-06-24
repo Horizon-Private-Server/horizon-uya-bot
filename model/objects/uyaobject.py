@@ -9,6 +9,7 @@ class UyaObject():
         self.master = master
         self.owner = owner
         self.touching_distance = 500 # in prod use 130
+        self.counter = 0
 
     def overlap(self, coord):
         # Check if another coordinate is close to this object

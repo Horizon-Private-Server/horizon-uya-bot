@@ -39,9 +39,6 @@ class GameState:
 
         self.nodes = True
 
-        self.red_flag_loc = get_flag_location(map=self.map_name, team='red')
-        self.blue_flag_loc = get_flag_location(map=self.map_name, team='blue')
-
         self.start_time = datetime.now()
 
         # Point grid
@@ -164,13 +161,15 @@ class GameState:
 {self.map} {self.game_mode} TimeLim:{self.game_info['game_length']}
 Frag:{self.game_info['frag']} CapLim:{self.game_info['cap_limit']}
 State:{self.state} PlayerCount:{len(self.players)+1}
-Red Flag:{self.red_flag_loc} Blue Flag:{self.blue_flag_loc}
 ---------------------------------------------
 {self.player}
 ---------------------------------------------
 '''
         for player in self.players.values():
             result += str(player) + '\n'
+        result += '====================\n'
+        result += 'Object Manager\n'
+        result += str(self.object_manager) + '\n'
         result += '============================================='
         return result
 

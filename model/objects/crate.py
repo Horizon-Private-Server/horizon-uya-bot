@@ -13,7 +13,6 @@ class Crate(UyaObject):
         self.description = description
         self.respawn_time = 30 # seconds
         self.respawning = False
-        self.counter = 0
 
     async def respawn(self):
         if self.respawning:

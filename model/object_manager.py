@@ -42,8 +42,8 @@ class ObjectManager():
         self.game_mode = game_mode
 
         if self.game_mode == 'CTF':
-            self.red_flag = Flag('red', self.map)
-            self.blue_flag = Flag('blue', self.map)
+            self.red_flag = Flag(self.model, 'red', self.map)
+            self.blue_flag = Flag(self.model, 'blue', self.map)
         else:
             self.red_flag = None
             self.blue_flag = None
@@ -58,13 +58,27 @@ class ObjectManager():
 
     def reset_all_masters(self):
         # Reset all the masters of all objects to P0
+        logger.info(f"Resetting object masters ...")
+
         for crate in self.health_crates.values():
             crate.owner = 0
             crate.master = 0
             data = {'new_owner': crate.owner, 'counter': crate.counter, 'master': crate.master, 'object_id': crate.id}
+            logger.info(f"Resetting crate: {data}")
+
             self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p0_change_owner_req', timestamp=self.game_state.player.time,data=data)])
 
             data = {'object_id': crate.id, 'counter': crate.counter, 'master': 0}
+            self.model.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])
+
+        if self.red_flag != None or self.blue_flag != None:
+
+            data = {'object_id': self.red_flag.id, 'counter': self.red_flag.counter, 'master': 0}
+            logger.info(f"Resetting flag: {data}")
+            self.model.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])
+
+            data = {'object_id': self.blue_flag.id, 'counter': self.blue_flag.counter, 'master': 0}
+            logger.info(f"Resetting flag: {data}")
             self.model.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])
 
     def loop_update(self):
@@ -106,20 +120,36 @@ class ObjectManager():
                 self.model.loop.create_task(self.health_crates[dme_packet.object_type].respawn())
 
         elif dme_packet.subtype[2:] == '_change_owner_req':
-            if dme_packet.data['object_id'] not in self.health_crates:
+            if dme_packet.data['object_id'] not in self.health_crates and (self.red_flag != None and dme_packet.data['object_id'] != self.red_flag.id) and (self.blue_flag != None and dme_packet.data['object_id'] != self.blue_flag.id):
                 logger.warning(f"Unknown object id on change owner request (from {src_player}): {dme_packet}")
-            else:
+            elif dme_packet.data['object_id'] in self.health_crates:
                 self.health_crates[dme_packet.data['object_id']].owner = dme_packet.data['new_owner']
                 self.health_crates[dme_packet.data['object_id']].counter = dme_packet.data['counter']
                 data = {'object_id': dme_packet.data['object_id'], 'counter': self.health_crates[dme_packet.data['object_id']].counter, 'master': self.health_crates[dme_packet.data['object_id']].master}
                 self.model.dmetcp_queue.put([src_player, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])
+            elif self.red_flag != None and dme_packet.data['object_id'] == self.red_flag.id:
+                self.red_flag.owner = dme_packet.data['new_owner']
+                self.red_flag.counter = dme_packet.data['counter']
+                data = {'object_id': dme_packet.data['object_id'], 'counter': self.red_flag.counter, 'master': self.red_flag.master}
+                self.model.dmetcp_queue.put([src_player, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])            
+            elif self.blue_flag != None and dme_packet.data['object_id'] == self.blue_flag.id:
+                self.blue_flag.owner = dme_packet.data['new_owner']
+                self.blue_flag.counter = dme_packet.data['counter']
+                data = {'object_id': dme_packet.data['object_id'], 'counter': self.blue_flag.counter, 'master': self.blue_flag.master}
+                self.model.dmetcp_queue.put([src_player, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])   
 
         elif dme_packet.subtype[2:] == '_assign_to':
-            if dme_packet.data['object_id'] not in self.health_crates:
+            if dme_packet.data['object_id'] not in self.health_crates and (self.red_flag != None and dme_packet.data['object_id'] != self.red_flag.id) and (self.blue_flag != None and dme_packet.data['object_id'] != self.blue_flag.id):
                 logger.warning(f"Unknown object id on assign_to (from {src_player}): {dme_packet}")
-            else:
+            elif dme_packet.data['object_id'] in self.health_crates:
                 self.health_crates[dme_packet.data['object_id']].owner = self.model.game_state.player.player_id
                 self.health_crates[dme_packet.data['object_id']].counter = dme_packet.data['counter']
+            elif self.red_flag != None and dme_packet.data['object_id'] == self.red_flag.id:
+                self.red_flag.owner = self.model.game_state.player.player_id
+                self.red_flag.counter = dme_packet.data['counter']
+            elif self.blue_flag != None and dme_packet.data['object_id'] == self.blue_flag.id:
+                self.blue_flag.owner = self.model.game_state.player.player_id
+                self.blue_flag.counter = dme_packet.data['counter']
 
         # if dme_packet.name == 'tcp_020C_info' and 'req_confirmation' in dme_packet.subtype:
         #     data = {'object_id': dme_packet.data['object_id'], 'unk': dme_packet.data['unk']}
@@ -149,11 +179,16 @@ class ObjectManager():
 
         #self.game_state.object_manager.object_update(src_player, dme_packet)
 
+
     def __str__(self):
         result = '\nObjectManager:\n'
 
         for crate in self.health_crates.values():
             result += str(crate) + '\n'
+
+        if self.red_flag != None or self.blue_flag != None:
+            result += str(self.red_flag) + '\n'
+            result += str(self.blue_flag) + '\n'
 
         result = result.strip()
         return result

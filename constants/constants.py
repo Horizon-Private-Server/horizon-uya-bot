@@ -2,7 +2,7 @@ import json
 import os
 
 VALID_GAME_MODES = {
-    'marcadia_palace': {'Deathmatch'}
+    'marcadia_palace': {'Deathmatch', 'CTF'}
 }
 
 

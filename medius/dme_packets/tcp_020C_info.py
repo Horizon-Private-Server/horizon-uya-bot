@@ -244,14 +244,18 @@ class tcp_020C_info:
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
                 hex_to_bytes(self.object_type) + \
-                hex_to_bytes(self.data['object_id']) + \
-                hex_to_bytes('00') + \
-                hex_to_bytes(self.data['unk'])
+                hex_to_bytes(self.data['flag_drop_unk'])
         elif self.subtype[2:] == '_crate_respawn':
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
                 hex_to_bytes(self.object_type)
+        elif self.subtype[2:] == '_object_update':
+            return self.id + \
+                hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
+                int_to_bytes_little(4, self.timestamp) + \
+                hex_to_bytes(self.object_type) + \
+                hex_to_bytes(self.data['object_update_unk'])
 
     def __str__(self):
         return f"{self.name}; subtype:{self.subtype} " + \

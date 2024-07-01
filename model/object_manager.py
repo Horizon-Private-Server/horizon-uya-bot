@@ -2,6 +2,8 @@ import logging
 logger = logging.getLogger('thug.object_manager')
 logger.setLevel(logging.INFO)
 
+import asyncio
+
 from model.objects.flag import Flag
 from model.objects.crate import Crate
 from model.objects.healthcrate import HealthCrate
@@ -83,6 +85,12 @@ class ObjectManager():
             self.model.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])
 
     def loop_update(self):
+
+
+        # Check if the bot saves the flag
+
+
+
         # We need to check the positions of each player in comparison to each object
         for player_id, player in self.model.game_state.players.items():
             for crate_id, crate in self.health_crates.items():
@@ -97,10 +105,32 @@ class ObjectManager():
                     self.model.loop.create_task(self.health_crates[crate_id].respawn())
                     self.model.game_state.players[player_id].reset_health()
 
+            # Flag Saves
+            if self.red_flag != None and self.red_flag.overlap(player.coord) and not self.red_flag.is_at_base():
+                if self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and player.team == 'red':
+                    # Return the flag
+                    self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_flag_save'})])
+                    self.red_flag.reset()
+
+            elif self.blue_flag != None and self.blue_flag.overlap(player.coord) and not self.blue_flag.is_at_base():
+                if self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and player.team == 'blue':
+                    # Return the flag
+                    self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_flag_save'})])
+                    self.blue_flag.reset()
+
+            # Flag Pickup
+            if self.red_flag != None and self.red_flag.overlap(player.coord) and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and player.team == 'blue':
+                player_id_hex = bytes_to_hex(int_to_bytes_little(4, player_id))
+                self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'object_update_unk': player_id_hex})])
+            elif self.blue_flag != None and self.blue_flag.overlap(player.coord) and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and player.team == 'red':
+                player_id_hex = bytes_to_hex(int_to_bytes_little(4, player_id))
+                self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'object_update_unk': player_id_hex})])
+
 
 
     def object_update(self, src_player:int, dme_packet):
         logger.info(f"Object update: {src_player} | {dme_packet}")
+
         if dme_packet.subtype[2:] == '_crate_destroyed':
             pass # We don't care if just the box was broken
 
@@ -178,8 +208,6 @@ class ObjectManager():
                 player_who_picked_up = hex_to_int_little(dme_packet.data['object_update_unk'])
                 self.blue_flag.holder = player_who_picked_up
 
-            #logger.info(self.game_state)
-
         elif dme_packet.subtype[2:] == '_flag_drop':
             ### Flag Drop
             location = [dme_packet.data['local_x'], dme_packet.data['local_y'], dme_packet.data['local_z']]
@@ -187,10 +215,34 @@ class ObjectManager():
             if dme_packet.object_type == self.red_flag.id:
                 self.red_flag.holder = None
                 self.red_flag.location = location
+                # Create timeout task 
+                self.model.loop.create_task(self.check_flag_timeout('red'))
+
             elif dme_packet.object_type == self.blue_flag.id:
                 self.blue_flag.holder = None
                 self.blue_flag.location = location
+                # Create timeout task 
+                self.model.loop.create_task(self.check_flag_timeout('blue'))
 
+
+    async def check_flag_timeout(self, color):
+        if color == 'red':
+            flag = self.red_flag
+        elif color == 'blue':
+            flag = self.blue_flag
+
+        initial_flag_drop_pos = flag.location
+        await asyncio.sleep(30)
+
+        if color == 'red':
+            flag = self.red_flag
+        elif color == 'blue':
+            flag = self.blue_flag
+
+        if flag.location == initial_flag_drop_pos and flag.holder == None and flag.owner == self.game_state.player.player_id:
+            # Flag return
+            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'flag_return'})])
+            flag.reset()
 
     def __str__(self):
         result = '\nObjectManager:\n'

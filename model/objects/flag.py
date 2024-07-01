@@ -3,6 +3,8 @@ import asyncio
 
 from model.objects.uyaobject import UyaObject
 from medius.dme_packets import tcp_020C_info
+from butils.utils import *
+
 
 import logging
 logger = logging.getLogger('thug.flag')
@@ -78,6 +80,9 @@ class Flag(UyaObject):
     def reset(self):
         self.location = list(self.initial_location)
         self.holder = None
+
+    def is_at_base(self):
+        return calculate_distance(self.location, self.initial_location) < 50
 
     def __str__(self):
         return f"Flag [{self.color}]; holder:{self.holder} id:{self.id} master:{self.master} owner:{self.owner} loc:{self.location}"

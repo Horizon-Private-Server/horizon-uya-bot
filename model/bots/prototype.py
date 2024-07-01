@@ -15,7 +15,8 @@ from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
 
 from model.states.training import *
 from model.states.dm import *
-
+from model.states.static import *
+from model.states.static_shoot import *
 
 import logging
 logger = logging.getLogger('thug.model.prototype')
@@ -80,7 +81,10 @@ class Prototype:
             elif self.bot_mode == 'dynamic':
                 if self.game_state.game_mode == 'Deathmatch':
                     self.state = dm_initial.dm_initial(self)
-
+            elif self.bot_mode == 'static':
+                self.state = static_initial.static_initial(self)
+            elif self.bot_mode == 'static shoot':
+                self.state = static_shoot_initial.static_shoot_initial(self)
 
 
         #logger.info(str(self.model.game_state))

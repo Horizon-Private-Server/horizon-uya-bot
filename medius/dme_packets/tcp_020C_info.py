@@ -196,11 +196,14 @@ class tcp_020C_info:
         elif subtype[2:] == '_flag_update':
             data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
         elif 'flag_drop' in subtype:
-            data_dict['unk1'] = ''.join([data.popleft() for i in range(2)])
+            data.popleft() # trash
+            data_dict['offset_x'] = hex_to_int_little(data.popleft())
             data_dict['local_x'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
-            data_dict['unk2'] = ''.join([data.popleft() for i in range(2)])
+            data.popleft() # trash
+            data_dict['offset_y'] = hex_to_int_little(data.popleft())
             data_dict['local_y'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
-            data_dict['unk3'] = ''.join([data.popleft() for i in range(2)])
+            data.popleft() # trash
+            data_dict['offset_z'] = hex_to_int_little(data.popleft())
             data_dict['local_z'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
             data_dict['unk4'] = ''.join([data.popleft() for i in range(4)])
         elif subtype[2:] == '_assign_to':
@@ -270,6 +273,13 @@ class tcp_020C_info:
                 int_to_bytes_little(4, self.timestamp) + \
                 hex_to_bytes(self.object_type) + \
                 hex_to_bytes(self.data['object_update_unk'])
+
+        elif self.subtype[2:] == '_flag_update':
+            return self.id + \
+                hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
+                int_to_bytes_little(4, self.timestamp) + \
+                hex_to_bytes(self.object_type) + \
+                hex_to_bytes({v: k for k, v in flag_drop_map.items()}[self.data['flag_update_type']])
 
     def __str__(self):
         return f"{self.name}; subtype:{self.subtype} " + \

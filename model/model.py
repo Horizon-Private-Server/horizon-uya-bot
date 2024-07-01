@@ -31,7 +31,7 @@ class Model:
         logger.info(f"GAME INFO: {gameinfo}")
         logger.info(f"Using profile: {bot_mode} | {profile}")
 
-        if set(gameinfo['weapons']) != set(['flux','grav','blitz']):
+        if set(gameinfo['weapons']) != set(['flux','grav','blitz']) and set(gameinfo['weapons']) != set(['grav']):
             logger.info(f"Game info weapons not matching required: {gameinfo['weapons']}")
             self.alive = False
             return

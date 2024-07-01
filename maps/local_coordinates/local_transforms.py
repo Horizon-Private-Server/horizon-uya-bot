@@ -294,7 +294,6 @@ class LocalTransform():
 
         if transform == None:
             # Get closest
-            
             print(f"No transform found for point: {point}")
         assert transform != None
 
@@ -344,7 +343,7 @@ class LocalTransform():
                     local_coord_new[1] = local_coord[1] + offset_new[1]
                     local_coord_new[2] = local_coord[2] + offset_new[2]
                     
-                    print(f"Converting: {local_coord}|{offset} -> {local_coord_new}")
+                    #print(f"Converting: {local_coord}|{offset} -> {local_coord_new}")
 
                     #print(local_coord, local_coord_new)
                     if global_coord in global_coords:

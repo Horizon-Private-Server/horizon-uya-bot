@@ -85,10 +85,9 @@ class Prototype:
                 self.state = static_initial.static_initial(self)
             elif self.bot_mode == 'static shoot':
                 self.state = static_shoot_initial.static_shoot_initial(self)
-
+            self.state.enter({})
 
         #logger.info(str(self.model.game_state))
-        self.state.enter(None)
         self.state.update()
         return
 
@@ -123,7 +122,7 @@ class Prototype:
         while self.model.alive:
             try:
 
-                logger.info(self.game_state)
+                #logger.info(self.game_state)
 
                 state_update_start_time = datetime.now()
 
@@ -235,7 +234,7 @@ class Prototype:
         data_packet['type'] = 'weapon_upgraded'
         self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': data_packet})])
 
-    def fire_weapon(self, object_id=None):
+    def fire_weapon(self, object_id=-1):
         if self.game_state.player.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench', 'hyper']:
             return
 
@@ -243,6 +242,7 @@ class Prototype:
             return
 
         weapon_fired_bool, hit_bool = self.game_state.player.arsenal.fire_weapon(self.game_state.player.weapon)
+        hit_bool = False
 
         if weapon_fired_bool:
             # Weapon was fired.
@@ -261,6 +261,8 @@ class Prototype:
 
                 target_coord = self.target
                 local_player_coord = self.game_state.map.transform_global_to_local(target_coord)
+
+                print(target_coord, local_player_coord)
 
                 local_x_2 = local_player_coord[0]
                 local_y_2 = local_player_coord[1]
@@ -283,8 +285,8 @@ class Prototype:
 
             self.model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', local_x=local_x, local_y=local_y, local_z=local_z, local_x_2=local_x_2, local_y_2=local_y_2, local_z_2=local_z_2)])
 
-        if self.changing_weapons == False:
-            self.model.loop.create_task(self.change_weapon_timer())
+        # if self.changing_weapons == False:
+        #     self.model.loop.create_task(self.change_weapon_timer())
 
 
     async def change_weapon_timer(self):

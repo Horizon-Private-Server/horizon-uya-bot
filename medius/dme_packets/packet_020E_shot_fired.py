@@ -99,17 +99,11 @@ class packet_020E_shot_fired:
         self.time = time
         self.object_id = object_id
         self.unk1 = unk1
-        self.unk2 = unk2
         self.local_x = local_x
-        self.unk3 = unk3
         self.local_y = local_y
-        self.unk4 = unk4
         self.local_z = local_z
-        self.unk5 = unk5
         self.local_x_2 = local_x_2
-        self.unk6 = unk6
         self.local_y_2 = local_y_2
-        self.unk7 = unk7
         self.local_z_2 = local_z_2
 
     @classmethod
@@ -129,25 +123,27 @@ class packet_020E_shot_fired:
         else:
             object_id = moby_id
 
-        unk2 = ''.join([data.popleft() for i in range(2)])
-        local_x = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
-        unk3 = ''.join([data.popleft() for i in range(2)])
-        local_y = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
-        unk4 = ''.join([data.popleft() for i in range(2)])
-        local_z = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+        ''.join([data.popleft() for i in range(1)]) # trash
+        offset_x = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        local_x = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_x
+        ''.join([data.popleft() for i in range(1)]) # trash
+        offset_y = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        local_y = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_y
+        ''.join([data.popleft() for i in range(1)]) # trash
+        offset_z = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        local_z = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_z
 
-        unk5 = ''.join([data.popleft() for i in range(2)])
-        #local_x_2 = ''.join([data.popleft() for i in range(2)])
-        local_x_2 = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
-        unk6 = ''.join([data.popleft() for i in range(2)])
-        #local_y_2 = ''.join([data.popleft() for i in range(2)])
-        local_y_2 = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
-        unk7 = ''.join([data.popleft() for i in range(2)])
-        #local_z_2 = ''.join([data.popleft() for i in range(2)])
-        local_z_2 = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+        ''.join([data.popleft() for i in range(1)]) # trash
+        offset_x = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        local_x_2 = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_x
+        ''.join([data.popleft() for i in range(1)]) # trash
+        offset_y = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        local_y_2 = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_y
+        ''.join([data.popleft() for i in range(1)]) # trash
+        offset_z = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        local_z_2 = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_z
 
-        return packet_020E_shot_fired(network, '', weapon, src_player, unk1, time, object_id, unk2, local_x, unk3, local_y, unk4, local_z, unk5, local_x_2, unk6, local_y_2, unk7, local_z_2)
-
+        return packet_020E_shot_fired(network, '', weapon, src_player, unk1, time, object_id, local_x, local_y, local_z, local_x_2, local_y_2, local_z_2)
     def to_bytes(self):
 
         if self.map in {'hoven_gorge', 'outpost_x12', 'metropolis'}:
@@ -162,20 +158,26 @@ class packet_020E_shot_fired:
             hex_to_bytes(self.unk1) + \
             int_to_bytes_little(4, self.time) + \
             int_to_bytes_little(4, object_id) + \
-            hex_to_bytes(self.unk2) + \
-            int_to_bytes_little(2, self.local_x) + \
-            hex_to_bytes(self.unk3) + \
-            int_to_bytes_little(2, self.local_y) + \
-            hex_to_bytes(self.unk4) + \
-            int_to_bytes_little(2, self.local_z) + \
-            hex_to_bytes(self.unk5) + \
-            int_to_bytes_little(2, self.local_x_2) + \
-            hex_to_bytes(self.unk6) + \
-            int_to_bytes_little(2, self.local_y_2) + \
-            hex_to_bytes(self.unk7) + \
-            int_to_bytes_little(2, self.local_z_2)
+            hex_to_bytes("00") + \
+            int_to_bytes_little(1, int((self.local_x - int(self.local_x))*255)) + \
+            int_to_bytes_little(2, int(self.local_x)) + \
+            hex_to_bytes("00") + \
+            int_to_bytes_little(1, int((self.local_y - int(self.local_y))*255)) + \
+            int_to_bytes_little(2, int(self.local_y)) + \
+            hex_to_bytes("00") + \
+            int_to_bytes_little(1, int((self.local_z - int(self.local_z))*255)) + \
+            int_to_bytes_little(2, int(self.local_z)) + \
+            hex_to_bytes("00") + \
+            int_to_bytes_little(1, int((self.local_x_2 - int(self.local_x_2))*255)) + \
+            int_to_bytes_little(2, int(self.local_x_2)) + \
+            hex_to_bytes("00") + \
+            int_to_bytes_little(1, int((self.local_y_2 - int(self.local_y_2))*255)) + \
+            int_to_bytes_little(2, int(self.local_y_2)) + \
+            hex_to_bytes("00") + \
+            int_to_bytes_little(1, int((self.local_z_2 - int(self.local_z_2))*255)) + \
+            int_to_bytes_little(2, int(self.local_z_2))
 
     def __str__(self):
         return f"{self.network}_{self.name}; map:{self.map} weapon:{self.weapon} src_player:{self.src_player} unk1:{self.unk1} time:{self.time} object_id:{self.object_id} " + \
-                f"unk2:{self.unk2} local_x:{self.local_x} unk3:{self.unk3}  local_y:{self.local_y} unk4:{self.unk4} local_z:{self.local_z} " + \
-                f"unk5:{self.unk5} local_x_2:{self.local_x_2} unk6:{self.unk6}  local_y_2:{self.local_y_2} unk7:{self.unk7} local_z_2:{self.local_z_2}"
+                f"local_x:{self.local_x} local_y:{self.local_y} local_z:{self.local_z} " + \
+                f"local_x_2:{self.local_x_2} local_y_2:{self.local_y_2} local_z_2:{self.local_z_2}"

@@ -15,6 +15,8 @@ from model.object_manager import ObjectManager
 
 from constants.constants import get_flag_location, DEATHMATCH_MAP
 
+from butils.utils import *
+
 class GameState:
     def __init__(self, model, gameinfo:dict, player:PlayerState):
         self.model = model
@@ -48,6 +50,21 @@ class GameState:
         self.blue_caps = 0
 
         self.object_manager = ObjectManager(self.model, self, self.map_name, self.game_mode)
+
+    def get_closest_enemy_player(self):
+        player_chosen = None
+        player_dist = 999999
+
+        for player_idx, player in self.players.items():
+            if calculate_distance(player.coord, self.player.coord) < player_dist and player.team != self.player.team:
+                player_chosen = player_idx
+                player_dist = calculate_distance(player.coord, self.player.coord)
+
+        if player_chosen == None:
+            return 0
+
+        return player_chosen
+
 
     def start(self):
         self.map.read_map()

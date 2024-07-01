@@ -352,7 +352,11 @@ class Prototype:
             dest_coord = self.game_state.map.transform_local_to_global(local_coord)
             
             dist = calculate_distance(src_player_coord, dest_coord)
+            #logger.info(f"Grav bomb explode: {dist} {src_player_coord} | {dest_coord} | {local_coord}")
+
             time_to_explode = get_grav_timing(dist)
+
+            logger.info(f"Grav bomb explode: {dist} {src_player_coord} | {dest_coord} | {local_coord} | {time_to_explode}")
 
             if time_to_explode != -1:
                 self.model.loop.create_task(self.process_grav_bomb_explode(time_to_explode, dest_coord, src_player, 'grav'))

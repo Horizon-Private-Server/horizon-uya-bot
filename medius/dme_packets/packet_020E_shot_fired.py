@@ -76,18 +76,12 @@ class packet_020E_shot_fired:
                            unk1:str='08',
                            time:int=None,
                            object_id:int=None,
-                           unk2:str="0000",
                            local_x:int=0,
-                           unk3:str="0000",
                            local_y:int=0,
-                           unk4:str="0000",
                            local_z:int=0,
-                           unk5:str="0000",
                            local_x_2:int=0,
-                           unk6:str="0000",
                            local_y_2:int=0,
-                           unk7:str="0000",
-                           local_z_2:int=0
+                               local_z_2:int=0
                         ):
 
         self.name = os.path.basename(__file__).split(".py")[0]
@@ -123,27 +117,28 @@ class packet_020E_shot_fired:
         else:
             object_id = moby_id
 
-        ''.join([data.popleft() for i in range(1)]) # trash
-        offset_x = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        data.popleft() # trash
+        offset_x = hex_to_int_little(data.popleft()) / 255 
         local_x = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_x
-        ''.join([data.popleft() for i in range(1)]) # trash
-        offset_y = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        data.popleft() # trash
+        offset_y = hex_to_int_little(data.popleft()) / 255 
         local_y = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_y
-        ''.join([data.popleft() for i in range(1)]) # trash
-        offset_z = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        data.popleft() # trash
+        offset_z = hex_to_int_little(data.popleft()) / 255 
         local_z = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_z
 
-        ''.join([data.popleft() for i in range(1)]) # trash
-        offset_x = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        data.popleft() # trash
+        offset_x = hex_to_int_little(data.popleft()) / 255 
         local_x_2 = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_x
-        ''.join([data.popleft() for i in range(1)]) # trash
-        offset_y = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        data.popleft() # trash
+        offset_y = hex_to_int_little(data.popleft()) / 255 
         local_y_2 = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_y
-        ''.join([data.popleft() for i in range(1)]) # trash
-        offset_z = hex_to_int_little(''.join([data.popleft() for i in range(1)])) / 255 
+        data.popleft() # trash
+        offset_z = hex_to_int_little(data.popleft()) / 255 
         local_z_2 = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_z
 
         return packet_020E_shot_fired(network, '', weapon, src_player, unk1, time, object_id, local_x, local_y, local_z, local_x_2, local_y_2, local_z_2)
+
     def to_bytes(self):
 
         if self.map in {'hoven_gorge', 'outpost_x12', 'metropolis'}:

@@ -57,7 +57,6 @@ def parse_object_id(object_id, map='marcadia_palace'):
         if object_id not in CTF_FLAG_ID_MAP[map].keys():
             return None
         return CTF_FLAG_ID_MAP[map][object_id]
-
     return None
 
 

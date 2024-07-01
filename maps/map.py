@@ -63,14 +63,11 @@ class Map:
 
         # use_cboot = calculate_distance(src, dst) > self.cboot_distance
 
-        if self.path_cache != None and len(self.path_cache) != 0:
-            if calculate_distance(src, self.path_cache[0]) < 100 and calculate_distance(dst, self.path_cache[-1]) < 100:
-                return self.path_cache.pop(0)
-                # else: # Use cboot
-                #     if len(self.path_cache) > self.cboot_factor:
-                #         self.path_cache = self.path_cache[self.cboot_factor:]
-                #         return self.path_cache.pop(0)
-                #     return self.path_cache.pop(0)
+        if self.path_cache != None and len(self.path_cache) != 0 and calculate_distance(dst, self.path_cache[-1]) < 600:
+            if chargeboot:
+                while len(self.path_cache) > 1 and calculate_distance(src, self.path_cache[0]) < cboot_dist:
+                    self.path_cache.pop(0)
+            return self.path_cache.pop(0)
 
         if not self.G.has_node(src):
             return src
@@ -89,6 +86,8 @@ class Map:
                 if chargeboot:
                     while len(path) > 1 and calculate_distance(src, path[0]) < cboot_dist:
                         path.pop(0)
+                if len(path) > 1:
+                    self.path_cache = path
                 return path[0]
             else:
                 raise Exception(f"Unknown path length: {path}")

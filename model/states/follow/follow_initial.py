@@ -1,8 +1,9 @@
 
+
 from model.states.state import State
 from butils.utils import *
 
-class dm_initial(State):
+class follow_initial(State):
     def __init__(self, state_machine):
         super().__init__(state_machine)
         self.player_tracking = 0

@@ -8,7 +8,7 @@ import random
 import sys
 
 from butils.utils import *
-from maps.transforms import LocalTransform
+from maps.local_coordinates.local_transforms import LocalTransform
 
 import logging
 logger = logging.getLogger("thug.map")
@@ -51,6 +51,7 @@ class Map:
 
         logger.info(f"Loading map local transformation ...")
         self.local_transform = LocalTransform(self.map)
+        self.local_transform.read()
 
 
     def path(self, src, dst, chargeboot=False):
@@ -158,7 +159,7 @@ class Map:
 
     def transform_global_to_local(self, point):
         transformed = self.local_transform.transform_global_to_local(point)
-        return [int(transformed[0]), int(transformed[1]), int(transformed[2])]
+        return [transformed[0], transformed[1], transformed[2]]
     
     def transform_local_to_global(self, point):
         transformed = self.local_transform.transform_local_to_global(point)

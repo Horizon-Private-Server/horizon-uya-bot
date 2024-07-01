@@ -9,22 +9,14 @@ import os
 
 from sklearn.linear_model import RANSACRegressor
 
-'''
-Each transformer needs:
-global min
-global max
-local min 
-local max
-S
-t
-'''
 
 def calculate_distance(source_coord, dest_coord):
     return math.dist(source_coord, dest_coord)
 
 class Transformer():
-    def __init__(self):
-        pass
+    def __init__(self, json_data={}):
+        if json_data != {}:
+            self.from_json(json_data)
 
     def train(self, global_coords: np.array, local_coords: np.array, debug=False):
         num_matrices_to_train = 1
@@ -34,13 +26,15 @@ class Transformer():
         self.local_mins = {}
         self.local_maxes = {}
 
+        self.training_set = local_coords
+
         for i in range(3):
             self.global_mins[i] = int(np.min(global_coords[:,i]))
             self.global_maxes[i] = int(np.max(global_coords[:,i]))
             self.local_mins[i] = int(np.min(local_coords[:,i]))
             self.local_maxes[i] = int(np.max(local_coords[:,i]))
 
-        print(self.global_mins[0], self.global_maxes[0])
+        #print(self.global_mins[0], self.global_maxes[0])
 
         transformed_coords = []
         for i in range(len(global_coords)):
@@ -53,6 +47,22 @@ class Transformer():
             output_coords.append(self.matrix_transform(self.Ss, self.ts, point))
 
         self.calculate_translation_error(output_coords, local_coords)
+
+        for i in range(len(global_coords)):
+            global_coord = global_coords[i]
+            local_coord = local_coords[i]
+
+            # Check global -> local
+            new_local = self.transform_global_to_local(global_coord)
+            dist = calculate_distance(new_local, local_coord)
+            # if dist > 0:
+            #     print("MAX DIST REACHED: ", global_coord, local_coord, new_local)
+
+            new_global = self.transform_local_to_global(local_coord)
+            dist = calculate_distance(new_global, global_coord)
+            # if dist > 0:
+            #     print(dist, "MAX DIST REACHED: ", global_coord, local_coord, new_global)
+
 
         if debug:
             x1 = [point[0] for point in output_coords]
@@ -144,6 +154,13 @@ class Transformer():
         translated_point = scaled_point + t
         return translated_point
 
+    def _single_matrix_transform_inverse(self, S, t, point):
+        translated_point = point - t
+        # Reverse scaling
+        inverse_S = np.linalg.inv(S)
+        unscaled_point = np.dot(inverse_S, translated_point)
+        return [unscaled_point[0], unscaled_point[1], unscaled_point[2]]
+
     def matrix_transform(self, Ss, ts, point):
         new_point = point
 
@@ -153,13 +170,6 @@ class Transformer():
             new_point = self._single_matrix_transform(S, t, new_point)
         return new_point
     
-    def _single_matrix_transform_inverse(self, S, t, point):
-        translated_point = point - t
-        # Reverse scaling
-        inverse_S = np.linalg.inv(S)
-        unscaled_point = np.dot(inverse_S, translated_point).astype(int)
-        return [unscaled_point[0], unscaled_point[1], unscaled_point[2]]
-
     def matrix_transform_inverse(self, Ss, ts, point):
         new_point = point
 
@@ -213,6 +223,42 @@ class Transformer():
         max_dist = max(dists)
         #print(f"DISTANCE ERROR: Mean:{mean_dist} Median:{median_dist} SD:{sd_dist} Max:{max_dist}")
 
+    def __str__(self):
+        return f"Transformer: local_mins:{self.local_mins}, local_max:{self.local_maxes} global_mins:{self.global_mins} global_maxes:{self.global_maxes}"
+
+    def to_json(self) -> dict:
+        return {
+            "global_mins": self.global_mins,
+            "global_maxes": self.global_maxes,
+            "local_mins": self.local_mins,
+            "local_maxes": self.local_maxes,
+            "Ss": [S.tolist() for S in self.Ss],   
+            "ts": [t.tolist() for t in self.ts],   
+        }
+    
+    def from_json(self, json_data):
+        self.global_mins = json_data["global_mins"]
+        self.global_maxes = json_data["global_maxes"]
+        self.local_mins = json_data["local_mins"]
+        self.local_maxes = json_data["local_maxes"]
+        self.Ss = [np.array(S) for S in json_data['Ss']]
+        self.ts = [np.array(t) for t in json_data['ts']]
+
+        for key in list(self.global_mins.keys()):
+            self.global_mins[int(key)] = self.global_mins[key]
+            del self.global_mins[key]
+        for key in list(self.global_maxes.keys()):
+            self.global_maxes[int(key)] = self.global_maxes[key]
+            del self.global_maxes[key]
+        for key in list(self.local_mins.keys()):
+            self.local_mins[int(key)] = self.local_mins[key]
+            del self.local_mins[key]
+        for key in list(self.local_maxes.keys()):
+            self.local_maxes[int(key)] = self.local_maxes[key]
+            del self.local_maxes[key]
+
+
+
 
 class LocalTransform():
     def __init__(self, map_name):
@@ -252,7 +298,7 @@ class LocalTransform():
             print(f"No transform found for point: {point}")
         assert transform != None
 
-        return t.transform_global_to_local(point)
+        return transform.transform_global_to_local(point)
 
 
     def transform_local_to_global(self, point):
@@ -273,18 +319,14 @@ class LocalTransform():
             print(f"No transform found for point: {point}")
         assert transform != None
 
-        res = t.transform_local_to_global(point)
+        res = transform.transform_local_to_global(point)
 
-        print(res, dist, point)
         return res
     
-
-
-    def train(self, debug=False):
+    def read_raw_points(self):
         global_coords = []
         local_coords = []
-        print("Peprocessing points")
-        with open(os.path.join(self.script_dir, 'local_coordinates_raw', f'{map}_raw.log')) as f:
+        with open(os.path.join(self.script_dir, 'local_coordinates_raw', f'{self._map_name}_raw.log')) as f:
             for line in f.readlines():
                 if 'Movement:' in line and 'Flag:' in line and 'offset:' in line:
                     global_coord = eval(line.split("Movement:")[-1].split(" Flag:")[0].strip())
@@ -311,9 +353,14 @@ class LocalTransform():
                         global_coords.append(global_coord)
                         local_coords.append(local_coord_new)
 
-        print("Done preprocessing.")
         global_coords = np.array(global_coords)
         local_coords = np.array(local_coords)
+        return global_coords, local_coords
+
+    def train(self, debug=False):
+        print("Peprocessing points")
+        global_coords, local_coords  = self.read_raw_points()
+        print("Done preprocessing.")
 
         local_xmin = int(np.min(local_coords[:,0]))
         local_xmax = int(np.max(local_coords[:,0]))
@@ -406,7 +453,7 @@ class LocalTransform():
         # Second subplot
         ax3 = fig.add_subplot(111, projection='3d')
         ax3.scatter(x1, y1, z1, c='r', alpha=0.5, marker='o')
-        #ax3.scatter(x2, y2, z2, c='b', alpha=0.5, marker='^')
+        ax3.scatter(x2, y2, z2, c='b', alpha=0.5, marker='^')
         #ax3.scatter(x2, y2, z2, c='g', alpha=0.5, marker='v')
         ax3.set_title('Local To Global')
         ax3.set_xlabel('X axis')
@@ -415,6 +462,42 @@ class LocalTransform():
 
         plt.show()
 
+    def save(self):
+        result = []
+        for t in self.transformers:
+            result.append(t.to_json())
+        result = json.dumps(result, indent=4)
+        with open(os.path.join(self.script_dir, 'local_transforms', f'{self._map_name}_local_transforms.json'), 'w') as f:
+            f.write(result)
+        
+
+    def read(self):
+        with open(os.path.join(self.script_dir, 'local_transforms', f'{self._map_name}_local_transforms.json'), 'r') as f:
+            json_res = json.loads(f.read())
+        self.transformers = []
+        for t in json_res:
+            self.transformers.append(Transformer(json_data=t))
+
+    def check_transformation(self):
+        local_thres = 1
+        global_thres = 50
+
+        global_coords, local_coords  = self.read_raw_points()
+
+        for i in range(len(global_coords)):
+            global_coord = global_coords[i]
+            local_coord = local_coords[i]
+
+            # Check global -> local
+            new_local = self.transform_global_to_local(global_coord)
+            if calculate_distance(new_local, local_coord) > local_thres:
+                print(f"LOCAL THRES EXCEEDED: {global_coord} | {local_coord} | {new_local} | {local_thres}")
+
+            # Check local -> global
+            new_global = self.transform_local_to_global(local_coord)
+            if calculate_distance(new_global, global_coord) > global_thres:
+                print(f"GLOBL THRES EXCEEDED: {global_coord} | {local_coord} | {new_global} | {global_thres}")
+    
 
 
 if __name__ == '__main__':
@@ -427,5 +510,7 @@ if __name__ == '__main__':
     print(f"Using map: {map}")
 
     transform = LocalTransform(args.map)
-    transform.train(args.debug)
+    #transform.train(args.debug)
+    transform.read()
 
+    transform.check_transformation()

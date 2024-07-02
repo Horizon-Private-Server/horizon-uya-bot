@@ -312,10 +312,10 @@ class Prototype:
 
 
     def process_shot_fired(self, src_player, packet_data):
+        #logger.info(self.game_state)
         # Player is Alive, and the teammate who shot was on the enemy team. The object hit was us.
         if self.game_state.player.is_dead or self.game_state.players[src_player].team == self.game_state.player.team:
             return
-
 
         damage = 0
 
@@ -366,8 +366,8 @@ class Prototype:
         # -- Flux
         elif packet_data.object_id == self.game_state.player.player_id:
             # If the opposite player is ALSO a CPU, we need to check the distance to ensure that they are close enough to do dmg
-            # if self.game_state.players[src_player].username[0:3] == 'CPU' and calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) > self.cpu_damage_min_dist:
-            #     return
+            if self.game_state.players[src_player].username[0:3] == 'CPU' and calculate_distance(self.game_state.player.coord, self.game_state.players[src_player].coord) > 1000:
+                return
 
             if packet_data.weapon == 'flux':
                 damage = 87 if self.game_state.players[src_player].arsenal.weapons['flux']['upgrade'] == 'v1' else 100 # v2

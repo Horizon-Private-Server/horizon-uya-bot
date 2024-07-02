@@ -58,7 +58,40 @@ class Arsenal:
         for weapon_name in self.weapons.keys():
             self.weapons[weapon_name]['upgrade'] = 'v1'
             self.weapons[weapon_name]['kills'] = 0
-            
+    
+    def update_from_profile(self, profile):
+        if profile.overall_skill == 10:
+            self.weapons['flux']['hit_rate'] = .5
+            self.weapons['grav']['hit_rate'] = .7
+        elif profile.overall_skill == 9:
+            self.weapons['flux']['hit_rate'] = .3
+            self.weapons['grav']['hit_rate'] = .5
+        elif profile.overall_skill == 8:
+            self.weapons['flux']['hit_rate'] = .25
+            self.weapons['grav']['hit_rate'] = .45
+        elif profile.overall_skill == 7:
+            self.weapons['flux']['hit_rate'] = .15
+            self.weapons['grav']['hit_rate'] = .25
+        elif profile.overall_skill == 6:
+            self.weapons['flux']['hit_rate'] = .1
+            self.weapons['grav']['hit_rate'] = .2
+        elif profile.overall_skill == 5:
+            self.weapons['flux']['hit_rate'] = .05
+            self.weapons['grav']['hit_rate'] = .1
+        elif profile.overall_skill == 4:
+            self.weapons['flux']['hit_rate'] = .05
+            self.weapons['grav']['hit_rate'] = 0
+        elif profile.overall_skill == 3:
+            self.weapons['flux']['hit_rate'] = 0
+            self.weapons['grav']['hit_rate'] = .1
+        elif profile.overall_skill == 2:
+            self.weapons['flux']['hit_rate'] = 0
+            self.weapons['grav']['hit_rate'] = 0.05
+        elif profile.overall_skill == 1:
+            self.weapons['flux']['hit_rate'] = 0
+            self.weapons['grav']['hit_rate'] = 0
+
+
 
     def dump_upgrades(self):
         result = {

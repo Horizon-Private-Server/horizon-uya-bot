@@ -36,6 +36,9 @@ def bytes_to_str(data: bytes) -> str:
 def bytes_to_int_little(data):
     return int.from_bytes(data, byteorder='little')
 
+def bytes_to_int_big(data):
+    return int.from_bytes(data, byteorder='big')
+
 def bytes_to_hex(data:bytes):
     return data.hex().upper()
 
@@ -151,6 +154,9 @@ def serialize(data: bytes, data_dict: [dict], name: str) -> dict:
 
 def hex_to_int_little(hex: str):
     return bytes_to_int_little(hex_to_bytes(hex))
+
+def hex_to_int_big(hex: str):
+    return bytes_to_int_big(hex_to_bytes(hex))
 
 def hex_to_str(data: str):
     return bytes_to_str(hex_to_bytes(data))

@@ -56,7 +56,7 @@ class GameState:
         player_dist = 999999
 
         for player_idx, player in self.players.items():
-            if calculate_distance(player.coord, self.player.coord) < player_dist and player.team != self.player.team:
+            if calculate_distance(player.coord, self.player.coord) < player_dist and player.team != self.player.team and not player.is_dead:
                 player_chosen = player_idx
                 player_dist = calculate_distance(player.coord, self.player.coord)
 

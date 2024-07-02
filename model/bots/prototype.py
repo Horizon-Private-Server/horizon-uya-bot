@@ -52,6 +52,8 @@ class Prototype:
         self.game_state.player.arsenal.weapons['flux']['hit_rate'] = .3
         self.game_state.player.arsenal.weapons['grav']['hit_rate'] = .2
 
+        self.game_state.player.arsenal.update_from_profile(self.profile)
+
         ###### Set the cycle
         weapon_order_list = list(self.game_state.weapons)
         random.shuffle(weapon_order_list)
@@ -235,14 +237,13 @@ class Prototype:
         self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': data_packet})])
 
     def fire_weapon(self, object_id=-1):
-        if self.game_state.player.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench', 'hyper']:
+        if self.game_state.player.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench', 'hyper'] or self.changing_weapons:
             return
 
         if datetime.now().timestamp() - self.weapon_switch_dt < self.weapon_switch_fire_cooldown:
             return
 
         weapon_fired_bool, hit_bool = self.game_state.player.arsenal.fire_weapon(self.game_state.player.weapon)
-        hit_bool = False
 
         if weapon_fired_bool:
             # Weapon was fired.
@@ -262,7 +263,7 @@ class Prototype:
                 target_coord = self.target
                 local_player_coord = self.game_state.map.transform_global_to_local(target_coord)
 
-                print(target_coord, local_player_coord)
+                #print(target_coord, local_player_coord)
 
                 local_x_2 = local_player_coord[0]
                 local_y_2 = local_player_coord[1]
@@ -285,28 +286,29 @@ class Prototype:
 
             self.model.dmetcp_queue.put(['B', packet_020E_shot_fired.packet_020E_shot_fired(network='tcp', map=self.game_state.map.map, weapon=self.game_state.player.weapon,src_player=self.game_state.player.player_id,time=self.game_state.player.time, object_id=object_id, unk1='08', local_x=local_x, local_y=local_y, local_z=local_z, local_x_2=local_x_2, local_y_2=local_y_2, local_z_2=local_z_2)])
 
-        # if self.changing_weapons == False:
-        #     self.model.loop.create_task(self.change_weapon_timer())
-
 
     async def change_weapon_timer(self):
         self.changing_weapons = True
-        await asyncio.sleep(.3)
-        self.change_weapon()
+        await asyncio.sleep(.2)
         self.changing_weapons = False
 
-    def change_weapon(self):
+    def change_weapon(self, weapon:str):
+        if self.game_state.player.weapon == weapon:
+            return
+
         self.weapon_switch_dt = datetime.now().timestamp()
-
-        if self.game_state.weapons == []:
-            weapon = 'wrench'
-        elif len(self.game_state.weapons) == 1 or self.game_state.player.weapon == None:
-            weapon = random.choice(self.game_state.weapons)
-        else:
-            weapon = self.weapon_order.pop()
-
         self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])
         self.game_state.player.weapon = weapon
+        self.model.loop.create_task(self.change_weapon_timer())
+
+    def cycle_weapons(self, weapons: list):
+        if 'cycle' not in self._misc.keys() or self._misc['cycle'] != weapons:
+            self._misc['cycle'] = CircularList(weapons, circular=True, casttype=str)
+            self._misc['cycle_change_time'] = datetime.now()
+
+        if (datetime.now() - self._misc['cycle_change_time']).total_seconds() > .5:
+            self.change_weapon(self._misc['cycle'].pop())
+            self._misc['cycle_change_time'] = datetime.now()
 
 
     def process_shot_fired(self, src_player, packet_data):

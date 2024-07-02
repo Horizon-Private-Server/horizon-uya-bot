@@ -36,9 +36,6 @@ class Map:
         self.path_cache = None
         self.local_transform = None
 
-        self.cboot_factor = 5
-        self.cboot_distance = 3000
-
     def read_map(self):
         start_time = datetime.now()
         logger.info(f"Loading map graph {self.map} ...")
@@ -61,7 +58,6 @@ class Map:
         src = tuple(src)
         dst = tuple(dst)
 
-        # use_cboot = calculate_distance(src, dst) > self.cboot_distance
 
         if self.path_cache != None and len(self.path_cache) != 0 and calculate_distance(dst, self.path_cache[-1]) < 600:
             if chargeboot:

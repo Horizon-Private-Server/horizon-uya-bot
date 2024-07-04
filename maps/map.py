@@ -125,21 +125,16 @@ class Map:
         return self.path(src_coord, dst_coord)
 
 
-        if not self.G.has_node(dst_coord):
-            # get the closest point as dst
-            dst_coord = self.find_closest_node(dst_coord)
+    def get_front_gbomb_position(self, src_coord, dest_coord):
+        # Step 1: Get all nodes between front gbomb distance
+        # Bomb forward shoot is between 570 and 700
+        distances = distance.cdist(self.points, [src_coord], 'euclidean').flatten()
+        points = self.points[np.where((distances < 700) & (distances > 570))]
 
-        connected = list(self.G.neighbors(tuple(dst_coord)))
-
-        logger.info(connected)
-        distances = distance.cdist(connected, [dst_coord])
-        distance_to_src = distance.cdist([src_coord],[dst_coord])[0][0]
-
-        for i in range(len(distances)):
-            if distances[i][0] < distance_to_src:
-                logger.info(connected[i])
-                return connected[i]
-        return self.path(src_coord, dst_coord)
+        # Step 2: Get the point closest to dest_coord
+        distances = distance.cdist(points, [dest_coord], 'euclidean')
+        min_idx = np.where(distances == np.amin(distances))[0][0]
+        return tuple(points[min_idx])
 
 
     def get_respawn_location(self, team_color, game_mode):

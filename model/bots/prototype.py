@@ -261,7 +261,12 @@ class Prototype:
                 object_id=-1
 
                 target_coord = self.target
-                local_player_coord = self.game_state.map.transform_global_to_local(target_coord)
+                if self.game_state.player.weapon == 'grav' and random.random() < self.profile.grav_hit_percent:
+                    # We only want to fire next to the player if we are a strong bot
+                    local_player_coord = self.game_state.map.transform_global_to_local(target_coord)
+                else:
+                    # Shoot directly between the two players just slightly forward
+                    local_player_coord = self.game_state.map.transform_global_to_local(self.game_state.map.get_front_gbomb_position(self.game_state.player.coord, self.target))
 
                 #print(target_coord, local_player_coord)
 

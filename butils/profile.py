@@ -53,6 +53,30 @@ class Profile:
         self.username = random.choice(alts)
         self.username = self.username[:14]
 
+
+        # Set grav bomb hit rate based on profile
+        if self.overall_skill == 10:
+            self.grav_hit_percent = 1
+        elif self.overall_skill == 9:
+            self.grav_hit_percent = .5
+        elif self.overall_skill == 8:
+            self.grav_hit_percent = .3
+        elif self.overall_skill == 7:
+            self.grav_hit_percent = .2
+        elif self.overall_skill == 6:
+            self.grav_hit_percent = .15
+        elif self.overall_skill == 5:
+            self.grav_hit_percent = .1
+        elif self.overall_skill == 4:
+            self.grav_hit_percent = 0
+        elif self.overall_skill == 3:
+            self.grav_hit_percent = 0
+        elif self.overall_skill == 2:
+            self.grav_hit_percent = 0
+        elif self.overall_skill == 1:
+            self.grav_hit_percent = 0
+
+
     def __str__(self):
         result = 'Profile; '
         for attr in dir(self):

@@ -66,65 +66,12 @@ class Prototype:
         # Warn if we go over this. Normal is 0.068
         self._state_update_max_time = 0.08
 
-    def transition_state(self, new_state:str, msg: dict=dict()):
-        logger.info(f"Transitioning from {self.state} to {new_state}")
-        self.state.exit()
-        self.state = eval(f"{new_state}.{new_state}(self)")
-        self.state.enter(msg)
-
-    def state_update(self):
-        # If we are dead, don't update.
-        if self.game_state.player.is_dead:
-            return
-
-        if self.state == None:
-            if 'training' in self.bot_mode:
-                self.state = training_initial.training_initial(self)
-            elif self.bot_mode == 'dynamic':
-                if self.game_state.game_mode == 'Deathmatch':
-                    self.state = dm_initial.dm_initial(self)
-            elif self.bot_mode == 'static':
-                self.state = static_initial.static_initial(self)
-            elif self.bot_mode == 'static shoot':
-                self.state = static_shoot_initial.static_shoot_initial(self)
-            self.state.enter({})
-
-        #logger.info(str(self.model.game_state))
-        self.state.update()
-        return
-
-
-        target_player_id = 0
-
-        self.target = self.game_state.players[target_player_id].coord
-
-        #self.game_state.player.coord = [32689, 55927, 7413]
-
-        # Quad patrol near red base marcadia
-        marc_points = [
-            [32939, 54784, 7413],
-            [32418, 53872, 7413],
-            [31608, 54666, 7413],
-            [32540, 55641, 7407],
-        ]
-
-        # Moving across map by healthboxes marcadia
-        # marc_points = [
-        #     [33289, 56515, 7413],
-        #     [30680, 56370, 7413],
-        #     [27973, 56516, 7413],
-        # ]
-
-        self.patrol(marc_points, circular=False)
-
-        self.fire_weapon(object_id = self.game_state.players[target_player_id].player_id)
-
 
     async def main_loop(self):
         while self.model.alive:
             try:
 
-                #logger.info(self.game_state)
+                logger.info(self.game_state)
 
                 state_update_start_time = datetime.now()
 
@@ -157,6 +104,31 @@ class Prototype:
                 self.model.alive = False
                 break
 
+    def state_update(self):
+        # If we are dead, don't update.
+        if self.game_state.player.is_dead:
+            return
+
+        if self.state == None:
+            if 'training' in self.bot_mode:
+                self.state = training_initial.training_initial(self)
+            elif self.bot_mode == 'dynamic':
+                if self.game_state.game_mode == 'Deathmatch':
+                    self.state = dm_initial.dm_initial(self)
+            elif self.bot_mode == 'static':
+                self.state = static_initial.static_initial(self)
+            elif self.bot_mode == 'static shoot':
+                self.state = static_shoot_initial.static_shoot_initial(self)
+            self.state.enter({})
+
+        #logger.info(str(self.model.game_state))
+        self.state.update()
+
+    def transition_state(self, new_state:str, msg: dict=dict()):
+        logger.info(f"Transitioning from {self.state} to {new_state}")
+        self.state.exit()
+        self.state = eval(f"{new_state}.{new_state}(self)")
+        self.state.enter(msg)
 
     def send_movement(self):
         if self.game_state.players[0].coord == [0,0,0] or self.game_state.player.is_dead:

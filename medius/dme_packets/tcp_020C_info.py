@@ -197,14 +197,14 @@ class tcp_020C_info:
             data_dict['flag_update_type'] =  flag_drop_map[''.join([data.popleft() for i in range(2)])]
         elif 'flag_drop' in subtype:
             data.popleft() # trash
-            data_dict['offset_x'] = hex_to_int_little(data.popleft()) / 255
-            data_dict['local_x'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+            offset_x = hex_to_int_little(data.popleft()) / 255
+            data_dict['local_x'] = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_x
             data.popleft() # trash
-            data_dict['offset_y'] = hex_to_int_little(data.popleft()) / 255
-            data_dict['local_y'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+            offset_y = hex_to_int_little(data.popleft()) / 255
+            data_dict['local_y'] = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_y
             data.popleft() # trash
-            data_dict['offset_z'] = hex_to_int_little(data.popleft()) / 255
-            data_dict['local_z'] = hex_to_int_little(''.join([data.popleft() for i in range(2)]))
+            offset_z = hex_to_int_little(data.popleft()) / 255
+            data_dict['local_z'] = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_z
             data_dict['unk4'] = ''.join([data.popleft() for i in range(4)])
         elif subtype[2:] == '_assign_to':
             data_dict['object_id'] = ''.join([data.popleft() for i in range(4)])

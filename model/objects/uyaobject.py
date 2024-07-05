@@ -8,7 +8,7 @@ class UyaObject():
         self.location = location
         self.master = master
         self.owner = owner
-        self.touching_distance = 130 # in prod use 130
+        self.touching_distance = 150 # in prod use 130
         self.counter = 0
 
     def overlap(self, coord):

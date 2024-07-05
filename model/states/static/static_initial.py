@@ -7,7 +7,7 @@ class static_initial(State):
         super().__init__(state_machine)
 
     def enter(self, msg:dict):
-        self.starting_coord = [27205, 54135, 7418] # Marc by flag drop
+        #self.starting_coord = [27205, 54135, 7418] # Marc by flag drop
         self.starting_coord = [34519, 54146, 7324] # Marc next to red flag
 
 

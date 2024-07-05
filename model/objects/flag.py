@@ -4,6 +4,7 @@ import asyncio
 from model.objects.uyaobject import UyaObject
 from medius.dme_packets import tcp_020C_info
 from butils.utils import *
+from datetime import datetime
 
 
 import logging
@@ -76,6 +77,7 @@ class Flag(UyaObject):
         self.initial_location = list(flag_map[map][color]['location'])
         self.id = flag_map[map][color]['id']
         self.holder = None
+        self.recent_droptime = datetime.now()
 
     def reset(self):
         self.location = list(self.initial_location)
@@ -83,6 +85,14 @@ class Flag(UyaObject):
 
     def is_at_base(self):
         return calculate_distance(self.location, self.initial_location) < 50
+
+    def dropped(self, location):
+        self.holder = None
+        self.location = location
+        self.recent_droptime = datetime.now()
+
+    def is_recent_drop(self):
+        return (datetime.now() - self.recent_droptime).total_seconds() < 1.75
 
     def __str__(self):
         return f"Flag [{self.color}]; holder:{self.holder} id:{self.id} master:{self.master} owner:{self.owner} loc:{self.location}"

@@ -76,21 +76,27 @@ class ObjectManager():
 
         if self.red_flag != None or self.blue_flag != None:
 
-            data = {'object_id': self.red_flag.id, 'counter': self.red_flag.counter, 'master': 0}
+            self.red_flag.owner = 0
+            self.red_flag.master = 0
+            self.blue_flag.owner = 0
+            self.blue_flag.master = 0
+
+
             logger.info(f"Resetting flag: {data}")
+            data = {'new_owner': self.red_flag.owner, 'counter': self.red_flag.counter, 'master': self.red_flag.master, 'object_id': self.red_flag.id}
+            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p0_change_owner_req', timestamp=self.game_state.player.time,data=data)])
+
+            data = {'object_id': self.red_flag.id, 'counter': self.red_flag.counter, 'master': 0}
             self.model.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])
 
-            data = {'object_id': self.blue_flag.id, 'counter': self.blue_flag.counter, 'master': 0}
             logger.info(f"Resetting flag: {data}")
+            data = {'new_owner': self.blue_flag.owner, 'counter': self.blue_flag.counter, 'master': self.blue_flag.master, 'object_id': self.blue_flag.id}
+            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p0_change_owner_req', timestamp=self.game_state.player.time,data=data)])
+
+            data = {'object_id': self.blue_flag.id, 'counter': self.blue_flag.counter, 'master': 0}
             self.model.dmetcp_queue.put([0, tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_assign_to', timestamp=self.game_state.player.time,data=data)])
 
     def loop_update(self):
-
-
-        # Check if the bot saves the flag
-
-
-
         # We need to check the positions of each player in comparison to each object
         for player_id, player in self.model.game_state.players.items():
             for crate_id, crate in self.health_crates.items():
@@ -106,25 +112,49 @@ class ObjectManager():
                     self.model.game_state.players[player_id].reset_health()
 
             # Flag Saves
-            if self.red_flag != None and self.red_flag.overlap(player.coord) and not self.red_flag.is_at_base():
-                if self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and player.team == 'red':
-                    # Return the flag
-                    self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_flag_save'})])
-                    self.red_flag.reset()
+            if self.red_flag != None and self.red_flag.overlap(player.coord) and not self.red_flag.is_at_base() and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and player.team == 'red':
+                # Save the flag
+                self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_flag_save'})])
+                self.red_flag.reset()
 
-            elif self.blue_flag != None and self.blue_flag.overlap(player.coord) and not self.blue_flag.is_at_base():
-                if self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and player.team == 'blue':
-                    # Return the flag
-                    self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_flag_save'})])
-                    self.blue_flag.reset()
+            elif self.blue_flag != None and self.blue_flag.overlap(player.coord) and not self.blue_flag.is_at_base() and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and player.team == 'blue':
+                # Save the flag
+                self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_flag_save'})])
+                self.blue_flag.reset()
 
             # Flag Pickup
-            if self.red_flag != None and self.red_flag.overlap(player.coord) and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and player.team == 'blue':
+            #logger.info(f"Check self.red_flag.overlap(player.coord):{self.red_flag.overlap(player.coord)} self.red_flag.holder == None:{self.red_flag.holder == None} self.red_flag.owner == self.game_state.player.player_id:{self.red_flag.owner == self.game_state.player.player_id} player.team == 'blue':{player.team == 'blue'}")
+            if self.red_flag != None and self.red_flag.overlap(player.coord) and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and player.team == 'blue' and not self.red_flag.is_recent_drop():
                 player_id_hex = bytes_to_hex(int_to_bytes_little(4, player_id))
                 self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'object_update_unk': player_id_hex})])
-            elif self.blue_flag != None and self.blue_flag.overlap(player.coord) and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and player.team == 'red':
+                self.red_flag.holder = self.game_state.player.player_id
+            elif self.blue_flag != None and self.blue_flag.overlap(player.coord) and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and player.team == 'red' and not self.blue_flag.is_recent_drop():
                 player_id_hex = bytes_to_hex(int_to_bytes_little(4, player_id))
                 self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'object_update_unk': player_id_hex})])
+                self.blue_flag.holder = self.game_state.player.player_id
+
+        # Check if the bot has saved the flag
+        if self.red_flag != None and self.red_flag.overlap(self.game_state.player.coord) and not self.red_flag.is_at_base() and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'red':
+            # Save the flag
+            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{self.game_state.player.player_id}_flag_save'})])
+            self.red_flag.reset()
+
+        elif self.blue_flag != None and self.blue_flag.overlap(self.game_state.player.coord) and not self.blue_flag.is_at_base() and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'blue':
+            # Save the flag
+            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{self.game_state.player.player_id}_flag_save'})])
+            self.blue_flag.reset()
+
+        # Check if we picked it up
+        if self.red_flag != None and self.red_flag.overlap(self.game_state.player.coord) and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'blue' and not self.red_flag.is_recent_drop():
+            # Red flag pickup as blue team
+            player_id_hex = bytes_to_hex(int_to_bytes_little(4, self.game_state.player.player_id))
+            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'object_update_unk': player_id_hex})])
+            self.red_flag.holder = self.game_state.player.player_id
+        elif self.blue_flag != None and self.blue_flag.overlap(self.game_state.player.coord) and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'red' and not self.blue_flag.is_recent_drop():
+            # Red flag pickup as blue team
+            player_id_hex = bytes_to_hex(int_to_bytes_little(4, self.game_state.player.player_id))
+            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'object_update_unk': player_id_hex})])
+            self.blue_flag.holder = self.game_state.player.player_id    
 
 
 
@@ -213,14 +243,12 @@ class ObjectManager():
             location = [dme_packet.data['local_x'], dme_packet.data['local_y'], dme_packet.data['local_z']]
             location = self.game_state.map.transform_local_to_global(location)
             if dme_packet.object_type == self.red_flag.id:
-                self.red_flag.holder = None
-                self.red_flag.location = location
+                self.red_flag.dropped(location)
                 # Create timeout task 
                 self.model.loop.create_task(self.check_flag_timeout('red'))
 
             elif dme_packet.object_type == self.blue_flag.id:
-                self.blue_flag.holder = None
-                self.blue_flag.location = location
+                self.blue_flag.dropped(location)
                 # Create timeout task 
                 self.model.loop.create_task(self.check_flag_timeout('blue'))
 

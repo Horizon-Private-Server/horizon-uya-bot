@@ -53,7 +53,7 @@ class Map:
 
     def path(self, src, dst, chargeboot=False):
         # When chargeboot = True, we want to move ~ 110
-        cboot_dist = 110
+        cboot_dist = 80
 
         src = tuple(src)
         dst = tuple(dst)

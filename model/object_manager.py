@@ -145,6 +145,7 @@ class ObjectManager():
             self.blue_flag.reset()
 
         # Check if we picked it up
+        # TODO: State transition to holding flag
         if self.red_flag != None and self.red_flag.overlap(self.game_state.player.coord) and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'blue' and not self.red_flag.is_recent_drop():
             # Red flag pickup as blue team
             player_id_hex = bytes_to_hex(int_to_bytes_little(4, self.game_state.player.player_id))
@@ -156,6 +157,13 @@ class ObjectManager():
             self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'object_update_unk': player_id_hex})])
             self.blue_flag.holder = self.game_state.player.player_id    
 
+        # Capture flag
+        if self.red_flag != None and self.game_state.player.team == 'blue' and self.blue_flag.is_capture(self.game_state.player.coord) and self.red_flag.holder == self.game_state.player.player_id:
+            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_capture'})])
+            self.red_flag.reset()
+        elif self.blue_flag != None and self.game_state.player.team == 'red' and self.red_flag.is_capture(self.game_state.player.coord) and self.blue_flag.holder == self.game_state.player.player_id:
+            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_capture'})])
+            self.blue_flag.reset()
 
 
     def object_update(self, src_player:int, dme_packet):

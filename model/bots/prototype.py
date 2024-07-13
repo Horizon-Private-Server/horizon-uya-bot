@@ -15,6 +15,7 @@ from medius.rt.clientappbroadcast import ClientAppBroadcastSerializer
 
 from model.states.training import *
 from model.states.dm import *
+from model.states.ctf import *
 from model.states.static import *
 from model.states.static_shoot import *
 
@@ -31,13 +32,8 @@ class Prototype:
 
         self.target = [0,0,0]
 
-        # self.game_state.player.coord = self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode)
         self.game_state.player.coord = [0,0,0]
         self.game_state.player.x_angle = 127
-
-        self.follow_player = False
-
-        self.cpu_damage_min_dist = 800
 
         self.respawn_time = 5
 
@@ -48,18 +44,7 @@ class Prototype:
 
         self._misc = defaultdict(int)
 
-
-        self.game_state.player.arsenal.weapons['flux']['hit_rate'] = .3
-        self.game_state.player.arsenal.weapons['grav']['hit_rate'] = .2
-
         self.game_state.player.arsenal.update_from_profile(self.profile)
-
-        ###### Set the cycle
-        weapon_order_list = list(self.game_state.weapons)
-        random.shuffle(weapon_order_list)
-        if set(weapon_order_list) == {'blitz', 'flux', 'grav'}:
-            weapon_order_list = ['grav', 'flux', 'blitz']
-        self.weapon_order = CircularList(weapon_order_list, circular=True, casttype=str)
 
         self.state = None
 
@@ -70,7 +55,6 @@ class Prototype:
     async def main_loop(self):
         while self.model.alive:
             try:
-
                 logger.info(self.game_state)
 
                 state_update_start_time = datetime.now()
@@ -115,6 +99,8 @@ class Prototype:
             elif self.bot_mode == 'dynamic':
                 if self.game_state.game_mode == 'Deathmatch':
                     self.state = dm_initial.dm_initial(self)
+                # elif self.game_state.game_mode == 'CTF':
+                #     self.state = ctf_initial.ctf_initial(self)
             elif self.bot_mode == 'static':
                 self.state = static_initial.static_initial(self)
             elif self.bot_mode == 'static shoot':
@@ -200,13 +186,22 @@ class Prototype:
     def respawn(self):
         self.game_state.player.weapon = None
         self.game_state.player.reset_health()
-        self.model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, map=self.game_state.map.map)])
         self.game_state.player.set_coord(self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode))
+
+        local_coord = self.game_state.map.transform_global_to_local(self.game_state.player.coord)
+        data = {'local_x': local_coord[0], 'local_y': local_coord[1], 'local_z': local_coord[2]}
+
+        self.model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, data=data)])
+    
         self.game_state.player.is_dead = False
-        
-        data_packet = self.game_state.player.arsenal.dump_upgrades()
-        data_packet['type'] = 'weapon_upgraded'
-        self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': data_packet})])
+
+        #self.model.loop.create_task(self.set_alive())
+
+
+    async def set_alive(self):
+        await asyncio.sleep(.5)
+        self.game_state.player.is_dead = False
+
 
     def fire_weapon(self, object_id=-1):
         if self.game_state.player.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench', 'hyper'] or self.changing_weapons:

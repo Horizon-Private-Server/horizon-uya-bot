@@ -91,6 +91,9 @@ class Flag(UyaObject):
         self.location = location
         self.recent_droptime = datetime.now()
 
+    def is_capture(self, location):
+        return calculate_distance(location, self.initial_location) < 150
+
     def is_recent_drop(self):
         return (datetime.now() - self.recent_droptime).total_seconds() < 1.75
 

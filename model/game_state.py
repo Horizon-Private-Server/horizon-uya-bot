@@ -51,6 +51,8 @@ class GameState:
 
         self.object_manager = ObjectManager(self.model, self, self.map_name, self.game_mode)
 
+        self.no_enemies_in_game = True
+
     def get_closest_enemy_player(self):
         player_chosen = None
         player_dist = 999999
@@ -158,6 +160,15 @@ class GameState:
                 self.players[player_idx] = PlayerState(player_id=player_idx, account_id=0, team=team, username=username, skin=skin, clan_tag=clan_tag, rank=1)
 
         self.nodes = tnw_gamesetting['nodes']
+
+        self.no_enemies_in_game = True
+        for player in self.players.values():
+            if player.team != self.player.team:
+                self.no_enemies_in_game = False
+
+
+    def player_has_flag(self):
+        return self.object_manager.red_flag.holder == self.player.player_id or self.object_manager.blue_flag.holder == self.player.player_id
 
     def __str__(self):
         result = f'''

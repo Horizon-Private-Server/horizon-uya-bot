@@ -18,7 +18,7 @@ class Arsenal:
                 {
                     'upgrade': 'v1',
                     'kills': 0,
-                    'cooldown': .5,
+                    'cooldown': .6,
                     'shoot_rate': 1,
                     'hit_rate': 0,
                     'last_ts_fired': datetime.now().timestamp()

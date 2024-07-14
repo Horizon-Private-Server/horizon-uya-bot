@@ -30,6 +30,11 @@ class dm_initial(State):
             # Get new patrol coordinates
             self.patrol_coords = [self.state_machine.game_state.map.get_random_coord_nearby(self.starting_coord, dist=500) for _ in range(4)]
 
+        ### Lets go crouch 'em
+        if self.state_machine.game_state.nothing_to_do():
+            self.state_machine.transition_state('dm_crouch_body', {})
+            return
+
         ### Engage
         self.state_machine.patrol(self.patrol_coords)
 

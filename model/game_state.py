@@ -68,6 +68,15 @@ class GameState:
         return player_chosen
 
 
+    def nothing_to_do(self):
+        # If all enemies players are dead and game mode = DM, lets go crouch em
+        if self.game_mode == 'Deathmatch':
+            closest_enemy = self.get_closest_enemy_player()
+            if self.players[closest_enemy].team == self.player.team or self.players[closest_enemy].is_dead:
+                return True
+        
+        return False
+
     def start(self):
         self.map.read_map()
         self.player.set_coord(self.map.get_respawn_location(self.player.team, self.game_mode))

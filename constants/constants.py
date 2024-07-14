@@ -182,5 +182,8 @@ ANIMATION_MAP = {
     'forward-shoot': '45D2',
     'jump-shoot': 'B77B',
     'aim': '8C',
-    'aim-crouch': '84E7',
+    'aim-crouch1': '8C',
+    'aim-crouch2': '84E7',
+    'aim-crouch3': '84E6',
+    'aim-crouch4': '8C66',
 }

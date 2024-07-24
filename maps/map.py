@@ -9,6 +9,7 @@ import sys
 import gzip
 import aiofiles
 import io
+import asyncio
 
 from butils.utils import *
 from maps.local_coordinates.local_transforms import LocalTransform
@@ -38,6 +39,7 @@ class Map:
         self.map = map_name
         self.path_cache = None
         self.local_transform = None
+        self.waypoint_cache = None
 
     async def read_map(self):
         start_time = datetime.now()
@@ -92,6 +94,9 @@ class Map:
         return data
 
     def path(self, src, dst, chargeboot=False):
+        if self.map_not_yet_loaded():
+            return siege_ctf_respawn_coords[self.map]['red']
+
         # When chargeboot = True, we want to move ~ 110
         cboot_dist = 80
 
@@ -106,7 +111,7 @@ class Map:
             return self.path_cache.pop(0)
 
         if not self.G.has_node(src):
-            return src
+            return self.find_closest_node(src)
 
         # if dst is not in the graph, use the closest point
         if not self.G.has_node(dst):
@@ -174,6 +179,8 @@ class Map:
 
 
     def find_closest_node(self, dst):
+        if self.map_not_yet_loaded():
+            return siege_ctf_respawn_coords[self.map]['red']
         distances = distance.cdist(self.points, [dst], 'euclidean')
         min_idx = np.where(distances == np.amin(distances))[0][0]
         return tuple(self.points[min_idx])
@@ -184,12 +191,18 @@ class Map:
         return tuple(self.waypoints[min_idx])
 
     def get_random_coord(self):
+        if self.map_not_yet_loaded():
+            return siege_ctf_respawn_coords[self.map]['red']
         return tuple(random.choice(np.array(self.points)))
 
     def get_random_coord_connected(self, coord):
+        if self.map_not_yet_loaded():
+            return siege_ctf_respawn_coords[self.map]['red']
         return list(random.choice(list(self.G.neighbors(tuple(coord)))))
     
     def get_random_coord_nearby(self, coord, dist=500):
+        if self.map_not_yet_loaded():
+            return siege_ctf_respawn_coords[self.map]['red']
         variance = 100
         dist_min = dist-variance
         dist_max = dist+variance
@@ -199,6 +212,8 @@ class Map:
         return point_chosen
 
     def get_random_coord_connected_close(self, src_coord, dst_coord):
+        if self.map_not_yet_loaded():
+            return siege_ctf_respawn_coords[self.map]['red']
         if not self.G.has_node(src_coord):
             src_coord = self.find_closest_node(src_coord)
 
@@ -208,6 +223,8 @@ class Map:
 
 
     def get_front_gbomb_position(self, src_coord, dest_coord):
+        if self.map_not_yet_loaded():
+            return siege_ctf_respawn_coords[self.map]['red']
         # Step 1: Get all nodes between front gbomb distance
         # Bomb forward shoot is between 570 and 700
         distances = distance.cdist(self.points, [src_coord], 'euclidean').flatten()
@@ -220,6 +237,9 @@ class Map:
 
 
     def get_respawn_location(self, team_color, game_mode):
+        if self.map_not_yet_loaded():
+            return siege_ctf_respawn_coords[self.map]['red']
+
         if game_mode == 'Deathmatch':
             return self.get_random_coord()
 
@@ -230,12 +250,24 @@ class Map:
         return f"Map(name={self.map})"
 
     def transform_global_to_local(self, point):
+        if self.map_not_yet_loaded():
+            return siege_ctf_respawn_coords[self.map]['red']
+
         transformed = self.local_transform.transform_global_to_local(point)
         return [transformed[0], transformed[1], transformed[2]]
     
     def transform_local_to_global(self, point):
+        if self.map_not_yet_loaded():
+            return siege_ctf_respawn_coords[self.map]['red']
+
         transformed = self.local_transform.transform_local_to_global(point)
         return [int(transformed[0]), int(transformed[1]), int(transformed[2])]
+
+    def map_not_yet_loaded(self):
+        result = self.waypoint_cache == None
+        if result:
+            logger.warning(f"Map queried but not yet loaded")
+        return result
 
 
 if __name__ == '__main__':

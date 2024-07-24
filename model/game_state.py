@@ -78,7 +78,6 @@ class GameState:
         return False
 
     def start(self):
-        self.map.read_map()
         self.player.set_coord(self.map.get_respawn_location(self.player.team, self.game_mode))
 
     def game_started(self):

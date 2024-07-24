@@ -39,6 +39,7 @@ class Model:
         self.alive = True
         self.loop = loop
 
+
         self._network = network_manager
         self.dmetcp_queue = queue.Queue()
         self.dmeudp_queue = queue.Queue()
@@ -49,6 +50,7 @@ class Model:
 
         player = PlayerState(player_id, account_id, username=self.profile.username, skin=self.profile.skin, clan_tag='[white]CPU', rank=self.profile.bolt)
         self.game_state = GameState(self, gameinfo, player)
+        self.loop.create_task(self.game_state.map.read_map())
 
         self.bot = prototype.Prototype(self, self.profile, bot_mode, self.game_state)
 
@@ -214,7 +216,7 @@ class Model:
 
     async def send_player_data(self):
         # It takes 13 seconds to load from game start into actual game
-        # await asyncio.sleep(18)
+        await asyncio.sleep(8)
 
         # Aquatos Sewers
         test_map = {

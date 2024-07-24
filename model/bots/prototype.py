@@ -18,6 +18,7 @@ from model.states.dm import *
 from model.states.ctf import *
 from model.states.static import *
 from model.states.static_shoot import *
+from model.states.follow import *
 
 import logging
 logger = logging.getLogger('thug.model.prototype')
@@ -105,6 +106,8 @@ class Prototype:
                 self.state = static_initial.static_initial(self)
             elif self.bot_mode == 'static shoot':
                 self.state = static_shoot_initial.static_shoot_initial(self)
+            elif self.bot_mode == 'follow':
+                self.state = follow_initial.follow_initial(self)
             self.state.enter({})
 
         #logger.info(str(self.model.game_state))

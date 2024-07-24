@@ -58,7 +58,7 @@ class MapGenerator:
         waypoint_downsampled = self.downsample(G.nodes, voxel_size=config['waypoint_voxel_size'])
 
         # Fix slight adjustments so that all points are still in G
-        waypoint_downsampled = [self.find_closest_node(G, node) for node in waypoint_downsampled]
+        waypoint_downsampled = np.array([self.find_closest_node(G, node) for node in waypoint_downsampled])
 
         G_waypoints_only = self.generate_graph(waypoint_downsampled, variance=config['waypoint_distance_connected_variance'])
         G_waypoints = self.generate_waypoint_graph(G, G_waypoints_only)
@@ -95,6 +95,8 @@ class MapGenerator:
     def generate_graph(self, nodes, variance=[20,40]):
         ## Generate the graph
         print(f"-- Generating graph with {len(nodes)} nodes ...")
+
+        print(type(nodes), nodes.shape)
 
         start_time = datetime.now()
         G = nx.Graph()
@@ -162,7 +164,7 @@ class MapGenerator:
             
             # Add the edge with the minimum distance
             if edge_to_add:
-                G.add_edge(*edge_to_add)
+                G.add_edge(*edge_to_add, weight=self.search_heuristic(edge_to_add[0], edge_to_add[1]))
             
             # Recalculate the components
             components = list(nx.connected_components(G))
@@ -186,7 +188,9 @@ class MapGenerator:
             path = nx.astar_path(G, node1, node2, heuristic=self.search_heuristic)
 
             for i in range(len(path)-1):
-                G_result.add_edge(tuple(path[i]), tuple(path[i+1]), weight=self.search_heuristic(path[i], path[i+1]))
+                node1 = [int(path[i][0]), int(path[i][1]), int(path[i][2])]
+                node2 = [int(path[i+1][0]), int(path[i+1][1]), int(path[i+1][2])]
+                G_result.add_edge(tuple(node1), tuple(node2), weight=self.search_heuristic(node1, node2))
 
         return G_result
 
@@ -324,7 +328,7 @@ class MapGenerator:
 
 
     def search_heuristic(self, node1, node2):
-        return distance.cdist([node1], [node2], 'euclidean')[0]
+        return distance.cdist([node1], [node2], 'euclidean')[0][0]
 
     def find_closest_node(self, G, src):
         distances = distance.cdist(np.array(G.nodes), [src], 'euclidean')

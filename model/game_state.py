@@ -203,3 +203,35 @@ Caps- Blue:{self.blue_caps} Red:{self.red_caps}
     def _read_map(self):
         with open(os.path.join('maps', f'{self.map}.json'), 'r') as f:
             return np.array(json.loads(f.read()))
+
+
+###################################################
+# CTF Methods
+###################################################
+
+    def ctf_get_objective():
+        '''
+        Return if we are going to rush/def/mid
+        '''
+        pass
+
+    def ctf_engaged():
+        '''
+        Return if we should be currently engaged in a fight with someone
+        '''
+        pass
+
+
+'''
+Types of CTF states:
+both flags at home, all enemies in rush zone
+
+
+
+flag at home, teammate has flag, no enemies in def zone -> escort
+enemy has flag, 
+
+
+
+
+'''

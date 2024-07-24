@@ -10,6 +10,13 @@ class ctf_initial(State):
         pass
 
     def update(self):
+
+        # Get whether to rush/def/mid 
+        #self.state_machine.game_state.get_ctf_objective():
+
+
+
+
         # If we have no enemies, just capture!
         if self.state_machine.game_state.no_enemies_in_game:
             # Move to rush_capture

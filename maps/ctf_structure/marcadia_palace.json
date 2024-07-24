@@ -1,0 +1,72 @@
+{
+    "three_slice": {
+        "red": {
+            "x_min": 32000,
+            "x_max": 35000,
+            "y_min": 52000,
+            "y_max": 60000
+        },
+        "mid": {
+            "x_min": 29000,
+            "x_max": 32000,
+            "y_min": 52000,
+            "y_max": 60000
+        },
+        "blue": {
+            "x_min": 25000,
+            "x_max": 29000,
+            "y_min": 52000,
+            "y_max": 60000
+        }
+    },
+    "mid_areas": [
+        {
+            "name": "middle",
+            "x_min": 30300,
+            "x_max": 31000,
+            "y_min": 54800,
+            "y_max": 55000
+        },
+        {
+            "name": "turret",
+            "x_min": 30300,
+            "x_max": 31000,
+            "y_min": 54800,
+            "y_max": 55000
+        }
+    ],
+    "def_areas": {
+        "red": {
+            "x_min": 33000,
+            "x_max": 35000,
+            "y_min": 53000,
+            "y_max": 55000
+        },
+        "blue": {
+            "x_min": 26000,
+            "x_max": 28000,
+            "y_min": 53000,
+            "y_max": 55000
+        }
+    },
+    "rush_areas": {
+        "red": [
+            {
+                "name": "blue_health",
+                "x_min": 27000,
+                "x_max": 27800,
+                "y_min": 55000,
+                "y_max": 55500
+            }
+        ],
+        "blue": [
+            {
+                "name": "red_health",
+                "x_min": 33400,
+                "x_max": 34200,
+                "y_min": 55000,
+                "y_max": 55500
+            }
+        ]
+    }
+}

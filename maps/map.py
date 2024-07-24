@@ -6,6 +6,7 @@ from scipy.spatial import distance
 from datetime import datetime
 import random
 import sys
+import gzip
 
 from butils.utils import *
 from maps.local_coordinates.local_transforms import LocalTransform
@@ -44,16 +45,25 @@ class Map:
         assert len(list(nx.connected_components(self.G))) == 1
 
         self.points = np.array(self.G.nodes)
-        logger.info(f"Loaded map in {(datetime.now() - start_time).total_seconds()} seconds!")
+        logger.info(f"Loaded map in {(datetime.now() - start_time).total_seconds():.2f} seconds!")
 
         logger.info(f"Loading map local transformation ...")
         self.local_transform = LocalTransform(self.map)
         self.local_transform.read()
 
+        # logger.info("Loading three map slice ...")
+        # with open (f'maps/{self.map}.json', 'r') as f:
+        #     self.map_three_slice = json.loads(f.read())
+        logger.info(f"Loading waypoints ...")
+        self.G_waypoints, self.waypoints = self.read_waypoints()
+        start_time = datetime.now()
+        logger.info(f"Loading waypoint cache ...")
+        self.waypoint_cache = self.read_waypoint_cache()
+        logger.info(f"Loaded wapoints in {(datetime.now() - start_time).total_seconds():.2f} seconds!")
 
     def path(self, src, dst, chargeboot=False):
         # When chargeboot = True, we want to move ~ 110
-        cboot_dist = 80
+        cboot_dist = 60
 
         src = tuple(src)
         dst = tuple(dst)
@@ -155,6 +165,15 @@ class Map:
         transformed = self.local_transform.transform_local_to_global(point)
         return [int(transformed[0]), int(transformed[1]), int(transformed[2])]
     
+    def read_waypoints(self):
+        waypoints = np.array(nx.read_edgelist(f"maps/graphs/{self.map}_waypoints_only.edgelist",nodetype=eval, delimiter='|').nodes)
+        G_waypoints = nx.read_edgelist(f"maps/graphs/{self.map}_waypoints.edgelist",nodetype=eval, delimiter='|')
+        return G_waypoints, waypoints
+
+    def read_waypoint_cache(self):
+        with gzip.open('maps/graphs/{self.map}_waypoint_cache.json.gz', 'rt', encoding='utf-8') as f:
+            data = json.load(f)
+        return data
 
 if __name__ == '__main__':
     print("Reading map")

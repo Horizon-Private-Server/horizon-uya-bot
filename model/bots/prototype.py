@@ -99,8 +99,8 @@ class Prototype:
             elif self.bot_mode == 'dynamic':
                 if self.game_state.game_mode == 'Deathmatch':
                     self.state = dm_initial.dm_initial(self)
-                # elif self.game_state.game_mode == 'CTF':
-                #     self.state = ctf_initial.ctf_initial(self)
+                elif self.game_state.game_mode == 'CTF':
+                    self.state = ctf_initial.ctf_initial(self)
             elif self.bot_mode == 'static':
                 self.state = static_initial.static_initial(self)
             elif self.bot_mode == 'static shoot':

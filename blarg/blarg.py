@@ -20,11 +20,12 @@ from medius.dme_serializer import TcpSerializer as tcp_map
 from medius.dme_serializer import UdpSerializer as udp_map
 from medius.dme_serializer import packets_both_tcp_and_udp
 from constants.constants import get_blitz_angle
-from maps.transforms import LocalTransform
+from maps.local_coordinates.local_transforms import LocalTransform
 
 from butils.utils import *
 
-t = LocalTransform('marcadia_palace', debug=False, retrain=False, write_transforms=False)
+t = LocalTransform('marcadia_palace')
+t.read()
 
 def translate_value(value):
     old_min = 77
@@ -121,22 +122,24 @@ class Blarg:
             if packet_id in self._config['exclude']:
                 continue
 
-            if packet_id == '0209' and packet['src'] == 1:
-                self._recent_movement = serialized.data
+            # For Logging Local coordinate mapping
+            # if packet_id == '0209' and packet['src'] == 0:
+            #     self._recent_movement = serialized.data['coord']
+            # if packet_id == '020C' and 'flag_drop' in serialized.subtype:
+            #     self._logger.info(f"Movement:{self._recent_movement} Flag:[{serialized.data['local_x']},{serialized.data['local_y']},{serialized.data['local_z']}], offset:[{serialized.data['offset_x']},{serialized.data['offset_y']},{serialized.data['offset_z']}]")
 
-            if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] != 'False': # and packet_id not in ['0209', '0213']:
-                #self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")
+
+
+            if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] == 'True': # and packet_id not in ['0209', '0213']:
+                self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized.data['coord']}")
                 
-                if 'button' in serialized.data.keys():
-                    print(serialized.data['button'])
-
 
     async def read_websocket(self):
         uri = f"ws://{self._config['server_ip']}:8765"
         async with websockets.connect(uri,ping_interval=None) as websocket:
             while True:
                 data = await websocket.recv()
-                self._logger.debug(f"{data}")
+                #self._logger.debug(f"{data}")
 
                 if self._config['fail_on_error'] == 'True':
                     for data_point in json.loads(data):

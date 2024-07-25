@@ -24,8 +24,8 @@ from maps.local_coordinates.local_transforms import LocalTransform
 
 from butils.utils import *
 
-t = LocalTransform('marcadia_palace')
-t.read()
+#t = LocalTransform('marcadia_palace')
+#t.read()
 
 def translate_value(value):
     old_min = 77
@@ -131,7 +131,7 @@ class Blarg:
 
 
             if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] == 'True': # and packet_id not in ['0209', '0213']:
-                self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized.data['coord']}")
+                self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")
                 
 
     async def read_websocket(self):

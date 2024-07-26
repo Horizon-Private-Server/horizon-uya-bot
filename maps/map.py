@@ -122,17 +122,22 @@ class Map:
         dst_closest_waypoint = self.get_closest_waypoint(dst)
 
         # Use waypoints
-        if src_closest_waypoint != dst_closest_waypoint:
+        if src_closest_waypoint != dst_closest_waypoint and calculate_distance(src, dst) > 1000:
             waypoint_path_cache = self.query_waypoint_cache(src_closest_waypoint, dst_closest_waypoint)
 
             # Path = A* to src_waypoint, then use waypoint_cache
             try:
                 path = nx.astar_path(self.G, src, src_closest_waypoint, heuristic=search_heuristic)
                 if len(path) == 0:
-                    logger.exception(f"No Path Found: {src} | {dst}")
+                    logger.exception(f"No Path Found (waypoint src): {src} | {dst}")
+                    return src
+                
+                path_dst = nx.astar_path(self.G, dst_closest_waypoint, dst, heuristic=search_heuristic)
+                if len(path_dst) == 0:
+                    logger.exception(f"No Path Found (waypoint path_dst): {dst_closest_waypoint} | {dst}")
                     return src
 
-                path = path + waypoint_path_cache
+                path = path + waypoint_path_cache + path_dst
                 path.pop(0)
 
                 if chargeboot:
@@ -141,13 +146,13 @@ class Map:
 
                 self.path_cache = path
                 if len(self.path_cache) == 0:
-                    logger.exception(f"No Path Found: {src} | {dst}")
+                    logger.exception(f"No Path Found (waypoint cache): {src} | {dst}")
                     return src
 
                 return self.path_cache.pop(0)
 
             except nx.exception.NetworkXNoPath:
-                logger.exception(f"No Path Found: {src} | {dst}")
+                logger.exception(f"No Path Found (error): {src} | {dst}")
                 return src
 
         # Don't use waypoints
@@ -167,7 +172,7 @@ class Map:
                 else:
                     raise Exception(f"Unknown path length: {path}")
             except nx.exception.NetworkXNoPath:
-                logger.exception("No Path Found:")
+                logger.exception("No Path Found (standard):")
                 return src
 
     def query_waypoint_cache(self, src_waypoint, dst_waypoint):

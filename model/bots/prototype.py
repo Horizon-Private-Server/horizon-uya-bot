@@ -361,7 +361,7 @@ class Prototype:
 
     async def reset_stun(self):
         # stun time
-        stun_time = .5
+        stun_time = .8
         await asyncio.sleep(stun_time)
         self.game_state.player.stunned = False
 

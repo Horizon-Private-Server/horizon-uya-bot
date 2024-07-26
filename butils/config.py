@@ -31,11 +31,11 @@ class Config:
             "mls_ip": os.getenv("MLS_IP"),
             "mls_port": int(os.getenv("MLS_PORT")),
             "timeout": 60,
-            "mls_log_level": logging.DEBUG,
-            "mas_log_level": logging.DEBUG,
-            "dmetcp_log_level": logging.DEBUG,
-            "dmeudp_log_level": logging.DEBUG,
-            "model_log_level": logging.DEBUG,
+            "mls_log_level": logging.INFO,
+            "mas_log_level": logging.INFO,
+            "dmetcp_log_level": logging.INFO,
+            "dmeudp_log_level": logging.INFO,
+            "model_log_level": logging.INFO,
         }
 
         for key, value in raw_dict.items():

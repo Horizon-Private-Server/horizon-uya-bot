@@ -56,8 +56,7 @@ class Prototype:
     async def main_loop(self):
         while self.model.alive:
             try:
-                # logger.info(self.game_state)
-                # logger.info(self.state)
+                logger.info(self.game_state)
 
                 state_update_start_time = datetime.now()
 
@@ -416,4 +415,4 @@ class Prototype:
         self.game_state.player.weapon = weapon
 
     def __str__(self):
-        return "prototype class"
+        return f"prototype: {self.state}"

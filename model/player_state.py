@@ -49,6 +49,8 @@ class PlayerState:
 
         self.total_kills = 0
 
+        self.area = 'red'
+
         self.arsenal = Arsenal()
 
     def take_damage(self, damage):
@@ -72,6 +74,9 @@ class PlayerState:
         if self.stunned:
             return
         self.coord = new_coord
+
+    def set_area(self, area: str):
+        self.area = area
 
     def respawn(self):
         self.is_dead = False
@@ -103,4 +108,4 @@ class PlayerState:
 
     def __str__(self):
         return f"PlayerState; username: {self.username} player_id:{self.player_id} account_id:{self.account_id} team:{self.team} health:{self.health} is_dead:{self.is_dead}  weapon:{self.weapon} " + \
-                f"coord:{self.coord} movement_packet_num:{self.movement_packet_num} time:{self.time} flag:{self.flag} arsenal: {self.arsenal} total_kills:{self.total_kills}"
+                f"coord:{self.coord} movement_packet_num:{self.movement_packet_num} time:{self.time} flag:{self.flag} area:{self.area} arsenal: {self.arsenal} total_kills:{self.total_kills}"

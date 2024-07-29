@@ -40,6 +40,7 @@ class Map:
         self.path_cache = None
         self.local_transform = None
         self.waypoint_cache = None
+        self.areas = self.read_areas()
 
     async def read_map(self):
         start_time = datetime.now()
@@ -273,6 +274,16 @@ class Map:
         if result:
             logger.warning(f"Map queried but not yet loaded")
         return result
+
+    def read_areas(self):
+        with open(f"maps/ctf_structure/{self.map}.json", 'r') as f:
+            return json.loads(f.read())
+    
+    def get_area(self, point):
+        for idx in ['red', 'mid', 'blue']:
+            if self.areas['three_slice'][idx]['x_min'] <= point[0] <= self.areas['three_slice'][idx]['x_max'] and self.areas['three_slice'][idx]['y_min'] <= point[1] <= self.areas['three_slice'][idx]['y_max']:
+                return idx
+        return 'red'
 
 
 if __name__ == '__main__':

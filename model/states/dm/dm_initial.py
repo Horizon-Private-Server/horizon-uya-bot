@@ -31,7 +31,7 @@ class dm_initial(State):
             self.patrol_coords = [self.state_machine.game_state.map.get_random_coord_nearby(self.starting_coord, dist=500) for _ in range(4)]
 
         ### Lets go crouch 'em
-        if self.state_machine.game_state.nothing_to_do():
+        if self.state_machine.game_state.nothing_to_do() and self.state_machine.profile.overall_skill >= 8:
             self.state_machine.transition_state('dm_crouch_body', {})
             return
 

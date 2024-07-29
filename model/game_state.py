@@ -7,6 +7,7 @@ import json
 import numpy as np
 from collections import defaultdict
 from datetime import datetime
+import pandas as pd
 
 from maps.map import Map
 
@@ -124,6 +125,7 @@ class GameState:
         if src_player not in self.players.keys():
             return
         self.players[src_player].set_coord(movement_data['coord'])
+        self.players[src_player].set_area(self.map.get_area(movement_data['coord']))
         self.players[src_player].cam_x = movement_data['cam3_x']
         self.players[src_player].movement_packet_num = movement_data['packet_num']
 
@@ -178,6 +180,200 @@ class GameState:
     def player_has_flag(self):
         return self.object_manager.red_flag.holder == self.player.player_id or self.object_manager.blue_flag.holder == self.player.player_id
 
+    def _read_map(self):
+        with open(os.path.join('maps', f'{self.map}.json'), 'r') as f:
+            return np.array(json.loads(f.read()))
+
+
+###################################################
+# CTF Methods
+###################################################
+
+    def ctf_get_objective(self):
+        '''
+        Return if we are going to rush/def/mid
+        '''
+        home_flag = 'base'
+        enemy_flag = 'base'
+        num_def = 0
+        num_mid = 0
+        num_rush = 0
+        num_enemy_def = 0
+        num_enemy_mid = 0
+        num_enemy_rush = 0
+
+        for player in self.players.values():
+            if player.team == self.player.team and self.player.team == 'red':
+                if player.area == 'red':
+                    num_def += 1
+                elif player.area == 'mid':
+                    num_mid += 1
+                elif player.area == 'blue':
+                    num_rush += 1
+            elif player.team == self.player.team and self.player.team == 'blue':
+                if player.area == 'blue':
+                    num_def += 1
+                elif player.area == 'mid':
+                    num_mid += 1
+                elif player.area == 'red':
+                    num_rush += 1
+            elif player.team != self.player.team and self.player.team == 'red':
+                if player.area == 'red':
+                    num_enemy_rush += 1
+                elif player.area == 'mid':
+                    num_enemy_mid += 1
+                elif player.area == 'blue':
+                    num_enemy_def += 1
+            elif player.team != self.player.team and self.player.team == 'blue':
+                if player.area == 'red':
+                    num_enemy_def += 1
+                elif player.area == 'mid':
+                    num_enemy_mid += 1
+                elif player.area == 'blue':
+                    num_enemy_rush += 1
+
+        state = 'def'
+        if False:
+            pass
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid > 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def > 0 and num_mid == 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid > 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush > 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush > 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush == 0 and num_enemy_def > 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid > 0 and num_enemy_rush == 0:
+            state = 'mid'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush > 0:
+            state = 'def'
+        elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
+            state = 'rush'
+        
+        logger.info(f"num_def:{num_def} num_mid:{num_mid} num_rush:{num_rush} | num_enemy_def:{num_enemy_def} num_enemy_mid:{num_enemy_mid} num_enemy_rush:{num_enemy_rush}")
+        logger.info(f"STATE: {state}")
+
+    def ctf_engaged(self):
+        '''
+        Return if we should be currently engaged in a fight with someone
+        '''
+        pass
+
+
     def __str__(self):
         result = f'''
 =============================================
@@ -187,6 +383,8 @@ class GameState:
 Frag:{self.game_info['frag']} CapLim:{self.game_info['cap_limit']}
 State:{self.state} PlayerCount:{len(self.players)+1}
 Caps- Blue:{self.blue_caps} Red:{self.red_caps}
+---------------------------------------------
+{self.model.bot}
 ---------------------------------------------
 {self.player}
 ---------------------------------------------
@@ -199,38 +397,4 @@ Caps- Blue:{self.blue_caps} Red:{self.red_caps}
         result += '============================================='
         return result
 
-    def _read_map(self):
-        with open(os.path.join('maps', f'{self.map}.json'), 'r') as f:
-            return np.array(json.loads(f.read()))
 
-
-###################################################
-# CTF Methods
-###################################################
-
-    def ctf_get_objective():
-        '''
-        Return if we are going to rush/def/mid
-        '''
-        pass
-
-    def ctf_engaged():
-        '''
-        Return if we should be currently engaged in a fight with someone
-        '''
-        pass
-
-
-'''
-Types of CTF states:
-both flags at home, all enemies in rush zone
-
-
-
-flag at home, teammate has flag, no enemies in def zone -> escort
-enemy has flag, 
-
-
-
-
-'''

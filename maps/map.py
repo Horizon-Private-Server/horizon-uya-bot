@@ -286,10 +286,17 @@ class Map:
         return 'red'
     
     def get_area_coord(self, position, team):
-        x_min = self.areas[position][team]['x_min']
-        x_max = self.areas[position][team]['x_max']
-        y_min = self.areas[position][team]['y_min']
-        y_max = self.areas[position][team]['y_max']
+        if position == 'mid':
+            position_struct = random.choice(self.areas[position])
+        elif position == 'rush':
+            position_struct = random.choice(self.areas[position][team])
+        else:
+            position_struct = self.areas[position][team]
+
+        x_min = position_struct['x_min']
+        x_max = position_struct['x_max']
+        y_min = position_struct['y_min']
+        y_max = position_struct['y_max']
 
         filtered_array = self.points[
             (self.points[:, 0] >= x_min) & (self.points[:, 0] <= x_max) &

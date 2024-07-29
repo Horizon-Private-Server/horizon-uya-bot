@@ -21,6 +21,7 @@ class ctf_mid(ctf_main):
         state = self.state_machine.game_state.ctf_get_objective()
         if state != 'mid':
             self.state_machine.transition_state('ctf_initial', {})
+            return
 
         if calculate_distance(self.state_machine.game_state.player.coord, self.mid_coord) < 400:
             self.reached_start = True

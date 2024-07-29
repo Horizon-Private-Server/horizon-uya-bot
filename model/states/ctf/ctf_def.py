@@ -21,6 +21,7 @@ class ctf_def(ctf_main):
         state = self.state_machine.game_state.ctf_get_objective()
         if state != 'def':
             self.state_machine.transition_state('ctf_initial', {})
+            return
 
         if calculate_distance(self.state_machine.game_state.player.coord, self.def_coord) < 400:
             self.reached_start = True

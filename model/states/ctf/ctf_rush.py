@@ -21,6 +21,7 @@ class ctf_rush(ctf_main):
         state = self.state_machine.game_state.ctf_get_objective()
         if state != 'rush':
             self.state_machine.transition_state('ctf_initial', {})
+            return
 
         if calculate_distance(self.state_machine.game_state.player.coord, self.rush_coord) < 400:
             self.reached_start = True

@@ -15,5 +15,6 @@ class ctf_engage(ctf_main):
         state = self.state_machine.game_state.ctf_get_objective()
         if state != 'engage':
             self.state_machine.transition_state('ctf_initial', {})
+            return
 
         self.engage()

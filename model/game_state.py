@@ -96,12 +96,15 @@ class GameState:
             return
         del self.players[src_player]
 
-    def player_killed(self, killer_id: int):
+    def player_killed(self, killer_id: int, killed_id: int):
         if killer_id == self.player.player_id:
             self.player.total_kills += 1
         else:
             self.players[killer_id].total_kills += 1
         
+        if killed_id != self.player.player_id:
+            self.players[killed_id].is_dead = True
+
         if self.game_mode == 'Deathmatch' and self.game_info['frag'] != None:
             # Add up total score per team. See if it reaches frag
             team_scores = defaultdict(int)
@@ -212,6 +215,8 @@ class GameState:
         num_enemy_rush = 0
 
         for player in self.players.values():
+            if player.is_dead:
+                continue
             if player.team == self.player.team and self.player.team == 'red':
                 if player.area == 'red':
                     num_def += 1

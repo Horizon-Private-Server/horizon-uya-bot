@@ -407,7 +407,7 @@ class Prototype:
 
             self.game_state.player.respawn_time = datetime.now().timestamp() + self.respawn_time
 
-            self.game_state.player_killed(src_player)
+            self.game_state.player_killed(src_player, self.game_state.player.player_id)
 
     def set_initial_weapon(self):
         weapon = 'hyper'

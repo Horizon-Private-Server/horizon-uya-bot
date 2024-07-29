@@ -131,7 +131,7 @@ class Model:
                 self.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': data_packet})])
         
         if dme_packet.name == 'tcp_0204_player_killed':
-            self.game_state.player_killed(dme_packet.killer_id)
+            self.game_state.player_killed(dme_packet.killer_id, dme_packet.killed_id)
   
         if dme_packet.name == 'tcp_0009_set_timer' and src_player == 0:
             self.game_state.player.time = dme_packet.time

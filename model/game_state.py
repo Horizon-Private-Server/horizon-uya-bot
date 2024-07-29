@@ -193,6 +193,15 @@ class GameState:
         '''
         Return if we are going to rush/def/mid
         '''
+
+        # Return if we should be currently engaged in a fight with someone
+        fight_distance = 1200
+
+        for player in self.players.values():
+            player_distance = calculate_distance(self.player.coord, player.coord)
+            if player.team != self.player.team and player_distance < fight_distance:
+                return 'engage'
+
         home_flag = 'base'
         enemy_flag = 'base'
         num_def = 0
@@ -364,14 +373,10 @@ class GameState:
         elif home_flag == 'base'  and enemy_flag == 'base' and num_def == 0 and num_mid == 0 and num_rush == 0 and num_enemy_def == 0 and num_enemy_mid == 0 and num_enemy_rush == 0:
             state = 'rush'
         
-        logger.info(f"num_def:{num_def} num_mid:{num_mid} num_rush:{num_rush} | num_enemy_def:{num_enemy_def} num_enemy_mid:{num_enemy_mid} num_enemy_rush:{num_enemy_rush}")
-        logger.info(f"STATE: {state}")
+        # logger.info(f"num_def:{num_def} num_mid:{num_mid} num_rush:{num_rush} | num_enemy_def:{num_enemy_def} num_enemy_mid:{num_enemy_mid} num_enemy_rush:{num_enemy_rush}")
+        # logger.info(f"STATE: {state}")
 
-    def ctf_engaged(self):
-        '''
-        Return if we should be currently engaged in a fight with someone
-        '''
-        pass
+        return state
 
 
     def __str__(self):

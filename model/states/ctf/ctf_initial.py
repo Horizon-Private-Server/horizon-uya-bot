@@ -12,7 +12,17 @@ class ctf_initial(State):
     def update(self):
 
         # Get whether to rush/def/mid 
-        self.state_machine.game_state.ctf_get_objective()
+        state = self.state_machine.game_state.ctf_get_objective()
+        print(state)
+        # if state == 'engage':
+        #     self.state_machine.transition_state('ctf_engage', {})
+        # elif state == 'rush':
+        #     self.state_machine.transition_state('ctf_rush', {})
+        # elif state == 'def':
+        #     self.state_machine.transition_state('ctf_def', {})
+        # elif state == 'mid':
+        #     self.state_machine.transition_state('ctf_mid', {})
+
 
 
         # # If we have no enemies, just capture!

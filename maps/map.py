@@ -284,7 +284,21 @@ class Map:
             if self.areas['three_slice'][idx]['x_min'] <= point[0] <= self.areas['three_slice'][idx]['x_max'] and self.areas['three_slice'][idx]['y_min'] <= point[1] <= self.areas['three_slice'][idx]['y_max']:
                 return idx
         return 'red'
+    
+    def get_area_coord(self, position, team):
+        x_min = self.areas[position][team]['x_min']
+        x_max = self.areas[position][team]['x_max']
+        y_min = self.areas[position][team]['y_min']
+        y_max = self.areas[position][team]['y_max']
 
+        filtered_array = self.points[
+            (self.points[:, 0] >= x_min) & (self.points[:, 0] <= x_max) &
+            (self.points[:, 1] >= y_min) & (self.points[:, 1] <= y_max)
+        ]
+
+        random_row = filtered_array[np.random.randint(0, filtered_array.shape[0])]
+
+        return tuple(random_row)
 
 if __name__ == '__main__':
     print("Reading map")

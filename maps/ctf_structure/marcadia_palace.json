@@ -19,7 +19,7 @@
             "y_max": 60000
         }
     },
-    "mid_areas": [
+    "mid": [
         {
             "name": "middle",
             "x_min": 30300,
@@ -35,7 +35,7 @@
             "y_max": 55000
         }
     ],
-    "def_areas": {
+    "def": {
         "red": {
             "x_min": 33000,
             "x_max": 35000,
@@ -49,7 +49,7 @@
             "y_max": 55000
         }
     },
-    "rush_areas": {
+    "rush": {
         "red": [
             {
                 "name": "blue_health",

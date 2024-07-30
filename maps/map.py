@@ -307,6 +307,12 @@ class Map:
 
         return tuple(random_row)
 
+    def point_reachable(self, point):
+        closest_node = self.find_closest_node(point)
+        if calculate_distance(closest_node, point) > 150: # Not reachable if over 150 away
+            return False
+        return True
+
 if __name__ == '__main__':
     print("Reading map")
     map = Map('aquatos_sewers')

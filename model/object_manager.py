@@ -145,7 +145,6 @@ class ObjectManager():
             self.blue_flag.reset()
 
         # Check if we picked it up
-        # TODO: State transition to holding flag
         if self.red_flag != None and self.red_flag.overlap(self.game_state.player.coord) and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'blue' and not self.red_flag.is_recent_drop() and not self.game_state.player.is_dead:
             # Red flag pickup as blue team
             player_id_hex = bytes_to_hex(int_to_bytes_little(4, self.game_state.player.player_id))

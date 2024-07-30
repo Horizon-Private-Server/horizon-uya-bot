@@ -96,6 +96,9 @@ class Flag(UyaObject):
 
     def is_recent_drop(self):
         return (datetime.now() - self.recent_droptime).total_seconds() < 1.75
+    
+    def is_dropped(self):
+        return self.holder == None and not self.is_at_base()
 
     def __str__(self):
         return f"Flag [{self.color}]; holder:{self.holder} id:{self.id} master:{self.master} owner:{self.owner} loc:{self.location}"

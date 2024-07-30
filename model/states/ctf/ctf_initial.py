@@ -21,6 +21,10 @@ class ctf_initial(State):
             self.state_machine.transition_state('ctf_def', {})
         elif state == 'mid':
             self.state_machine.transition_state('ctf_mid', {})
+        elif state == 'flagbearer':
+            self.state_machine.transition_state('ctf_flagbearer', {})
+        elif state == 'flagsaver':
+            self.state_machine.transition_state('ctf_flagsaver', {})
 
 
         # # If we have no enemies, just capture!

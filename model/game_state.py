@@ -63,6 +63,12 @@ class GameState:
                 player_chosen = player_idx
                 player_dist = calculate_distance(player.coord, self.player.coord)
 
+        if player_chosen == None: # Get closest dead player
+            for player_idx, player in self.players.items():
+                if calculate_distance(player.coord, self.player.coord) < player_dist and player.team != self.player.team:
+                    player_chosen = player_idx
+                    player_dist = calculate_distance(player.coord, self.player.coord)
+
         if player_chosen == None:
             return 0
 
@@ -180,8 +186,6 @@ class GameState:
                 self.no_enemies_in_game = False
 
 
-    def player_has_flag(self):
-        return self.object_manager.red_flag.holder == self.player.player_id or self.object_manager.blue_flag.holder == self.player.player_id
 
     def _read_map(self):
         with open(os.path.join('maps', f'{self.map}.json'), 'r') as f:
@@ -192,6 +196,38 @@ class GameState:
 # CTF Methods
 ###################################################
 
+    def player_has_flag(self):
+        return self.object_manager.red_flag.holder == self.player.player_id or self.object_manager.blue_flag.holder == self.player.player_id
+
+    def home_flag_dropped(self):
+        if self.player.team == 'red' and self.object_manager.red_flag.is_dropped():
+            return True
+        elif self.player.team == 'blue' and self.object_manager.blue_flag.is_dropped():
+            return True
+        return False
+    
+    def get_home_flag_location(self):
+        if self.player.team == 'red':
+            return self.object_manager.red_flag.location
+        return self.object_manager.blue_flag.location
+
+    def home_flag_no_enemies_nearby(self):
+        home_flag_loc = self.get_home_flag_location()
+        flag_enemy_dist = 2000
+        # Check if any players are 
+
+        for player in self.players.values():
+            player_distance = calculate_distance(home_flag_loc, player.coord)
+            if player.team != self.player.team and player_distance < flag_enemy_dist and not player.is_dead:
+                return False
+            
+        return True
+    
+    def home_flag_reachable(self):
+        home_flag_loc = self.get_home_flag_location()
+        return self.map.point_reachable(home_flag_loc)
+
+
     def ctf_get_objective(self):
         '''
         Return if we are going to rush/def/mid
@@ -199,6 +235,14 @@ class GameState:
 
         # Return if we should be currently engaged in a fight with someone
         fight_distance = 1200
+
+        # Check if we have the flag. If we do, then 
+        if self.player_has_flag():
+            return 'flagbearer'
+        
+        # If our flag is dropped, there are no enemies nearby, and it is reachable, let's go save it!
+        if self.home_flag_dropped() and self.home_flag_no_enemies_nearby() and self.home_flag_reachable():
+            return 'flagsaver'
 
         for player in self.players.values():
             player_distance = calculate_distance(self.player.coord, player.coord)

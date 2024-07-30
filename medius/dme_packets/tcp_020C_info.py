@@ -261,7 +261,16 @@ class tcp_020C_info:
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \
                 int_to_bytes_little(4, self.timestamp) + \
                 hex_to_bytes(self.object_type) + \
-                hex_to_bytes(self.data['flag_drop_unk'])
+                hex_to_bytes("00") + \
+                int_to_bytes_little(1, int((self.data['local_x'] - int(self.data['local_x']))*255)) + \
+                int_to_bytes_little(2, int(self.data['local_x'])) + \
+                hex_to_bytes("00") + \
+                int_to_bytes_little(1, int((self.data['local_y'] - int(self.data['local_y']))*255)) + \
+                int_to_bytes_little(2, int(self.data['local_y'])) + \
+                hex_to_bytes("00") + \
+                int_to_bytes_little(1, int((self.data['local_z'] - int(self.data['local_z']))*255)) + \
+                int_to_bytes_little(2, int(self.data['local_z'])) + \
+                hex_to_bytes("00000000")
         elif self.subtype[2:] == '_crate_respawn':
             return self.id + \
                 hex_to_bytes({v: k for k, v in subtype_map.items()}[self.subtype]) + \

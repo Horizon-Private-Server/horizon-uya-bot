@@ -23,6 +23,11 @@ class ctf_rush(ctf_main):
             self.state_machine.transition_state('ctf_initial', {})
             return
 
+        # Grab the flag from their base!
+        if self.reached_start and self.state_machine.game_state.enemy_flag_at_base() and self.state_machine.game_state.flag_no_enemies_nearby(self.state_machine.game_state.get_enemy_flag_location()):
+            self.state_machine.transition_state('ctf_flagrush', {})
+            return
+
         if calculate_distance(self.state_machine.game_state.player.coord, self.rush_coord) < 400:
             self.reached_start = True
 

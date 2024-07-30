@@ -84,7 +84,7 @@ class Flag(UyaObject):
         self.holder = None
 
     def is_at_base(self):
-        return calculate_distance(self.location, self.initial_location) < 50
+        return self.holder == None and calculate_distance(self.location, self.initial_location) < 50
 
     def dropped(self, location):
         self.holder = None

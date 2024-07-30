@@ -409,6 +409,11 @@ class Prototype:
 
             self.game_state.player_killed(src_player, self.game_state.player.player_id)
 
+            # If we have the flag, we need to drop the flag
+            if self.game_state.player_has_flag():
+                self.game_state.player_drop_flag()
+
+
     def set_initial_weapon(self):
         weapon = 'hyper'
         self.model.dmetcp_queue.put(['B', tcp_0003_broadcast_lobby_state.tcp_0003_broadcast_lobby_state(data={'num_messages': 1, 'src': self.game_state.player.player_id, 'msg0': {'type': 'weapon_changed', 'weapon_changed_to': weapon}})])

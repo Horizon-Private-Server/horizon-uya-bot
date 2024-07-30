@@ -17,6 +17,7 @@ from model.object_manager import ObjectManager
 from constants.constants import get_flag_location, DEATHMATCH_MAP
 
 from butils.utils import *
+from medius.dme_packets import *
 
 class GameState:
     def __init__(self, model, gameinfo:dict, player:PlayerState):
@@ -199,6 +200,18 @@ class GameState:
     def player_has_flag(self):
         return self.object_manager.red_flag.holder == self.player.player_id or self.object_manager.blue_flag.holder == self.player.player_id
 
+    def player_drop_flag(self):
+        if self.player.team == 'red':
+            flag = self.object_manager.blue_flag
+        elif self.player.team == 'blue':
+            flag = self.object_manager.red_flag
+
+        flag.dropped(self.player.coord)
+        coord = self.map.transform_global_to_local(self.player.coord)
+        data = {'local_x': coord[0], 'local_y': coord[1], 'local_z': coord[2]}
+        self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.player.player_id}_flag_drop', object_type=flag.id,timestamp=self.player.time,data=data)])
+
+
     def home_flag_dropped(self):
         if self.player.team == 'red' and self.object_manager.red_flag.is_dropped():
             return True
@@ -241,6 +254,12 @@ class GameState:
         enemy_flag_loc = self.get_enemy_flag_location()
         return self.map.point_reachable(enemy_flag_loc)
 
+    def enemy_flag_at_base(self):
+        if self.player.team == 'red' and self.object_manager.blue_flag.is_at_base():
+            return True
+        elif self.player.team == 'blue' and self.object_manager.red_flag.is_at_base():
+            return True
+        return False
 
     def ctf_get_objective(self):
         '''
@@ -258,23 +277,17 @@ class GameState:
         if self.home_flag_dropped() and self.flag_no_enemies_nearby(self.get_home_flag_location()) and self.home_flag_reachable():
             return 'flagsaver'
         
-        # If they have our flag, let's chase them.
+        # TODO: If they have our flag, let's chase them.
 
-
-
-        # If one of our guys has the flag, let's go defend them 
-
-
-
+        # TODO: If one of our guys has the flag, let's go defend them 
 
         # If the enemy flag is dropped and is reachable with no enemies, go grab the flag 
         if self.enemy_flag_dropped() and self.flag_no_enemies_nearby(self.get_enemy_flag_location()) and self.enemy_flag_reachable():
             return 'flagchaser'
 
-
         for player in self.players.values():
             player_distance = calculate_distance(self.player.coord, player.coord)
-            if player.team != self.player.team and player_distance < fight_distance:
+            if player.team != self.player.team and player_distance < fight_distance and not player.is_dead:
                 return 'engage'
 
         home_flag = 'base'
@@ -452,7 +465,8 @@ class GameState:
         
         # logger.info(f"num_def:{num_def} num_mid:{num_mid} num_rush:{num_rush} | num_enemy_def:{num_enemy_def} num_enemy_mid:{num_enemy_mid} num_enemy_rush:{num_enemy_rush}")
         # logger.info(f"STATE: {state}")
-
+        #if not self.enemy_flag_at_base() and state == 'rush':
+            
         return state
 
 

@@ -112,56 +112,56 @@ class ObjectManager():
                     self.model.game_state.players[player_id].reset_health()
 
             # Flag Saves
-            if self.red_flag != None and self.red_flag.overlap(player.coord) and not self.red_flag.is_at_base() and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and player.team == 'red':
+            if self.red_flag != None and self.red_flag.overlap(player.coord) and not self.red_flag.is_at_base() and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and player.team == 'red' and not player.is_dead:
                 # Save the flag
                 self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_flag_save'})])
                 self.red_flag.reset()
 
-            elif self.blue_flag != None and self.blue_flag.overlap(player.coord) and not self.blue_flag.is_at_base() and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and player.team == 'blue':
+            elif self.blue_flag != None and self.blue_flag.overlap(player.coord) and not self.blue_flag.is_at_base() and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and player.team == 'blue' and not player.is_dead:
                 # Save the flag
                 self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_flag_save'})])
                 self.blue_flag.reset()
 
             # Flag Pickup
             #logger.info(f"Check self.red_flag.overlap(player.coord):{self.red_flag.overlap(player.coord)} self.red_flag.holder == None:{self.red_flag.holder == None} self.red_flag.owner == self.game_state.player.player_id:{self.red_flag.owner == self.game_state.player.player_id} player.team == 'blue':{player.team == 'blue'}")
-            if self.red_flag != None and self.red_flag.overlap(player.coord) and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and player.team == 'blue' and not self.red_flag.is_recent_drop():
+            if self.red_flag != None and self.red_flag.overlap(player.coord) and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and player.team == 'blue' and not self.red_flag.is_recent_drop() and not player.is_dead:
                 player_id_hex = bytes_to_hex(int_to_bytes_little(4, player_id))
                 self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'object_update_unk': player_id_hex})])
                 self.red_flag.holder = self.game_state.player.player_id
-            elif self.blue_flag != None and self.blue_flag.overlap(player.coord) and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and player.team == 'red' and not self.blue_flag.is_recent_drop():
+            elif self.blue_flag != None and self.blue_flag.overlap(player.coord) and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and player.team == 'red' and not self.blue_flag.is_recent_drop() and not player.is_dead:
                 player_id_hex = bytes_to_hex(int_to_bytes_little(4, player_id))
                 self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'object_update_unk': player_id_hex})])
                 self.blue_flag.holder = self.game_state.player.player_id
 
         # Check if the bot has saved the flag
-        if self.red_flag != None and self.red_flag.overlap(self.game_state.player.coord) and not self.red_flag.is_at_base() and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'red':
+        if self.red_flag != None and self.red_flag.overlap(self.game_state.player.coord) and not self.red_flag.is_at_base() and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'red' and not self.game_state.player.is_dead:
             # Save the flag
             self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{self.game_state.player.player_id}_flag_save'})])
             self.red_flag.reset()
 
-        elif self.blue_flag != None and self.blue_flag.overlap(self.game_state.player.coord) and not self.blue_flag.is_at_base() and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'blue':
+        elif self.blue_flag != None and self.blue_flag.overlap(self.game_state.player.coord) and not self.blue_flag.is_at_base() and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'blue' and not self.game_state.player.is_dead:
             # Save the flag
             self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{self.game_state.player.player_id}_flag_save'})])
             self.blue_flag.reset()
 
         # Check if we picked it up
         # TODO: State transition to holding flag
-        if self.red_flag != None and self.red_flag.overlap(self.game_state.player.coord) and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'blue' and not self.red_flag.is_recent_drop():
+        if self.red_flag != None and self.red_flag.overlap(self.game_state.player.coord) and self.red_flag.holder == None and self.red_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'blue' and not self.red_flag.is_recent_drop() and not self.game_state.player.is_dead:
             # Red flag pickup as blue team
             player_id_hex = bytes_to_hex(int_to_bytes_little(4, self.game_state.player.player_id))
             self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'object_update_unk': player_id_hex})])
             self.red_flag.holder = self.game_state.player.player_id
-        elif self.blue_flag != None and self.blue_flag.overlap(self.game_state.player.coord) and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'red' and not self.blue_flag.is_recent_drop():
+        elif self.blue_flag != None and self.blue_flag.overlap(self.game_state.player.coord) and self.blue_flag.holder == None and self.blue_flag.owner == self.game_state.player.player_id and self.game_state.player.team == 'red' and not self.blue_flag.is_recent_drop() and not self.game_state.player.is_dead:
             # Red flag pickup as blue team
             player_id_hex = bytes_to_hex(int_to_bytes_little(4, self.game_state.player.player_id))
             self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_object_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'object_update_unk': player_id_hex})])
             self.blue_flag.holder = self.game_state.player.player_id    
 
         # Capture flag
-        if self.red_flag != None and self.game_state.player.team == 'blue' and self.blue_flag.is_capture(self.game_state.player.coord) and self.red_flag.holder == self.game_state.player.player_id:
+        if self.red_flag != None and self.game_state.player.team == 'blue' and self.blue_flag.is_capture(self.game_state.player.coord) and self.red_flag.holder == self.game_state.player.player_id and not self.game_state.player.is_dead:
             self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_capture'})])
             self.red_flag.reset()
-        elif self.blue_flag != None and self.game_state.player.team == 'red' and self.red_flag.is_capture(self.game_state.player.coord) and self.blue_flag.holder == self.game_state.player.player_id:
+        elif self.blue_flag != None and self.game_state.player.team == 'red' and self.red_flag.is_capture(self.game_state.player.coord) and self.blue_flag.holder == self.game_state.player.player_id and not self.game_state.player.is_dead:
             self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_capture'})])
             self.blue_flag.reset()
 

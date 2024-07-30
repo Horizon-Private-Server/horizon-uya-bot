@@ -206,26 +206,40 @@ class GameState:
             return True
         return False
     
+    def enemy_flag_dropped(self):
+        if self.player.team == 'red' and self.object_manager.blue_flag.is_dropped():
+            return True
+        elif self.player.team == 'blue' and self.object_manager.red_flag.is_dropped():
+            return True
+        return False
+
     def get_home_flag_location(self):
         if self.player.team == 'red':
             return self.object_manager.red_flag.location
         return self.object_manager.blue_flag.location
+    
+    def get_enemy_flag_location(self):
+        if self.player.team == 'red':
+            return self.object_manager.blue_flag.location
+        return self.object_manager.red_flag.location
 
-    def home_flag_no_enemies_nearby(self):
-        home_flag_loc = self.get_home_flag_location()
+    def flag_no_enemies_nearby(self, location):
         flag_enemy_dist = 2000
-        # Check if any players are 
 
         for player in self.players.values():
-            player_distance = calculate_distance(home_flag_loc, player.coord)
+            player_distance = calculate_distance(location, player.coord)
             if player.team != self.player.team and player_distance < flag_enemy_dist and not player.is_dead:
                 return False
             
         return True
-    
+
     def home_flag_reachable(self):
         home_flag_loc = self.get_home_flag_location()
         return self.map.point_reachable(home_flag_loc)
+
+    def enemy_flag_reachable(self):
+        enemy_flag_loc = self.get_enemy_flag_location()
+        return self.map.point_reachable(enemy_flag_loc)
 
 
     def ctf_get_objective(self):
@@ -241,8 +255,22 @@ class GameState:
             return 'flagbearer'
         
         # If our flag is dropped, there are no enemies nearby, and it is reachable, let's go save it!
-        if self.home_flag_dropped() and self.home_flag_no_enemies_nearby() and self.home_flag_reachable():
+        if self.home_flag_dropped() and self.flag_no_enemies_nearby(self.get_home_flag_location()) and self.home_flag_reachable():
             return 'flagsaver'
+        
+        # If they have our flag, let's chase them.
+
+
+
+        # If one of our guys has the flag, let's go defend them 
+
+
+
+
+        # If the enemy flag is dropped and is reachable with no enemies, go grab the flag 
+        if self.enemy_flag_dropped() and self.flag_no_enemies_nearby(self.get_enemy_flag_location()) and self.enemy_flag_reachable():
+            return 'flagchaser'
+
 
         for player in self.players.values():
             player_distance = calculate_distance(self.player.coord, player.coord)

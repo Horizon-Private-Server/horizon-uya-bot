@@ -4,7 +4,7 @@ from scipy.spatial import distance
 from datetime import datetime
 from collections import defaultdict
 
-from constants.constants import ANIMATION_MAP, MAIN_BOT_LOOP_TIMER, get_blitz_angle, get_grav_timing
+from constants.constants import ANIMATION_MAP, MAIN_BOT_LOOP_TIMER, get_blitz_angle, get_grav_timing, CHARGEBOOT_DISTANCE
 from medius.dme_packets import *
 from butils.utils import *
 from butils.circularlist import CircularList
@@ -173,7 +173,7 @@ class Prototype:
         if new_coord[2] > old_coord[2]:
             self.game_state.player.animation = 'jump'
 
-        if self.game_state.player.prev_animation != 'crouch' and calculate_distance(old_coord, new_coord) > 95:
+        if self.game_state.player.prev_animation != 'crouch' and calculate_distance(old_coord, new_coord) > CHARGEBOOT_DISTANCE:
             self.game_state.player.animation = 'crouch'
 
         angle = compute_strafe_angle(old_coord, new_coord, self.target)

@@ -10,6 +10,7 @@ import gzip
 import aiofiles
 import io
 import asyncio
+from constants.constants import CHARGEBOOT_DISTANCE
 
 from butils.utils import *
 from maps.local_coordinates.local_transforms import LocalTransform
@@ -99,7 +100,7 @@ class Map:
             return siege_ctf_respawn_coords[self.map]['red']
 
         # When chargeboot = True, we want to move ~ 110
-        cboot_dist = 80
+        cboot_dist = CHARGEBOOT_DISTANCE
 
         src = tuple(src)
         dst = tuple(dst)

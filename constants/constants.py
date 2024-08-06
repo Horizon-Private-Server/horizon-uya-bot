@@ -1,6 +1,10 @@
 import json
 import os
 
+
+CHARGEBOOT_DISTANCE = 80
+
+
 VALID_GAME_MODES = {
     'marcadia_palace': {'Deathmatch', 'CTF'}
 }

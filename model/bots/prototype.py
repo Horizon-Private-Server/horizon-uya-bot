@@ -120,7 +120,7 @@ class Prototype:
         self.state.enter(msg)
 
     def send_movement(self):
-        if self.game_state.players[0].coord == [0,0,0] or self.game_state.player.is_dead:
+        if self.game_state.players[0].coord == [0,0,0]:
             return
 
         packet_num = self.game_state.player.gen_packet_num()
@@ -187,6 +187,7 @@ class Prototype:
 
 
     def respawn(self):
+        self.game_state.player.is_dead = False
         self.game_state.player.weapon = None
         self.game_state.player.reset_health()
         self.game_state.player.set_coord(self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode))
@@ -195,10 +196,6 @@ class Prototype:
         data = {'local_x': local_coord[0], 'local_y': local_coord[1], 'local_z': local_coord[2]}
 
         self.model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, data=data)])
-    
-        self.game_state.player.is_dead = False
-
-        #self.model.loop.create_task(self.set_alive())
 
 
     async def set_alive(self):
@@ -410,7 +407,7 @@ class Prototype:
             self.game_state.player_killed(src_player, self.game_state.player.player_id)
 
             # If we have the flag, we need to drop the flag
-            if self.game_state.player_has_flag():
+            if self.game_state.game_mode == 'CTF' and self.game_state.player_has_flag():
                 self.game_state.player_drop_flag()
 
 

@@ -71,8 +71,9 @@ class PlayerState:
     def set_coord(self, new_coord):
         self.coord_timestamp = datetime.now()
 
-        if self.stunned:
+        if self.stunned or self.is_dead:
             return
+
         self.coord = new_coord
 
     def set_area(self, area: str):

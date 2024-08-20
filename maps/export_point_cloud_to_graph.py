@@ -27,16 +27,26 @@ import gzip
 #]
 
 map_config = {
-    'marcadia_palace': {
+    # 'marcadia_palace': {
+    #     # Adjust this in order to make the grid further apart or closer together
+    #     'voxel_size': 10,
+    #     # Adjust this to connect closer/farther points
+    #     'distance_connected_variance': [20,40],
+    #     'waypoints': {
+    #         "edges": '1 -> 2;2 -> 1;2 -> 8;2 -> 7;2 -> 3;3 -> 2;3 -> 6;3 -> 4;4 -> 3;4 -> 5;4 -> 6;5 -> 4;5 -> 13;5 -> 6;6 -> 3;6 -> 4;6 -> 5;6 -> 12;6 -> 13;7 -> 2;7 -> 8;7 -> 10;8 -> 2;8 -> 7;8 -> 10;9 -> 10;10 -> 9;10 -> 8;10 -> 7;10 -> 11;10 -> 21;10 -> 20;11 -> 10;11 -> 12;11 -> 14;12 -> 6;12 -> 13;12 -> 11;13 -> 5;13 -> 6;13 -> 12;13 -> 15;13 -> 16;13 -> 14;14 -> 11;14 -> 13;14 -> 16;15 -> 13;15 -> 16;15 -> 17;16 -> 14;16 -> 13;16 -> 15;16 -> 17;16 -> 22;17 -> 15;17 -> 16;17 -> 22;18 -> 19;18 -> 20;18 -> 21;18 -> 22;19 -> 18;20 -> 10;20 -> 18;20 -> 21;21 -> 18;21 -> 10;21 -> 20;22 -> 16 ;22 -> 17;22 -> 18',
+    #         "nodes": "1 -> [27078, 54168, 7413];2 -> [27847, 54553, 7413];3 -> [27625, 55535, 7413];4 -> [26775, 56112, 7251];5 -> [27973, 57161, 7251];6 -> [28562, 56743, 7428];7 -> [28887, 54745, 7413];8 -> [28986, 53948, 7413];9 -> [30603, 54074, 7424];10 -> [30639, 55238, 7413];11 -> [30612, 56214, 7416];12 -> [29733, 56509, 7413];13 -> [30647, 57484, 7413];14 -> [31761, 56675, 7413];15 -> [33312, 57225, 7251];16 -> [33326, 56243, 7413];17 -> [34466, 56206, 7251];18 -> [33545, 54462, 7413];19 -> [34182, 54138, 7413];20 -> [32407, 53707, 7413];21 -> [32520, 54820, 7413];22 -> [33657, 55680, 7424]"
+    #     }
+    # },
+    'hoven_gorge': {
         # Adjust this in order to make the grid further apart or closer together
         'voxel_size': 10,
         # Adjust this to connect closer/farther points
         'distance_connected_variance': [20,40],
-        'waypoints': {
-            "edges": '1 -> 2;2 -> 1;2 -> 8;2 -> 7;2 -> 3;3 -> 2;3 -> 6;3 -> 4;4 -> 3;4 -> 5;4 -> 6;5 -> 4;5 -> 13;5 -> 6;6 -> 3;6 -> 4;6 -> 5;6 -> 12;6 -> 13;7 -> 2;7 -> 8;7 -> 10;8 -> 2;8 -> 7;8 -> 10;9 -> 10;10 -> 9;10 -> 8;10 -> 7;10 -> 11;10 -> 21;10 -> 20;11 -> 10;11 -> 12;11 -> 14;12 -> 6;12 -> 13;12 -> 11;13 -> 5;13 -> 6;13 -> 12;13 -> 15;13 -> 16;13 -> 14;14 -> 11;14 -> 13;14 -> 16;15 -> 13;15 -> 16;15 -> 17;16 -> 14;16 -> 13;16 -> 15;16 -> 17;16 -> 22;17 -> 15;17 -> 16;17 -> 22;18 -> 19;18 -> 20;18 -> 21;18 -> 22;19 -> 18;20 -> 10;20 -> 18;20 -> 21;21 -> 18;21 -> 10;21 -> 20;22 -> 16 ;22 -> 17;22 -> 18',
-            "nodes": "1 -> [27078, 54168, 7413];2 -> [27847, 54553, 7413];3 -> [27625, 55535, 7413];4 -> [26775, 56112, 7251];5 -> [27973, 57161, 7251];6 -> [28562, 56743, 7428];7 -> [28887, 54745, 7413];8 -> [28986, 53948, 7413];9 -> [30603, 54074, 7424];10 -> [30639, 55238, 7413];11 -> [30612, 56214, 7416];12 -> [29733, 56509, 7413];13 -> [30647, 57484, 7413];14 -> [31761, 56675, 7413];15 -> [33312, 57225, 7251];16 -> [33326, 56243, 7413];17 -> [34466, 56206, 7251];18 -> [33545, 54462, 7413];19 -> [34182, 54138, 7413];20 -> [32407, 53707, 7413];21 -> [32520, 54820, 7413];22 -> [33657, 55680, 7424]"
-        }
-    }
+        # 'waypoints': {
+        #     "edges": '1 -> 2;2 -> 1;2 -> 8;2 -> 7;2 -> 3;3 -> 2;3 -> 6;3 -> 4;4 -> 3;4 -> 5;4 -> 6;5 -> 4;5 -> 13;5 -> 6;6 -> 3;6 -> 4;6 -> 5;6 -> 12;6 -> 13;7 -> 2;7 -> 8;7 -> 10;8 -> 2;8 -> 7;8 -> 10;9 -> 10;10 -> 9;10 -> 8;10 -> 7;10 -> 11;10 -> 21;10 -> 20;11 -> 10;11 -> 12;11 -> 14;12 -> 6;12 -> 13;12 -> 11;13 -> 5;13 -> 6;13 -> 12;13 -> 15;13 -> 16;13 -> 14;14 -> 11;14 -> 13;14 -> 16;15 -> 13;15 -> 16;15 -> 17;16 -> 14;16 -> 13;16 -> 15;16 -> 17;16 -> 22;17 -> 15;17 -> 16;17 -> 22;18 -> 19;18 -> 20;18 -> 21;18 -> 22;19 -> 18;20 -> 10;20 -> 18;20 -> 21;21 -> 18;21 -> 10;21 -> 20;22 -> 16 ;22 -> 17;22 -> 18',
+        #     "nodes": "1 -> [27078, 54168, 7413];2 -> [27847, 54553, 7413];3 -> [27625, 55535, 7413];4 -> [26775, 56112, 7251];5 -> [27973, 57161, 7251];6 -> [28562, 56743, 7428];7 -> [28887, 54745, 7413];8 -> [28986, 53948, 7413];9 -> [30603, 54074, 7424];10 -> [30639, 55238, 7413];11 -> [30612, 56214, 7416];12 -> [29733, 56509, 7413];13 -> [30647, 57484, 7413];14 -> [31761, 56675, 7413];15 -> [33312, 57225, 7251];16 -> [33326, 56243, 7413];17 -> [34466, 56206, 7251];18 -> [33545, 54462, 7413];19 -> [34182, 54138, 7413];20 -> [32407, 53707, 7413];21 -> [32520, 54820, 7413];22 -> [33657, 55680, 7424]"
+        # }
+    },
 }
 
 ##########################################################################################################################################
@@ -50,35 +60,35 @@ class MapGenerator:
         #self.plot_points(raw_points, title="Raw Points")
 
         downsampled = self.downsample(raw_points, voxel_size=config['voxel_size'])
-        #self.plot_points(downsampled, title="Downsampled Points")
+        self.plot_points(downsampled, title="Downsampled Points")
 
-        G = self.generate_graph(downsampled, variance=config['distance_connected_variance'])
+        #G = self.generate_graph(downsampled, variance=config['distance_connected_variance'])
         #self.plot_connected_graph(G, title="Main Graph")
-        self.write_graph_to_file(G)
+        #self.write_graph_to_file(G)
 
         print("******* Waypoint processing")
         # 
-        waypoint_nodes = {}
-        for node in config['waypoints']['nodes'].split(";"):
-            node_num = node.split(" -> ")[0].strip()
-            node_coord = eval(node.split(" -> ")[1].strip())
-            node_coord = self.find_closest_node(G, node_coord)
-            waypoint_nodes[node_num] = node_coord
-        G_waypoints_only = nx.Graph()
-        for edge in config['waypoints']['edges'].split(";"):
-            node1 = waypoint_nodes[edge.split(" -> ")[0].strip()]
-            node2 = waypoint_nodes[edge.split(" -> ")[1].strip()]
-            weight = self.search_heuristic(node1, node2)
-            G_waypoints_only.add_edge(tuple(node1), tuple(node2), weight=weight)
+        # waypoint_nodes = {}
+        # for node in config['waypoints']['nodes'].split(";"):
+        #     node_num = node.split(" -> ")[0].strip()
+        #     node_coord = eval(node.split(" -> ")[1].strip())
+        #     node_coord = self.find_closest_node(G, node_coord)
+        #     waypoint_nodes[node_num] = node_coord
+        # G_waypoints_only = nx.Graph()
+        # for edge in config['waypoints']['edges'].split(";"):
+        #     node1 = waypoint_nodes[edge.split(" -> ")[0].strip()]
+        #     node2 = waypoint_nodes[edge.split(" -> ")[1].strip()]
+        #     weight = self.search_heuristic(node1, node2)
+        #     G_waypoints_only.add_edge(tuple(node1), tuple(node2), weight=weight)
 
-        G_waypoints = self.generate_waypoint_graph(G, G_waypoints_only)
-        self.write_graph_to_file(G_waypoints_only, filename_suffix="waypoints_only")
-        self.write_graph_to_file(G_waypoints, filename_suffix="waypoints")
+        # G_waypoints = self.generate_waypoint_graph(G, G_waypoints_only)
+        # self.write_graph_to_file(G_waypoints_only, filename_suffix="waypoints_only")
+        # self.write_graph_to_file(G_waypoints, filename_suffix="waypoints")
 
-        self.plot_waypoints(G_waypoints_only, G_waypoints)
+        # self.plot_waypoints(G_waypoints_only, G_waypoints)
 
-        waypoint_cache = self.generate_waypoint_cache(G_waypoints_only, G_waypoints)
-        self.write_waypoint_cache_to_file(waypoint_cache)
+        # waypoint_cache = self.generate_waypoint_cache(G_waypoints_only, G_waypoints)
+        # self.write_waypoint_cache_to_file(waypoint_cache)
 
     def read_raw_points(self):
         print("-- Loading in point cloud ...")

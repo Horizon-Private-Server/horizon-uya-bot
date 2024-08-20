@@ -158,10 +158,10 @@ class ObjectManager():
 
         # Capture flag
         if self.red_flag != None and self.game_state.player.team == 'blue' and self.blue_flag.is_capture(self.game_state.player.coord) and self.red_flag.holder == self.game_state.player.player_id and not self.game_state.player.is_dead:
-            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_capture'})])
+            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.red_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{self.game_state.player.player_id}_capture'})])
             self.red_flag.reset()
         elif self.blue_flag != None and self.game_state.player.team == 'red' and self.red_flag.is_capture(self.game_state.player.coord) and self.blue_flag.holder == self.game_state.player.player_id and not self.game_state.player.is_dead:
-            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{player_id}_capture'})])
+            self.model.dmetcp_queue.put(['B', tcp_020C_info.tcp_020C_info(subtype=f'p{self.game_state.player.player_id}_flag_update', object_type=self.blue_flag.id,timestamp=self.model.game_state.player.time,data={'flag_update_type': f'p{self.game_state.player.player_id}_capture'})])
             self.blue_flag.reset()
 
 

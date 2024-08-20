@@ -8,6 +8,7 @@ import numpy as np
 from collections import defaultdict
 from datetime import datetime
 import pandas as pd
+import asyncio
 
 from maps.map import Map
 
@@ -200,7 +201,8 @@ class GameState:
     def player_has_flag(self):
         return self.object_manager.red_flag.holder == self.player.player_id or self.object_manager.blue_flag.holder == self.player.player_id
 
-    def player_drop_flag(self):
+    async def player_drop_flag(self):
+        await asyncio.sleep(0.5)
         if self.player.team == 'red':
             flag = self.object_manager.blue_flag
         elif self.player.team == 'blue':

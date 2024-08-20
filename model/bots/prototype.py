@@ -408,7 +408,7 @@ class Prototype:
 
             # If we have the flag, we need to drop the flag
             if self.game_state.game_mode == 'CTF' and self.game_state.player_has_flag():
-                self.game_state.player_drop_flag()
+                self.model.loop.create_task(self.game_state.player_drop_flag())
 
 
     def set_initial_weapon(self):

@@ -104,7 +104,7 @@ class packet_020E_shot_fired:
     def serialize(self, network, data: deque):
         weapon = WEAPON_MAP[data.popleft()]
         t = data.popleft()
-        src_player = hex_to_int_little(data.popleft())
+        src_player = data.popleft()
         unk1 = data.popleft()
 
         time = hex_to_int_little(''.join([data.popleft() for i in range(4)]))
@@ -136,6 +136,11 @@ class packet_020E_shot_fired:
         data.popleft() # trash
         offset_z = hex_to_int_little(data.popleft()) / 255 
         local_z_2 = hex_to_int_little(''.join([data.popleft() for i in range(2)])) + offset_z
+
+        if weapon == 'flux':
+            src_player = hex_to_int_little('0' + src_player[1])
+        else:
+            src_player = hex_to_int_little(src_player)
 
         return packet_020E_shot_fired(network, '', weapon, src_player, unk1, time, object_id, local_x, local_y, local_z, local_x_2, local_y_2, local_z_2)
 

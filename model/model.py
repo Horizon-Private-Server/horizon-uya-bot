@@ -199,7 +199,7 @@ class Model:
             self.game_state.movement_update(src_player, dme_packet.data)
 
         if dme_packet.name in ['packet_020E_shot_fired']:
-            self.bot.process_shot_fired(src_player, dme_packet)
+            self.bot.process_shot_fired(dme_packet)
 
         if dme_packet.name == 'udp_0001_timer_update' and dme_packet.unk1 == '00010000':
             self.dmeudp_queue.put([src_player, udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1="0000FFFF")])

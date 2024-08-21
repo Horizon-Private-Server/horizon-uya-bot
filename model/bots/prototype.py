@@ -56,7 +56,7 @@ class Prototype:
     async def main_loop(self):
         while self.model.alive:
             try:
-                #logger.info(self.game_state)
+                logger.info(self.game_state)
 
                 state_update_start_time = datetime.now()
 
@@ -285,9 +285,11 @@ class Prototype:
             self._misc['cycle_change_time'] = datetime.now()
 
 
-    def process_shot_fired(self, src_player, packet_data):
+    def process_shot_fired(self, packet_data):
         #logger.info(self.game_state)
         # Player is Alive, and the teammate who shot was on the enemy team. The object hit was us.
+        src_player = packet_data.src_player
+
         if self.game_state.player.is_dead or self.game_state.players[src_player].team == self.game_state.player.team:
             return
 
@@ -336,6 +338,7 @@ class Prototype:
 
             if time_to_explode != -1:
                 self.model.loop.create_task(self.process_grav_bomb_explode(time_to_explode, dest_coord, src_player, 'grav'))
+                return
 
         # -- Flux
         elif packet_data.object_id == self.game_state.player.player_id:

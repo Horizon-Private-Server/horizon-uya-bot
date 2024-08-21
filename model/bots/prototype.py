@@ -187,15 +187,17 @@ class Prototype:
 
 
     def respawn(self):
-        self.game_state.player.is_dead = False
-        self.game_state.player.weapon = None
-        self.game_state.player.reset_health()
+        self.game_state.player.respawn()
         self.game_state.player.set_coord(self.game_state.map.get_respawn_location(self.game_state.player.team, self.game_state.game_mode))
 
         local_coord = self.game_state.map.transform_global_to_local(self.game_state.player.coord)
         data = {'local_x': local_coord[0], 'local_y': local_coord[1], 'local_z': local_coord[2]}
 
         self.model.dmetcp_queue.put(['B', tcp_020A_player_respawned.tcp_020A_player_respawned(src_player=self.game_state.player.player_id, data=data)])
+
+        self.state = None
+
+        self.game_state.map.clear_cache()
 
 
     async def set_alive(self):

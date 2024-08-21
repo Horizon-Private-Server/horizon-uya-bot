@@ -94,7 +94,11 @@ class Map:
         with gzip.GzipFile(fileobj=io.BytesIO(content)) as f:
             data = json.load(f)
         return data
-
+    
+    def clear_cache(self):
+        # Player has respawned, reset caches
+        self.path_cache = None
+        
     def path(self, src, dst, chargeboot=False):
         if self.map_not_yet_loaded():
             return siege_ctf_respawn_coords[self.map]['red']

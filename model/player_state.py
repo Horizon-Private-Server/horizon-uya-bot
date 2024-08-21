@@ -1,3 +1,7 @@
+import logging
+logger = logging.getLogger('thug.player_state')
+logger.setLevel(logging.INFO)
+
 from model.arsenal import Arsenal
 from datetime import datetime
 
@@ -81,9 +85,10 @@ class PlayerState:
 
     def respawn(self):
         self.is_dead = False
+        self.stunned = False
+        self.weapon = None
         self.reset_health()
         self.arsenal.reset_upgrades()
-
 
     def change_teams(self, game_mode):
         team_change_map = {

@@ -202,6 +202,9 @@ class Transformer():
             S = ransac.estimator_.coef_
             t = ransac.estimator_.intercept_
 
+            # Prevent precision issues
+            S += np.eye(S.shape[0]) * 1e-10
+
             Ss.append(S)
             ts.append(t)
 
@@ -368,6 +371,8 @@ class LocalTransform():
         if ranges[-1] < local_xmax:
             ranges[-1] = local_xmax
 
+        print(f"Found ranges: {ranges}")
+
         self.transformers = []
 
         for i in range(len(ranges)-1):
@@ -411,13 +416,14 @@ class LocalTransform():
 
         # Second subplot
         ax3 = fig.add_subplot(111, projection='3d')
-        ax3.scatter(x1, y1, z1, c='r', alpha=0.5, marker='o')
-        ax3.scatter(x2, y2, z2, c='b', alpha=0.5, marker='^')
+        ax3.scatter(x1, y1, z1, c='r', alpha=0.5, marker='o', label='Transformed')
+        ax3.scatter(x2, y2, z2, c='b', alpha=0.5, marker='^', label='Real Local')
         #ax3.scatter(x2, y2, z2, c='g', alpha=0.5, marker='v')
         ax3.set_title('Global To Local')
         ax3.set_xlabel('X axis')
         ax3.set_ylabel('Y axis')
         ax3.set_zlabel('Z axis')
+        ax3.legend()
 
         plt.show()
 
@@ -451,13 +457,14 @@ class LocalTransform():
 
         # Second subplot
         ax3 = fig.add_subplot(111, projection='3d')
-        ax3.scatter(x1, y1, z1, c='r', alpha=0.5, marker='o')
-        ax3.scatter(x2, y2, z2, c='b', alpha=0.5, marker='^')
+        ax3.scatter(x1, y1, z1, c='r', alpha=0.5, marker='o', label='Transformed')
+        ax3.scatter(x2, y2, z2, c='b', alpha=0.5, marker='^', label='Real Global')
         #ax3.scatter(x2, y2, z2, c='g', alpha=0.5, marker='v')
         ax3.set_title('Local To Global')
         ax3.set_xlabel('X axis')
         ax3.set_ylabel('Y axis')
         ax3.set_zlabel('Z axis')
+        ax3.legend()
 
         plt.show()
 
@@ -509,7 +516,7 @@ if __name__ == '__main__':
     print(f"Using map: {map}")
 
     transform = LocalTransform(args.map)
-    #transform.train(args.debug)
-    transform.read()
+    transform.train(args.debug)
+    #transform.read()
 
     transform.check_transformation()

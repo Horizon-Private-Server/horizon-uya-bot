@@ -56,7 +56,7 @@ class Prototype:
     async def main_loop(self):
         while self.model.alive:
             try:
-                logger.info(self.game_state)
+                #logger.info(self.game_state)
 
                 state_update_start_time = datetime.now()
 

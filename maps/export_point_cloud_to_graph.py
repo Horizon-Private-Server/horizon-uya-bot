@@ -39,7 +39,7 @@ map_config = {
     # },
     'hoven_gorge': {
         # Adjust this in order to make the grid further apart or closer together
-        'voxel_size': 10,
+        'voxel_size': 100,
         # Adjust this to connect closer/farther points
         'distance_connected_variance': [20,40],
         'waypoints': {
@@ -60,7 +60,7 @@ class MapGenerator:
         #self.plot_points(raw_points, title="Raw Points")
 
         downsampled = self.downsample(raw_points, voxel_size=config['voxel_size'])
-        #self.plot_points(downsampled, title="Downsampled Points")
+        self.plot_points(downsampled, title="Downsampled Points")
 
         G = self.generate_graph(downsampled, variance=config['distance_connected_variance'])
         #self.plot_connected_graph(G, title="Main Graph")

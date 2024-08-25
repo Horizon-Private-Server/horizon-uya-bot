@@ -6,7 +6,8 @@ CHARGEBOOT_DISTANCE = 80
 
 
 VALID_GAME_MODES = {
-    'marcadia_palace': {'Deathmatch', 'CTF'}
+    'marcadia_palace': {'Deathmatch', 'CTF'},
+    'hoven_gorge': {'Deathmatch', 'CTF'},
 }
 
 

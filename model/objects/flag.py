@@ -23,6 +23,16 @@ flag_map = {
             'location': [26807, 54004, 7362],
         },
     },
+    'hoven_gorge': {
+        'red': {
+            'id': '4B1000F7',
+            'location': [11435, 9727, 4348],
+        },
+        'blue': {
+            'id': '4C1000F7',
+            'location': [21374, 22588, 4439],
+        },
+    },
     'command_center': {
         'red': {
             'id': '131000F7',

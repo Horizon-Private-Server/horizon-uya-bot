@@ -1,0 +1,79 @@
+{
+    "three_slice": {
+        "red": {
+            "x_min": 7000,
+            "x_max": 14500,
+            "y_min": 7000,
+            "y_max": 30000
+        },
+        "mid": {
+            "x_min": 14500,
+            "x_max": 18500,
+            "y_min": 7000,
+            "y_max": 30000
+        },
+        "blue": {
+            "x_min": 18500,
+            "x_max": 26000,
+            "y_min": 7000,
+            "y_max": 30000
+        }
+    },
+    "mid": [
+        {
+            "name": "blue_side_mid",
+            "x_min": 16000,
+            "x_max": 16500,
+            "y_min": 17500,
+            "y_max": 18000
+        },
+        {
+            "name": "mid_mid",
+            "x_min": 16000,
+            "x_max": 16500,
+            "y_min": 15500,
+            "y_max": 16000
+        },
+        {
+            "name": "red_mid",
+            "x_min": 16000,
+            "x_max": 16500,
+            "y_min": 1450,
+            "y_max": 15000
+        }
+    ],
+    "def": {
+        "red": {
+            "x_min": 10000,
+            "x_max": 10500,
+            "y_min": 10000,
+            "y_max": 10500
+        },
+        "blue": {
+            "x_min": 22000,
+            "x_max": 22500,
+            "y_min": 22000,
+            "y_max": 22500
+        }
+    },
+    "rush": {
+        "red": [
+            {
+                "name": "blue_base",
+                "x_min": 22500,
+                "x_max": 23500,
+                "y_min": 21000,
+                "y_max": 22500
+            }
+        ],
+        "blue": [
+            {
+                "name": "red_base",
+                "x_min": 10000,
+                "x_max": 10500,
+                "y_min": 10000,
+                "y_max": 11000
+            }
+        ]
+    }
+}

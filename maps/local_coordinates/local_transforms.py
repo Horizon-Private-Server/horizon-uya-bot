@@ -508,7 +508,7 @@ class LocalTransform():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Clean blarg log output to create mapping of global <-> local coordinates")
-    parser.add_argument('--map', type=str, default='marcadia_palace', help='Map raw log to clean')
+    parser.add_argument('--map', type=str, required=True, help='Map raw log to clean')
     parser.add_argument('--debug', type=bool, default=False, help='Debug mode')
 
     args = parser.parse_args()
@@ -517,6 +517,7 @@ if __name__ == '__main__':
 
     transform = LocalTransform(args.map)
     transform.train(args.debug)
+    transform.save()
     #transform.read()
 
     transform.check_transformation()

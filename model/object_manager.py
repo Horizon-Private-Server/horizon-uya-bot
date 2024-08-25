@@ -58,6 +58,15 @@ class ObjectManager():
             self.health_crates['101000F7'] = HealthCrate(self.model, 'Red Base Health', '101000F7', [33415, 56406, 7413])
             self.health_crates['0F1000F7'] = HealthCrate(self.model, 'Blue Base Health', '0F1000F7', [27835, 56425, 7413])
             self.health_crates['0E1000F7'] = HealthCrate(self.model, 'Turret Health', '0E1000F7', [30627, 56543, 7594])
+        elif self.map == 'hoven_gorge':
+            self.health_crates['3A1000F7'] = HealthCrate(self.model, 'Red Base Close', '3A1000F7', [33415, 56406, 7413])
+            self.health_crates['3D1000F7'] = HealthCrate(self.model, 'Red Base Far', '3D1000F7', [33415, 56406, 7413])
+            self.health_crates['3E1000F7'] = HealthCrate(self.model, 'Red Base Turret', '3E1000F7', [33415, 56406, 7413])
+            self.health_crates['401000F7'] = HealthCrate(self.model, 'Red Base Bridge', '401000F7', [33415, 56406, 7413])
+            self.health_crates['3B1000F7'] = HealthCrate(self.model, 'Blue Base Close', '3B1000F7', [33415, 56406, 7413])
+            self.health_crates['3C1000F7'] = HealthCrate(self.model, 'Blue Base Far', '3C1000F7', [33415, 56406, 7413])
+            self.health_crates['3F1000F7'] = HealthCrate(self.model, 'Blue Base Turret', '3F1000F7', [33415, 56406, 7413])
+            self.health_crates['411000F7'] = HealthCrate(self.model, 'Blue Base Bridge', '411000F7', [33415, 56406, 7413])
 
     def reset_all_masters(self):
         # Reset all the masters of all objects to P0

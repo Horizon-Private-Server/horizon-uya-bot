@@ -19,6 +19,7 @@ from model.states.ctf import *
 from model.states.static import *
 from model.states.static_shoot import *
 from model.states.follow import *
+from model.states.god import *
 
 import logging
 logger = logging.getLogger('thug.model.prototype')
@@ -38,6 +39,7 @@ class Prototype:
 
         self.respawn_time = 5
 
+        self.cycle_timing = .5
         self.weapon_switch_fire_cooldown = .3
         self.weapon_switch_dt = datetime.now().timestamp()
 
@@ -108,6 +110,8 @@ class Prototype:
                 self.state = static_shoot_initial.static_shoot_initial(self)
             elif self.bot_mode == 'follow':
                 self.state = follow_initial.follow_initial(self)
+            elif self.bot_mode == 'god':
+                self.state = god_initial.god_initial(self)
             self.state.enter({})
 
         #logger.info(str(self.model.game_state))
@@ -280,7 +284,7 @@ class Prototype:
             self._misc['cycle'] = CircularList(weapons, circular=True, casttype=str)
             self._misc['cycle_change_time'] = datetime.now()
 
-        if (datetime.now() - self._misc['cycle_change_time']).total_seconds() > .5:
+        if (datetime.now() - self._misc['cycle_change_time']).total_seconds() > self.cycle_timing:
             self.change_weapon(self._misc['cycle'].pop())
             self._misc['cycle_change_time'] = datetime.now()
 

@@ -48,6 +48,8 @@ class Model:
 
         self._seen_first_player_movement = False
 
+        if bot_mode == 'god':
+            self.profile.username = hex_to_str('0C') + 'GOD'
         player = PlayerState(player_id, account_id, username=self.profile.username, skin=self.profile.skin, clan_tag='[white]CPU', rank=self.profile.bolt)
         self.game_state = GameState(self, gameinfo, player)
         self.loop.create_task(self.game_state.map.read_map())

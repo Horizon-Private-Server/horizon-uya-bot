@@ -30,7 +30,7 @@ class Config:
             "mas_port": int(os.getenv("MAS_PORT")),
             "mls_ip": os.getenv("MLS_IP"),
             "mls_port": int(os.getenv("MLS_PORT")),
-            "timeout": 60,
+            "timeout": 240,
             "mls_log_level": logging.INFO,
             "mas_log_level": logging.INFO,
             "dmetcp_log_level": logging.INFO,

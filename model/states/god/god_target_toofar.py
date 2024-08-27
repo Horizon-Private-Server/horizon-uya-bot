@@ -15,6 +15,7 @@ class god_target_toofar(State):
         self.player_tracking = self.state_machine.game_state.get_closest_enemy_player()
         self.state_machine.target = self.state_machine.game_state.players[self.player_tracking].coord
 
+        self.state_machine.cycle_weapons(['grav', 'grav', 'grav', 'grav', 'grav', 'grav', 'grav', 'grav', 'flux'])
         self.state_machine.fire_weapon(object_id=self.player_tracking)
 
         target_distance = calculate_distance(self.state_machine.game_state.player.coord, self.state_machine.target)

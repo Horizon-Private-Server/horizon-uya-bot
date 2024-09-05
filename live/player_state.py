@@ -10,7 +10,7 @@ def get_closest_hp(input_number):
     return min(VALID_HP, key=lambda x: abs(x - input_number))
 
 class PlayerState:
-    def __init__(self, player_id:int=None, account_id:int=None, team:str='blue', username:str=None, skin:str=None, clan_tag:str=None, rank:int=0):
+    def __init__(self, player_id:int=-1, account_id:int=-1, team:str='blue', username:str='UNKNOWN', skin:str='UNKNOWN', clan_tag:str='', rank:int=0):
         self.player_id = player_id
         self.account_id = account_id
         self.team = team

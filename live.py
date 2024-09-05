@@ -1,0 +1,131 @@
+import json
+import logging
+import os
+import asyncio
+from collections import deque
+
+# requirements packages
+import websockets
+
+
+# package imports
+from medius.dme_serializer import TcpSerializer as tcp_map
+from medius.dme_serializer import UdpSerializer as udp_map
+from medius.dme_serializer import packets_both_tcp_and_udp
+
+from live.world_manager import WorldManager
+
+
+
+class LiveTrackerBackend:
+    def __init__(self, loop, server_ip='0.0.0.0', log_level='INFO', error_retry_time=10, run_blocked=False):
+        self.logger = logging.getLogger('uyalive')
+        formatter = logging.Formatter('%(asctime)s %(name)s | %(levelname)s | %(message)s')
+        sh = logging.StreamHandler()
+        sh.setFormatter(formatter)
+        sh.setLevel(logging.getLevelName(log_level))
+        sh.setLevel(logging.DEBUG)
+        self.logger.addHandler(sh)
+        self.logger.setLevel(logging.getLevelName(log_level))
+
+        self.server_ip = server_ip
+        self.error_retry_time = error_retry_time # in seconds
+
+        self.connected = False
+
+        self._world_manager = WorldManager()
+
+        self.loop = loop
+        if run_blocked:
+            loop.run_until_complete(self.read_websocket())
+        else:
+            loop.create_task(self.read_websocket())
+
+    def get_world_states(self) -> dict:
+        '''
+        Return dictionary format of world game stats
+        '''
+        return self._world_manager.to_json()
+
+
+    async def read_websocket(self):
+        uri = f"ws://{self.server_ip}:8765"
+        while True:
+            try:
+                async with websockets.connect(uri,ping_interval=None) as websocket:
+                    self.logger.info("Connected to websocket!")
+                    self.connected = True
+                    while True:
+                        data = await websocket.recv()
+                        self.logger.debug(f"{data}")
+                        try:
+                            for data_point in json.loads(data):
+                                serialized_data = self.process(data_point)
+                                for serialized in serialized_data:
+                                    self._world_manager.update(data_point, serialized)
+                        except Exception as e:
+                            self.logger.warning(f"Error processing: {e}")
+
+                        # Check if any worlds have not received updates
+                        self._world_manager.check_timeouts()
+
+            except Exception as e:
+                self.logger.warning(f"UYA Live error reading websocket: {e}")
+                self.logger.warning(f"Waiting {self.error_wait_time} seconds for next retry ...")
+                self.connected = False
+                await asyncio.sleep(self.error_retry_time)
+
+    def process(self, packet: dict):
+        '''
+        Process json from Robo's websocket.
+        Structure:
+        {
+            "type": udp/tcp
+            "dme_world_id": int
+            "src": the source player dme id
+            "dst": the destination player dme id, -1 for sending to all
+            "data": a hex string of the raw data
+        }
+        '''
+        # Convert to list. E.g. '000102030405' -> ['00', '01', '02', '03', '04', '05']
+        data = deque([packet['data'][i:i+2] for i in range(0,len(packet['data']),2)])
+
+        '''
+        There may be multiple messages in each message.
+        So we have to read the current message, and see if there's any leftover
+        data which would be another message
+        '''
+        all_serialized = []
+        # Keep reading until data is empty
+        while len(data) != 0:
+            packet_id = data.popleft() + data.popleft() # E.g. '0201'
+
+            # Check if the packet_id exists. If it does, serialize it
+            if packet['type'] == 'tcp':
+                if packet_id not in tcp_map.keys():
+                    break
+                else:
+                    if packet_id in packets_both_tcp_and_udp:
+                        serialized = tcp_map[packet_id].serialize('tcp', data)
+                    else:
+                        serialized = tcp_map[packet_id].serialize(data)
+
+            elif packet['type'] == 'udp':
+                if packet_id not in udp_map.keys():
+                    break
+                else:
+                    if packet_id in packets_both_tcp_and_udp:
+                        serialized = udp_map[packet_id].serialize('udp', data)
+                    else:
+                        serialized = udp_map[packet_id].serialize(data)
+
+
+            all_serialized.append(serialized)
+
+        self.logger.debug(f"{packet} -> {[str(s) for s in all_serialized]}")
+        return all_serialized
+
+
+if __name__ == '__main__':
+    loop = asyncio.new_event_loop()
+    LiveTrackerBackend(loop, server_ip=os.getenv('SOCKET_IP'), log_level='INFO', run_blocked=True)

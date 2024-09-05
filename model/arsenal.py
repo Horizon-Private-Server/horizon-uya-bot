@@ -1,5 +1,6 @@
 from datetime import datetime
 import random
+from copy import deepcopy
 
 class Arsenal:
     def __init__(self, weapons:list=['flux', 'blitz', 'grav'], enabled:bool=True):
@@ -91,8 +92,6 @@ class Arsenal:
             self.weapons['flux']['hit_rate'] = 0
             self.weapons['grav']['hit_rate'] = 0
 
-
-
     def dump_upgrades(self):
         result = {
             'lava': 'v1',
@@ -118,6 +117,9 @@ class Arsenal:
             self.weapons[weapon]['upgrade'] = 'v2'
             return True
         return False
+    
+    def to_json(self):
+        return deepcopy(self.weapons)
 
     def __str__(self):
         return f"Arsenal; enabled:{self.enabled} weapons:{self.weapons}"

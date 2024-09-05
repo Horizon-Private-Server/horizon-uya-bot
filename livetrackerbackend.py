@@ -47,7 +47,7 @@ class LiveTrackerBackend:
             loop.create_task(self.read_websocket())
 
 
-    async def wait(self):
+    async def wait():
         await asyncio.sleep(5)
     
     def get_world_states(self) -> dict:
@@ -83,7 +83,7 @@ class LiveTrackerBackend:
 
             except Exception as e:
                 self.logger.warning(f"UYA Live error reading websocket: {e}")
-                self.logger.warning(f"Waiting {self.error_wait_time} seconds for next retry ...")
+                self.logger.warning(f"Waiting {self.error_retry_time} seconds for next retry ...")
                 self.connected = False
                 await asyncio.sleep(self.error_retry_time)
 

@@ -1,7 +1,7 @@
 from live.game_state import GameState
 
 class WorldManager:
-    def __init__(self, world_timeout=10):
+    def __init__(self, world_timeout=600):
         self._worlds = {}
         self._world_timeout = world_timeout
 
@@ -11,16 +11,15 @@ class WorldManager:
         
         if world_id not in self._worlds.keys():
             self._worlds[world_id] = GameState(world_id, self._world_timeout)
-
-
-        if serialized_data.name == 'tcp_0004_tnw' and serialized_data.tnw_type == 'tNW_PlayerData':
-            print(serialized_data)
-            #self.game_state.tnw_playerdata_update(src_player, dme_packet.data)
+        else:
+            self._worlds[world_id].update()
 
         if serialized_data.name == 'tcp_0004_tnw' and serialized_data.tnw_type == 'tNW_GameSetting':
             print(serialized_data)
-            #self.game_state.tnw_gamesetting_update(src_player, dme_packet.data)
+            self._worlds[world_id].tnw_gamesetting_update(data_point['src'], serialized_data.data)
 
+        if serialized_data.name == 'udp_0209_movement_update':
+            self._worlds[world_id].movement_update(data_point['src'], serialized_data.data)
 
     def check_timeouts(self):
         worlds_to_remove = []

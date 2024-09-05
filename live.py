@@ -35,18 +35,32 @@ class LiveTrackerBackend:
 
         self._world_manager = WorldManager()
 
+        loop.create_task(self.world_check_timeouts())
+
         self.loop = loop
-        if run_blocked:
-            loop.run_until_complete(self.read_websocket())
+        if run_blocked: # For debugging
+            loop.create_task(self.read_websocket())
+            while True:
+                self.logger.info(self.get_world_states())
+                loop.run_until_complete(self.wait())
         else:
             loop.create_task(self.read_websocket())
 
+
+    async def wait(self):
+        await asyncio.sleep(5)
+    
     def get_world_states(self) -> dict:
         '''
         Return dictionary format of world game stats
         '''
         return self._world_manager.to_json()
 
+    async def world_check_timeouts(self):
+        while True:
+            # Check if any worlds have not received updates
+            self._world_manager.check_timeouts()
+            await asyncio.sleep(10)
 
     async def read_websocket(self):
         uri = f"ws://{self.server_ip}:8765"
@@ -66,8 +80,6 @@ class LiveTrackerBackend:
                         except Exception as e:
                             self.logger.warning(f"Error processing: {e}")
 
-                        # Check if any worlds have not received updates
-                        self._world_manager.check_timeouts()
 
             except Exception as e:
                 self.logger.warning(f"UYA Live error reading websocket: {e}")

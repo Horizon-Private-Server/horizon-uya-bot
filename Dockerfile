@@ -5,7 +5,7 @@ RUN mkdir -p ${FUNCTION_DIR}
 WORKDIR ${FUNCTION_DIR}
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install -r thug_requirements.txt
 ENV USE_ENV_VARS Yes
 
 # Copy function code

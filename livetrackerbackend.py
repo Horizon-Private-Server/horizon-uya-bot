@@ -30,15 +30,19 @@ class LiveTrackerBackend:
 
         self.server_ip = server_ip
         self.error_retry_time = error_retry_time # in seconds
+        self.run_blocked = run_blocked
 
+        self._world_manager = None
+        
         self.connected = False
 
+    def start(self, loop):
         self._world_manager = WorldManager()
 
         loop.create_task(self.world_check_timeouts())
 
         self.loop = loop
-        if run_blocked: # For debugging
+        if self.run_blocked: # For debugging
             loop.create_task(self.read_websocket())
             while True:
                 self.logger.info(self.get_world_states())
@@ -46,8 +50,7 @@ class LiveTrackerBackend:
         else:
             loop.create_task(self.read_websocket())
 
-
-    async def wait():
+    async def wait(self):
         await asyncio.sleep(5)
     
     def get_world_states(self) -> dict:

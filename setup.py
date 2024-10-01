@@ -8,6 +8,7 @@ setup(
     name='livetrackerbackend',
     version='0.0.1',
     py_modules=['livetrackerbackend'],
+    packages=find_packages(),  # Automatically finds all packages (folders with __init__.py)
     install_requires=load_requirements('requirements.txt'),
     description='UYA Live tracker backend',
     url='https://github.com/Horizon-Private-Server/horizon-uya-bot',  # GitHub repository URL

@@ -4,7 +4,7 @@ ARG FUNCTION_DIR=/code
 RUN mkdir -p ${FUNCTION_DIR}
 WORKDIR ${FUNCTION_DIR}
 
-COPY requirements.txt .
+COPY thug_requirements.txt .
 RUN pip install -r thug_requirements.txt
 ENV USE_ENV_VARS Yes
 

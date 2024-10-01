@@ -126,11 +126,14 @@ class Blarg:
             # if packet_id == '0209' and packet['src'] == 0:
             #     self._recent_movement = serialized.data['coord']
             # if packet_id == '020C' and 'flag_drop' in serialized.subtype:
-            #     self._logger.info(f"Movement:{self._recent_movement} Flag:[{serialized.data['local_x']},{serialized.data['local_y']},{serialized.data['local_z']}], offset:[{serialized.data['offset_x']},{serialized.data['offset_y']},{serialized.data['offset_z']}]")
+            #     self._logger.info(f"Movement:{self._recent_movement} Flag:[{int(serialized.data['local_x'])},{int(serialized.data['local_y'])},{int(serialized.data['local_z'])}], offset:[{int((serialized.data['local_x'] - int(serialized.data['local_x']))*255)},{int((serialized.data['local_y'] - int(serialized.data['local_y']))*255)},{int((serialized.data['local_z'] - int(serialized.data['local_z']))*255)}]")
 
+            # if packet_id == '0209' and packet['src'] == 0:
+            #     self._recent_movement = serialized.data['coord']
+            # if packet_id == '020C':
+            #     self._logger.info(f"Movement:{self._recent_movement} Flag:{serialized}")
 
-
-            if (self._config['filter'] == packet_id or self._config['filter'] == '') and self._config['log_serialized'] == 'True': # and packet_id not in ['0209', '0213']:
+            if (packet_id in self._config['filter'] or self._config['filter'] == []) and self._config['log_serialized'] == 'True': # and packet_id not in ['0209', '0213']:
                 self._logger.info(f"{packet['src']} -> {packet['dst']} | {serialized}")
                 
 

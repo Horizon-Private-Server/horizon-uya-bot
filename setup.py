@@ -5,9 +5,9 @@ def load_requirements(filename):
         return f.read().splitlines()
 
 setup(
-    name='uyalivetrackerbackend',
+    name='livetrackerbackend',
     version='0.0.1',
-    packages=find_packages(),
+    py_modules=['livetrackerbackend'],
     install_requires=load_requirements('requirements.txt'),
     description='UYA Live tracker backend',
     url='https://github.com/Horizon-Private-Server/horizon-uya-bot',  # GitHub repository URL

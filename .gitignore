@@ -10,3 +10,6 @@ configs_test
 butils/diff_indiv/testing.txt
 .DS_Store
 configs/
+build/
+uyalivetrackerbackend.egg-info/
+livetrackerbackend.egg-info/

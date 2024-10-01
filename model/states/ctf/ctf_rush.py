@@ -2,12 +2,14 @@
 from model.states.state import State
 from model.states.ctf.ctf_main import ctf_main
 from butils.utils import *
+import random
 
 class ctf_rush(ctf_main):
     def __init__(self, state_machine):
         super().__init__(state_machine)
         self.reached_start = False
         self.rush_coord = [0,0,0]
+        self.just_rush_flag = random.random() > 0.70
 
     def enter(self, msg:dict):
         super().enter(msg)
@@ -24,7 +26,7 @@ class ctf_rush(ctf_main):
             return
 
         # Grab the flag from their base!
-        if self.reached_start and self.state_machine.game_state.enemy_flag_at_base() and self.state_machine.game_state.flag_no_enemies_nearby(self.state_machine.game_state.get_enemy_flag_location()):
+        if (self.reached_start and self.state_machine.game_state.enemy_flag_at_base() and self.state_machine.game_state.flag_no_enemies_nearby(self.state_machine.game_state.get_enemy_flag_location())) or self.just_rush_flag:
             self.state_machine.transition_state('ctf_flagrush', {})
             return
 

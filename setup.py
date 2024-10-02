@@ -15,6 +15,9 @@ setup(
     author='John Janecek',
     author_email='janecektyler@gmail.com',
     license='MIT',  # Choose your license
+    package_data={
+        '': ['*.json'],  # Include all JSON files in all directories
+    },
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',

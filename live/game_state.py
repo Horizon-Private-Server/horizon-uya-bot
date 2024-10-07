@@ -48,6 +48,9 @@ class GameState:
             'world_latest_update': str(self.world_latest_update),
             'players': [player.to_json() for player in self.players.values()],
             'events': list(self.events),
+            'map': 'UNKNOWN',
+            'name': 'UNKNOWN',
+            'game_mode': 'UNKNOWN',
         }
     
     def update(self):

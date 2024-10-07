@@ -1,14 +1,24 @@
-
 # pip install git+https://github.com/Horizon-Private-Server/horizon-uya-bot.git
 import os
 import asyncio
+import json
 
 from livetrackerbackend import LiveTrackerBackend
 
 loop = asyncio.new_event_loop()
-tracker = LiveTrackerBackend(loop, server_ip=os.getenv('SOCKET_IP'), log_level='INFO')
+tracker = LiveTrackerBackend(server_ip=os.getenv('SOCKET_IP'), log_level='INFO')
+
+tracker.start(loop)
 
 while True:
     world_information = tracker.get_world_states()
-    print(world_information)
+    print("===========================================================================")
+    print("===========================================================================")
+    print("===========================================================================")
+    print("===========================================================================")
+    print("===========================================================================")
+    print("===========================================================================")
+    print("===========================================================================")
+    print("===========================================================================")
+    print(json.dumps(world_information, indent=4))
     loop.run_until_complete(asyncio.sleep(1))

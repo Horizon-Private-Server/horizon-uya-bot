@@ -1,5 +1,8 @@
 from datetime import datetime, timedelta
+from collections import deque
+
 from live.player_state import PlayerState
+
 
 class GameState:
     def __init__(self, world_id, world_timeout):
@@ -9,37 +12,7 @@ class GameState:
 
 
         self.players = {} # player id -> PlayerState
-
-        self.nodes = False
-
-        # self.state = 'staging'
-
-        # self.game_name = gameinfo['game_name']
-        # # ['flux', 'n60', 'blitz', 'rocket', 'grav', 'mine', 'morph', 'lava']
-        # self.weapons = list(set(gameinfo['weapons']).intersection({'flux', 'grav', 'blitz'}))
-
-        # # {'baseDefenses': True, 'spawn_charge_boots': False, 'spawn_weapons': False, 'player_names': True, 'vehicles': True}
-        # self.advanced_rules = gameinfo['advanced_rules']
-        # # ['Bakisi_Isle', 'Hoven_Gorge', 'Outpost_x12', 'Korgon_Outpost', 'Metropolis', 'Blackwater_City', 'Command_Center', 'Aquatos_Sewers', 'Blackwater_Dox', 'Marcadia_Palace']
-        # self.map_name = gameinfo['map']
-        # # ['Siege', 'CTF', 'Deathmatch']
-        # self.game_mode = gameinfo['game_mode']
-
-        # self.game_info = gameinfo
-
-        # self.nodes = True
-
-        # self.start_time = datetime.now()
-
-        # # Point grid
-        # self.map = Map(self.map_name)
-
-        # self.red_caps = 0
-        # self.blue_caps = 0
-
-        # self.object_manager = ObjectManager(self.model, self, self.map_name, self.game_mode)
-
-        # self.no_enemies_in_game = True
+        self.events = deque(maxlen=100)
 
     def tnw_gamesetting_update(self, src_player:int, tnw_gamesetting: dict):
         '''
@@ -59,7 +32,6 @@ class GameState:
                 # Real player
                 self.players[player_idx] = PlayerState(player_id=player_idx, account_id=-1, team=team, username=username, skin=skin, clan_tag=clan_tag, rank=1)
 
-        self.nodes = tnw_gamesetting['nodes']
 
     def movement_update(self, src_player:int, movement_data:dict):
         if src_player not in self.players.keys():
@@ -74,8 +46,8 @@ class GameState:
         return {
             'world_id': self.world_id,
             'world_latest_update': str(self.world_latest_update),
-            'nodes': self.nodes,
             'players': [player.to_json() for player in self.players.values()],
+            'events': list(self.events),
         }
     
     def update(self):

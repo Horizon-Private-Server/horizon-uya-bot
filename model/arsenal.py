@@ -121,5 +121,24 @@ class Arsenal:
     def to_json(self):
         return deepcopy(self.weapons)
 
+    def to_minimal_json(self):
+        return {
+            'flux':
+                {
+                    'upgrade': self.weapons['flux']['upgrade'],
+                    'kills': self.weapons['flux']['kills'],
+                },
+            'blitz':
+                {
+                    'upgrade': self.weapons['blitz']['upgrade'],
+                    'kills': self.weapons['blitz']['kills'],
+                },
+            'grav':
+                {
+                    'upgrade': self.weapons['grav']['upgrade'],
+                    'kills': self.weapons['grav']['kills'],
+                },
+        }
+    
     def __str__(self):
         return f"Arsenal; enabled:{self.enabled} weapons:{self.weapons}"

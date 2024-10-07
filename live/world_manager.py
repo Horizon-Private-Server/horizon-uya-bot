@@ -21,6 +21,10 @@ class WorldManager:
         if serialized_data.name == 'udp_0209_movement_update':
             self._worlds[world_id].movement_update(data_point['src'], serialized_data.data)
 
+        if serialized_data.name == 'tcp_0204_player_killed':
+            self._worlds[world_id].movement_update(data_point['src'], serialized_data.data)
+
+
     def check_timeouts(self):
         worlds_to_remove = []
         for world_id in self._worlds.keys():

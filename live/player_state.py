@@ -32,6 +32,8 @@ class PlayerState:
         self.flag = None
 
         self.total_kills = 0
+        self.total_deaths = 0
+        self.total_suicides = 0
 
         self.arsenal = Arsenal()
 
@@ -55,4 +57,6 @@ class PlayerState:
             'flag': self.flag.to_json() if self.flag else None,
             'health': self.health,
             'total_kills': self.total_kills,
+            'total_deaths': self.total_deaths,
+            'total_suicides': self.total_suicides,
         }

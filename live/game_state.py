@@ -39,6 +39,9 @@ class GameState:
         self.players[src_player].coord = movement_data['coord']
         self.players[src_player].cam_x = movement_data['cam3_x']
 
+    def health_update(self, src_player:int, health: int):
+        self.players[src_player].health = health
+
     def timed_out(self):
         return (datetime.now() - self.world_latest_update).total_seconds() > self.world_timeout
 

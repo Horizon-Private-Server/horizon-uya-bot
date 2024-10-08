@@ -22,8 +22,21 @@ class WorldManager:
             self._worlds[world_id].movement_update(data_point['src'], serialized_data.data)
 
         if serialized_data.name == 'tcp_0204_player_killed':
-            self._worlds[world_id].movement_update(data_point['src'], serialized_data.data)
+            self._worlds[world_id].health_update(data_point['src'], 0)
 
+        if serialized_data.name == 'tcp_0003_broadcast_lobby_state':
+            msgs = [key for key in serialized_data.data.keys() if key[0:3] == 'msg']
+
+            for msg in msgs:
+                if serialized_data.data[msg]['type'] == 'health_update':
+                    self._worlds[world_id].health_update(data_point['src'], serialized_data.data[msg]['health'])
+
+                if serialized_data.data[msg]['type'] == 'weapon_upgraded':
+                    pass
+                    #self.game_state.players[src_player].arsenal.set_weapon_upgrades(serialized_data.data[msg])
+
+        if serialized_data.name == 'tcp_020A_player_respawned':
+            self._worlds[world_id].health_update(data_point['src'], 100)
 
     def check_timeouts(self):
         worlds_to_remove = []

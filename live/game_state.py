@@ -45,6 +45,20 @@ class GameState:
     def timed_out(self):
         return (datetime.now() - self.world_latest_update).total_seconds() > self.world_timeout
 
+    def player_killed(self, killer_id:int, killed_id:int, weapon:str):
+        if weapon == 'flux':
+            pass
+        elif weapon == 'grav':
+            pass
+        elif weapon == 'blitz':
+            pass
+        if killer_id in self.players.keys():
+            self.players[killer_id].total_kills += 1
+        if killer_id == 255:
+            self.players[killed_id].total_suicides += 1
+        if killed_id in self.players.keys():
+            self.players[killed_id].total_deaths += 1
+
     def to_json(self):
         return {
             'world_id': self.world_id,

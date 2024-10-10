@@ -23,6 +23,7 @@ class WorldManager:
 
         if serialized_data.name == 'tcp_0204_player_killed':
             self._worlds[world_id].health_update(data_point['src'], 0)
+            self._worlds[world_id].player_killed(serialized_data.killer_id, serialized_data.killed_id, serialized_data.weapon)
 
         if serialized_data.name == 'tcp_0003_broadcast_lobby_state':
             msgs = [key for key in serialized_data.data.keys() if key[0:3] == 'msg']

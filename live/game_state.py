@@ -81,45 +81,6 @@ class GameState:
         self.world_latest_update = datetime.now()
 
 
-
-    # def start(self):
-    #     self.player.set_coord(self.map.get_respawn_location(self.player.team, self.game_mode))
-
-    # def game_started(self):
-    #     # Actual game has started
-    #     self.start_time = datetime.now()
-
-
-    # def player_left(self, src_player:int):
-    #     if src_player not in self.players.keys():
-    #         return
-    #     del self.players[src_player]
-
-    # def player_killed(self, killer_id: int, killed_id: int):
-    #     if killer_id == self.player.player_id:
-    #         self.player.total_kills += 1
-    #     else:
-    #         self.players[killer_id].total_kills += 1
-        
-    #     if killed_id != self.player.player_id:
-    #         self.players[killed_id].is_dead = True
-
-    #     if self.game_mode == 'Deathmatch' and self.game_info['frag'] != None:
-    #         # Add up total score per team. See if it reaches frag
-    #         team_scores = defaultdict(int)
-    #         team_scores[self.player.team] += self.player.total_kills
-    #         for player in self.players.values():
-    #             team_scores[player.team] += player.total_kills
-            
-    #         for total_score in team_scores.values():
-    #             if total_score >= self.game_info['frag']:
-    #                 logger.info(f"Got more kills than frag limit ({self.game_info['frag']})!")
-    #                 self.model.loop.create_task(self.model.kill(delay=5))
-    #                 return
-
-
-    # def time_update(self, src_player: int, time: int):
-    #     if src_player not in self.players.keys():
-    #         return
-    #     self.players[src_player].time = time
-
+    def flag_capture(self, src_player: int):
+        if src_player in self.players.keys():
+            self.players[src_player].total_flags += 1

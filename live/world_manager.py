@@ -35,6 +35,9 @@ class WorldManager:
                 if serialized_data.data[msg]['type'] == 'weapon_upgraded':
                     self._worlds[world_id].set_weapon_upgrades(data_point['src'], serialized_data.data[msg])
 
+        if serialized_data.name == 'tcp_020C_info' and serialized_data.subtype[2:] == '_flag_update' and serialized_data.data['flag_update_type'][2:] == '_capture':
+            self._worlds[world_id].flag_capture(data_point['src'])
+
 
         if serialized_data.name == 'tcp_020A_player_respawned':
             self._worlds[world_id].health_update(data_point['src'], 100)

@@ -31,6 +31,8 @@ class PlayerState:
 
         self.flag = None
 
+        self.total_flags = 0
+
         self.total_kills = 0
         self.total_deaths = 0
         self.total_suicides = 0
@@ -65,4 +67,5 @@ class PlayerState:
             'total_kills': self.total_kills,
             'total_deaths': self.total_deaths,
             'total_suicides': self.total_suicides,
+            'total_flags': self.total_flags,
         }

@@ -33,11 +33,12 @@ class WorldManager:
                     self._worlds[world_id].health_update(data_point['src'], serialized_data.data[msg]['health'])
 
                 if serialized_data.data[msg]['type'] == 'weapon_upgraded':
-                    pass
-                    #self.game_state.players[src_player].arsenal.set_weapon_upgrades(serialized_data.data[msg])
+                    self._worlds[world_id].set_weapon_upgrades(data_point['src'], serialized_data.data[msg])
+
 
         if serialized_data.name == 'tcp_020A_player_respawned':
             self._worlds[world_id].health_update(data_point['src'], 100)
+            self._worlds[world_id].reset_arsenal(data_point['src'])
 
     def check_timeouts(self):
         worlds_to_remove = []

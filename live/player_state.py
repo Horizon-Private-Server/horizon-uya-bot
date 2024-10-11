@@ -43,6 +43,12 @@ class PlayerState:
         self.health = 100
         self.arsenal.reset_upgrades()
 
+    def reset_arsenal(self):
+        self.arsenal.reset_upgrades()
+
+    def set_upgrades(self, weapons:dict):
+        self.arsenal.set_weapon_upgrades(weapons)
+
     def to_json(self):
         return {
             'player_id': self.player_id,

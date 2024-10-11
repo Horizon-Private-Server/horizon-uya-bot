@@ -32,6 +32,13 @@ class GameState:
                 # Real player
                 self.players[player_idx] = PlayerState(player_id=player_idx, account_id=-1, team=team, username=username, skin=skin, clan_tag=clan_tag, rank=1)
 
+    def reset_arsenal(self, src_player:int):
+        if src_player in self.players.keys():
+            self.players[src_player].reset_arsenal()
+
+    def set_weapon_upgrades(self, src_player:int, upgrades:dict):
+        if src_player in self.players.keys():
+            self.players[src_player].set_upgrades(upgrades)
 
     def movement_update(self, src_player:int, movement_data:dict):
         if src_player not in self.players.keys():

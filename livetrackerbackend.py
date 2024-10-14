@@ -19,7 +19,7 @@ from live.world_manager import WorldManager
 
 
 class LiveTrackerBackend:
-    def __init__(self, server_ip='0.0.0.0', log_level='INFO', error_retry_time=10, run_blocked=False):
+    def __init__(self, server_ip='0.0.0.0', simulated:bool=False, log_level='INFO', error_retry_time=10, run_blocked=False):
         self.logger = logging.getLogger('uyalive')
         formatter = logging.Formatter('%(asctime)s %(name)s | %(levelname)s | %(message)s')
         sh = logging.StreamHandler()
@@ -29,7 +29,7 @@ class LiveTrackerBackend:
         self.logger.addHandler(sh)
         self.logger.setLevel(logging.getLevelName(log_level))
 
-        self.simulated = server_ip == '0.0.0.0'
+        self.simulated = simulated
         self.simulated_queue = deque()
 
         self.server_ip = server_ip

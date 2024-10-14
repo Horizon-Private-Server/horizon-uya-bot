@@ -6,7 +6,12 @@ import json
 from livetrackerbackend import LiveTrackerBackend
 
 loop = asyncio.new_event_loop()
-tracker = LiveTrackerBackend(server_ip=os.getenv('SOCKET_IP'), log_level='INFO')
+
+# For prod
+#tracker = LiveTrackerBackend(server_ip=os.getenv('SOCKET_IP'), log_level='INFO')
+
+# For simulated
+tracker = LiveTrackerBackend(server_ip=os.getenv('SOCKET_IP'), simulated=True, log_level='INFO')
 
 tracker.start(loop)
 

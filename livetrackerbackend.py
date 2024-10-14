@@ -94,7 +94,7 @@ class LiveTrackerBackend:
 
     async def read_simulated_data(self):
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        with open(os.path.join(script_dir, 'live', 'simulated_data.txt') ,'r') as f:
+        with open(os.path.join(script_dir, 'live', 'simulated_data.json') ,'r') as f:
             data = f.readlines()
         data = [eval(line.strip()) for line in data]
 

@@ -93,8 +93,9 @@ class LiveTrackerBackend:
                 await asyncio.sleep(self.error_retry_time)
 
     async def read_simulated_data(self):
-        with open('live/simulated_data.txt', 'r') as file:
-            data = file.readlines()
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        with open(os.path.join(script_dir, 'live', 'simulated_data.txt') ,'r') as f:
+            data = f.readlines()
         data = [eval(line.strip()) for line in data]
 
         data[0]['sleep'] = 0

@@ -1,10 +1,10 @@
 from live.game_state import GameState
 
 class WorldManager:
-    def __init__(self, world_timeout=600):
+    def __init__(self, simulated:bool=False, world_timeout=600):
         self._worlds = {}
         self._world_timeout = world_timeout
-
+        self._simulated = simulated
 
     def update(self, data_point: dict, serialized_data):
         world_id = data_point['dme_world_id']
@@ -52,8 +52,21 @@ class WorldManager:
         for world_id in worlds_to_remove:
             del self._worlds[world_id]
 
+    def reset(self):
+        self._worlds = {}
+
     def to_json(self):
         worlds = []
         for world in self._worlds.values():
-            worlds.append(world.to_json())
+            world = world.to_json()
+            if self._simulated:
+                if world['world_id'] == 12:
+                    world['map'] = 'Hoven Gorge'
+                    world['game_mode'] = 'CTF'
+                    world['name'] = "FourBolt2's"
+                elif world['world_id'] == 11:
+                    world['map'] = 'Hoven Gorge'
+                    world['game_mode'] = 'Deathmatch'
+                    world['name'] = "FourBolt's"
+            worlds.append(world)
         return worlds

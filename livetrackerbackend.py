@@ -3,6 +3,7 @@ import logging
 import os
 import asyncio
 from collections import deque
+from datetime import datetime
 
 # requirements packages
 import websockets
@@ -28,6 +29,9 @@ class LiveTrackerBackend:
         self.logger.addHandler(sh)
         self.logger.setLevel(logging.getLevelName(log_level))
 
+        self.simulated = server_ip == '0.0.0.0'
+        self.simulated_queue = deque()
+
         self.server_ip = server_ip
         self.error_retry_time = error_retry_time # in seconds
         self.run_blocked = run_blocked
@@ -37,7 +41,7 @@ class LiveTrackerBackend:
         self.connected = False
 
     def start(self, loop):
-        self._world_manager = WorldManager()
+        self._world_manager = WorldManager(simulated=self.simulated)
 
         loop.create_task(self.world_check_timeouts())
 
@@ -47,6 +51,9 @@ class LiveTrackerBackend:
             while True:
                 self.logger.info(self.get_world_states())
                 loop.run_until_complete(self.wait())
+        elif self.simulated:
+            loop.create_task(self.read_simulated_data())
+            loop.create_task(self.read_simulated_websocket())
         else:
             loop.create_task(self.read_websocket())
 
@@ -64,6 +71,52 @@ class LiveTrackerBackend:
             # Check if any worlds have not received updates
             self._world_manager.check_timeouts()
             await asyncio.sleep(10)
+
+    async def read_simulated_websocket(self):
+        self.logger.info("Simulating websocket data from file!")
+        while True:
+            try:
+                while True:
+                    data = await self.simulated_read()
+                    self.logger.debug(f"{data}")
+                    try:
+                        for data_point in data:
+                            serialized_data = self.process(data_point)
+                            for serialized in serialized_data:
+                                self._world_manager.update(data_point, serialized)
+                    except Exception as e:
+                        self.logger.warning(f"Error processing: {e}")
+
+            except Exception as e:
+                self.logger.warning(f"UYA Live error reading simulated websocket: {e}")
+                self.logger.warning(f"Waiting {self.error_retry_time} seconds for next retry ...")
+                await asyncio.sleep(self.error_retry_time)
+
+    async def read_simulated_data(self):
+        with open('live/simulated_data.txt', 'r') as file:
+            data = file.readlines()
+        data = [eval(line.strip()) for line in data]
+
+        data[0]['sleep'] = 0
+        for i in range(1,len(data)):
+            ts_before = datetime.strptime(data[i-1]['ts'], '%Y-%m-%d %H:%M:%S.%f')
+            ts_current = datetime.strptime(data[i]['ts'], '%Y-%m-%d %H:%M:%S.%f')
+            diff_seconds = (ts_current - ts_before).total_seconds()
+            data[i]['sleep'] = diff_seconds
+
+        while True:
+            self._world_manager.reset()
+            self.simulated_queue = deque()
+
+            for datapoint in data:
+                await asyncio.sleep(datapoint['sleep'])
+                self.simulated_queue.append(datapoint['data'])
+
+    async def simulated_read(self):
+        while len(self.simulated_queue) == 0:
+            await asyncio.sleep(0.00001)
+        return self.simulated_queue.popleft()
+
 
     async def read_websocket(self):
         uri = f"ws://{self.server_ip}:8765"

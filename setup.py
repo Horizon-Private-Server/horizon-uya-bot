@@ -6,7 +6,7 @@ def load_requirements(filename):
 
 setup(
     name='livetrackerbackend',
-    version='0.0.1',
+    version='0.0.2',
     py_modules=['livetrackerbackend'],
     packages=find_packages(),  # Automatically finds all packages (folders with __init__.py)
     install_requires=load_requirements('requirements.txt'),

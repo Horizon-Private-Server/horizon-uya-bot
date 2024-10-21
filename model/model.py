@@ -17,6 +17,7 @@ from butils.utils import *
 from model.player_state import PlayerState
 from model.game_state import GameState
 from model.bots import *
+from model.metric_manager import MetricManager
 
 from constants.constants import parse_object_id, MAIN_BOT_LOOP_TIMER
 
@@ -61,6 +62,12 @@ class Model:
         self.loop.create_task(self._tcp_reader())
         self.loop.create_task(self._udp_reader())
 
+        self._metric_manager = MetricManager()
+
+        if bot_mode == 'metric':
+            self.loop.create_task(self._metric_collector())
+
+
     async def _tcp_reader(self):
         while self.alive:
             if self._network._dmetcp.qsize() != 0:
@@ -83,6 +90,15 @@ class Model:
                     logger.exception(f"Error processing DME UDP packet: {packet}")
             await asyncio.sleep(0.0001)
 
+    async def _metric_collector(self):
+        '''
+        If we are trying to collect metrics, then we want to override some packet structures
+        '''
+        while self.alive:
+            if self._metric_manager._started:
+                self.dmetcp_queue.put(['B', tcp_0009_set_timer.tcp_0009_set_timer(time=self._metric_manager.get_tcp_id(), unk1=self._metric_manager.get_tcp())])
+                self.dmeudp_queue.put(['B', udp_0001_timer_update.udp_0001_timer_update(time=self._metric_manager.get_udp_id(), unk1=self._metric_manager.get_udp())])
+            await asyncio.sleep(0.01)
 
     def process(self, serialized: dict):
         '''
@@ -143,6 +159,12 @@ class Model:
             self.dmetcp_queue.put(['B', tcp_0210_player_joined.tcp_0210_player_joined(account_id=self.game_state.player.account_id, skin1=self.game_state.player.skin, skin2=self.game_state.player.skin, username=self.game_state.player.username, username2=self.game_state.player.username, rank=self.game_state.player.rank, clan_tag=self.game_state.player.clan_tag)])
             self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready', clan_tag=self.game_state.player.clan_tag)])
 
+        if dme_packet.name == 'tcp_0009_set_timer' and src_player != 0 and self.bot.bot_mode == 'metric':
+            self._metric_manager.update('tcp', src_player, dme_packet.time, dme_packet.unk1)
+
+        if dme_packet.name == 'udp_0001_timer_update' and src_player != 0 and self.bot.bot_mode == 'metric':
+            self._metric_manager.update('udp', src_player, dme_packet.time, dme_packet.unk1)
+
         if dme_packet.name == 'tcp_0211_player_lobby_state_change' and src_player == 0 and dme_packet.ready == 'change team request':
             self.game_state.player.change_teams(self.game_state.game_mode)
             self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team,skin=self.game_state.player.skin,username=self.game_state.player.username, ready='ready', clan_tag=self.game_state.player.clan_tag)])
@@ -152,6 +174,8 @@ class Model:
             self.loop.create_task(self.send_player_data())
             self.loop.create_task(self.timer_update())
             self.game_state.state = 'active'
+            if self.bot.bot_mode == 'metric':
+                self._metric_manager.start()
 
         if dme_packet.name == 'udp_0001_timer_update':
             if src_player == 0:
@@ -203,7 +227,7 @@ class Model:
         if dme_packet.name in ['packet_020E_shot_fired']:
             self.bot.process_shot_fired(dme_packet)
 
-        if dme_packet.name == 'udp_0001_timer_update' and dme_packet.unk1 == '00010000':
+        if dme_packet.name == 'udp_0001_timer_update' and dme_packet.unk1 == '00010000' and self.bot.bot_mode != 'metric':
             self.dmeudp_queue.put([src_player, udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1="0000FFFF")])
             self.dmeudp_queue.put([src_player, udp_0001_timer_update.udp_0001_timer_update(time=self.game_state.player.time, unk1="00010000")])
 

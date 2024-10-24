@@ -1,0 +1,5 @@
+numpy
+websockets
+pydantic
+requests
+aiohttp

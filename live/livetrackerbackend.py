@@ -8,6 +8,8 @@ from datetime import datetime
 # requirements packages
 import websockets
 
+import sys
+sys.path.append('..')
 
 # package imports
 from medius.dme_serializer import TcpSerializer as tcp_map
@@ -195,8 +197,11 @@ class LiveTrackerBackend:
         return all_serialized
 
 
+
+
 if __name__ == '__main__':
     # pip install git+https://github.com/Horizon-Private-Server/horizon-uya-bot.git
+    # from livetrackerbackend import LiveTrackerBackend
     import os
     import asyncio
     import json

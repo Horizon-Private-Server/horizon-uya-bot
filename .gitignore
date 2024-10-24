@@ -13,3 +13,4 @@ configs/
 build/
 uyalivetrackerbackend.egg-info/
 livetrackerbackend.egg-info/
+logs/

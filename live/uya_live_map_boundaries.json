@@ -1,0 +1,62 @@
+{
+    "Bakisi Isles": {
+        "xmin": 11745,
+        "xmax": 39504,
+        "ymin": 13133,
+        "ymax": 38565
+    },
+    "Hoven Gorge": {
+        "xmin": 8391,
+        "xmax": 24448,
+        "ymin": 7380,
+        "ymax": 25070
+    },
+    "Aquatos Sewers": {
+        "xmin": 21500,
+        "xmax": 28500,
+        "ymin": 17000,
+        "ymax": 24500
+    },
+    "Blackwater City": {
+        "xmin": 10500,
+        "xmax": 17500,
+        "ymin": 9500,
+        "ymax": 24500
+    },
+    "Blackwater Dox": {
+        "xmin": 11500,
+        "xmax": 17700,
+        "ymin": 11200,
+        "ymax": 18600
+    },
+    "Command Center": {
+        "xmin": 19800,
+        "xmax": 22500,
+        "ymin": 22100,
+        "ymax": 24600
+    },
+    "Korgon Outpost": {
+        "xmin": 11000,
+        "xmax": 31000,
+        "ymin": 13000,
+        "ymax": 32000
+    },
+    "Marcadia Palace": {
+        "xmin": 26000,
+        "xmax": 35000,
+        "ymin": 53500,
+        "ymax": 58200
+    },
+    "Metropolis": {
+        "xmin": 40500,
+        "xmax": 56500,
+        "ymin": 12000,
+        "ymax": 31000
+    },    
+    "Outpost x12": {
+        "xmin": 8000,
+        "xmax": 50000,
+        "ymin": 8000,
+        "ymax": 22500
+    }
+}

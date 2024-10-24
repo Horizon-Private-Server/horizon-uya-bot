@@ -1,5 +1,6 @@
 import os
 import logging
+from logging.handlers import RotatingFileHandler
 import asyncio
 import json
 from collections import deque
@@ -17,13 +18,26 @@ from live.livetrackerbackend import LiveTrackerBackend
 from live.schemas import *
 from live.uya_game import *
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("live")
 logger.setLevel(logging.DEBUG)
 stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.DEBUG)
+
+# Rotating file handler to log to a file
+os.makedirs("logs", exist_ok=True)  # Create the directory if it doesn't exist
+file_handler = RotatingFileHandler(
+    'logs/live.log',       # Log file name
+    maxBytes=5*1024*1024,  # Max file size (e.g., 5 MB)
+    backupCount=10          # Keep up to 5 backup log files
+)
+file_handler.setLevel(logging.DEBUG)
+
 formatter = logging.Formatter('%(asctime)s %(name)s | %(levelname)s | %(message)s')
 stream_handler.setFormatter(formatter)
+file_handler.setFormatter(formatter)
+
 logger.addHandler(stream_handler)
+logger.addHandler(file_handler)
 
 
 def authenticate(protocol: str, host: str, username: str, password: str) -> str:
@@ -128,14 +142,6 @@ async def get_active_games(protocol: str, host: str, token: str) -> list[dict[st
 
 class UyaLiveTracker():
     def __init__(self, loop, port:int=8888, read_tick_rate:int=10, write_tick_rate:int=10, read_games_api_rate:int=10, write_delay:int=30):
-        self.logger = logging.getLogger("UyaLiveTracker")
-        self.logger.setLevel(logging.DEBUG)
-        stream_handler2 = logging.StreamHandler()
-        stream_handler2.setLevel(logging.DEBUG)
-        formatter2 = logging.Formatter('%(asctime)s %(name)s | %(levelname)s | %(message)s')
-        stream_handler2.setFormatter(formatter2)
-        self.logger.addHandler(stream_handler2)
-
         self._simulated = os.getenv("LIVE_SOCKET_SIMULATED") == "True"
         self._prod_server_ip = os.getenv("LIVE_READ_PROD_SOCKET_IP")
         self._ip = '0.0.0.0'
@@ -182,12 +188,12 @@ class UyaLiveTracker():
         self._loop.create_task(self.read_games_api())
         self._loop.create_task(self.poll_active_online())
         await websockets.serve(self.on_websocket_connection, self._ip, self._port)
-        self.logger.info(f"Websocket serving on ('0.0.0.0', {self._port}) ...")
+        logger.info(f"Websocket serving on ('0.0.0.0', {self._port}) ...")
         self._connected = set()
         self._loop.create_task(self.write())
 
     async def on_websocket_connection(self, websocket, path):
-        self.logger.info(f"Websocket incoming connection: {websocket.remote_address}")
+        logger.info(f"Websocket incoming connection: {websocket.remote_address}")
         # Register.
         self._connected.add(websocket)
         websocket.connected = True
@@ -197,7 +203,7 @@ class UyaLiveTracker():
         # except Exception:
         #     self._logger.exception("message2")
         finally:
-            self.logger.info("Websocket disconnected!")
+            logger.info("Websocket disconnected!")
             # Unregister.
             self._connected.remove(websocket)
 
@@ -206,11 +212,11 @@ class UyaLiveTracker():
         while True:
             # Try except so that if the db goes down, it will work when the db comes back online
             try:
-                self.logger.debug("Polling active players/games online ...")
+                logger.debug("Polling active players/games online ...")
                 self._players_online: list[dict] = await get_players_online(self._protocol, self._host, self._token)
                 self._games_online: list[dict] = await get_active_games(self._protocol, self._host, self._token)
             except Exception as e:
-                self.logger.error("[uya] poll_active_online failed to update!", exc_info=True)
+                logger.error("[uya] poll_active_online failed to update!", exc_info=True)
 
             await asyncio.sleep(self._players_online_poll_interval)
 
@@ -235,7 +241,7 @@ class UyaLiveTracker():
                         except Exception:
                             connection.connected = False
             except Exception as e:
-                self.logger.error("write failed!", exc_info=True)
+                logger.error("write failed!", exc_info=True)
             await asyncio.sleep(self._write_tick_rate)
 
     async def read_prod_socket(self):
@@ -265,7 +271,7 @@ class UyaLiveTracker():
                 self._world_state_history.append((datetime.now(), deepcopy(self._world_state)))
 
             except Exception as e:
-                self.logger.error("read_prod_socket failed to update!", exc_info=True)
+                logger.error("read_prod_socket failed to update!", exc_info=True)
 
             await asyncio.sleep(self._read_tick_rate)
 
@@ -275,7 +281,7 @@ class UyaLiveTracker():
                 games = self.get_games()
                 self._games = {game.id-1: game for game in games}
             except Exception as e:
-                self.logger.error("read_games_api failed to update!", exc_info=True)
+                logger.error("read_games_api failed to update!", exc_info=True)
             await asyncio.sleep(self._read_games_api_rate)
 
     def get_games(self) -> list[UyaGameOnlineSchema]:

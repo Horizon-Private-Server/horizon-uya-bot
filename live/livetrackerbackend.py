@@ -19,10 +19,9 @@ from medius.dme_serializer import packets_both_tcp_and_udp
 from live.world_manager import WorldManager
 
 
-
 class LiveTrackerBackend:
     def __init__(self, server_ip='0.0.0.0', simulated:bool=False, log_level='INFO', error_retry_time=10, run_blocked=False):
-        self.logger = logging.getLogger('uyalive')
+        self.logger = logging.getLogger('live.backend')
         formatter = logging.Formatter('%(asctime)s %(name)s | %(levelname)s | %(message)s')
         sh = logging.StreamHandler()
         sh.setFormatter(formatter)

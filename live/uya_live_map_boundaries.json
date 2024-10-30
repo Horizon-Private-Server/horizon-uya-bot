@@ -234,16 +234,16 @@
         "ymax": 60916
     },   
     "Outpost X6": {
-        "xmin": 23623,
-        "xmax": 44015,
-        "ymin": 45118,
-        "ymax": 60916
+        "xmin": 19497,
+        "xmax": 35876,
+        "ymin": 8062,
+        "ymax": 22252
     },   
     "Outpost X6 - Midflag": {
-        "xmin": 23623,
-        "xmax": 44015,
-        "ymin": 45118,
-        "ymax": 60916
+        "xmin": 19497,
+        "xmax": 35876,
+        "ymin": 8062,
+        "ymax": 22252
     },   
     "Outpost x12 - Midflag": {
         "xmin": 8000,

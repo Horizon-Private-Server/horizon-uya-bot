@@ -64,5 +64,215 @@
         "xmax": 23565,
         "ymin": 6881,
         "ymax": 14259
+    },
+    "Alpine Junction": {
+        "xmin": 35039,
+        "xmax": 46419,
+        "ymin": 25005,
+        "ymax": 36809
+    },
+    "Bakisi Isles - Midflag": {
+        "xmin": 11745,
+        "xmax": 39504,
+        "ymin": 13133,
+        "ymax": 38565
+    },
+    "Bakisi Isles V2": {
+        "xmin": 11745,
+        "xmax": 39504,
+        "ymin": 13133,
+        "ymax": 38565
+    },
+    "Blackwater City V2": {
+        "xmin": 10500,
+        "xmax": 17500,
+        "ymin": 9500,
+        "ymax": 24500
+    },
+    "Blackwater Dox V2": {
+        "xmin": 11500,
+        "xmax": 17700,
+        "ymin": 11200,
+        "ymax": 18600
+    },
+    "Catacrom Graveyard": {
+        "xmin": 14355,
+        "xmax": 29854,
+        "ymin": 12157,
+        "ymax": 25323
+    },
+    "Crisis at Korgon Outpost!": {
+        "xmin": 11317,
+        "xmax": 29824,
+        "ymin": 13962,
+        "ymax": 30614
+    },
+    "Daxx": {
+        "xmin": 22723,
+        "xmax": 31904,
+        "ymin": 7563,
+        "ymax": 15953
+    },
+    "Diglett's Outpost": {
+        "xmin": 11000,
+        "xmax": 31000,
+        "ymin": 13000,
+        "ymax": 32000
+    },
+    "Dox Isle": {
+        "xmin": 11909,
+        "xmax": 15241,
+        "ymin": 15197,
+        "ymax": 18543
+    },
+    "Aquatos Aquadome": {
+        "xmin": 36910,
+        "xmax": 47305,
+        "ymin": 26572,
+        "ymax": 40040
+    },
+    "Dark Cathedral Interior": {
+        "xmin": 27533,
+        "xmax": 37734,
+        "ymin": 29768,
+        "ymax": 39883
+    },
+    "Flat Dox": {
+        "xmin": 11836,
+        "xmax": 17677,
+        "ymin": 11338,
+        "ymax": 18591
+    },
+    "Flat Marcadia": {
+        "xmin": 26305,
+        "xmax": 34871,
+        "ymin": 53274,
+        "ymax": 58087
+    },
+    "Flooded Hoven v1": {
+        "xmin": 8143,
+        "xmax": 24306,
+        "ymin": 8907,
+        "ymax": 22387
+    },
+    "Florana": {
+        "xmin": 22328,
+        "xmax": 39776,
+        "ymin": 26053,
+        "ymax": 40409
+    },
+    "Florana Basin": {
+        "xmin": 22638,
+        "xmax": 39426,
+        "ymin": 14198,
+        "ymax": 30967
+    },
+    "Hallway Nodes": {
+        "xmin": 13685,
+        "xmax": 18210,
+        "ymin": 8820,
+        "ymax": 22416
+    },
+    "Haunted Hallows": {
+        "xmin": 13733,
+        "xmax": 28183,
+        "ymin": 15629,
+        "ymax": 29081
+    },
+    "Hoven Gorge - Midflag": {
+        "xmin": 8391,
+        "xmax": 24448,
+        "ymin": 7380,
+        "ymax": 25070
+    },
+    "Hoven Gorge V2": {
+        "xmin": 8391,
+        "xmax": 24448,
+        "ymin": 7380,
+        "ymax": 25070
+    },
+    "Kerwan Skatepart": {
+        "xmin": 40500,
+        "xmax": 56500,
+        "ymin": 12000,
+        "ymax": 31000
+    }, 
+    "Korgon Outpost - Midflag": {
+        "xmin": 40500,
+        "xmax": 56500,
+        "ymin": 12000,
+        "ymax": 31000
+    }, 
+    "Maraxus Prison": {
+        "xmin": 24240,
+        "xmax": 39620,
+        "ymin": 39720,
+        "ymax": 50480
+    }, 
+    "Marcadia Palace - Midflag": {
+        "xmin": 26000,
+        "xmax": 35000,
+        "ymin": 53500,
+        "ymax": 58200
+    },
+    "Metropolis - Midflag": {
+        "xmin": 40500,
+        "xmax": 56500,
+        "ymin": 12000,
+        "ymax": 31000
+    },   
+    "Metropolis V2": {
+        "xmin": 40500,
+        "xmax": 56500,
+        "ymin": 12000,
+        "ymax": 31000
+    },   
+    "Mountain Pass": {
+        "xmin": 23623,
+        "xmax": 44015,
+        "ymin": 45118,
+        "ymax": 60916
+    },   
+    "Outpost X6": {
+        "xmin": 23623,
+        "xmax": 44015,
+        "ymin": 45118,
+        "ymax": 60916
+    },   
+    "Outpost X6 - Midflag": {
+        "xmin": 23623,
+        "xmax": 44015,
+        "ymin": 45118,
+        "ymax": 60916
+    },   
+    "Outpost x12 - Midflag": {
+        "xmin": 8000,
+        "xmax": 50000,
+        "ymin": 8000,
+        "ymax": 22500
+    },   
+    "Rust": {
+        "xmin": 41544,
+        "xmax": 47484,
+        "ymin": 25935,
+        "ymax": 32363
+    },   
+    "Sarathos Swamp": {
+        "xmin": 12999,
+        "xmax": 36240,
+        "ymin": 5442,
+        "ymax": 35517
+    },
+    "Temple of Shaar": {
+        "xmin": 28421,
+        "xmax": 41311,
+        "ymin": 34763,
+        "ymax": 44637
+    },
+    "Todano": {
+        "xmin": 17544,
+        "xmax": 23669,
+        "ymin": 6968,
+        "ymax": 14263
     }
 }

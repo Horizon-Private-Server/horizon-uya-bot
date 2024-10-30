@@ -198,10 +198,10 @@
         "ymax": 31000
     }, 
     "Korgon Outpost - Midflag": {
-        "xmin": 40500,
-        "xmax": 56500,
-        "ymin": 12000,
-        "ymax": 31000
+        "xmin": 11000,
+        "xmax": 31000,
+        "ymin": 13000,
+        "ymax": 32000
     }, 
     "Maraxus Prison": {
         "xmin": 24240,

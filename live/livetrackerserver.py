@@ -318,7 +318,7 @@ class UyaLiveTracker():
 
     def transform_coord(self, map:str, coord:tuple):
         if map not in self._transform_coord_map.keys():
-            return [50,50]
+            return [50,50,50]
 
         min_maxes:dict = self._transform_coord_map[map]
         new_coord = list(coord)

@@ -145,7 +145,7 @@ class UyaLiveTracker():
         self._simulated = os.getenv("LIVE_SOCKET_SIMULATED") == "True"
         self._prod_server_ip = os.getenv("LIVE_READ_PROD_SOCKET_IP")
         self._ip = '0.0.0.0'
-        self._port = port
+        self._port = port if self._simulated else port - 1
         self._loop = loop
 
         self._backend = LiveTrackerBackend(server_ip=self._prod_server_ip, simulated=self._simulated, log_level='INFO')

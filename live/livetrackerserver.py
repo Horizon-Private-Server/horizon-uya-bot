@@ -24,9 +24,15 @@ stream_handler = logging.StreamHandler()
 stream_handler.setLevel(logging.DEBUG)
 
 # Rotating file handler to log to a file
-os.makedirs("logs", exist_ok=True)  # Create the directory if it doesn't exist
+if os.getenv("LIVE_SOCKET_SIMULATED") == "True":
+    log = 'logs_sim/live.log'
+    os.makedirs("logs_sim", exist_ok=True)  # Create the directory if it doesn't exist
+else:
+    log = 'logs/live.log'
+    os.makedirs("logs", exist_ok=True)  # Create the directory if it doesn't exist
+
 file_handler = RotatingFileHandler(
-    'logs/live.log',       # Log file name
+    log,       # Log file name
     maxBytes=5*1024*1024,  # Max file size (e.g., 5 MB)
     backupCount=10          # Keep up to 5 backup log files
 )

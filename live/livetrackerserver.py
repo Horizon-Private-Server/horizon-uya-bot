@@ -7,6 +7,7 @@ from collections import deque
 from datetime import datetime, timedelta
 from copy import deepcopy
 import sys
+import ssl
 import functools
 sys.path.append('..')
 
@@ -193,7 +194,14 @@ class UyaLiveTracker():
         self._loop.create_task(self.read_prod_socket())
         self._loop.create_task(self.read_games_api())
         self._loop.create_task(self.poll_active_online())
-        await websockets.serve(self.on_websocket_connection, self._ip, self._port)
+
+        if os.getenv("LIVE_SSL") == "True":
+            logger.info(f"Loading cert.pem and key.pem ...")    
+            ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+            ssl_context.load_cert_chain(certfile="cert.pem", keyfile="key.pem")
+            await websockets.serve(self.on_websocket_connection, self._ip, self._port, ssl=ssl_context)
+        else:
+            await websockets.serve(self.on_websocket_connection, self._ip, self._port)
         logger.info(f"Websocket serving on ('0.0.0.0', {self._port}) ...")
         self._connected = set()
         self._loop.create_task(self.write())

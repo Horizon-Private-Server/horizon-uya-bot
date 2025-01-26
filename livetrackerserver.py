@@ -9,7 +9,6 @@ from copy import deepcopy
 import sys
 import ssl
 import functools
-sys.path.append('..')
 
 import websockets
 import requests
@@ -148,9 +147,9 @@ async def get_active_games(protocol: str, host: str, token: str) -> list[dict[st
 
 
 class UyaLiveTracker():
-    def __init__(self, loop, port:int=8888, read_tick_rate:int=10, write_tick_rate:int=10, read_games_api_rate:int=10, write_delay:int=30):
+    def __init__(self, loop, prod_ip, protocol, host, horizon_username, horizon_password, port:int=8888, read_tick_rate:int=10, write_tick_rate:int=10, read_games_api_rate:int=10, write_delay:int=30):
         self._simulated = os.getenv("LIVE_SOCKET_SIMULATED") == "True"
-        self._prod_server_ip = os.getenv("LIVE_READ_PROD_SOCKET_IP")
+        self._prod_server_ip = prod_ip
         self._ip = '0.0.0.0'
         self._port = port if not self._simulated else port - 1
         self._loop = loop
@@ -170,7 +169,7 @@ class UyaLiveTracker():
         # Delay in seconds for writing to the websocket to prevent cheating
         self._write_delay = write_delay
 
-        with open("uya_live_map_boundaries.json", "r") as f:
+        with open("live/uya_live_map_boundaries.json", "r") as f:
             self._transform_coord_map = json.loads(f.read())
 
         self._players_online_poll_interval = 60
@@ -178,10 +177,10 @@ class UyaLiveTracker():
         self._players_online = []
         self._games_online = []
 
-        self._protocol: str = os.getenv("LIVE_MIDDLEWARE_PROTOCOL")
-        self._host: str = os.getenv("LIVE_MIDDLEWARE_HOST")
-        self._horizon_username: str = os.getenv("LIVE_MIDDLEWARE_USERNAME")
-        self._horizon_password: str = os.getenv("LIVE_MIDDLEWARE_PASSWORD")
+        self._protocol = protocol
+        self._host = host
+        self._horizon_username = horizon_username
+        self._horizon_password = horizon_password
         self._token: str = authenticate(
             protocol=self._protocol,
             host=self._host,
@@ -194,17 +193,6 @@ class UyaLiveTracker():
         self._loop.create_task(self.read_prod_socket())
         self._loop.create_task(self.read_games_api())
         self._loop.create_task(self.poll_active_online())
-
-        if os.getenv("LIVE_SSL") == "True":
-            logger.info(f"Loading cert.pem and key.pem ...")    
-            ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-            ssl_context.load_cert_chain(certfile="cert.pem", keyfile="key.pem")
-            await websockets.serve(self.on_websocket_connection, self._ip, self._port, ssl=ssl_context)
-        else:
-            await websockets.serve(self.on_websocket_connection, self._ip, self._port)
-        logger.info(f"Websocket serving on ('0.0.0.0', {self._port}) ...")
-        self._connected = set()
-        self._loop.create_task(self.write())
 
     async def on_websocket_connection(self, websocket, path):
         logger.info(f"Websocket incoming connection: {websocket.remote_address}")
@@ -234,29 +222,19 @@ class UyaLiveTracker():
 
             await asyncio.sleep(self._players_online_poll_interval)
 
-    async def write(self):
-        while True:
-            try:
-                current_time = datetime.now()
-                delay_threshold = current_time - timedelta(seconds=self._write_delay)
-                
-                worlds = []
-                while self._world_state_history and self._world_state_history[0][0] < delay_threshold:
-                    self._world_state_history.popleft()  # Remove the element from the front if it meets the condition
+    def dump(self):
+        current_time = datetime.now()
+        delay_threshold = current_time - timedelta(seconds=self._write_delay)
+        
+        worlds = []
+        while self._world_state_history and self._world_state_history[0][0] < delay_threshold:
+            self._world_state_history.popleft()  # Remove the element from the front if it meets the condition
 
-                if self._world_state_history:
-                    worlds = self._world_state_history[0][1]
+        if self._world_state_history:
+            worlds = self._world_state_history[0][1]
 
-                data = json.dumps([world_state.dict() for world_state in worlds])
-                if len(self._connected) > 0:
-                    for connection in self._connected:
-                        try:
-                            await connection.send(data)
-                        except Exception:
-                            connection.connected = False
-            except Exception as e:
-                logger.error("write failed!", exc_info=True)
-            await asyncio.sleep(self._write_tick_rate)
+        data = json.dumps([world_state.dict() for world_state in worlds])
+        return data
 
     async def read_prod_socket(self):
         while True:
@@ -344,8 +322,8 @@ class UyaLiveTracker():
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
-    tracker = UyaLiveTracker(loop)
+    tracker = UyaLiveTracker(loop, os.getenv("LIVE_READ_PROD_SOCKET_IP"), os.getenv("LIVE_MIDDLEWARE_PROTOCOL"), os.getenv("LIVE_MIDDLEWARE_HOST"), os.getenv("LIVE_MIDDLEWARE_USERNAME"), os.getenv("LIVE_MIDDLEWARE_PASSWORD"))
     loop.run_until_complete(tracker.start())
     while True:
-        loop.run_until_complete(asyncio.sleep(5000))
-
+        loop.run_until_complete(asyncio.sleep(2))
+        print(datetime.now(), tracker.dump())

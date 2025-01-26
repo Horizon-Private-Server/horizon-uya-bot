@@ -169,7 +169,7 @@ class UyaLiveTracker():
         # Delay in seconds for writing to the websocket to prevent cheating
         self._write_delay = write_delay
 
-        with open("live/uya_live_map_boundaries.json", "r") as f:
+        with open(os.path.dirname(os.path.abspath(__file__)) + "/live/uya_live_map_boundaries.json", "r") as f:
             self._transform_coord_map = json.loads(f.read())
 
         self._players_online_poll_interval = 60

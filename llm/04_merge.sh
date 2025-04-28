@@ -6,6 +6,8 @@ export BASE_MODEL_DIR="./models/Mistral-7B-Instruct-v0.3"
 export LORA_DIR="./lora_output"
 export MERGED_DIR="./merged_model"
 
+rm -rf $MERGED_DIR
+
 python3 <<EOF
 import torch
 from transformers import AutoModelForCausalLM
@@ -34,7 +36,7 @@ lora_model = PeftModel.from_pretrained(
 merged_model = lora_model.merge_and_unload()
 
 # Save merged model
-merged_model.save_pretrained("${MERGED_DIR}", safe_serialization=True)
+merged_model.save_pretrained("${MERGED_DIR}", safe_serialization=False)
 EOF
 
 # After merge, copy tokenizer files

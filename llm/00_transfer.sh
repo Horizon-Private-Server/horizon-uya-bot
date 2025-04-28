@@ -1,2 +1,2 @@
-scp -P ${VAST_PORT} *.txt *.jsonl *.sh root@${VAST_IP}:/workspace
+scp -P ${VAST_PORT} *.py *.txt *.jsonl *.sh root@${VAST_IP}:/workspace
 

@@ -2,7 +2,7 @@
 set -e
 set -o pipefail
 
-pip install -r training_requirements.txt
+pip install -r requirements.txt
 
 echo "Updating apt and installing system packages..."
 sudo apt update

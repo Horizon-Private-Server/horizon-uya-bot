@@ -14,3 +14,8 @@ build/
 uyalivetrackerbackend.egg-info/
 livetrackerbackend.egg-info/
 logs/
+
+llm/env/
+llm/llama.cpp/
+llm/models/
+env/

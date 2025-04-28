@@ -17,21 +17,5 @@ python3 -c "import transformers; print('Transformers version:', transformers.__v
 echo "Checking BitsAndBytes install..."
 python3 -c "import bitsandbytes as bnb; print('BitsAndBytes loaded successfully.')"
 
-echo "Checking llama.cpp compilation..."
-if [ -f "./llama.cpp/build/bin/llama-gguf" ]; then
-  echo "llama.cpp compiled successfully."
-else
-  echo "llama.cpp main binary missing."
-  exit 1
-fi
-
-echo "Checking convert_hf_to_gguf.py presence..."
-if [ -f "./convert_hf_to_gguf.py" ]; then
-  echo "convert_hf_to_gguf.py found."
-else
-  echo "convert_hf_to_gguf.py missing."
-  exit 1
-fi
-
 echo "Environment looks good."
 

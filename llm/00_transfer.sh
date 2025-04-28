@@ -1,1 +1,3 @@
-ssh -p ${VAST_PORT} root@${VAST_IP} -L 8080:localhost:8080
+scp -P ${VAST_PORT} *.sh root@${VAST_IP}:/workspace
+scp -P ${VAST_PORT} *.jsonl root@${VAST_IP}:/workspace
+

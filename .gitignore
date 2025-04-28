@@ -18,4 +18,7 @@ logs/
 llm/env/
 llm/llama.cpp/
 llm/models/
+llm/lora_output
 env/
+venv/
+llm/venv/

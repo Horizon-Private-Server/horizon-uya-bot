@@ -5,7 +5,6 @@ set -o pipefail
 export TRAIN_DATA="./base_facts.jsonl"
 export MODEL_DIR="./models/Mistral-7B-Instruct-v0.3"
 export OUTPUT_DIR="./lora_output"
-export FINAL_GGUF="./mistral7b_uya.gguf"
 
 if [ ! -d "${MODEL_DIR}" ]; then
   mkdir -p models
@@ -101,13 +100,4 @@ trainer.train()
 model.save_pretrained("${OUTPUT_DIR}")
 EOF
 
-python3 convert_hf_to_gguf.py --model-dir "${OUTPUT_DIR}" --outfile "./merged_model.gguf"
-
-./llama.cpp/build/bin/llama-gguf \
-    --outtype q4_0 \
-    --model ./merged_model.gguf \
-    --outfile "${FINAL_GGUF}"
-
-echo "Training, merging, and quantization completed."
-echo "Final 4-bit GGUF model saved at ${FINAL_GGUF}"
 

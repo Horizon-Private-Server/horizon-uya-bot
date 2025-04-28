@@ -3,6 +3,7 @@ set -e
 set -o pipefail
 
 pip install -r requirements.txt
+pip uninstall torchvision
 
 echo "Updating apt and installing system packages..."
 sudo apt update

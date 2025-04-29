@@ -2,7 +2,20 @@
 set -e
 set -o pipefail
 
-export TRAIN_DATA="./base_facts.jsonl"
+# Build all.jsonl
+output_file="all.jsonl"
+input_dir="training_data"
+
+# Empty the output file first
+> "$output_file"
+
+# Find all .jsonl files recursively and concatenate them
+find "$input_dir" -type f -name '*.jsonl' -print0 | while IFS= read -r -d '' file; do
+    cat "$file" >> "$output_file"
+    echo >> "$output_file"  # ensure a newline between files
+done
+
+export TRAIN_DATA="./all.jsonl"
 export MODEL_DIR="./models/Mistral-7B-Instruct-v0.3"
 export OUTPUT_DIR="./lora_output"
 

@@ -6,7 +6,7 @@ export BASE_MODEL_DIR="./models/Mistral-7B-Instruct-v0.3"
 export LORA_DIR="./lora_output"
 export MERGED_DIR="./merged_model"
 
-rm -rf $MERGED_DIR
+rm -rf "$MERGED_DIR"
 
 python3 <<EOF
 import torch
@@ -35,6 +35,10 @@ lora_model = PeftModel.from_pretrained(
 # Merge LoRA into base
 merged_model = lora_model.merge_and_unload()
 
+# *** CRITICAL FIX ***
+# Extract the real base model before saving
+merged_model = merged_model.base_model
+
 # Save merged model
 merged_model.save_pretrained("${MERGED_DIR}", safe_serialization=False)
 EOF
@@ -49,13 +53,11 @@ cp "${BASE_MODEL_DIR}/tokenizer.model" "${MERGED_DIR}/"
 cp "${BASE_MODEL_DIR}/generation_config.json" "${MERGED_DIR}/"
 
 echo "Done Merging!"
-ls $MERGED_DIR
+ls -lh "${MERGED_DIR}"
 
 echo "Running tests..."
 set -e
 set -o pipefail
-
-export MERGED_DIR="./merged_model"
 
 python3 <<EOF
 import torch
@@ -85,6 +87,7 @@ print("Params:")
 print(model.num_parameters() / 1e9, "B parameters")
 EOF
 
-
+# Compress merged model
+echo "Compressing merged_model with maximum gzip compression..."
 /usr/bin/time -v tar -I 'gzip -9' -cvf merged_model.tar.gz merged_model/
 

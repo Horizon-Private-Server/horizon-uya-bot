@@ -22,3 +22,4 @@ llm/lora_output
 env/
 venv/
 llm/venv/
+llm/*.tar.gz

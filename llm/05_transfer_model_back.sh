@@ -1,3 +1,3 @@
 
-rm merged_model.tar.gz
-scp -r -P ${VAST_PORT} root@${VAST_IP}:/workspace/merged_model.tar.gz .
+rm -rf full_finetune_output
+scp -r -P ${VAST_PORT} root@${VAST_IP}:/workspace/full_finetune_output .

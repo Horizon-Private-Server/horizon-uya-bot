@@ -2,7 +2,7 @@
 set -e
 set -o pipefail
 
-export MODEL_DIR="$PWD/merged_model"
+export MODEL_DIR="$PWD/full_finetune_output"
 export OUTPUT_DIR="$PWD/uya_model"
 export FINAL_GGUF_NAME="mistral7b_uya.gguf"
 export FINAL_QUANT_NAME="mistral7b_uya_Q4_K_M.gguf"

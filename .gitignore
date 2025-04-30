@@ -25,4 +25,4 @@ llm/venv/
 llm/*.tar.gz
 final_model/
 full_finetune_output/
-*.jsonl
+all.jsonl

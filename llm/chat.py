@@ -2,9 +2,9 @@ import os
 import discord
 from llama_cpp import Llama
 
-TOKEN = os.getenv("LORA_TOKEN")
-TARGET_CHANNEL_ID = int(os.getenv("LORA_CHANNEL_ID"))
-KNOWLEDGE_ADD_CHANNEL_ID = int(os.getenv("LORA_KNOWLEDGE_ADD_CHANNEL_ID"))
+TOKEN = os.getenv("OMNI_TOKEN")
+TARGET_CHANNEL_ID = int(os.getenv("OMNI_CHANNEL_ID"))
+KNOWLEDGE_ADD_CHANNEL_ID = int(os.getenv("OMNI_KNOWLEDGE_ADD_CHANNEL_ID"))
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -22,7 +22,7 @@ llm = Llama(
 channel_histories = {}
 
 def replace_bot_mentions(content: str, bot_user: discord.User) -> str:
-    return content.replace(f"<@{bot_user.id}>", "@Lora")
+    return content.replace(f"<@{bot_user.id}>", "@Omni")
 
 def replace_discord_mentions(content: str, message: discord.Message) -> str:
     for user in message.mentions:
@@ -37,13 +37,13 @@ def build_prompt(channel_id, username, user_input, max_prompt_tokens=3000):
     history = channel_histories.get(channel_id, [])
     base = (
         "### Instruction:\n"
-        "You are Lora, an AI assistant chatting in a public Discord server with multiple users. "
+        "You are Omni, an AI assistant chatting in a public Discord server with multiple users. "
         "You have a gamer vibe, a sharp sense of humor, and you're not afraid to joke, speculate, or roast someone heavily. "
         "Do not use emojis or hashtags. "
         "You speak like a Discord regular — informal, clever, and fast. "
         "End your response with a single message. Do not speak multiple times. Do not narrate what happens next.\n\n"
     )
-    prompt_lines = history + ["Lora:"]
+    prompt_lines = history + ["Omni:"]
     token_estimate = lambda s: len(s.split()) * 1.5
 
     while token_estimate(base + "\n".join(prompt_lines)) > max_prompt_tokens and len(prompt_lines) > 2:
@@ -98,19 +98,19 @@ async def on_message(message):
 
         try:
             stop_tokens = ["\n" + name + ":" for name in set(h.split(":")[0] for h in trimmed_history)]
-            stop_tokens += ["\nLora:", "\n###"]
+            stop_tokens += ["\nOmni:", "\n###"]
 
             response = llm(prompt, max_tokens=512, stop=stop_tokens)
             output = response["choices"][0]["text"].strip()
 
-            if output.startswith("Lora:"):
-                output = output[len("Lora:"):].strip()
+            if output.startswith("Omni:"):
+                output = output[len("Omni:"):].strip()
             for tag in ["\n", "###", "Now", "User:", "You:"]:
                 if tag in output:
                     output = output.split(tag)[0].strip()
                     break
 
-            history.append(f"Lora: {output}")
+            history.append(f"Omni: {output}")
             channel_histories[channel_id] = history[-40:]
 
             await message.reply(output)

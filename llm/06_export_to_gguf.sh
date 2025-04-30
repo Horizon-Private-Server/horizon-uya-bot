@@ -3,10 +3,12 @@ set -e
 set -o pipefail
 
 export MODEL_DIR="$PWD/full_finetune_output"
-export OUTPUT_DIR="$PWD/uya_model"
+export OUTPUT_DIR="$PWD/final_model"
 export FINAL_GGUF_NAME="mistral7b_uya.gguf"
 export FINAL_QUANT_NAME="mistral7b_uya_Q4_K_M.gguf"
 
+
+rm -rf ${OUTPUT_DIR}
 mkdir -p "${OUTPUT_DIR}"
 
 echo "Copying fine-tuned model to output directory..."
@@ -21,17 +23,19 @@ if [ ! -f "${OUTPUT_DIR}/${FINAL_GGUF_NAME}" ]; then
 fi
 echo "GGUF conversion successful: ${OUTPUT_DIR}/${FINAL_GGUF_NAME}"
 
-echo "Running Docker to quantize GGUF model to 4-bit..."
-docker run --rm -v "${OUTPUT_DIR}":/repo ghcr.io/ggerganov/llama.cpp:full --quantize "/repo/${FINAL_GGUF_NAME}" "/repo/${FINAL_QUANT_NAME}" "Q4_K_M"
+rm -rf llama.cpp/
+git clone https://github.com/ggml-org/llama.cpp.git
+cd llama.cpp
+mkdir build
+cd build
+cmake ..
+cmake --build . --config Release
+cd ../..
 
-if [ ! -f "${OUTPUT_DIR}/${FINAL_QUANT_NAME}" ]; then
-    echo "Error: Quantization failed."
-    exit 1
-fi
-echo "Quantization successful: ${OUTPUT_DIR}/${FINAL_QUANT_NAME}"
+echo "Finished building llama-cpp!"
+sleep 2
 
-echo "Cleaning up intermediate files..."
-rm -f "${OUTPUT_DIR}/${FINAL_GGUF_NAME}"
+./llama.cpp/build/bin/llama-quantize ${OUTPUT_DIR}/${FINAL_GGUF_NAME} ${OUTPUT_DIR}/${FINAL_QUANT_NAME} Q4_K_M
 
 echo "Final 4-bit quantized GGUF model is ready at ${OUTPUT_DIR}/${FINAL_QUANT_NAME}"
 

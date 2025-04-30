@@ -11,7 +11,8 @@ intents.message_content = True
 bot = discord.Client(intents=intents)
 
 llm = Llama(
-    model_path="models/mistral-7b-instruct-v0.2/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+#    model_path="models/mistral-7b-instruct-v0.2/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+    model_path="final_model/mistral7b_uya_Q4_K_M.gguf",
     n_gpu_layers=35,
     n_ctx=4096,
     n_threads=6,

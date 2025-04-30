@@ -23,3 +23,5 @@ env/
 venv/
 llm/venv/
 llm/*.tar.gz
+final_model/
+full_finetune_output/

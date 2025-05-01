@@ -41,7 +41,6 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map="cuda:0",
     trust_remote_code=True
 )
-model = torch.compile(model)
 
 # Load tokenizer
 tokenizer = AutoTokenizer.from_pretrained("${MODEL_DIR}", trust_remote_code=True)
@@ -88,7 +87,7 @@ dataset = dataset.map(
 dataset = dataset.with_format("torch")
 
 # Dataloader
-batch_size = 8
+batch_size = 4
 
 # Adjust if memory allows more
 loader = DataLoader(

@@ -1,26 +1,26 @@
-{"instruction": "What kind of map is Outpost X12?", "input": "", "output": "Outpost X12 is a large, asymmetric desert canyon map on Aridia."}
-{"instruction": "How many landmasses does Outpost X12 have?", "input": "", "output": "The map has six main landmasses—three per team side—separated by chasms."}
-{"instruction": "How are landmasses connected on Outpost X12?", "input": "", "output": "They are connected by bridges, gravity ramps, tunnels, and swingshot targets."}
-{"instruction": "Where are the team bases located on Outpost X12?", "input": "", "output": "Each team’s base is on a far island, one in the bottom-left and one in the top-right of the map."}
-{"instruction": "What surrounds the entire map in Outpost X12?", "input": "", "output": "The map is surrounded by a death pit."}
-{"instruction": "What defensive tools are found at each base in Outpost X12?", "input": "", "output": "Each base has a player-controlled turret and a nearby Morph-o-Ray pickup."}
-{"instruction": "What routes lead out of each base on Outpost X12?", "input": "", "output": "Each base offers a gravity-ramp tunnel, a land bridge, and an upper plateau path."}
-{"instruction": "What structure is just outside each base on Outpost X12?", "input": "", "output": "A central mesa-like structure houses the first node for each team."}
-{"instruction": "Why is the first node important on Outpost X12?", "input": "", "output": "It must be captured to access the rest of the map."}
-{"instruction": "What items are found at the first node on Outpost X12?", "input": "", "output": "Two neutral Turbosliders, basic turrets, a Minirocket Tube, and a Lava Gun."}
-{"instruction": "What does the mid-island connect to on Outpost X12?", "input": "", "output": "It links to two plateau nodes: one on the right and one on the left."}
-{"instruction": "What items are on the right plateau node in Outpost X12?", "input": "", "output": "A Hovership, Lava Gun, and Charge Boots."}
-{"instruction": "What items are on the left plateau node in Outpost X12?", "input": "", "output": "A missile turret, Morph-o-Ray, and Minirocket Tube."}
-{"instruction": "Why capture the right plateau node on Outpost X12?", "input": "", "output": "It gives aerial superiority and fast strike options via Hovership and Charge Boots."}
-{"instruction": "Why capture the left plateau node on Outpost X12?", "input": "", "output": "It provides anti-air defense with a missile turret and drone bots."}
-{"instruction": "How are plateau nodes connected on Outpost X12?", "input": "", "output": "They are connected via a lower bridge and upper mirrored ramp."}
-{"instruction": "What pickups are near the connecting paths on Outpost X12?", "input": "", "output": "Morph-o-Ray, Charge Boots, and grav-ramps are present near the connection areas."}
-{"instruction": "What is located in the center of Outpost X12?", "input": "", "output": "A hovering round platform with a neutral turret accessible by Swingshot or Hovership."}
-{"instruction": "What traversal tools exist on Outpost X12?", "input": "", "output": "Gravity ramps, tunnels, swingshot routes, destructible bridges, and narrow bridges."}
-{"instruction": "What is an important early-game Siege strategy on Outpost X12?", "input": "", "output": "Secure the first node quickly using area weapons like Lava Gun or Gravity Bomb."}
-{"instruction": "What is a strong mid-game strategy on Outpost X12?", "input": "", "output": "Capture your Hovership node for air control and defend your missile turret plateau."}
-{"instruction": "Why is the central turret platform valuable on Outpost X12?", "input": "", "output": "It grants mid-map control by attacking vehicles and infantry."}
-{"instruction": "Where are sniper perches found on Outpost X12?", "input": "", "output": "Flux Rifles spawn atop crevices accessed via grav-ramps in the upper map."}
-{"instruction": "What is an effective CTF escape strategy on Outpost X12?", "input": "", "output": "Chain Turboslider jumps, swingshot paths, and bridges for unpredictable flag runs."}
-{"instruction": "How can teams prevent flanks on Outpost X12?", "input": "", "output": "Watch grav-ramp exits, swingshot points, and communicate node changes."}
-{"instruction": "What overall strategy leads to victory on Outpost X12?", "input": "", "output": "Capture nodes from base to plateaus, use Hoverships, secure missile turret, and dominate traversal paths."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What kind of map is Outpost X12?", "output": "Outpost X12 is a large, asymmetric desert canyon map on Aridia."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How many landmasses does Outpost X12 have?", "output": "The map has six main landmasses—three per team side—separated by chasms."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How are landmasses connected on Outpost X12?", "output": "They are connected by bridges, gravity ramps, tunnels, and swingshot targets."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Where are the team bases located on Outpost X12?", "output": "Each team’s base is on a far island, one in the bottom-left and one in the top-right of the map."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What surrounds the entire map in Outpost X12?", "output": "The map is surrounded by a death pit."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What defensive tools are found at each base in Outpost X12?", "output": "Each base has a player-controlled turret and a nearby Morph-o-Ray pickup."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What routes lead out of each base on Outpost X12?", "output": "Each base offers a gravity-ramp tunnel, a land bridge, and an upper plateau path."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What structure is just outside each base on Outpost X12?", "output": "A central mesa-like structure houses the first node for each team."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is the first node important on Outpost X12?", "output": "It must be captured to access the rest of the map."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What items are found at the first node on Outpost X12?", "output": "Two neutral Turbosliders, basic turrets, a Minirocket Tube, and a Lava Gun."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What does the mid-island connect to on Outpost X12?", "output": "It links to two plateau nodes: one on the right and one on the left."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What items are on the right plateau node in Outpost X12?", "output": "A Hovership, Lava Gun, and Charge Boots."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What items are on the left plateau node in Outpost X12?", "output": "A missile turret, Morph-o-Ray, and Minirocket Tube."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why capture the right plateau node on Outpost X12?", "output": "It gives aerial superiority and fast strike options via Hovership and Charge Boots."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why capture the left plateau node on Outpost X12?", "output": "It provides anti-air defense with a missile turret and drone bots."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How are plateau nodes connected on Outpost X12?", "output": "They are connected via a lower bridge and upper mirrored ramp."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What pickups are near the connecting paths on Outpost X12?", "output": "Morph-o-Ray, Charge Boots, and grav-ramps are present near the connection areas."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is located in the center of Outpost X12?", "output": "A hovering round platform with a neutral turret accessible by Swingshot or Hovership."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What traversal tools exist on Outpost X12?", "output": "Gravity ramps, tunnels, swingshot routes, destructible bridges, and narrow bridges."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is an important early-game Siege strategy on Outpost X12?", "output": "Secure the first node quickly using area weapons like Lava Gun or Gravity Bomb."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is a strong mid-game strategy on Outpost X12?", "output": "Capture your Hovership node for air control and defend your missile turret plateau."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is the central turret platform valuable on Outpost X12?", "output": "It grants mid-map control by attacking vehicles and infantry."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Where are sniper perches found on Outpost X12?", "output": "Flux Rifles spawn atop crevices accessed via grav-ramps in the upper map."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is an effective CTF escape strategy on Outpost X12?", "output": "Chain Turboslider jumps, swingshot paths, and bridges for unpredictable flag runs."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How can teams prevent flanks on Outpost X12?", "output": "Watch grav-ramp exits, swingshot points, and communicate node changes."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What overall strategy leads to victory on Outpost X12?", "output": "Capture nodes from base to plateaus, use Hoverships, secure missile turret, and dominate traversal paths."}

@@ -1,16 +1,16 @@
-{"instruction": "What is the Lava Gun in UYA multiplayer?", "input": "", "output": "The Lava Gun is a short-range continuous beam weapon that acts like a flamethrower, projecting a stream of superheated lava."}
-{"instruction": "How does the Lava Gun fire?", "input": "", "output": "It fires a continuous lava stream while the trigger is held down, dealing steady damage over time."}
-{"instruction": "How fast does the Lava Gun use ammo?", "input": "", "output": "Its ammo depletes rapidly as the beam is used."}
-{"instruction": "What is the ammo capacity of the Lava Gun?", "input": "", "output": "The Lava Gun holds 250 units of ammo."}
-{"instruction": "Why is the Lava Gun strong at close range?", "input": "", "output": "Its damage starts instantly on contact, making it hard to dodge and highly effective in close quarters."}
-{"instruction": "Who is the Lava Gun effective against?", "input": "", "output": "It is especially strong against agile players and those using short-range weapons like shotguns."}
-{"instruction": "Can the Lava Gun’s beam bend during use?", "input": "", "output": "Yes. If the player spins, the beam curves slightly, allowing it to track targets or arc around them."}
-{"instruction": "What is the 'bendy lava whip' effect?", "input": "", "output": "It refers to the Lava Gun’s beam bending while turning, making it deadly in tight spaces."}
-{"instruction": "What happens when the Lava Gun is upgraded?", "input": "", "output": "After 3 kill assists, it upgrades to a stronger version with more range and faster kill speed."}
-{"instruction": "How fast can the upgraded Lava Gun kill?", "input": "", "output": "It can kill in about 2 seconds of contact, down from 4 seconds in its base form."}
-{"instruction": "Does the upgraded Lava Gun freeze enemies?", "input": "", "output": "No. Unlike in single-player, it remains a lava weapon in multiplayer and does not freeze enemies."}
-{"instruction": "What changes in the upgraded Lava Gun from single-player?", "input": "", "output": "In single-player it becomes the Liquid Nitrogen Gun, but in multiplayer it only gains range and damage."}
-{"instruction": "How is the Lava Gun used for area denial?", "input": "", "output": "It can block choke points, guard flags, and deter enemies from entering close-range zones."}
-{"instruction": "What happens to enemies who enter the Lava Gun's radius?", "input": "", "output": "They are often forced to retreat or are quickly killed before they can react."}
-{"instruction": "What is the Lava Gun’s role in competitive multiplayer?", "input": "", "output": "It is a lethal close-range weapon ideal for defending tight spaces or objectives indoors."}
-{"instruction": "Why is the Lava Gun not viable in open-field combat?", "input": "", "output": "Its short range limits its usefulness in open areas where distance weapons dominate."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the Lava Gun in UYA multiplayer?", "output": "The Lava Gun is a short-range continuous beam weapon that acts like a flamethrower, projecting a stream of superheated lava."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How does the Lava Gun fire?", "output": "It fires a continuous lava stream while the trigger is held down, dealing steady damage over time."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How fast does the Lava Gun use ammo?", "output": "Its ammo depletes rapidly as the beam is used."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the ammo capacity of the Lava Gun?", "output": "The Lava Gun holds 250 units of ammo."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is the Lava Gun strong at close range?", "output": "Its damage starts instantly on contact, making it hard to dodge and highly effective in close quarters."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Who is the Lava Gun effective against?", "output": "It is especially strong against agile players and those using short-range weapons like shotguns."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Can the Lava Gun’s beam bend during use?", "output": "Yes. If the player spins, the beam curves slightly, allowing it to track targets or arc around them."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the 'bendy lava whip' effect?", "output": "It refers to the Lava Gun’s beam bending while turning, making it deadly in tight spaces."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What happens when the Lava Gun is upgraded?", "output": "After 3 kill assists, it upgrades to a stronger version with more range and faster kill speed."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How fast can the upgraded Lava Gun kill?", "output": "It can kill in about 2 seconds of contact, down from 4 seconds in its base form."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Does the upgraded Lava Gun freeze enemies?", "output": "No. Unlike in single-player, it remains a lava weapon in multiplayer and does not freeze enemies."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What changes in the upgraded Lava Gun from single-player?", "output": "In single-player it becomes the Liquid Nitrogen Gun, but in multiplayer it only gains range and damage."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How is the Lava Gun used for area denial?", "output": "It can block choke points, guard flags, and deter enemies from entering close-range zones."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What happens to enemies who enter the Lava Gun's radius?", "output": "They are often forced to retreat or are quickly killed before they can react."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the Lava Gun’s role in competitive multiplayer?", "output": "It is a lethal close-range weapon ideal for defending tight spaces or objectives indoors."}
+{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is the Lava Gun not viable in open-field combat?", "output": "Its short range limits its usefulness in open areas where distance weapons dominate."}

@@ -9,8 +9,10 @@ input_dir="training_data"
 > "$output_file"
 find "$input_dir" -type f -name '*.jsonl' -print0 | while IFS= read -r -d '' file; do
     cat "$file" >> "$output_file"
-    echo >> "$output_file"
 done
+
+# Remove empty lines from the final file
+grep -v '^$' "$output_file" > temp && mv temp "$output_file"
 
 export TRAIN_DATA="./all.jsonl"
 export MODEL_DIR="./models/Mistral-7B-Instruct-v0.3"
@@ -86,7 +88,7 @@ dataset = dataset.map(
 dataset = dataset.with_format("torch")
 
 # Dataloader
-batch_size = 2
+batch_size = 8
 
 # Adjust if memory allows more
 loader = DataLoader(
@@ -98,13 +100,13 @@ loader = DataLoader(
 )
 
 # Optimizer
-optimizer = torch.optim.AdamW(model.parameters(), lr=5e-5)
+optimizer = torch.optim.AdamW(model.parameters(), lr=5e-6)
 
 # Scheduler
-num_epochs = 5
-warmup_steps = 100
+num_epochs = 2
 
 total_steps = len(loader) * num_epochs
+warmup_steps = int(0.1 * total_steps)
 
 def lr_scheduler(step):
     if step < warmup_steps:

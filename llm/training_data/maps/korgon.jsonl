@@ -25,3 +25,5 @@
 {"instruction": "What aggressive strategy involves the northern bridge in Korgon Outpost?", "input": "", "output": "Swingshot across, open the bridge from the far side, and capture the enemy’s northern node before they arrive."}
 {"instruction": "What movement options exist for flag runners in CTF on Korgon Outpost?", "input": "", "output": "They can grav-walk around unopened bridges or Charge Boot through the central building to escape unseen."}
 {"instruction": "What gameplay themes define Korgon Outpost?", "input": "", "output": "The map emphasizes multi-front coordination, vehicle control, dynamic traversal, and central ramp manipulation for map control."}
+{"instruction": "What are good opening Siege strategies on Korgon Outpost?", "input": "", "output": "Rush southern bridge and node for Hovership, contest central node to open ramps for vehicle access."}
+{"instruction": "How should teams manage Korgon Outpost's vehicles?", "input": "", "output": "Use mines to trap paths, control missile turrets, assign clear roles for defense and attacks."}

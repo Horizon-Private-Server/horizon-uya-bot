@@ -25,3 +25,7 @@
 {"instruction": "What tools help players survive in CTF on Hoven Gorge?", "input": "", "output": "Holoshields are essential for blocking long sightlines during flag runs."}
 {"instruction": "What gameplay style does Hoven Gorge reward?", "input": "", "output": "The map rewards coordinated combined-arms tactics across infantry, vehicles, turrets, and snipers."}
 {"instruction": "What strategic points define control in Hoven Gorge?", "input": "", "output": "Key chokepoints include the cliff tunnel and gorge floor nodes."}
+{"instruction": "What are key item pickups on Aquatos Sewers?", "input": "", "output": "Charge Boots (north/south tunnels), Flux Rifle (west), Lava Gun (east), Minirocket Tube (center crossroads)."}
+{"instruction": "How can players exploit Aquatos Sewers layout?", "input": "", "output": "Control the central room, cover tunnels, ambush around corners, snipe down corridors, deploy mines at flanks."}
+{"instruction": "What are strong Aquatos Sewers defenses?", "input": "", "output": "Mine traps, holding the crossroads, Blitz Gun and Lava Gun for choke points, Holoshields at tunnel entrances."}
+{"instruction": "How is Hoven Gorge terrain layered?", "input": "", "output": "Ground level gorge, elevated cliffs, interior tunnels with nodes and turrets."}

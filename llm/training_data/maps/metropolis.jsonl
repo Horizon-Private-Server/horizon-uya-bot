@@ -13,3 +13,7 @@
 {"instruction": "What does advanced Holoshield placement achieve in Metropolis?", "input": "", "output": "It delays attackers, creates ambush zones, and protects key transition points."}
 {"instruction": "What is the overall gameplay style of Metropolis?", "input": "", "output": "Metropolis emphasizes acrobatic, three-dimensional gameplay across rooftops, mid-air platforms, and vertical towers."}
 {"instruction": "How is map control achieved on Metropolis?", "input": "", "output": "It comes from mastering vertical traversal, capturing key nodes, and leveraging vehicles, sniping positions, and Swingshot paths."}
+{"instruction": "How many capturable nodes exist in Metropolis?", "input": "", "output": "At least six: two rooftop first nodes, two pyramid tower nodes, and two distant corner rooftops."}
+{"instruction": "What is a strong Siege strategy on Metropolis?", "input": "", "output": "Capture your rooftop node for Hovership and defenses. Secure your pyramid tower next. Use jump pads and Swingshot routes to avoid turret bridges and advance node by node."}
+{"instruction": "How is Capture the Flag played on Metropolis?", "input": "", "output": "Flags are near base rooftops. Avoid turret bridges by jumping between rooftops, using Swingshots, Charge Boots, and grav-ramps. Defend choke points with mines and Holoshields."}
+{"instruction": "What gameplay emphasis does Metropolis have?", "input": "", "output": "Vertical control, traversal mastery, multi-tier combat, and coordinated node control for weapons and vehicles."}

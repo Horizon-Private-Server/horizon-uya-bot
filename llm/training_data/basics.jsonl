@@ -75,3 +75,13 @@
 {"instruction": "Are nodes in all UYA multiplayer modes?", "input": "", "output": "Nodes are always present in Siege mode and optionally enabled in Capture the Flag."}
 {"instruction": "What happens if a team controls no nodes in UYA?", "input": "", "output": "The team is forced to respawn at base, limiting their reach and making it harder to contest the map."}
 {"instruction": "What is a strong team strategy with nodes?", "input": "", "output": "Teams should capture forward nodes, deny enemy spawns, and use node control to maintain offensive pressure."}
+{"instruction": "What happens when the timer expires in Deathmatch?", "input": "", "output": "The player or team with the highest number of frags wins."}
+{"instruction": "Do players respawn after being defeated?", "input": "", "output": "Yes. Players respawn after a short delay. They can respawn at their base or a friendly-controlled node."}
+{"instruction": "What are nodes in UYA multiplayer?", "input": "", "output": "Nodes are capturable points that provide spawn locations, weapons, ammo, vehicles, or defenses."}
+{"instruction": "How do players capture a node?", "input": "", "output": "Players turn the bolt crank at the node after clearing neutral turrets and NPC defenders."}
+{"instruction": "What happens when a node is captured?", "input": "", "output": "The node becomes a spawn point and may provide weapons, ammo, gadgets, defenses, or vehicles."}
+{"instruction": "Are nodes defended before capture?", "input": "", "output": "Yes. Nodes are guarded by neutral turrets and sometimes NPC defenders."}
+{"instruction": "What are base defenses in Siege mode?", "input": "", "output": "Base defenses include mini turrets and gatling turrets that fire at enemies approaching the base."}
+{"instruction": "Can base defenses be destroyed?", "input": "", "output": "Yes. Base turrets and defenses can be destroyed with concentrated fire or explosives."}
+{"instruction": "What happens if time runs out in Siege?", "input": "", "output": "The team that dealt more damage to the enemy core wins."}
+{"instruction": "What are small maps in UYA multiplayer?", "input": "", "output": "Small maps lack base power cores, nodes, and vehicles. Examples include Aquatos Sewers, Blackwater Docks, Marcadia Palace, and Command Center."}

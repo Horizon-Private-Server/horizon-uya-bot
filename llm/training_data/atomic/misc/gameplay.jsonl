@@ -1,15 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
 {"q": "What is UYA?", "a": "Ratchet & Clank: Up Your Arsenal is a 2004 video game best known for its chaotic multiplayer mode."}
 {"q": "How can UYA be played online today?", "a": "UYA can be played online using the PCSX2 emulator or original PlayStation 2 hardware with server patches."}
 {"q": "Why does UYA have lag issues?", "a": "Lag is caused by poorly implemented client code and missing New Player Sync, resulting in rubberbanding and teleportation during matches."}
@@ -176,25 +164,10 @@
 {"q": "Did the PS Vita version include multiplayer?", "a": "No, the PS Vita HD collection excluded multiplayer entirely."}
 {"q": "What community features did the PS2 version include?", "a": "The PS2 version included an in-game clan system and a classic server browser for manual room selection or hosting."}
 {"q": "How did players invite friends on PS2?", "a": "Players manually found or hosted rooms and used the in-game buddy system."}
-{"q": "What is the Horizon project?", "a": "Horizon is a fan-run revival server for UYA multiplayer on PS2 and emulator, replicating the original online servers."}
-{"q": "How does Horizon replicate the original servers?", "a": "The Horizon team reverse-engineered the PS2 network code and developed custom server software to redirect the game to Horizon servers."}
-{"q": "When did Horizon go live?", "a": "Horizon launched for public testing on February 14, 2021."}
-{"q": "Is a modded PS2 required to use Horizon?", "a": "No, unmodified consoles and PCSX2 emulator can connect by editing the network configuration."}
-{"q": "How do you connect to Horizon servers?", "a": "Create or edit a Network Configuration file and set the primary DNS to Horizon’s provided IP."}
-{"q": "Can PCSX2 players connect to Horizon?", "a": "Yes, by installing a plugin or setting the DNS to Horizon’s server."}
-{"q": "Does Horizon support clans?", "a": "Yes, clan support has been restored or improved over time."}
-{"q": "Does Horizon support leaderboards?", "a": "Yes, Horizon replicates stat tracking similar to the original game."}
-{"q": "Can players host matches on Horizon?", "a": "Yes, player-hosted matches are supported."}
-{"q": "What custom features has Horizon added?", "a": "Horizon adds multiplayer bots, custom maps, unlockable and custom skins, colored clan tags, and lobby upgrades."}
 {"q": "What do multiplayer bots do?", "a": "Bots fill empty player slots, allowing solo or practice matches."}
 {"q": "Does the original game include bots?", "a": "No, bots were not present in the original game."}
-{"q": "Does Horizon support custom maps?", "a": "Yes, including single-player areas ported to multiplayer like Daxx."}
 {"q": "How are custom maps added?", "a": "Players use downloadable patch files for emulator or modded PS2, or create maps using the Forge editor."}
 {"q": "Are all original multiplayer skins available?", "a": "Yes, including those originally unlocked with promo codes."}
-{"q": "Does Horizon support custom skins?", "a": "Yes, including texture mods for cosmetic personalization."}
-{"q": "What lobby enhancements does Horizon offer?", "a": "Upgraded city capacity and improved naming for better match organization."}
-{"q": "Does Horizon have anti-cheat systems?", "a": "Yes, it detects exploits and can ban players who cheat."}
-{"q": "Where can players get help with Horizon?", "a": "Players can join the Horizon Discord or consult the Horizon GitHub wiki."}
 {"q": "Are active games still available in 2025?", "a": "Yes, especially during community events or weekends, and bots are available for solo play."}
 {"q": "What is the Blitz Gun's strength in multiplayer?", "a": "It excels in close-quarters combat, room clearing, ambushes, defending corridors, killing clustered enemies, detonating mines, and damaging vehicles."}
 {"q": "What are the Blitz Gun's weaknesses?", "a": "Damage falloff at medium/long range, slow rate of fire, ineffective in open spaces or against distant fast targets."}
@@ -304,7 +277,6 @@
 {"q": "What modes is Aquatos Sewers used for?", "a": "Aquatos Sewers is used for Deathmatch and sometimes Capture the Flag."}
 {"q": "What is the layout style of Aquatos Sewers?", "a": "Aquatos Sewers is a circular loop of tunnels with a few intersecting passages."}
 {"q": "Is the Aquatos Sewers environment enclosed?", "a": "Yes, it has low ceilings and narrow tunnels."}
-{"q": "Is there vertical gameplay in Aquatos Sewers?", "a": "No, movement is horizontal."}
 {"q": "What combat style dominates Aquatos Sewers?", "a": "Close-quarters combat dominates."}
 {"q": "What weapons perform best in Aquatos Sewers?", "a": "The Blitz Gun, Lava Gun, Gravity Bomb, and Minirocket Tube excel."}
 {"q": "Are ambushes common in Aquatos Sewers?", "a": "Yes, especially with mines or Morph-o-Ray."}
@@ -499,7 +471,6 @@
 {"q": "Does UYA track online stats?", "a": "Yes—player profiles record wins, losses, kills, and other stats that feed into web-based leaderboards rather than in-game ranks."}
 {"q": "How much health do players have?", "a": "All players share a fixed 100-point health pool with no upgrades; Nanotech crates simply restore that baseline value."}
 {"q": "What hazards exist on multiplayer maps?", "a": "Maps lack AI hazards; main dangers are falling off edges, into water, or chasms (e.g., Metropolis rooftops, Korgon bridges opened)."}
-{"q": "Are private servers available today?", "a": "Fan projects like Horizon resurrect online play via custom servers and DNS redirects for PS2 hardware or emulators."}
 {"q": "What are UYA’s player limits?", "a": "Multiplayer supports up to 8 players online and up to 4 in local split-screen (multitap required for 3–4)."}
 {"q": "Does the PS Vita port include multiplayer?", "a": "No—the PS Vita version of Up Your Arsenal is single-player only; multiplayer was removed."}
 {"q": "What are the basic Siege objectives?", "a": "Teams first destroy the two entrance gatling turrets, then teleport inside and damage the enemy power core to win."}
@@ -612,7 +583,6 @@
 {"q": "What were the effects of high latency (lag) in multiplayer?", "a": "High latency made players appear to teleport and caused delayed hit-registration; competitive groups often required hosts to meet minimum connection quality to reduce these issues."}
 {"q": "How did UYA's multiplayer stand out despite being niche?", "a": "Its blend of platforming movement, gadgets, and chaotic weapon variety offered a uniquely fun experience that many fans still regard as one of the PS2’s best online modes."}
 {"q": "Did the community prefer UYA multiplayer over Deadlocked?", "a": "Yes; even after Ratchet: Deadlocked launched, a portion of players stayed with UYA because they favored its wider weapon set and objective modes, keeping its servers active alongside Deadlocked’s."}
-{"q": "How do players still access UYA multiplayer today?", "a": "Community servers such as OpenSpy or Horizon redirect the game via custom DNS, letting original hardware and emulators connect; Horizon also adds stability features and stat-tracking bots."}
 {"q": "What emulator is used to play UYA online?", "a": "PCSX2 is the standard PS2 emulator; with its network plugin properly configured, players can join the fan servers and even upscale the game’s resolution."}
 {"q": "Did players create their own map callouts and terminology?", "a": "Yes; communities adopted numbered node callouts (e.g., “enemy at node 3”) and coined terms like cycling, lag-jumping, and shield-sniping to communicate tactics efficiently."}
 {"q": "Was kill-stealing an issue in casual play?", "a": "Kill-stealing annoyed some casuals because the final blow grants weapon upgrades, but competitive teams often fed kills to specific players on purpose to secure key upgrades quickly."}

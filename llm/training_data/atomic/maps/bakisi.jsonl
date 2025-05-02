@@ -1,21 +1,21 @@
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Describe the general structure of Bakisi Isles.", "output": "Bakisi Isles is a tropical map composed of three large outer islands and a central elevated island with a tall tower."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Where are the team bases located in Bakisi Isles?", "output": "The Red and Blue bases are positioned on the southwest and southeast islands, respectively."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How are the islands connected in Bakisi Isles?", "output": "Each base island connects to the northern central island by a long curved bridge."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What special features are found on the bridges in Bakisi Isles?", "output": "Each bridge includes a midpoint platform known as a bridge node, which is reachable using jump pads."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the purpose of bridge nodes in Bakisi Isles?", "output": "Capturing a bridge node provides weapon pickups and spawns a Hovership at that location."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Which vehicles are available on Bakisi Isles?", "output": "Each of the three outer islands has a node that spawns a Turboslider."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What additional vehicles spawn at bridge nodes in Bakisi Isles?", "output": "Each bridge node spawns a Hovership when captured."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What can be found on the floating platform between bases in Bakisi Isles?", "output": "The floating platform contains a Hovership, a Flux Rifle, and a Minirocket Tube."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How can players reach the floating platform in Bakisi Isles?", "output": "It is only accessible by flying and serves as a sniper perch."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What defensive structures are found at team bases in Bakisi Isles?", "output": "Each base has turrets and a ramp that leads up to the power core."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What terrain advantages are present at base islands in Bakisi Isles?", "output": "Base islands include hills and cover to aid in defense."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is found at the top of the central tower in Bakisi Isles?", "output": "The tower contains a capturable node, normal turrets, and hidden health crates."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What NPCs are present at the central tower on Bakisi Isles?", "output": "Galactic Ranger NPCs guard the central tower."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How do players reach ledges and nanotech on the central tower in Bakisi Isles?", "output": "Gravity Boots are used to scale the tower and reach nanotech hidden on ledges."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is a common Siege tactic at match start on Bakisi Isles?", "output": "Teams often rush to capture bridge nodes to gain early access to Hoverships."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is it important to hold both bridge nodes on Bakisi Isles?", "output": "Holding both nodes enables aerial dominance and faster assaults on the enemy base."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How are Turbosliders used strategically in Bakisi Isles?", "output": "Turbosliders allow teams to quickly reach and contest side nodes."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How can snipers be effective on Bakisi Isles?", "output": "Snipers can climb the central tower or control the floating platform to pick off players crossing bridges or moving between nodes."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What's an effective way to defend against Hoverships on Bakisi Isles?", "output": "Use Blitz Guns or manned turrets to shoot down low-flying Hoverships approaching the base."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is a strong flag-running strategy on Bakisi Isles?", "output": "Use vehicles or Charge Boots to cross bridges quickly while deploying Holoshields behind you to block enemy fire."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the core win condition strategy for Bakisi Isles?", "output": "Control map nodes to secure vehicles, dominate mobility and airspace, and dictate the match pace."}
+{"q": "Describe the general structure of Bakisi Isles.", "a": "Bakisi Isles is a tropical map composed of three large outer islands and a central elevated island with a tall tower."}
+{"q": "Where are the team bases located in Bakisi Isles?", "a": "The Red and Blue bases are positioned on the southwest and southeast islands, respectively."}
+{"q": "How are the islands connected in Bakisi Isles?", "a": "Each base island connects to the northern central island by a long curved bridge."}
+{"q": "What special features are found on the bridges in Bakisi Isles?", "a": "Each bridge includes a midpoint platform known as a bridge node, which is reachable using jump pads."}
+{"q": "What is the purpose of bridge nodes in Bakisi Isles?", "a": "Capturing a bridge node provides weapon pickups and spawns a Hovership at that location."}
+{"q": "Which vehicles are available on Bakisi Isles?", "a": "Each of the three outer islands has a node that spawns a Turboslider."}
+{"q": "What additional vehicles spawn at bridge nodes in Bakisi Isles?", "a": "Each bridge node spawns a Hovership when captured."}
+{"q": "What can be found on the floating platform between bases in Bakisi Isles?", "a": "The floating platform contains a Hovership, a Flux Rifle, and a Minirocket Tube."}
+{"q": "How can players reach the floating platform in Bakisi Isles?", "a": "It is only accessible by flying and serves as a sniper perch."}
+{"q": "What defensive structures are found at team bases in Bakisi Isles?", "a": "Each base has turrets and a ramp that leads up to the power core."}
+{"q": "What terrain advantages are present at base islands in Bakisi Isles?", "a": "Base islands include hills and cover to aid in defense."}
+{"q": "What is found at the top of the central tower in Bakisi Isles?", "a": "The tower contains a capturable node, normal turrets, and hidden health crates."}
+{"q": "What NPCs are present at the central tower on Bakisi Isles?", "a": "Galactic Ranger NPCs guard the central tower."}
+{"q": "How do players reach ledges and nanotech on the central tower in Bakisi Isles?", "a": "Gravity Boots are used to scale the tower and reach nanotech hidden on ledges."}
+{"q": "What is a common Siege tactic at match start on Bakisi Isles?", "a": "Teams often rush to capture bridge nodes to gain early access to Hoverships."}
+{"q": "Why is it important to hold both bridge nodes on Bakisi Isles?", "a": "Holding both nodes enables aerial dominance and faster assaults on the enemy base."}
+{"q": "How are Turbosliders used strategically in Bakisi Isles?", "a": "Turbosliders allow teams to quickly reach and contest side nodes."}
+{"q": "How can snipers be effective on Bakisi Isles?", "a": "Snipers can climb the central tower or control the floating platform to pick off players crossing bridges or moving between nodes."}
+{"q": "What's an effective way to defend against Hoverships on Bakisi Isles?", "a": "Use Blitz Guns or manned turrets to shoot down low-flying Hoverships approaching the base."}
+{"q": "What is a strong flag-running strategy on Bakisi Isles?", "a": "Use vehicles or Charge Boots to cross bridges quickly while deploying Holoshields behind you to block enemy fire."}
+{"q": "What is the core win condition strategy for Bakisi Isles?", "a": "Control map nodes to secure vehicles, dominate mobility and airspace, and dictate the match pace."}

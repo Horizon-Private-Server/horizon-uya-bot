@@ -1,16 +1,16 @@
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What kind of map is Aquatos Sewers?", "output": "Aquatos Sewers is a small, chaotic, close-quarters map set in the underground sewer system of planet Aquatos."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the design inspiration for Aquatos Sewers?", "output": "The layout is inspired by a single-player Ranger mission."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the basic layout of Aquatos Sewers?", "output": "It features a symmetrical, maze-like layout of tight, narrow corridors."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is at the center of Aquatos Sewers?", "output": "The central crossroads room connects the four main tunnel routes."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How do the tunnel routes in Aquatos Sewers connect?", "output": "Each of the four tunnels ends in a T-junction that forms looping paths."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Is Aquatos Sewers symmetrical?", "output": "Yes, the layout is mirrored for team balance."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Where are the flags located in CTF mode on Aquatos Sewers?", "output": "Each team’s flag is inside their base, which are directly opposite each other."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the only direct route between flags in Aquatos Sewers?", "output": "The only direct path is through the central crossroads room."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Does Aquatos Sewers support vehicles or nodes?", "output": "No, the map is too confined for vehicles or capturable nodes."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Is Aquatos Sewers compatible with Siege mode?", "output": "No, it is designed only for infantry combat."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Does Aquatos Sewers have vertical traversal tools?", "output": "No, it has no jump pads, grav-ramps, or swingshot targets."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the movement style in Aquatos Sewers?", "output": "Movement is purely horizontal through compact tunnels."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What kind of combat is common in Aquatos Sewers?", "output": "Combat is frantic and close-quarters, focused on tight corridors."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What weapons perform best on Aquatos Sewers?", "output": "Blitz Gun, Lava Gun, Gravity Bombs, and Minirocket Tube dominate due to tight spaces."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What skills are emphasized on Aquatos Sewers?", "output": "Map knowledge, reflexes, and close-range weapon mastery are crucial."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is Aquatos Sewers unique in the multiplayer rotation?", "output": "It lacks open spaces, vehicles, and verticality, making success rely on coordination and pickup control."}
+{"q": "What kind of map is Aquatos Sewers?", "a": "Aquatos Sewers is a small, chaotic, close-quarters map set in the underground sewer system of planet Aquatos."}
+{"q": "What is the design inspiration for Aquatos Sewers?", "a": "The layout is inspired by a single-player Ranger mission."}
+{"q": "What is the basic layout of Aquatos Sewers?", "a": "It features a symmetrical, maze-like layout of tight, narrow corridors."}
+{"q": "What is at the center of Aquatos Sewers?", "a": "The central crossroads room connects the four main tunnel routes."}
+{"q": "How do the tunnel routes in Aquatos Sewers connect?", "a": "Each of the four tunnels ends in a T-junction that forms looping paths."}
+{"q": "Is Aquatos Sewers symmetrical?", "a": "Yes, the layout is mirrored for team balance."}
+{"q": "Where are the flags located in CTF mode on Aquatos Sewers?", "a": "Each team’s flag is inside their base, which are directly opposite each other."}
+{"q": "What is the only direct route between flags in Aquatos Sewers?", "a": "The only direct path is through the central crossroads room."}
+{"q": "Does Aquatos Sewers support vehicles or nodes?", "a": "No, the map is too confined for vehicles or capturable nodes."}
+{"q": "Is Aquatos Sewers compatible with Siege mode?", "a": "No, it is designed only for infantry combat."}
+{"q": "Does Aquatos Sewers have vertical traversal tools?", "a": "No, it has no jump pads, grav-ramps, or swingshot targets."}
+{"q": "What is the movement style in Aquatos Sewers?", "a": "Movement is purely horizontal through compact tunnels."}
+{"q": "What kind of combat is common in Aquatos Sewers?", "a": "Combat is frantic and close-quarters, focused on tight corridors."}
+{"q": "What weapons perform best on Aquatos Sewers?", "a": "Blitz Gun, Lava Gun, Gravity Bombs, and Minirocket Tube dominate due to tight spaces."}
+{"q": "What skills are emphasized on Aquatos Sewers?", "a": "Map knowledge, reflexes, and close-range weapon mastery are crucial."}
+{"q": "Why is Aquatos Sewers unique in the multiplayer rotation?", "a": "It lacks open spaces, vehicles, and verticality, making success rely on coordination and pickup control."}

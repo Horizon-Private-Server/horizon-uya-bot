@@ -1,87 +1,87 @@
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is UYA?", "output": "Ratchet & Clank: Up Your Arsenal is a 2004 video game best known for its chaotic multiplayer mode."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How can UYA be played online today?", "output": "UYA can be played online using the PCSX2 emulator or original PlayStation 2 hardware with server patches."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why does UYA have lag issues?", "output": "Lag is caused by poorly implemented client code and missing New Player Sync, resulting in rubberbanding and teleportation during matches."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What weapons are available in UYA multiplayer?", "output": "Weapons include the Mine Glove, Morph-o-Ray, Flux Rifle, Rocket Launcher, Blitz Gun, Gravity Bomb, Lava Gun, and N60."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the strongest weapon in UYA multiplayer?", "output": "The upgraded V2 Flux Rifle deals 100 damage per shot, making it the most powerful weapon."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is cycling in UYA multiplayer?", "output": "Cycling is firing one weapon, switching to another, and firing again to chain attacks quickly."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What does stunning mean in UYA?", "output": "Stunning occurs when a weapon hit causes a player to freeze briefly, making them vulnerable to follow-up attacks."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How many weapons can a player carry at once in UYA multiplayer?", "output": "Players can only carry one weapon at a time."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the hypershot gadget in UYA?", "output": "The hypershot is a gadget that shoots a green beam to connect with floating green nodes and lets players cross gaps."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the hypershot node?", "output": "A hypershot node is a small floating green target that the hypershot gadget latches onto for traversal."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How do players move in UYA multiplayer?", "output": "Players use lock-strafe mode to move while facing forward; the camera unlocks when using the wrench in third-person."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How does a player attack with the wrench in UYA?", "output": "Pressing square on the PS2 controller makes the player swing their wrench for a melee attack on flat ground."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is a hyperstrike in UYA?", "output": "Pressing square in mid-air performs a hyperstrike, an overhead wrench slam that hits in melee range."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is a side flip in UYA?", "output": "A side flip is an evasive movement where the player flips sideways in a locked arc."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is side flipping risky in UYA?", "output": "Because it follows a predictable arc, enemies using the Flux Rifle can easily aim where the player will land."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is lag jumping in UYA?", "output": "Lag jumping is performed by crouching (R2) and side flipping while moving forward, allowing the player to jump sideways over obstacles."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the downside of lag jumping?", "output": "Incorrect use of lag jumping places the player in a predictable landing zone, making them vulnerable to Flux Rifle shots."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How do rockets behave in UYA?", "output": "Rockets lock on and home in on enemies, tracking them for a limited distance before hitting or evaporating."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What happens if a rocket travels too far in UYA?", "output": "If the target is out of range or too far, the missile vanishes at max range."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How do weapon upgrades work in UYA?", "output": "After 3 kills without dying, a weapon upgrades from V1 to V2."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What benefits do V2 weapons have in UYA?", "output": "V2 weapons may have faster cooldowns, more damage, or larger splash radius."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are magnet boots in UYA?", "output": "Magnet boots allow players to walk on walls and ceilings by defying gravity on designated surfaces."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Do players always have magnet boots in UYA?", "output": "Yes. All players start with magnet boots by default."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is a map in UYA?", "output": "A map is a level where players spawn, move, and fight. It contains the environment, terrain, and bases."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What maps are available in UYA multiplayer?", "output": "Maps include Bakisi Isles, Metropolis, Hoven Gorge, Outpost X12, Korgon Outpost, Blackwater City, Command Center, Blackwater Docks, Aquatos Sewers, and Marcadia Palace."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are the game modes in UYA?", "output": "UYA includes three multiplayer modes: Deathmatch, Siege, and Capture the Flag."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How does Deathmatch mode work in UYA?", "output": "Deathmatch is played with a time or frag limit and supports free-for-all or custom teams."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What team colors are available in UYA Deathmatch with teams enabled?", "output": "When 'teams' mode is enabled in Deathmatch, players can select between Red and Blue team colors."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What defines a small map in UYA multiplayer?", "output": "Small maps in UYA do not have base defenses or teleporters to the power core."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are base defenses in UYA multiplayer?", "output": "Base defenses include two mini turrets and two gatling turrets per base."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Are troopers part of base defenses in UYA?", "output": "Troopers were originally part of base defenses but are disabled due to game mods."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are mini turrets in UYA?", "output": "Mini turrets stay hidden in the ground and become active when an enemy player approaches."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How do mini turrets attack in UYA?", "output": "Once active, they shoot laser bullets at nearby enemy players while remaining stationary."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Are mini turrets vulnerable in UYA?", "output": "Mini turrets are invulnerable when no enemy player is nearby."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Do players have a melee weapon in UYA multiplayer?", "output": "Yes, all players are equipped with the OmniWrench for close-range combat and crate destruction."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How effective is the OmniWrench in combat?", "output": "The wrench is weak compared to firearms and only useful as a last resort or for breaking crates."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Are grenades or the Suck Cannon available in multiplayer?", "output": "No, single-player weapons like grenades and the Suck Cannon are excluded from multiplayer for balance reasons."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Are Gadgetron vendors present in UYA multiplayer?", "output": "No, there are no Gadgetron vendors in multiplayer. Players must rely on crate pickups for gear."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is controlling the map important in UYA multiplayer?", "output": "Controlling specific areas gives teams access to critical weapons and resources like Flux Rifles or health."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How do crate respawns work in UYA multiplayer?", "output": "Crates respawn after a short delay. Experienced players track crate timers for consistent access to supplies."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What happens when a player dies in UYA multiplayer?", "output": "Upon death, a player drops a weapon pack containing all their carried weapons."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Who can pick up dropped weapons in UYA multiplayer?", "output": "Any nearby player, including enemies, can collect the dropped weapon pack."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is dying costly in UYA multiplayer?", "output": "Dying not only causes a respawn delay but also risks arming opponents with upgraded or rare weapons."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Do players lose upgrades upon death in UYA multiplayer?", "output": "Yes, dying resets all weapon upgrades for the player."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the Hypershot in UYA multiplayer?", "output": "The Hypershot is a grappling tool that lets players swing from floating green versa-targets."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How is the Hypershot used in matches?", "output": "Players activate the Hypershot at versa-targets to swing across gaps or reach higher terrain."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Which UYA maps rely on Hypershot use?", "output": "Maps like Metropolis, Outpost X12, and Blackwater City require Hypershot traversal to access key areas."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are Gravity Boots in UYA multiplayer?", "output": "Gravity Boots let players walk on walls, ceilings, and curved surfaces marked by gravity ramps."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the function of gravity ramps in UYA?", "output": "Gravity ramps enable vertical traversal, flanking, and access to power weapons or objectives."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are Charge Boots in UYA multiplayer?", "output": "Charge Boots give players a speed burst to cross long distances or engage quickly."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Can Charge Boots be disabled in multiplayer?", "output": "Yes, the match host can enable or disable Charge Boots based on the map or mode."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "When are Charge Boots usually enabled?", "output": "They are typically enabled on large maps like Hoven Gorge or Korgon Outpost for better mobility."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How were Charge Boots unlocked on PS2?", "output": "Originally, Charge Boots were unlockable in the PS2 version."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How are Charge Boots handled in fan servers today?", "output": "On fan servers, Charge Boots can be freely enabled by the host for any match."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are jump pads in UYA multiplayer?", "output": "Jump pads are fixed launch points that propel players into the air to reach elevated areas."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are jump pads used for in UYA?", "output": "Jump pads are used to access vertical sections of maps that cannot be reached on foot."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Which UYA maps feature jump pads?", "output": "Bakisi Isles and Hoven Gorge prominently feature jump pads for reaching sniper towers and node platforms."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What items are found near jump pad landings?", "output": "Jump pad landings often have health crates or power weapons."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Are there turrets in UYA multiplayer?", "output": "Yes. Many maps include static turrets that players can control for sustained fire."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How do player-controlled turrets work in UYA?", "output": "Turrets fire infinite ammo energy or flak shots and overheat after prolonged use."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the drawback of using a turret in UYA?", "output": "Turret users are stationary and vulnerable to snipers, explosives, and flanks."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Can enemies use your team's turret in UYA?", "output": "Yes. Enemy players can mount your turret, but base AI defenses will retaliate."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are drone bots in UYA multiplayer?", "output": "Drone bots are small AI companions that automatically shoot nearby enemies."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How effective are drone bots in UYA multiplayer?", "output": "Drone bots deal chip damage and distract enemies, especially in skirmishes."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Is invisibility available in UYA multiplayer?", "output": "No. There are no cloaking gadgets or stealth mechanics in multiplayer."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Are there personal shields in UYA multiplayer?", "output": "No. UYA multiplayer only includes the Holoshield Glove for directional defense."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How does the lack of power-ups affect gameplay in UYA multiplayer?", "output": "UYA multiplayer focuses on skill-based combat and map control instead of relying on random power-up spawns."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What factors determine success in UYA multiplayer?", "output": "Victory depends on weapon mastery, movement skill, and team coordination—not random item pickups."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How does respawning work in UYA multiplayer?", "output": "Players respawn after a short delay and can choose between their team base or any controlled node."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is node ownership important for respawning?", "output": "Owning nodes allows faster re-entry into combat by respawning closer to contested objectives."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why are nodes important in team-based UYA modes?", "output": "Nodes act as forward spawn points, reducing downtime and improving map control for the team."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How do you capture a node in UYA multiplayer?", "output": "To capture a node, destroy its AI defenses and turn the bolt crank to convert it to your team."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What changes when a node is captured?", "output": "The node changes team color and activates as a spawn point, weapon dispenser, or vehicle spawner."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What resources can a captured node provide?", "output": "Nodes may provide weapons, ammo, drone bots, or vehicles depending on the map and node type."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Are nodes in all UYA multiplayer modes?", "output": "Nodes are always present in Siege mode and optionally enabled in Capture the Flag."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What happens if a team controls no nodes in UYA?", "output": "The team is forced to respawn at base, limiting their reach and making it harder to contest the map."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is a strong team strategy with nodes?", "output": "Teams should capture forward nodes, deny enemy spawns, and use node control to maintain offensive pressure."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What happens when the timer expires in Deathmatch?", "output": "The player or team with the highest number of frags wins."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Do players respawn after being defeated?", "output": "Yes. Players respawn after a short delay. They can respawn at their base or a friendly-controlled node."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are nodes in UYA multiplayer?", "output": "Nodes are capturable points that provide spawn locations, weapons, ammo, vehicles, or defenses."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How do players capture a node?", "output": "Players turn the bolt crank at the node after clearing neutral turrets and NPC defenders."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What happens when a node is captured?", "output": "The node becomes a spawn point and may provide weapons, ammo, gadgets, defenses, or vehicles."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Are nodes defended before capture?", "output": "Yes. Nodes are guarded by neutral turrets and sometimes NPC defenders."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are base defenses in Siege mode?", "output": "Base defenses include mini turrets and gatling turrets that fire at enemies approaching the base."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Can base defenses be destroyed?", "output": "Yes. Base turrets and defenses can be destroyed with concentrated fire or explosives."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What happens if time runs out in Siege?", "output": "The team that dealt more damage to the enemy core wins."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are small maps in UYA multiplayer?", "output": "Small maps lack base power cores, nodes, and vehicles. Examples include Aquatos Sewers, Blackwater Docks, Marcadia Palace, and Command Center."}
+{"q": "What is UYA?", "a": "Ratchet & Clank: Up Your Arsenal is a 2004 video game best known for its chaotic multiplayer mode."}
+{"q": "How can UYA be played online today?", "a": "UYA can be played online using the PCSX2 emulator or original PlayStation 2 hardware with server patches."}
+{"q": "Why does UYA have lag issues?", "a": "Lag is caused by poorly implemented client code and missing New Player Sync, resulting in rubberbanding and teleportation during matches."}
+{"q": "What weapons are available in UYA multiplayer?", "a": "Weapons include the Mine Glove, Morph-o-Ray, Flux Rifle, Rocket Launcher, Blitz Gun, Gravity Bomb, Lava Gun, and N60."}
+{"q": "What is the strongest weapon in UYA multiplayer?", "a": "The upgraded V2 Flux Rifle deals 100 damage per shot, making it the most powerful weapon."}
+{"q": "What is cycling in UYA multiplayer?", "a": "Cycling is firing one weapon, switching to another, and firing again to chain attacks quickly."}
+{"q": "What does stunning mean in UYA?", "a": "Stunning occurs when a weapon hit causes a player to freeze briefly, making them vulnerable to follow-up attacks."}
+{"q": "How many weapons can a player carry at once in UYA multiplayer?", "a": "Players can only carry one weapon at a time."}
+{"q": "What is the hypershot gadget in UYA?", "a": "The hypershot is a gadget that shoots a green beam to connect with floating green nodes and lets players cross gaps."}
+{"q": "What is the hypershot node?", "a": "A hypershot node is a small floating green target that the hypershot gadget latches onto for traversal."}
+{"q": "How do players move in UYA multiplayer?", "a": "Players use lock-strafe mode to move while facing forward; the camera unlocks when using the wrench in third-person."}
+{"q": "How does a player attack with the wrench in UYA?", "a": "Pressing square on the PS2 controller makes the player swing their wrench for a melee attack on flat ground."}
+{"q": "What is a hyperstrike in UYA?", "a": "Pressing square in mid-air performs a hyperstrike, an overhead wrench slam that hits in melee range."}
+{"q": "What is a side flip in UYA?", "a": "A side flip is an evasive movement where the player flips sideways in a locked arc."}
+{"q": "Why is side flipping risky in UYA?", "a": "Because it follows a predictable arc, enemies using the Flux Rifle can easily aim where the player will land."}
+{"q": "What is lag jumping in UYA?", "a": "Lag jumping is performed by crouching (R2) and side flipping while moving forward, allowing the player to jump sideways over obstacles."}
+{"q": "What is the downside of lag jumping?", "a": "Incorrect use of lag jumping places the player in a predictable landing zone, making them vulnerable to Flux Rifle shots."}
+{"q": "How do rockets behave in UYA?", "a": "Rockets lock on and home in on enemies, tracking them for a limited distance before hitting or evaporating."}
+{"q": "What happens if a rocket travels too far in UYA?", "a": "If the target is out of range or too far, the missile vanishes at max range."}
+{"q": "How do weapon upgrades work in UYA?", "a": "After 3 kills without dying, a weapon upgrades from V1 to V2."}
+{"q": "What benefits do V2 weapons have in UYA?", "a": "V2 weapons may have faster cooldowns, more damage, or larger splash radius."}
+{"q": "What are magnet boots in UYA?", "a": "Magnet boots allow players to walk on walls and ceilings by defying gravity on designated surfaces."}
+{"q": "Do players always have magnet boots in UYA?", "a": "Yes. All players start with magnet boots by default."}
+{"q": "What is a map in UYA?", "a": "A map is a level where players spawn, move, and fight. It contains the environment, terrain, and bases."}
+{"q": "What maps are available in UYA multiplayer?", "a": "Maps include Bakisi Isles, Metropolis, Hoven Gorge, Outpost X12, Korgon Outpost, Blackwater City, Command Center, Blackwater Docks, Aquatos Sewers, and Marcadia Palace."}
+{"q": "What are the game modes in UYA?", "a": "UYA includes three multiplayer modes: Deathmatch, Siege, and Capture the Flag."}
+{"q": "How does Deathmatch mode work in UYA?", "a": "Deathmatch is played with a time or frag limit and supports free-for-all or custom teams."}
+{"q": "What team colors are available in UYA Deathmatch with teams enabled?", "a": "When 'teams' mode is enabled in Deathmatch, players can select between Red and Blue team colors."}
+{"q": "What defines a small map in UYA multiplayer?", "a": "Small maps in UYA do not have base defenses or teleporters to the power core."}
+{"q": "What are base defenses in UYA multiplayer?", "a": "Base defenses include two mini turrets and two gatling turrets per base."}
+{"q": "Are troopers part of base defenses in UYA?", "a": "Troopers were originally part of base defenses but are disabled due to game mods."}
+{"q": "What are mini turrets in UYA?", "a": "Mini turrets stay hidden in the ground and become active when an enemy player approaches."}
+{"q": "How do mini turrets attack in UYA?", "a": "Once active, they shoot laser bullets at nearby enemy players while remaining stationary."}
+{"q": "Are mini turrets vulnerable in UYA?", "a": "Mini turrets are invulnerable when no enemy player is nearby."}
+{"q": "Do players have a melee weapon in UYA multiplayer?", "a": "Yes, all players are equipped with the OmniWrench for close-range combat and crate destruction."}
+{"q": "How effective is the OmniWrench in combat?", "a": "The wrench is weak compared to firearms and only useful as a last resort or for breaking crates."}
+{"q": "Are grenades or the Suck Cannon available in multiplayer?", "a": "No, single-player weapons like grenades and the Suck Cannon are excluded from multiplayer for balance reasons."}
+{"q": "Are Gadgetron vendors present in UYA multiplayer?", "a": "No, there are no Gadgetron vendors in multiplayer. Players must rely on crate pickups for gear."}
+{"q": "Why is controlling the map important in UYA multiplayer?", "a": "Controlling specific areas gives teams access to critical weapons and resources like Flux Rifles or health."}
+{"q": "How do crate respawns work in UYA multiplayer?", "a": "Crates respawn after a short delay. Experienced players track crate timers for consistent access to supplies."}
+{"q": "What happens when a player dies in UYA multiplayer?", "a": "Upon death, a player drops a weapon pack containing all their carried weapons."}
+{"q": "Who can pick up dropped weapons in UYA multiplayer?", "a": "Any nearby player, including enemies, can collect the dropped weapon pack."}
+{"q": "Why is dying costly in UYA multiplayer?", "a": "Dying not only causes a respawn delay but also risks arming opponents with upgraded or rare weapons."}
+{"q": "Do players lose upgrades upon death in UYA multiplayer?", "a": "Yes, dying resets all weapon upgrades for the player."}
+{"q": "What is the Hypershot in UYA multiplayer?", "a": "The Hypershot is a grappling tool that lets players swing from floating green versa-targets."}
+{"q": "How is the Hypershot used in matches?", "a": "Players activate the Hypershot at versa-targets to swing across gaps or reach higher terrain."}
+{"q": "Which UYA maps rely on Hypershot use?", "a": "Maps like Metropolis, Outpost X12, and Blackwater City require Hypershot traversal to access key areas."}
+{"q": "What are Gravity Boots in UYA multiplayer?", "a": "Gravity Boots let players walk on walls, ceilings, and curved surfaces marked by gravity ramps."}
+{"q": "What is the function of gravity ramps in UYA?", "a": "Gravity ramps enable vertical traversal, flanking, and access to power weapons or objectives."}
+{"q": "What are Charge Boots in UYA multiplayer?", "a": "Charge Boots give players a speed burst to cross long distances or engage quickly."}
+{"q": "Can Charge Boots be disabled in multiplayer?", "a": "Yes, the match host can enable or disable Charge Boots based on the map or mode."}
+{"q": "When are Charge Boots usually enabled?", "a": "They are typically enabled on large maps like Hoven Gorge or Korgon Outpost for better mobility."}
+{"q": "How were Charge Boots unlocked on PS2?", "a": "Originally, Charge Boots were unlockable in the PS2 version."}
+{"q": "How are Charge Boots handled in fan servers today?", "a": "On fan servers, Charge Boots can be freely enabled by the host for any match."}
+{"q": "What are jump pads in UYA multiplayer?", "a": "Jump pads are fixed launch points that propel players into the air to reach elevated areas."}
+{"q": "What are jump pads used for in UYA?", "a": "Jump pads are used to access vertical sections of maps that cannot be reached on foot."}
+{"q": "Which UYA maps feature jump pads?", "a": "Bakisi Isles and Hoven Gorge prominently feature jump pads for reaching sniper towers and node platforms."}
+{"q": "What items are found near jump pad landings?", "a": "Jump pad landings often have health crates or power weapons."}
+{"q": "Are there turrets in UYA multiplayer?", "a": "Yes. Many maps include static turrets that players can control for sustained fire."}
+{"q": "How do player-controlled turrets work in UYA?", "a": "Turrets fire infinite ammo energy or flak shots and overheat after prolonged use."}
+{"q": "What is the drawback of using a turret in UYA?", "a": "Turret users are stationary and vulnerable to snipers, explosives, and flanks."}
+{"q": "Can enemies use your team's turret in UYA?", "a": "Yes. Enemy players can mount your turret, but base AI defenses will retaliate."}
+{"q": "What are drone bots in UYA multiplayer?", "a": "Drone bots are small AI companions that automatically shoot nearby enemies."}
+{"q": "How effective are drone bots in UYA multiplayer?", "a": "Drone bots deal chip damage and distract enemies, especially in skirmishes."}
+{"q": "Is invisibility available in UYA multiplayer?", "a": "No. There are no cloaking gadgets or stealth mechanics in multiplayer."}
+{"q": "Are there personal shields in UYA multiplayer?", "a": "No. UYA multiplayer only includes the Holoshield Glove for directional defense."}
+{"q": "How does the lack of power-ups affect gameplay in UYA multiplayer?", "a": "UYA multiplayer focuses on skill-based combat and map control instead of relying on random power-up spawns."}
+{"q": "What factors determine success in UYA multiplayer?", "a": "Victory depends on weapon mastery, movement skill, and team coordination—not random item pickups."}
+{"q": "How does respawning work in UYA multiplayer?", "a": "Players respawn after a short delay and can choose between their team base or any controlled node."}
+{"q": "Why is node ownership important for respawning?", "a": "Owning nodes allows faster re-entry into combat by respawning closer to contested objectives."}
+{"q": "Why are nodes important in team-based UYA modes?", "a": "Nodes act as forward spawn points, reducing downtime and improving map control for the team."}
+{"q": "How do you capture a node in UYA multiplayer?", "a": "To capture a node, destroy its AI defenses and turn the bolt crank to convert it to your team."}
+{"q": "What changes when a node is captured?", "a": "The node changes team color and activates as a spawn point, weapon dispenser, or vehicle spawner."}
+{"q": "What resources can a captured node provide?", "a": "Nodes may provide weapons, ammo, drone bots, or vehicles depending on the map and node type."}
+{"q": "Are nodes in all UYA multiplayer modes?", "a": "Nodes are always present in Siege mode and optionally enabled in Capture the Flag."}
+{"q": "What happens if a team controls no nodes in UYA?", "a": "The team is forced to respawn at base, limiting their reach and making it harder to contest the map."}
+{"q": "What is a strong team strategy with nodes?", "a": "Teams should capture forward nodes, deny enemy spawns, and use node control to maintain offensive pressure."}
+{"q": "What happens when the timer expires in Deathmatch?", "a": "The player or team with the highest number of frags wins."}
+{"q": "Do players respawn after being defeated?", "a": "Yes. Players respawn after a short delay. They can respawn at their base or a friendly-controlled node."}
+{"q": "What are nodes in UYA multiplayer?", "a": "Nodes are capturable points that provide spawn locations, weapons, ammo, vehicles, or defenses."}
+{"q": "How do players capture a node?", "a": "Players turn the bolt crank at the node after clearing neutral turrets and NPC defenders."}
+{"q": "What happens when a node is captured?", "a": "The node becomes a spawn point and may provide weapons, ammo, gadgets, defenses, or vehicles."}
+{"q": "Are nodes defended before capture?", "a": "Yes. Nodes are guarded by neutral turrets and sometimes NPC defenders."}
+{"q": "What are base defenses in Siege mode?", "a": "Base defenses include mini turrets and gatling turrets that fire at enemies approaching the base."}
+{"q": "Can base defenses be destroyed?", "a": "Yes. Base turrets and defenses can be destroyed with concentrated fire or explosives."}
+{"q": "What happens if time runs out in Siege?", "a": "The team that dealt more damage to the enemy core wins."}
+{"q": "What are small maps in UYA multiplayer?", "a": "Small maps lack base power cores, nodes, and vehicles. Examples include Aquatos Sewers, Blackwater Docks, Marcadia Palace, and Command Center."}

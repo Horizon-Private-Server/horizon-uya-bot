@@ -1,15 +1,15 @@
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the Mine Glove in UYA multiplayer?", "output": "The Mine Glove is a tactical weapon that deploys proximity mines which stick to the ground and detonate when enemies approach."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How many mines can you carry with the Mine Glove?", "output": "You can carry up to 6 mines at a time."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What happens when a proximity mine is triggered?", "output": "When an enemy enters the detection radius, the mine homes in and explodes for high damage."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Do proximity mines remain stationary before detonation?", "output": "Yes, they stay in place until triggered by an enemy."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Can proximity mines be destroyed?", "output": "Yes. Enemies can shoot and destroy them."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What weapons are good for clearing mines?", "output": "Splash-damage weapons like the Blitz Gun or Gravity Bomb can safely clear mines from a distance."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the strategic use of the Mine Glove?", "output": "It provides area denial and crowd control, forcing enemies to slow down or avoid certain routes."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How do mines affect enemy behavior?", "output": "They delay, distract, or redirect enemies, even if they don't cause kills."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What changes when the Mine Glove is upgraded?", "output": "Upgraded mines have a larger blast radius, deal more damage, and require fewer hits to kill."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How is the Mine Glove upgraded?", "output": "After 3 kill assists, the Mine Glove upgrades automatically."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Can the Mine Glove be used to get surprise kills?", "output": "Yes. Mines placed in high-traffic or unguarded areas can kill unaware enemies."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Where should players place mines for best effect?", "output": "Place mines on common paths, flanks, or flag routes to catch or delay enemies."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Are mines useful even if they don’t explode?", "output": "Yes. Their presence alone can delay or divert enemies, creating opportunities elsewhere."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How is the Mine Glove viewed competitively?", "output": "It is considered a high-skill utility weapon with strong defensive power."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What modes benefit most from Mine Glove use?", "output": "Siege and Capture the Flag benefit most from its ability to delay or punish advances."}
+{"q": "What is the Mine Glove in UYA multiplayer?", "a": "The Mine Glove is a tactical weapon that deploys proximity mines which stick to the ground and detonate when enemies approach."}
+{"q": "How many mines can you carry with the Mine Glove?", "a": "You can carry up to 6 mines at a time."}
+{"q": "What happens when a proximity mine is triggered?", "a": "When an enemy enters the detection radius, the mine homes in and explodes for high damage."}
+{"q": "Do proximity mines remain stationary before detonation?", "a": "Yes, they stay in place until triggered by an enemy."}
+{"q": "Can proximity mines be destroyed?", "a": "Yes. Enemies can shoot and destroy them."}
+{"q": "What weapons are good for clearing mines?", "a": "Splash-damage weapons like the Blitz Gun or Gravity Bomb can safely clear mines from a distance."}
+{"q": "What is the strategic use of the Mine Glove?", "a": "It provides area denial and crowd control, forcing enemies to slow down or avoid certain routes."}
+{"q": "How do mines affect enemy behavior?", "a": "They delay, distract, or redirect enemies, even if they don't cause kills."}
+{"q": "What changes when the Mine Glove is upgraded?", "a": "Upgraded mines have a larger blast radius, deal more damage, and require fewer hits to kill."}
+{"q": "How is the Mine Glove upgraded?", "a": "After 3 kill assists, the Mine Glove upgrades automatically."}
+{"q": "Can the Mine Glove be used to get surprise kills?", "a": "Yes. Mines placed in high-traffic or unguarded areas can kill unaware enemies."}
+{"q": "Where should players place mines for best effect?", "a": "Place mines on common paths, flanks, or flag routes to catch or delay enemies."}
+{"q": "Are mines useful even if they don’t explode?", "a": "Yes. Their presence alone can delay or divert enemies, creating opportunities elsewhere."}
+{"q": "How is the Mine Glove viewed competitively?", "a": "It is considered a high-skill utility weapon with strong defensive power."}
+{"q": "What modes benefit most from Mine Glove use?", "a": "Siege and Capture the Flag benefit most from its ability to delay or punish advances."}

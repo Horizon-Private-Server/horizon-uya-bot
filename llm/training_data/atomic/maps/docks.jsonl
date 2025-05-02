@@ -1,32 +1,32 @@
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Describe the layout of Blackwater Docks.", "output": "Blackwater Docks is a medium-sized map set in a waterfront port area of Blackwater City."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How is Blackwater Docks structured geographically?", "output": "It features four main combat platforms arranged around a central, non-playable building used as background scenery."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the basic platform layout in Blackwater Docks?", "output": "The platforms form a rough square: top-left, top-right, bottom-left, and bottom-right."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How are players able to move between platforms on Blackwater Docks?", "output": "Each platform is connected asymmetrically via bridges, ramps, jump pads, and Swingshot targets."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How are the bottom platforms connected on Blackwater Docks?", "output": "The bottom-left and bottom-right platforms are directly linked by a bridge."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What path connects bottom-left to top-left on Blackwater Docks?", "output": "Bottom-left has a staircase leading up to the top-left platform."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What connects top-right to top-left in Blackwater Docks?", "output": "A jump pad allows movement from top-right to top-left."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How does the Swingshot assist traversal on Blackwater Docks?", "output": "A Swingshot target links top-right to bottom-right diagonally."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Is Blackwater Docks a symmetrical map?", "output": "No, it is asymmetrical in elevation and traversal paths."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How is balance maintained in Blackwater Docks despite asymmetry?", "output": "The map is balanced in terms of item distribution and strategic options."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Where are the flags placed in Blackwater Docks CTF mode?", "output": "The red team’s flag is located on the elevated top-left platform."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Where does the blue team’s flag spawn in CTF mode on Blackwater Docks?", "output": "The blue team’s flag is on the lower right platform."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How does flag placement affect gameplay in Blackwater Docks?", "output": "This creates asymmetrical attack and defense dynamics based on elevation."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What power weapons are on the top-left platform of Blackwater Docks?", "output": "The top-left platform contains a Gravity Bomb and a Blitz Gun."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is the top-left platform considered powerful in Blackwater Docks?", "output": "Its height and wide field of view make it a power position."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What weapons can players find on the bottom-right platform in Blackwater Docks?", "output": "The bottom-right platform also offers a Gravity Bomb and Blitz Gun, mirroring the top-left for balance."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "List the items found on the top-right platform in Blackwater Docks.", "output": "Top-right contains a Minirocket Tube, Charge Boots, Mine Glove, and a health crate."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What does the bottom-left platform offer in terms of equipment?", "output": "Bottom-left holds a Lava Gun, Charge Boots, and a health pickup."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Where is the Morph-o-Ray located in Blackwater Docks?", "output": "It is found on the bridge between the bottom-left and bottom-right platforms."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Where can players pick up the Flux Rifle in Blackwater Docks?", "output": "It is hidden halfway up the staircase that connects bottom-left to top-left."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How does item distribution affect player movement on Blackwater Docks?", "output": "Players are incentivized to rotate between platforms to collect power weapons and health."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What design elements promote continuous motion in Blackwater Docks?", "output": "The map encourages elevation shifts and constant movement to control key gear."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How can teams defend in CTF mode on Blackwater Docks?", "output": "Teams should fortify the top-left platform with mines and snipers to defend the flag."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is a good offensive strategy for CTF on Blackwater Docks?", "output": "Coordinate assaults using multiple routes—such as bridge and Swingshot—to divide defenders' attention."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How can players use traversal tools tactically in Blackwater Docks?", "output": "Grab the Minirocket Tube on the top-right platform and Swingshot to bottom-right for an ambush."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What traversal tools enable surprise flanks on Blackwater Docks?", "output": "Jump pads and Swingshot paths allow fast repositioning and surprise attacks."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How can the central structure be used defensively on Blackwater Docks?", "output": "It blocks line of sight, letting players escape snipers or retreat from fire."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is the central building useful in combat on Blackwater Docks?", "output": "It enables evasive maneuvers and helps players regroup during a push."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What position should players prioritize in Team Deathmatch on Blackwater Docks?", "output": "Controlling the top-left platform is key due to its height and powerful pickups."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is a risk of holding the top-left platform in TDM on Blackwater Docks?", "output": "It attracts grenades and explosive splash damage from lower levels."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What player skills are emphasized by Blackwater Docks?", "output": "The map rewards strong vertical awareness, quick adaptability, and smart pathing."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What fundamentals matter most on Blackwater Docks?", "output": "Movement control and map knowledge are essential for success."}
+{"q": "Describe the layout of Blackwater Docks.", "a": "Blackwater Docks is a medium-sized map set in a waterfront port area of Blackwater City."}
+{"q": "How is Blackwater Docks structured geographically?", "a": "It features four main combat platforms arranged around a central, non-playable building used as background scenery."}
+{"q": "What is the basic platform layout in Blackwater Docks?", "a": "The platforms form a rough square: top-left, top-right, bottom-left, and bottom-right."}
+{"q": "How are players able to move between platforms on Blackwater Docks?", "a": "Each platform is connected asymmetrically via bridges, ramps, jump pads, and Swingshot targets."}
+{"q": "How are the bottom platforms connected on Blackwater Docks?", "a": "The bottom-left and bottom-right platforms are directly linked by a bridge."}
+{"q": "What path connects bottom-left to top-left on Blackwater Docks?", "a": "Bottom-left has a staircase leading up to the top-left platform."}
+{"q": "What connects top-right to top-left in Blackwater Docks?", "a": "A jump pad allows movement from top-right to top-left."}
+{"q": "How does the Swingshot assist traversal on Blackwater Docks?", "a": "A Swingshot target links top-right to bottom-right diagonally."}
+{"q": "Is Blackwater Docks a symmetrical map?", "a": "No, it is asymmetrical in elevation and traversal paths."}
+{"q": "How is balance maintained in Blackwater Docks despite asymmetry?", "a": "The map is balanced in terms of item distribution and strategic options."}
+{"q": "Where are the flags placed in Blackwater Docks CTF mode?", "a": "The red team’s flag is located on the elevated top-left platform."}
+{"q": "Where does the blue team’s flag spawn in CTF mode on Blackwater Docks?", "a": "The blue team’s flag is on the lower right platform."}
+{"q": "How does flag placement affect gameplay in Blackwater Docks?", "a": "This creates asymmetrical attack and defense dynamics based on elevation."}
+{"q": "What power weapons are on the top-left platform of Blackwater Docks?", "a": "The top-left platform contains a Gravity Bomb and a Blitz Gun."}
+{"q": "Why is the top-left platform considered powerful in Blackwater Docks?", "a": "Its height and wide field of view make it a power position."}
+{"q": "What weapons can players find on the bottom-right platform in Blackwater Docks?", "a": "The bottom-right platform also offers a Gravity Bomb and Blitz Gun, mirroring the top-left for balance."}
+{"q": "List the items found on the top-right platform in Blackwater Docks.", "a": "Top-right contains a Minirocket Tube, Charge Boots, Mine Glove, and a health crate."}
+{"q": "What does the bottom-left platform offer in terms of equipment?", "a": "Bottom-left holds a Lava Gun, Charge Boots, and a health pickup."}
+{"q": "Where is the Morph-o-Ray located in Blackwater Docks?", "a": "It is found on the bridge between the bottom-left and bottom-right platforms."}
+{"q": "Where can players pick up the Flux Rifle in Blackwater Docks?", "a": "It is hidden halfway up the staircase that connects bottom-left to top-left."}
+{"q": "How does item distribution affect player movement on Blackwater Docks?", "a": "Players are incentivized to rotate between platforms to collect power weapons and health."}
+{"q": "What design elements promote continuous motion in Blackwater Docks?", "a": "The map encourages elevation shifts and constant movement to control key gear."}
+{"q": "How can teams defend in CTF mode on Blackwater Docks?", "a": "Teams should fortify the top-left platform with mines and snipers to defend the flag."}
+{"q": "What is a good offensive strategy for CTF on Blackwater Docks?", "a": "Coordinate assaults using multiple routes—such as bridge and Swingshot—to divide defenders' attention."}
+{"q": "How can players use traversal tools tactically in Blackwater Docks?", "a": "Grab the Minirocket Tube on the top-right platform and Swingshot to bottom-right for an ambush."}
+{"q": "What traversal tools enable surprise flanks on Blackwater Docks?", "a": "Jump pads and Swingshot paths allow fast repositioning and surprise attacks."}
+{"q": "How can the central structure be used defensively on Blackwater Docks?", "a": "It blocks line of sight, letting players escape snipers or retreat from fire."}
+{"q": "Why is the central building useful in combat on Blackwater Docks?", "a": "It enables evasive maneuvers and helps players regroup during a push."}
+{"q": "What position should players prioritize in Team Deathmatch on Blackwater Docks?", "a": "Controlling the top-left platform is key due to its height and powerful pickups."}
+{"q": "What is a risk of holding the top-left platform in TDM on Blackwater Docks?", "a": "It attracts grenades and explosive splash damage from lower levels."}
+{"q": "What player skills are emphasized by Blackwater Docks?", "a": "The map rewards strong vertical awareness, quick adaptability, and smart pathing."}
+{"q": "What fundamentals matter most on Blackwater Docks?", "a": "Movement control and map knowledge are essential for success."}

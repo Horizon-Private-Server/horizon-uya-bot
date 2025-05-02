@@ -1,12 +1,12 @@
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the Morph-o-Ray in UYA multiplayer?", "output": "The Morph-o-Ray is a short-range support weapon that transforms enemies into harmless animals after sustained beam contact."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Does the Morph-o-Ray deal damage?", "output": "No, it does not deal any direct damage."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What does the Morph-o-Ray do to enemies?", "output": "It morphs them into non-lethal animals like ducks, temporarily disabling them."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How long must the Morph-o-Ray beam stay on a target to work?", "output": "The beam must stay on an enemy for one to two seconds to trigger the morph effect."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Can morphed players fight back?", "output": "No, morphed players cannot move, attack, or use any items until the effect wears off."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the Morph-o-Ray’s ammo system?", "output": "It has unlimited ammo but requires precise and sustained aim to be effective."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Can the Morph-o-Ray affect more than one enemy at a time?", "output": "No, it only affects one enemy at a time and has limited range."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Do players get kill credit for morphing an enemy?", "output": "No, kill credit goes to the player who deals the lethal blow after the morph."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Can morphed players counter the effect?", "output": "Yes, they can jump off the map or into hazards to respawn faster."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How is the Morph-o-Ray viewed competitively?", "output": "It is valued for disabling enemies in key moments and creating easy kill setups in team play."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Is the Morph-o-Ray lethal when upgraded?", "output": "No, even when upgraded it does not deal damage but becomes faster and more disruptive."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Why is the Morph-o-Ray useful in close combat?", "output": "It can disable an enemy instantly in close quarters, creating a 1v0 opportunity."}
+{"q": "What is the Morph-o-Ray in UYA multiplayer?", "a": "The Morph-o-Ray is a short-range support weapon that transforms enemies into harmless animals after sustained beam contact."}
+{"q": "Does the Morph-o-Ray deal damage?", "a": "No, it does not deal any direct damage."}
+{"q": "What does the Morph-o-Ray do to enemies?", "a": "It morphs them into non-lethal animals like ducks, temporarily disabling them."}
+{"q": "How long must the Morph-o-Ray beam stay on a target to work?", "a": "The beam must stay on an enemy for one to two seconds to trigger the morph effect."}
+{"q": "Can morphed players fight back?", "a": "No, morphed players cannot move, attack, or use any items until the effect wears off."}
+{"q": "What is the Morph-o-Ray’s ammo system?", "a": "It has unlimited ammo but requires precise and sustained aim to be effective."}
+{"q": "Can the Morph-o-Ray affect more than one enemy at a time?", "a": "No, it only affects one enemy at a time and has limited range."}
+{"q": "Do players get kill credit for morphing an enemy?", "a": "No, kill credit goes to the player who deals the lethal blow after the morph."}
+{"q": "Can morphed players counter the effect?", "a": "Yes, they can jump off the map or into hazards to respawn faster."}
+{"q": "How is the Morph-o-Ray viewed competitively?", "a": "It is valued for disabling enemies in key moments and creating easy kill setups in team play."}
+{"q": "Is the Morph-o-Ray lethal when upgraded?", "a": "No, even when upgraded it does not deal damage but becomes faster and more disruptive."}
+{"q": "Why is the Morph-o-Ray useful in close combat?", "a": "It can disable an enemy instantly in close quarters, creating a 1v0 opportunity."}

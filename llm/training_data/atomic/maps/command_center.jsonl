@@ -1,19 +1,19 @@
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Describe the general layout of Command Center in UYA multiplayer.", "output": "Command Center is a tiny, circular arena-style map set inside Dr. Nefarious’s command station on Mylon."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How is the layout of Command Center structured?", "output": "The entire map consists of a single round chamber with no side routes or separate zones."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What traversal mechanic defines Command Center's outer walls?", "output": "The outer walls are lined with gravity ramps that allow players with Gravity Boots to run along the circumference of the room—including the ceiling."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What equipment is required to use the gravity ramps in Command Center?", "output": "Players need Gravity Boots to traverse the walls and ceiling via the gravity ramps."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What weapons are available on Command Center?", "output": "All weapons are available, with crates containing every weapon type scattered across the floor and walls."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Are there any mobility pickups on Command Center?", "output": "A Charge Boots pickup is available on the map alongside weapon crates."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is located in the center of Command Center?", "output": "The center of the room contains a cluster of four machinery blocks or pillars."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the function of the central blocks in Command Center?", "output": "These central blocks provide cover and break line of sight between players."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Where are the flags positioned in CTF mode on Command Center?", "output": "Each team’s flag is placed behind one of the central cover blocks."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "How are the flags spaced in Command Center’s CTF mode?", "output": "The flags are positioned directly opposite each other with minimal distance between them."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Are vehicles or control nodes used on Command Center?", "output": "No, the map is too small for vehicles or node-based objectives."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What type of combat is Command Center designed for?", "output": "Command Center is designed entirely for infantry-focused combat."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What style of gameplay dominates Command Center?", "output": "It favors chaotic, close-quarters combat with players frequently engaging seconds after spawning."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What makes weapon usage intense on Command Center?", "output": "Due to the small size of the map, combat is fast-paced and often brutal."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "Is the Morph-o-Ray viable on Command Center?", "output": "The Morph-o-Ray is viable in close range but remains risky due to the confined space."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What are the limitations of the Flux Rifle on Command Center?", "output": "The Flux Rifle is hard to use effectively unless players snipe from the walls with precise aim and timing."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What skills does Command Center test in players?", "output": "The map tests reflexes, close-range weapon mastery, and spatial awareness."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What is the pace and challenge level of Command Center matches?", "output": "Matches are fast and high-pressure, requiring tight control over cover and weapons."}
-{"instruction": "You are an AI answering UYA multiplayer questions.", "input": "What tactics work well in Command Center?", "output": "Use wall-walking, Holoshields, splash weapons, control central pillars, ambush from above, and flank in CTF."}
+{"q": "Describe the general layout of Command Center in UYA multiplayer.", "a": "Command Center is a tiny, circular arena-style map set inside Dr. Nefarious’s command station on Mylon."}
+{"q": "How is the layout of Command Center structured?", "a": "The entire map consists of a single round chamber with no side routes or separate zones."}
+{"q": "What traversal mechanic defines Command Center's outer walls?", "a": "The outer walls are lined with gravity ramps that allow players with Gravity Boots to run along the circumference of the room—including the ceiling."}
+{"q": "What equipment is required to use the gravity ramps in Command Center?", "a": "Players need Gravity Boots to traverse the walls and ceiling via the gravity ramps."}
+{"q": "What weapons are available on Command Center?", "a": "All weapons are available, with crates containing every weapon type scattered across the floor and walls."}
+{"q": "Are there any mobility pickups on Command Center?", "a": "A Charge Boots pickup is available on the map alongside weapon crates."}
+{"q": "What is located in the center of Command Center?", "a": "The center of the room contains a cluster of four machinery blocks or pillars."}
+{"q": "What is the function of the central blocks in Command Center?", "a": "These central blocks provide cover and break line of sight between players."}
+{"q": "Where are the flags positioned in CTF mode on Command Center?", "a": "Each team’s flag is placed behind one of the central cover blocks."}
+{"q": "How are the flags spaced in Command Center’s CTF mode?", "a": "The flags are positioned directly opposite each other with minimal distance between them."}
+{"q": "Are vehicles or control nodes used on Command Center?", "a": "No, the map is too small for vehicles or node-based objectives."}
+{"q": "What type of combat is Command Center designed for?", "a": "Command Center is designed entirely for infantry-focused combat."}
+{"q": "What style of gameplay dominates Command Center?", "a": "It favors chaotic, close-quarters combat with players frequently engaging seconds after spawning."}
+{"q": "What makes weapon usage intense on Command Center?", "a": "Due to the small size of the map, combat is fast-paced and often brutal."}
+{"q": "Is the Morph-o-Ray viable on Command Center?", "a": "The Morph-o-Ray is viable in close range but remains risky due to the confined space."}
+{"q": "What are the limitations of the Flux Rifle on Command Center?", "a": "The Flux Rifle is hard to use effectively unless players snipe from the walls with precise aim and timing."}
+{"q": "What skills does Command Center test in players?", "a": "The map tests reflexes, close-range weapon mastery, and spatial awareness."}
+{"q": "What is the pace and challenge level of Command Center matches?", "a": "Matches are fast and high-pressure, requiring tight control over cover and weapons."}
+{"q": "What tactics work well in Command Center?", "a": "Use wall-walking, Holoshields, splash weapons, control central pillars, ambush from above, and flank in CTF."}

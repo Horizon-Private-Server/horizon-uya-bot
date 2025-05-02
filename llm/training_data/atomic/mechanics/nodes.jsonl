@@ -1,0 +1,13 @@
+{"q": "Are nodes defended before capture?", "a": "Yes. Nodes are guarded by neutral turrets and sometimes NPC defenders."}
+{"q": "Why is node ownership important for respawning?", "a": "Owning nodes allows faster re-entry into combat by respawning closer to contested objectives."}
+{"q": "Why are nodes important in team-based UYA modes?", "a": "Nodes act as forward spawn points, reducing downtime and improving map control for the team."}
+{"q": "How do you capture a node in UYA multiplayer?", "a": "To capture a node, destroy its AI defenses and turn the bolt crank to convert it to your team."}
+{"q": "What changes when a node is captured?", "a": "The node changes team color and activates as a spawn point, weapon dispenser, or vehicle spawner."}
+{"q": "What resources can a captured node provide?", "a": "Nodes may provide weapons, ammo, drone bots, or vehicles depending on the map and node type."}
+{"q": "Are nodes in all UYA multiplayer modes?", "a": "Nodes are always present in Siege mode and optionally enabled in Capture the Flag."}
+{"q": "What happens if a team controls no nodes in UYA?", "a": "The team is forced to respawn at base, limiting their reach and making it harder to contest the map."}
+{"q": "What is a strong team strategy with nodes?", "a": "Teams should capture forward nodes, deny enemy spawns, and use node control to maintain offensive pressure."}
+{"q": "Do players respawn after being defeated?", "a": "Yes. Players respawn after a short delay. They can respawn at their base or a friendly-controlled node."}
+{"q": "What are nodes in UYA multiplayer?", "a": "Nodes are capturable points that provide spawn locations, weapons, ammo, vehicles, or defenses."}
+{"q": "How do players capture a node?", "a": "Players turn the bolt crank at the node after clearing neutral turrets and NPC defenders."}
+{"q": "What happens when a node is captured?", "a": "The node becomes a spawn point and may provide weapons, ammo, gadgets, defenses, or vehicles."}

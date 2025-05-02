@@ -10,3 +10,5 @@
 {"q": "Why do competitive players prioritize the Minirocket Tube?", "a": "It offers strong mid-range burst damage and objective denial, especially after upgrading."}
 {"q": "What is the Minirocket Tube’s role in Siege mode?", "a": "It is a primary anti-vehicle weapon used to destroy turrets and Hoverships quickly."}
 {"q": "How is the Minirocket Tube viewed competitively?", "a": "It is a top-tier weapon favored for its versatility, damage output, and upgrade potential."}
+{"q": "How do rockets behave in UYA?", "a": "Rockets lock on and home in on enemies, tracking them for a limited distance before hitting or evaporating."}
+{"q": "What happens if a rocket travels too far in UYA?", "a": "If the target is out of range or too far, the missile vanishes at max range."}

@@ -1,3 +1,22 @@
+
+
+
+
+
+
+
+
+
+
+
+
+{"q": "What is UYA?", "a": "Ratchet & Clank: Up Your Arsenal is a 2004 video game best known for its chaotic multiplayer mode."}
+{"q": "How can UYA be played online today?", "a": "UYA can be played online using the PCSX2 emulator or original PlayStation 2 hardware with server patches."}
+{"q": "Why does UYA have lag issues?", "a": "Lag is caused by poorly implemented client code and missing New Player Sync, resulting in rubberbanding and teleportation during matches."}
+{"q": "How do players move in UYA multiplayer?", "a": "Players use lock-strafe mode to move while facing forward; the camera unlocks when using the wrench in third-person."}
+{"q": "What are the game modes in UYA?", "a": "UYA includes three multiplayer modes: Deathmatch, Siege, and Capture the Flag."}
+{"q": "How does the lack of power-ups affect gameplay in UYA multiplayer?", "a": "UYA multiplayer focuses on skill-based combat and map control instead of relying on random power-up spawns."}
+{"q": "What factors determine success in UYA multiplayer?", "a": "Victory depends on weapon mastery, movement skill, and team coordination—not random item pickups."}
 {"q": "What unique defenses does the Red base have?", "a": "The Red base spawns rolling explosive wheel bots that charge intruding enemies."}
 {"q": "What unique defenses does the Blue base have?", "a": "The Blue base spawns flying scout bots that shoot at nearby enemies when they approach."}
 {"q": "What triggers base bots to activate?", "a": "Both Red and Blue base bots activate when enemies come near and serve as harassment tools."}
@@ -148,37 +167,20 @@
 {"q": "What does the mini-map display in Deathmatch?", "a": "The mini-map shows red blips for nearby enemies when they shoot."}
 {"q": "How do sound cues help in Deathmatch?", "a": "Sounds like Charge Boots or the Morph-o-Ray charging warn of incoming attacks."}
 {"q": "What should you do if you hear a Morph-o-Ray nearby?", "a": "Move away immediately to avoid being morphed and becoming an easy kill for others."}
-{"q": "Are there gameplay differences between PS2 and PS3 UYA multiplayer?", "a": "No, both versions have identical maps, modes, and mechanics."}
 {"q": "How were online profiles managed on PS2?", "a": "Players created local in-game profiles storing name, stats, and skin preferences."}
 {"q": "How was network setup handled on PS2?", "a": "Network setup was done through the Network Adapter."}
-{"q": "How were online profiles handled on PS3?", "a": "The game used the PlayStation Network ID automatically, removing the need for separate in-game profiles."}
-{"q": "How was matchmaking handled on PS3?", "a": "Matchmaking was integrated through PlayStation Network."}
 {"q": "What leaderboard system did the PS2 version use?", "a": "It used an online ranking leaderboard hosted on Insomniac’s website, tracking players by in-game profile."}
 {"q": "How did PS2 players use voice chat?", "a": "PS2 players used USB headsets for in-game voice chat."}
-{"q": "How did PS3 players use voice chat?", "a": "PS3 players used Bluetooth headsets through PlayStation Network, offering clearer audio."}
 {"q": "When were the PS2 servers shut down?", "a": "The PS2 servers shut down in June 2012."}
-{"q": "When were the PS3 servers shut down?", "a": "The PS3 servers shut down on February 15, 2018."}
-{"q": "What happened after official servers were shut down?", "a": "The PS2 version was revived by fan-made servers; the PS3 version remains offline."}
-{"q": "How many players did split-screen support?", "a": "Both PS2 and PS3 supported up to four-player split-screen."}
-{"q": "How did PS2 split-screen performance compare to PS3?", "a": "The PS2 had lower performance and smaller screen splits, while the PS3 had better resolution and framerate."}
 {"q": "What was the PS2 resolution and aspect ratio?", "a": "The PS2 ran at 480p with 4:3 or optional 16:9 aspect ratio."}
-{"q": "What was the PS3 resolution?", "a": "The PS3 version featured 720p HD graphics in 16:9."}
-{"q": "Were textures improved on PS3?", "a": "The PS3 version had cleaned-up textures and minor UI adjustments."}
-{"q": "Was the audio quality different between versions?", "a": "The PS3 had slightly better sound and clearer voice chat due to modern Bluetooth headsets."}
 {"q": "Did the PS Vita version include multiplayer?", "a": "No, the PS Vita HD collection excluded multiplayer entirely."}
-{"q": "Were there any gameplay changes in the PS3 remaster?", "a": "No gameplay or balance changes were made; it was a direct port."}
 {"q": "What community features did the PS2 version include?", "a": "The PS2 version included an in-game clan system and a classic server browser for manual room selection or hosting."}
-{"q": "How did matchmaking work on PS3?", "a": "The PS3 version used PSN for matchmaking and friend invites."}
-{"q": "Did the PS3 version support clans?", "a": "The PS3 version had limited or no clan support because Insomniac’s website was shut down."}
 {"q": "How did players invite friends on PS2?", "a": "Players manually found or hosted rooms and used the in-game buddy system."}
-{"q": "How did players invite friends on PS3?", "a": "Players used their PSN friends list to join or invite friends."}
-{"q": "How did the PS3 multiplayer community compare to PS2?", "a": "The PS3 community was smaller but had easier matchmaking, while the PS2 community had a stronger competitive scene with clans and manual server browsing."}
 {"q": "What is the Horizon project?", "a": "Horizon is a fan-run revival server for UYA multiplayer on PS2 and emulator, replicating the original online servers."}
 {"q": "How does Horizon replicate the original servers?", "a": "The Horizon team reverse-engineered the PS2 network code and developed custom server software to redirect the game to Horizon servers."}
 {"q": "When did Horizon go live?", "a": "Horizon launched for public testing on February 14, 2021."}
 {"q": "Is a modded PS2 required to use Horizon?", "a": "No, unmodified consoles and PCSX2 emulator can connect by editing the network configuration."}
 {"q": "How do you connect to Horizon servers?", "a": "Create or edit a Network Configuration file and set the primary DNS to Horizon’s provided IP."}
-{"q": "Which game versions does Horizon support?", "a": "Horizon supports NTSC-U and PAL versions of UYA; PS3 HD versions are not supported."}
 {"q": "Can PCSX2 players connect to Horizon?", "a": "Yes, by installing a plugin or setting the DNS to Horizon’s server."}
 {"q": "Does Horizon support clans?", "a": "Yes, clan support has been restored or improved over time."}
 {"q": "Does Horizon support leaderboards?", "a": "Yes, Horizon replicates stat tracking similar to the original game."}
@@ -230,7 +232,6 @@
 {"q": "What social features did UYA online include?", "a": "Friends system ('Buddies') and chat lobbies ('cities') for communication and match setup."}
 {"q": "How were player profiles handled online in UYA?", "a": "Players created unique profiles saved to a memory card. Profiles stored username, skin, controls, and stats for online play."}
 {"q": "Was there an online leaderboard in UYA?", "a": "Yes. Leaderboards tracked wins, points, and stats. Rankings were hosted on Insomniac Games' website."}
-{"q": "When were the official UYA servers shut down?", "a": "PS2 servers shut down June 6, 2012. PS3 re-release servers shut down February 15, 2018."}
 {"q": "What game modes exist in UYA multiplayer?", "a": "Siege, Capture the Flag (CTF), and Deathmatch."}
 {"q": "How is Siege mode played?", "a": "Teams defend their power core and attack the enemy's. Capturing nodes provides spawns, weapons, and vehicles to push into the enemy base."}
 {"q": "How does a team win in Siege mode?", "a": "Destroy the enemy core. If time expires, the team with more core damage dealt or more nodes held wins."}
@@ -500,9 +501,7 @@
 {"q": "What hazards exist on multiplayer maps?", "a": "Maps lack AI hazards; main dangers are falling off edges, into water, or chasms (e.g., Metropolis rooftops, Korgon bridges opened)."}
 {"q": "Are private servers available today?", "a": "Fan projects like Horizon resurrect online play via custom servers and DNS redirects for PS2 hardware or emulators."}
 {"q": "What are UYA’s player limits?", "a": "Multiplayer supports up to 8 players online and up to 4 in local split-screen (multitap required for 3–4)."}
-{"q": "How do PS2 and PS3 versions handle profiles?", "a": "PS2 required an in-game online profile; the PS3 HD port used the player’s PSN account automatically for multiplayer login."}
 {"q": "Does the PS Vita port include multiplayer?", "a": "No—the PS Vita version of Up Your Arsenal is single-player only; multiplayer was removed."}
-{"q": "When did official servers close and how is online play possible now?", "a": "Official PS2/PS3 servers closed in 2012; today players connect through fan-run private servers via custom DNS or emulators."}
 {"q": "What are the basic Siege objectives?", "a": "Teams first destroy the two entrance gatling turrets, then teleport inside and damage the enemy power core to win."}
 {"q": "Which defenses guard a Siege base?", "a": "Each base has two gatling turrets, two missile turrets, two Ranger bot troopers, and faction-specific wheel-bot or scout-bot spawns."}
 {"q": "Why capture nodes in Siege and Attrition Siege?", "a": "Nodes give forward spawns and vehicles; in Attrition they also increase your base turret damage and health."}
@@ -613,7 +612,6 @@
 {"q": "What were the effects of high latency (lag) in multiplayer?", "a": "High latency made players appear to teleport and caused delayed hit-registration; competitive groups often required hosts to meet minimum connection quality to reduce these issues."}
 {"q": "How did UYA's multiplayer stand out despite being niche?", "a": "Its blend of platforming movement, gadgets, and chaotic weapon variety offered a uniquely fun experience that many fans still regard as one of the PS2’s best online modes."}
 {"q": "Did the community prefer UYA multiplayer over Deadlocked?", "a": "Yes; even after Ratchet: Deadlocked launched, a portion of players stayed with UYA because they favored its wider weapon set and objective modes, keeping its servers active alongside Deadlocked’s."}
-{"q": "What happened with the PS3 HD collection's online servers?", "a": "The 2012 PS3 HD release briefly revived online play, but those servers were shut down in 2013, leaving modern multiplayer solely to fan-hosted PS2/emulator servers."}
 {"q": "How do players still access UYA multiplayer today?", "a": "Community servers such as OpenSpy or Horizon redirect the game via custom DNS, letting original hardware and emulators connect; Horizon also adds stability features and stat-tracking bots."}
 {"q": "What emulator is used to play UYA online?", "a": "PCSX2 is the standard PS2 emulator; with its network plugin properly configured, players can join the fan servers and even upscale the game’s resolution."}
 {"q": "Did players create their own map callouts and terminology?", "a": "Yes; communities adopted numbered node callouts (e.g., “enemy at node 3”) and coined terms like cycling, lag-jumping, and shield-sniping to communicate tactics efficiently."}

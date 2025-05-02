@@ -8,3 +8,5 @@
 {"q": "How does node control help defenders in Siege mode?", "a": "Node control gives defenders better spawn options and quicker access to defend their base."}
 {"q": "What is different in the Attrition variant of Siege mode?", "a": "In Attrition Siege, owning more nodes increases turret health, damage, and accuracy."}
 {"q": "How does Attrition Siege affect base defense strength?", "a": "Attrition Siege ties map control to turret performance, making the base harder to breach if your team holds more nodes."}
+{"q": "What are base defenses in Siege mode?", "a": "Base defenses include mini turrets and gatling turrets that fire at enemies approaching the base."}
+{"q": "What happens if time runs out in Siege?", "a": "The team that dealt more damage to the enemy core wins."}

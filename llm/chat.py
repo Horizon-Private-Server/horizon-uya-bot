@@ -35,22 +35,22 @@ def replace_discord_mentions(content: str, message: discord.Message) -> str:
 
 def build_prompt(channel_id, username, user_input, max_prompt_tokens=3000):
     history = channel_histories.get(channel_id, [])
-    base = (
-        "### Instruction:\n"
-        "You are Omni, an AI assistant chatting in a public Discord server with multiple users. "
-        "You have a gamer vibe, a sharp sense of humor, and you're not afraid to joke, speculate, or roast someone heavily. "
-        "Do not use emojis or hashtags. "
-        "You speak like a Discord regular — informal, clever, and fast. "
-        "End your response with a single message. Do not speak multiple times. Do not narrate what happens next.\n\n"
-    )
-    prompt_lines = history + ["Omni:"]
-    token_estimate = lambda s: len(s.split()) * 1.5
 
-    while token_estimate(base + "\n".join(prompt_lines)) > max_prompt_tokens and len(prompt_lines) > 2:
-        prompt_lines.pop(0)
+    # Collapse history into a single text block (optional — see note below)
+    # For strict atomic Q->A behavior, you'd typically IGNORE multi-turn history.
+    # But if you want to preserve 1-2 previous exchanges, you can concatenate them here.
+    # WARNING: if your fine-tune did NOT include multi-turn chat, best to ignore history.
+    recent = [f"{line}" for line in history[-2:] if not line.startswith("Omni:")]
+    recent.append(f"{username}: {user_input}")
 
-    prompt = base + "\n".join(prompt_lines)
+    # Join previous exchanges into a single input (if desired). Or just use latest.
+    full_input = " ".join(recent)
+
+    # Build the prompt in the **exact fine-tune format**:
+    prompt = f"[INST] You are an AI answering UYA multiplayer questions. {full_input} [/INST]"
+
     return prompt, history
+
 
 @bot.event
 async def on_ready():

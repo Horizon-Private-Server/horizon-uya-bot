@@ -27,15 +27,16 @@ Never generate explanations beyond the chat_response line. Never output extra te
 {
     "connection_status": "{connection_status}",
     "map": "{map}",
+    "mode": "{mode}",
     "players": {
-        "Player1": {"Username": "{p1_username}", "Health": {p1_health}},
-        "Player2": {"Username": "{p2_username}", "Health": {p2_health}},
-        "Player3": {"Username": "{p3_username}", "Health": {p3_health}},
-        "Player4": {"Username": "{p4_username}", "Health": {p4_health}},
-        "Player5": {"Username": "{p5_username}", "Health": {p5_health}},
-        "Player6": {"Username": "{p6_username}", "Health": {p6_health}},
-        "Player7": {"Username": "{p7_username}", "Health": {p7_health}},
-        "Player8": {"Username": "{p8_username}", "Health": {p8_health}}
+        "Player1": {"Username": "{p1_username}", "Health": {p1_health}, "Team": "{p1_team}"},
+        "Player2": {"Username": "{p2_username}", "Health": {p2_health}, "Team": "{p2_team}"},
+        "Player3": {"Username": "{p3_username}", "Health": {p3_health}, "Team": "{p3_team}"},
+        "Player4": {"Username": "{p4_username}", "Health": {p4_health}, "Team": "{p4_team}"},
+        "Player5": {"Username": "{p5_username}", "Health": {p5_health}, "Team": "{p5_team}"},
+        "Player6": {"Username": "{p6_username}", "Health": {p6_health}, "Team": "{p6_team}"},
+        "Player7": {"Username": "{p7_username}", "Health": {p7_health}, "Team": "{p7_team}"},
+        "Player8": {"Username": "{p8_username}", "Health": {p8_health}, "Team": "{p8_team}"}
     }
 }
 

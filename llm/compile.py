@@ -1,10 +1,10 @@
 import os
 import json
 import random
+from collections import defaultdict
 
 def assign_teams_deathmatch(num_players):
     colors = ['blue', 'red', 'green', 'orange', 'yellow', 'purple', 'aqua', 'pink']
-    num_colors = len(colors)
 
     assignments = []
     for i in range(num_players):
@@ -98,9 +98,24 @@ def simulated_state(prompt_template, usernames, data):
 
     return this_row
 
+def read_jsonl(filepath):
+    all_data = []
+    with open(filepath, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                try:
+                    data = json.loads(line)
+                    all_data.append(data)
+                except json.JSONDecodeError:
+                    pass  # or raise if you want to catch bad lines
+    return all_data
 
 if __name__ == '__main__':
+    # turn this into ""
     random.seed(42)
+
+    all_no_command = defaultdict(list)
 
     # Read usernames from the file
     with open("usernames.txt", "r", encoding="utf-8") as f:
@@ -114,46 +129,44 @@ if __name__ == '__main__':
         prompt_template = f.read()
 
     # Step 2: Read all JSONL files in atomic/ recursively
-    atomic_data = []
-
+    # NO COMMAND STYLES:
     for root, dirs, files in os.walk("atomic"):
         for file in files:
             if file.endswith(".jsonl"):
                 filepath = os.path.join(root, file)
-                with open(filepath, "r", encoding="utf-8") as f:
-                    for line in f:
-                        line = line.strip()
-                        if line:
-                            try:
-                                data = json.loads(line)
-                                atomic_data.append(data)
-                            except json.JSONDecodeError:
-                                pass  # or raise if you want to catch bad lines
+                data = read_jsonl(filepath)
+                all_no_command['atomic'] += data
 
-    # # Read commands
-    # with open("commands/join_game.jsonl", "r", encoding="utf-8") as f:
-    #     prompt_template = f.read()
+    # Read Refusals
+    all_no_command['command_explanations'] = read_jsonl('special/command_explanations.jsonl')
+    all_no_command['negative_facts'] = read_jsonl('special/negative_facts.jsonl')
+    all_no_command['refusals'] = read_jsonl('special/refusals.jsonl')
+            
 
-    total_rows = 0
     # Write 
+    total_rows = 0
     with open('../all.jsonl', 'w') as f:
-        for i, atomic in enumerate(atomic_data):
-            if i % 2 == 0:
-                this_row = empty_format_no_command(prompt_template, usernames, atomic)
-            else:
-                this_row = simulated_state(prompt_template, usernames, atomic)
-                #print(json.dumps(this_row, indent=4))
-                assert 'Username\\\": \\\"Omni' in json.dumps(this_row)
+        #### Write atomic data (no commands etc)
+        for atomic_data in all_no_command.values():
+            for i, atomic in enumerate(atomic_data):
+                if i % 2 == 0:
+                    this_row = empty_format_no_command(prompt_template, usernames, atomic)
+                else:
+                    this_row = simulated_state(prompt_template, usernames, atomic)
+                    #print(json.dumps(this_row, indent=4))
+                    assert 'Username\\\": \\\"Omni' in json.dumps(this_row)
 
-            print("Instruction:")
-            print(this_row['instruction'])
-            print("Output:")
-            print(this_row['output'])
-            print()
+                # print("Instruction:")
+                # print(this_row['instruction'])
+                # print("Output:")
+                # print(this_row['output'])
+                # print()
 
-            f.write(json.dumps(this_row) + '\n')
-            total_rows += 1
+                f.write(json.dumps(this_row) + '\n')
+                total_rows += 1
 
     print(f"Loaded prompt template ({len(prompt_template)} characters).")
-    print(f"Loaded {len(atomic_data)} JSONL records from atomic/ folder.")
+    for key, value in all_no_command.items():
+        print(f"Loaded {len(value)} {key} JSON records")
+    print("=====================")
     print(f"Loaded {total_rows} total JSONL records.")

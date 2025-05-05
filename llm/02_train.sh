@@ -2,7 +2,10 @@
 set -e
 set -o pipefail
 
+
 # Build all.jsonl
+python formatter.py
+
 output_file="all.jsonl"
 input_dir="training_data"
 

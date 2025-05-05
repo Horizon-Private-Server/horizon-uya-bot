@@ -46,6 +46,9 @@ def build_prompt(channel_id, username, user_input, max_prompt_tokens=3000):
 
     # Build the prompt in the **exact fine-tune format**:
     prompt = formatter.assemble_inference_prompt(full_input)
+    prompt_tokens = llm.tokenize(prompt.encode("utf-8"))
+    print(f"🔢 Prompt token count: {len(prompt_tokens)}")
+
     return prompt, history
 
 

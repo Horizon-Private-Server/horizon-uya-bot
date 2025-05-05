@@ -50,12 +50,7 @@ tokenizer.pad_token = tokenizer.eos_token
 dataset = load_dataset('json', data_files='${TRAIN_DATA}', split='train')
 
 def format_prompt(example):
-    instruction = example['instruction']
-    input_text = example['input']
-    if input_text.strip() != "":
-        prompt = f"[INST] {instruction} {input_text} [/INST]"
-    else:
-        prompt = f"[INST] {instruction} [/INST]"
+    prompt = example['instruction']
     return {
         "prompt": prompt,
         "response": example["output"]

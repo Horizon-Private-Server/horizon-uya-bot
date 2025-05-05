@@ -38,7 +38,7 @@ def replace_discord_mentions(content: str, message: discord.Message) -> str:
 def build_prompt(channel_id, username, user_input, max_prompt_tokens=3000):
     history = channel_histories.get(channel_id, [])
 
-    recent = [f"{line}" for line in history[-2:]]
+    recent = [f"{line}" for line in history[-20:]]
 
     # Join previous exchanges into a single input (if desired). Or just use latest.
     full_input = "\n".join(recent)
@@ -97,8 +97,8 @@ async def on_message(message):
 
         try:
             stop_tokens = ["\n" + name + ":" for name in set(h.split(":")[0] for h in trimmed_history)]
-            stop_tokens += ["\nOmni:", "\n###"]
-
+            stop_tokens = []
+            print(f"Stop tokens: {stop_tokens}")
             response = llm(prompt, max_tokens=1024, stop=stop_tokens)
             output = response["choices"][0]["text"].strip()
 

@@ -95,7 +95,7 @@ class OmniPromptFormatter:
             chat = f"{self.usernames.pop()}: {data['q']}"
 
         instruction = self.fill_prompt(connection_status, map_choice, mode, players, chat)
-        print(instruction)
+        #print(instruction)
         output = f"command: no_command\nchat_response: Omni: {data['a']}"
 
         return {"instruction": instruction, "output": output}

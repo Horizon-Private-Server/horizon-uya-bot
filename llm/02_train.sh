@@ -11,13 +11,6 @@ output_file="all.jsonl"
 echo "Total lines in training data:"
 wc -l $output_file
 
-input_dir="training_data"
-
-> "$output_file"
-find "$input_dir" -type f -name '*.jsonl' -print0 | while IFS= read -r -d '' file; do
-    cat "$file" >> "$output_file"
-done
-
 # Remove empty lines from the final file
 grep -v '^$' "$output_file" > temp && mv temp "$output_file"
 
@@ -80,7 +73,7 @@ def tokenize_function(batch):
 
 dataset = dataset.map(
     tokenize_function,
-    remove_columns=["instruction", "input", "output", "prompt", "response"],
+    remove_columns=["instruction", "output", "prompt", "response"],
     batched=True,
     batch_size=1000,
     num_proc=4,

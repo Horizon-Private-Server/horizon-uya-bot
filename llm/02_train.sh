@@ -7,6 +7,10 @@ set -o pipefail
 python formatter.py
 
 output_file="all.jsonl"
+
+echo "Total lines in training data:"
+wc -l $output_file
+
 input_dir="training_data"
 
 > "$output_file"

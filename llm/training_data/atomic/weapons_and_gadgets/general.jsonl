@@ -4,3 +4,6 @@
 {"q": "What is cycling in UYA multiplayer?", "a": "Cycling is firing one weapon, switching to another, and firing again to chain attacks quickly."}
 {"q": "What weapons are available in UYA multiplayer?", "a": "Weapons include the Mine Glove, Morph-o-Ray, Flux Rifle, Rocket Launcher, Blitz Gun, Gravity Bomb, Lava Gun, and N60."}
 {"q": "What does stunning mean in UYA?", "a": "Stunning occurs when a weapon hit causes a player to freeze briefly, making them vulnerable to follow-up attacks."}
+{"q": "When do most weapons upgrade to V2?", "a": "After a player earns 3 kills with a weapon without dying, that weapon automatically upgrades from V1 to V2."}
+{"q": "What benefits do V2 weapons provide?", "a": "Upgraded weapons hit harder, fire faster, or gain larger splash radius, making them significantly more lethal."}
+{"q": "What happens to weapon upgrades upon player death?", "a": "Upgrades are lost on death; the weapon reverts to V1 if reacquired after respawn."}

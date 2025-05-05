@@ -13,3 +13,22 @@
 {"q": "Are mines useful even if they don’t explode?", "a": "Yes. Their presence alone can delay or divert enemies, creating opportunities elsewhere."}
 {"q": "How is the Mine Glove viewed competitively?", "a": "It is considered a high-skill utility weapon with strong defensive power."}
 {"q": "What modes benefit most from Mine Glove use?", "a": "Siege and Capture the Flag benefit most from its ability to delay or punish advances."}
+{"q": "What does the Mine Glove do in multiplayer?", "a": "It lets players throw proximity mines that stick to the ground and detonate near enemies."}
+{"q": "How many mines can a player have active simultaneously?", "a": "Up to 6; placing a seventh removes the oldest mine."}
+{"q": "Describe the behavior of a proximity mine once an enemy approaches.", "a": "The mine activates, homes toward the enemy briefly, then explodes for high damage."}
+{"q": "How can proximity mines be destroyed?", "a": "Any weapon hit detonates a mine; shooting it from a distance safely clears it."}
+{"q": "Which splash weapons efficiently clear minefields?", "a": "Blitz Gun spread or Gravity Bomb blasts can wipe out multiple mines without close approach."}
+{"q": "Is dodging an activated mine reliable?", "a": "Once a mine locks on it is hard to evade; prevention by spotting is safer than reaction."}
+{"q": "What battlefield role do mines serve?", "a": "Mines create area denial—forcing enemies to slow, check paths, or risk instant damage."}
+{"q": "Where are mines most effective for defense?", "a": "Placing mines at flags, power-core doors, or narrow chokepoints protects critical objectives."}
+{"q": "How can mines disrupt coordinated pushes?", "a": "A triggered mine splits enemy timing—one player stops to clear it, isolating teammates ahead."}
+{"q": "When does the Mine Glove upgrade?", "a": "After 3 mine kills or assists the glove upgrades to V2 mines."}
+{"q": "What improvements do upgraded mines receive?", "a": "V2 mines gain larger blast radius and higher damage—two explosions can kill a full-health player."}
+{"q": "Give examples of lethal mine placements.", "a": "On a flag pedestal, behind a health crate, or on a jump-pad landing zone often scores surprise kills."}
+{"q": "What mindset helps effective mine placement?", "a": "Think like the enemy—plant mines on routes or goodies they will naturally approach."}
+{"q": "Should mines be stacked or spread?", "a": "Spread mines to cover wider ground unless certain of a single high-traffic trigger spot."}
+{"q": "Do mines damage teammates?", "a": "Friendly mines do not harm teammates, so bases can be densely mined for defense."}
+{"q": "Why must you relocate after deploying mines?", "a": "Staying near freshly placed mines risks self-damage if a firefight erupts and they detonate."}
+{"q": "How are mines valued in competitive play?", "a": "High-skill players use mines to control flow; teams focus on clearing enemy mines first."}
+{"q": "Which weapon is commonly used to clear competitive minefields?", "a": "Gravity Bomb lobbed explosions safely detonate clustered mines."}
+{"q": "Can mines herd opponents?", "a": "Strategic mine placement funnels enemies off obvious paths into planned kill zones."}

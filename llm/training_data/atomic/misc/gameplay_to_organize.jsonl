@@ -216,62 +216,8 @@
 {"q": "Which maps feature vehicles?", "a": "Bakisi Isles, Metropolis, Hoven Gorge (Turbosliders only), Outpost X12, and Korgon Outpost."}
 
 
-{"q": "What is the Morph-o-Ray’s function in UYA multiplayer?", "a": "It emits a beam that morphs enemies into harmless animals."}
-{"q": "How long must the Morph-o-Ray beam stay on target to morph?", "a": "Approximately 1–2 seconds of continuous contact."}
-{"q": "Does the Morph-o-Ray deal direct damage?", "a": "No, it causes zero damage; it only disables by transformation."}
-{"q": "What can morphed players do while transformed?", "a": "Nothing—they cannot move, attack, or use items until the effect ends."}
-{"q": "How much ammo does the Morph-o-Ray have?", "a": "It has unlimited ammo in multiplayer."}
-{"q": "Does the Morph-o-Ray deal any damage in multiplayer?", "a": "No. The Morph-o-Ray inflicts zero direct damage; it only morphs enemies."}
-{"q": "What transformation effect does the Morph-o-Ray cause?", "a": "Hit players are turned into small animals (usually ducks) for a short time."}
-{"q": "Can a morphed player fight back?", "a": "No. While morphed they cannot move, shoot, or use items and are completely helpless."}
-{"q": "How long does the Morph-o-Ray effect last if the victim survives?", "a": "The transformation wears off after a few seconds, returning the player to normal."}
-{"q": "How much ammo does the Morph-o-Ray have in multiplayer?", "a": "It has unlimited ammo; the beam can be fired indefinitely."}
-{"q": "How many enemies can the Morph-o-Ray affect at once?", "a": "Only one—its beam morphs a single target at a time."}
-{"q": "Who receives kill credit when a morphed player dies?", "a": "Credit goes to whoever lands the lethal blow, not to the player who morphed them."}
-{"q": "What desperation counter do players use after being morphed?", "a": "Jumping off the map or into hazards forces a quick suicide, denying the enemy an easy kill."}
-{"q": "What upgrade condition applies to the Morph-o-Ray?", "a": "After 3 morph assists it upgrades, reducing morph time and slightly increasing range."}
-{"q": "What is a common team use for the Morph-o-Ray?", "a": "Teams disable a high-value target (e.g., flag carrier or rocket user) so teammates can finish them safely."}
-{"q": "What does the Mine Glove do in multiplayer?", "a": "It lets players throw proximity mines that stick to the ground and detonate near enemies."}
-{"q": "How many mines can a player have active simultaneously?", "a": "Up to 6; placing a seventh removes the oldest mine."}
-{"q": "Describe the behavior of a proximity mine once an enemy approaches.", "a": "The mine activates, homes toward the enemy briefly, then explodes for high damage."}
-{"q": "How can proximity mines be destroyed?", "a": "Any weapon hit detonates a mine; shooting it from a distance safely clears it."}
-{"q": "Which splash weapons efficiently clear minefields?", "a": "Blitz Gun spread or Gravity Bomb blasts can wipe out multiple mines without close approach."}
-{"q": "Is dodging an activated mine reliable?", "a": "Once a mine locks on it is hard to evade; prevention by spotting is safer than reaction."}
-{"q": "What battlefield role do mines serve?", "a": "Mines create area denial—forcing enemies to slow, check paths, or risk instant damage."}
-{"q": "Where are mines most effective for defense?", "a": "Placing mines at flags, power-core doors, or narrow chokepoints protects critical objectives."}
-{"q": "How can mines disrupt coordinated pushes?", "a": "A triggered mine splits enemy timing—one player stops to clear it, isolating teammates ahead."}
-{"q": "When does the Mine Glove upgrade?", "a": "After 3 mine kills or assists the glove upgrades to V2 mines."}
-{"q": "What improvements do upgraded mines receive?", "a": "V2 mines gain larger blast radius and higher damage—two explosions can kill a full-health player."}
-{"q": "Give examples of lethal mine placements.", "a": "On a flag pedestal, behind a health crate, or on a jump-pad landing zone often scores surprise kills."}
-{"q": "What mindset helps effective mine placement?", "a": "Think like the enemy—plant mines on routes or goodies they will naturally approach."}
-{"q": "Should mines be stacked or spread?", "a": "Spread mines to cover wider ground unless certain of a single high-traffic trigger spot."}
-{"q": "Do mines damage teammates?", "a": "Friendly mines do not harm teammates, so bases can be densely mined for defense."}
-{"q": "Why must you relocate after deploying mines?", "a": "Staying near freshly placed mines risks self-damage if a firefight erupts and they detonate."}
-{"q": "How are mines valued in competitive play?", "a": "High-skill players use mines to control flow; teams focus on clearing enemy mines first."}
-{"q": "Which weapon is commonly used to clear competitive minefields?", "a": "Gravity Bomb lobbed explosions safely detonate clustered mines."}
-{"q": "Can mines herd opponents?", "a": "Strategic mine placement funnels enemies off obvious paths into planned kill zones."}
-{"q": "What does the Holoshield Glove deploy?", "a": "It projects a stationary, transparent energy wall that blocks enemy fire."}
-{"q": "Can friendly shots pass through a Holoshield?", "a": "Yes—team projectiles and players move through from the rear side unimpeded."}
-{"q": "How is a Holoshield destroyed?", "a": "It shatters after absorbing a set amount of damage or after a fixed lifespan."}
-{"q": "Can enemies walk through a Holoshield?", "a": "No—enemy bodies and bullets are stopped; they must flank or break the shield."}
-{"q": "Does the Holoshield deal damage?", "a": "No; it is purely defensive and inflicts zero harm."}
-{"q": "Is the Holoshield a weapon or gadget?", "a": "Classified as a gadget but acquired from weapon crates and occupies a weapon slot."}
-{"q": "Does the Holoshield upgrade with kills?", "a": "No—it has no upgrade path regardless of use."}
-{"q": "How long does a deployed Holoshield remain?", "a": "A Holoshield stays active only for several seconds or until it absorbs a set amount of damage, whichever comes first."}
-{"q": "What type of enemy fire collapses a Holoshield fastest?", "a": "Explosives or continuous high-damage fire (e.g., rockets, Gravity Bombs) deplete a Holoshield’s health rapidly."}
-{"q": "How is the Holoshield–Flux Rifle combo used?", "a": "Players throw a Holoshield for cover and snipe safely through it with the Flux Rifle, forcing enemies to destroy the shield before firing back."}
-{"q": "How can a flag carrier benefit from a Holoshield?", "a": "Dropping a Holoshield behind the carrier blocks pursuing enemies’ shots during the escape."}
-{"q": "Can enemies destroy a Holoshield?", "a": "Yes—focused gunfire or explosives will break the shield, but the time spent shooting it diverts fire from the players behind it."}
-{"q": "Does the Holoshield Glove ever upgrade?", "a": "No—Holoshields have no V2 upgrade; every deployment has the same stats."}
-{"q": "How do competitive teams use Holoshields at nodes?", "a": "During a node capture, a player deploys a Holoshield to block incoming fire while they crank the bolt."}
-{"q": "What is a chained Holoshield tactic in CTF?", "a": "Teammates successively place Holoshields to create a moving corridor that protects a flag carrier across open ground."}
-{"q": "Why is the Holoshield pickup high priority?", "a": "Teams value it for critical defensive plays, so they secure the shield crate early and give it to a player with good timing sense."}
-{"q": "When do most weapons upgrade to V2?", "a": "After a player earns 3 kills with a weapon without dying, that weapon automatically upgrades from V1 to V2."}
-{"q": "What benefits do V2 weapons provide?", "a": "Upgraded weapons hit harder, fire faster, or gain larger splash radius, making them significantly more lethal."}
-{"q": "What happens to weapon upgrades upon player death?", "a": "Upgrades are lost on death; the weapon reverts to V1 if reacquired after respawn."}
-{"q": "What drops when a player is killed?", "a": "All non-default weapons are dropped in a pack at the death spot, and any player can pick them up."}
-{"q": "Do dropped weapons retain V2 status?", "a": "No—dropped weapons revert to their base V1 form when picked up by another player."}
-{"q": "What does a generic (green) ammo crate provide?", "a": "Breaking a green ammo crate refills ammunition for multiple weapons in the player’s inventory."}
+
+
 {"q": "What do weapon-specific crates grant?", "a": "Weapon crates give that particular weapon plus an initial supply of ammo."}
 {"q": "How quickly do ammo crates respawn?", "a": "Ammo crates respawn on a short timer, encouraging teams to revisit them frequently."}
 {"q": "Why fight for rocket or sniper ammo spawns?", "a": "Powerful weapons have scarce ammo pickups, so controlling their crate locations limits enemy firepower."}

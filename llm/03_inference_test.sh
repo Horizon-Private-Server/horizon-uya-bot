@@ -14,28 +14,12 @@ model = AutoModelForCausalLM.from_pretrained("${MODEL_PATH}", device_map="cuda:0
 tokenizer = AutoTokenizer.from_pretrained("${MODEL_PATH}")
 
 # Initialize the formatter (no usernames needed at inference)
-formatter = OmniPromptFormatter("prompt.txt")
+formatter = OmniPromptFormatter()
 
 def ask(question):
-    connection_status = "in_game"
-    map_name = "Blackwater Docks"
-    mode = "Deathmatch"
-    players = [
-        {"Username": "NeoFurySniper1681", "Health": 46, "Team": "orange"},
-        {"Username": "Omni", "Health": 53, "Team": "aqua"},
-        {"Username": "DarkSteelMaster", "Health": 40, "Team": "red"},
-        {"Username": "", "Health": "null", "Team": ""},
-        {"Username": "", "Health": "null", "Team": ""},
-        {"Username": "", "Health": "null", "Team": ""},
-        {"Username": "", "Health": "null", "Team": ""},
-        {"Username": "", "Health": "null", "Team": ""}
-    ]
-
     chat_log = f"FourBolt: {question}"
 
-    prompt = formatter.assemble_inference_prompt(
-        connection_status, map_name, mode, players, chat_log
-    )
+    prompt = formatter.assemble_inference_prompt(chat_log)
 
     # Tokenize and generate
     inputs = tokenizer(prompt, return_tensors="pt").to(model.device)

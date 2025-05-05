@@ -1,6 +1,7 @@
 import os
 import discord
 from llama_cpp import Llama
+from formatter import OmniPromptFormatter
 
 TOKEN = os.getenv("OMNI_TOKEN")
 TARGET_CHANNEL_ID = int(os.getenv("OMNI_CHANNEL_ID"))
@@ -20,6 +21,7 @@ llm = Llama(
 )
 
 channel_histories = {}
+formatter = OmniPromptFormatter()
 
 def replace_bot_mentions(content: str, bot_user: discord.User) -> str:
     return content.replace(f"<@{bot_user.id}>", "@Omni")

@@ -38,14 +38,13 @@ def replace_discord_mentions(content: str, message: discord.Message) -> str:
 def build_prompt(channel_id, username, user_input, max_prompt_tokens=3000):
     history = channel_histories.get(channel_id, [])
 
-    recent = [f"{line}" for line in history[-2:] if not line.startswith("Omni:")]
-    recent.append(f"{username}: {user_input}")
+    recent = [f"{line}" for line in history[-2:]]
 
     # Join previous exchanges into a single input (if desired). Or just use latest.
-    full_input = " ".join(recent)
+    full_input = "\n".join(recent)
 
     # Build the prompt in the **exact fine-tune format**:
-    prompt = formatter.assemble_inference_prompt(full_input)
+    prompt = formatter.assemble_inference_prompt(chat_log=full_input)
     prompt_tokens = llm.tokenize(prompt.encode("utf-8"))
     print(f"🔢 Prompt token count: {len(prompt_tokens)}")
 
@@ -103,15 +102,17 @@ async def on_message(message):
             response = llm(prompt, max_tokens=1024, stop=stop_tokens)
             output = response["choices"][0]["text"].strip()
 
+            print("=== LLM OUTPUT ===========================================")
             print(output)
-            # if output.startswith("Omni:"):
-            #     output = output[len("Omni:"):].strip()
-            # for tag in ["\n", "###", "Now", "User:", "You:"]:
-            #     if tag in output:
-            #         output = output.split(tag)[0].strip()
-            #         break
+            print("==========================================================")
+ 
+            command = output.split("\n")[0].split("command: ")[-1]
+            chat_resp = output.split("\n")[-1].split("chat_response: ")[-1].removeprefix("Omni: ").strip()
+            print(command, chat_resp)
 
-            history.append(f"Omni: {output}")
+            # Update history AFTER generating response
+            history = channel_histories.get(channel_id, [])
+            history.append(f"Omni: {chat_resp}")
             channel_histories[channel_id] = history[-40:]
 
             await message.reply(output)

@@ -1,0 +1,50 @@
+facts:
+  params:
+    map: "Hoven Gorge"
+
+  entries:
+    - fact_type: map_general_structure
+      answers: 
+        - "Hoven Gorge is a large, complex map set on a frosty tundra planet with open fields and cliffside tunnels."
+        - "The map is defined by a massive frozen gorge splitting the battlefield, with a central bridge serving as the axis of symmetry."
+        - "Hoven Gorge includes layered terrain: ground-level paths, elevated cliffs, and interior tunnel systems."
+        - "A central cliff structure spans the middle of the map, dividing vehicle routes and housing multiple capturable nodes."
+        - "Hoven Gorge’s environment features a frozen canyon, snowy fields, destructible side bridges, and turreted cliff positions."
+
+    - fact_type: map_nicknames
+      answers: 
+        - "Hoven Gorge is commonly referred to as 'Hoven' by players."
+        - "The map's shorthand nickname is simply 'Hoven'."
+        - "Players usually call Hoven Gorge just 'Hoven' in matches."
+        - "'Hoven' is the informal name used for Hoven Gorge."
+
+    - fact_type: map_base_defenses
+      answers:
+        - "Red team's base is protected by Shock Droids, while the Blue team is defended by Ball Bots."
+        - "Alongside standard gatling turrets, Blue receives Ball Bots and Red has Shock Droids for base defense."
+        - "Ball Bots reinforce the Blue base, and Shock Droids cover the Red base."
+        - "Each base is uniquely defended—Red gets Shock Droids, and Blue is equipped with Ball Bots."
+
+    - fact_type: map_base_locations
+      answers: 
+        - "The Red base is located in the southwest corner of Hoven Gorge, while the Blue base is positioned in the northeast."
+        - "Teams spawn at opposite ends: Red in the southwest, Blue in the northeast."
+        - "The base layout places Red and Blue on diagonally opposed corners of the map."
+        - "Hoven Gorge positions its team bases in the southwest and northeast corners respectively."
+
+    - fact_type: map_nodes
+      answers: 
+        - "Hoven Gorge contains seven capturable nodes: one near each team’s base, one in the tunnel inside the central cliff, two on the north and south sides of the cliff, and one beneath the bridge in the frozen gorge."
+        - "The map includes a node at each base-side canyon, three nodes embedded in the central cliff, and one in the gorge beneath the bridge."
+        - "Capture nodes are distributed across base flanks, interior cliff tunnels, and the central frozen gorge."
+        - "Nodes are positioned to control major zones: near spawn routes, the cliff interior, and mid-map vehicle chokepoints."  
+
+    - fact_type: map_node_strategic_value
+      answers: 
+        - "Capturing the base-side node provides vehicles and mobility tools, enabling early movement control."
+        - "Holding the cliff tunnel node denies enemy snipers and grants long-range weapons for mid-map control."
+        - "The gorge node beneath the bridge offers anti-vehicle support and Holoshields for area denial."
+        - "Securing the cliff-side nodes unlocks turrets with overlapping fields of fire across the gorge."
+        - "Teams that hold more nodes can dominate vehicle routes, reinforce faster, and establish superior map pressure."
+        - "Controlling multiple nodes provides strategic advantages in elevation, line-of-sight, and defense capability."
+        - "Early node control lets teams establish chokepoints and deny enemy reinforcements."

@@ -80,13 +80,11 @@ fact_types:
       - "What happens when a team controls more nodes in {map}?"
 
   map_trooper_locations:
-    description: "Identifies any neutral or allied NPCs on the map."
+    description: "Identifies any neutral troopers."
     question_formats:
-      - "What NPCs are present on {map}?"
-      - "Are there any non-player characters on {map}?"
-      - "Which NPCs appear on {map}?"
-      - "Do any friendly or enemy bots exist on {map}?"
-      - "What factions or units appear as NPCs on {map}?"
+      - "What troopers are present on {map}?"
+      - "Are there any Galactic Rangers on {map}?"
+      - "Which neutral troopers appear on {map}?"
 
   map_sniper:
     description: "Explains why specific sniper positions offer advantages."

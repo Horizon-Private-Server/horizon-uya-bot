@@ -1,0 +1,97 @@
+facts:
+  params:
+    map: "Bakisi Isles"
+
+  entries:
+    - fact_type: map_general_structure
+      answers: 
+        - "Bakisi Isles is a tropical map composed of three large outer islands and a central elevated island with a tall tower."
+        - "Bakisi Isles is structured around a tall central tower island with three substantial islands forming the outer ring."
+        - "The map features three large islands surrounding a central tower platform."
+        - "A central tower rises above surrounding outer islands in Bakisi Isles’ tropical layout."
+
+    - fact_type: map_nicknames
+      answers: 
+        - "Bakisi Isles is often shorthanded to 'kisi' or 'bakisi'."
+        - "Some common nicknames for Bakisi Isles are 'kisi' and 'bakisi'."
+        - "Players usually refer to Bakisi Isles as 'kisi'."
+        - "The map is informally called 'kisi' in competitive multiplayer lobbies."
+
+    - fact_type: map_base_defenses
+      answers:
+        - "The Blue teams has Shock Droids and the Red team has Ball Bots."
+        - "Each team has unique base defenses in addition to the default gatling turrets: Red team has Ball Bots and Blue team has Shock Droids."
+        - "Red bases are guarded by Ball Bots, while Blue gets Shock Droids, alongside standard turrets."
+        - "In addition to gatling turrets, the Red base is defended by Ball Bots and the Blue base by Shock Droids."
+
+    - fact_type: map_base_locations
+      answers:
+        - "The Red and Blue bases are positioned on the southwest and southeast islands, respectively."
+        - "Red and Blue bases on southwest and southeast islands; a central northern tower island connected by curved bridges."
+        - "Each team’s base is placed on opposite southern islands, with the central tower to the north."
+        - "The Red base is in the southwest, the Blue in the southeast, both linked to the central island."
+
+    - fact_type: map_nodes
+      answers:
+        - "There are multiple capturable nodes: one on each of the three outer islands for Turbosliders, one on each bridge (bridge nodes), one on the floating platform, and one at the top of the central tower."
+        - "Bakisi Isles features several capturable nodes: three on the outer islands for Turbosliders, two bridge nodes, one on a floating platform, and one atop the central tower."
+        - "Seven total nodes exist: one floating platform, three vehicle spawn points on outer islands, two bridge midpoints, and one tower summit."
+        - "Node locations include outer island vehicle spawns, a floating platform, bridge control points, and a central high-ground tower node."
+
+    - fact_type: map_node_strategic_value
+      answers:
+        - "Controlling the bridge nodes grants Hovership spawns and mid-map dominance, enabling early aerial pressure."
+        - "Side island nodes provide Turbosliders, which teams use to quickly reach or contest objectives."
+        - "Holding both bridge nodes enables aerial dominance and accelerates attacks on the enemy base."
+        - "Capturing the central tower node grants strong defensive positioning and access to hidden resources."
+        - "The core strategy revolves around node control: each captured node yields mobility, firepower, or strategic elevation."
+        - "Bridge and tower nodes give key mobility and air control, while outer nodes support ground advances."
+        - "Teams that secure more nodes control both the pace and direction of engagements."
+
+    - fact_type: map_npc_locations
+      answers:
+        - "Galactic Ranger NPCs guard the central tower."
+        - "The central tower node is protected by neutral Galactic Ranger units."
+        - "Neutral Rangers defend the node at the bottom of the center tower."
+        - "NPCs stationed at the central tower provide passive resistance to intruding players."
+
+    - fact_type: map_sniper
+      answers:
+        - "Snipers can climb the central tower or control the floating platform to pick off players crossing bridges or moving between nodes."
+        - "The floating platform provides long sightlines over bridges and open areas, making it ideal for sniping."
+        - "Long-range weapons are most effective from the floating platform or upper tower positions."
+        - "Snipers benefit from elevated lines of sight atop the tower and the airborne mid-map platform."
+
+    - fact_type: map_terrain_features
+      answers:
+        - "Base islands include hills and cover to aid in defense."
+        - "Hills and structures provide cover for defenders around each base."
+        - "Natural elevation and scattered obstacles help defenders hold ground near their base."
+        - "The base terrain provides defensive ridges, slopes, and visual barriers."
+
+    - fact_type: map_vehicle_types
+      answers:
+        - "Each of the three outer islands has a node that spawns a Turboslider. Each bridge node spawns a Hovership when captured."
+        - "Turbosliders at outer island nodes and Hoverships at bridge nodes and the floating platform."
+        - "Ground and air vehicles are distributed across the outer islands and bridge control zones."
+        - "Players can access Turbosliders via base nodes and earn Hoverships by controlling bridges."
+
+    - fact_type: map_turboslider_tactics
+      answers:
+        - "Turbosliders allow teams to quickly reach and contest side nodes."
+        - "Turbosliders are used to contest or defend side island nodes in Siege or CTF mode."
+        - "Teams rely on Turbosliders for rapid movement between outposts."
+        - "Turbosliders support quick reinforcement of contested positions on the flanks."
+
+    - fact_type: map_hovership_tactics
+      answers:
+        - "Hoverships are used to harass the enemy base from above."
+        - "Teams often capture bridge nodes early to secure Hoverships for aerial dominance."
+        - "Controlling the skies with Hoverships enables harassment and fast repositioning."
+        - "Aerial aggression with Hoverships can suppress base defenses and open assault paths."
+
+    - fact_type: map_counter_air_dominance_strategies
+      answers:
+        - "Defenders can shoot down Hoverships with the Flux Rifle or Minirocket Tube."
+        - "To counter air dominance, players use anti-air weapons like rockets or precision rifles."
+        - "Base defenses including gatling turrets and elevated snipers can suppress enemy Hoverships."

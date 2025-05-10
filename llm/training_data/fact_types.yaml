@@ -1,0 +1,147 @@
+fact_types:
+
+  # ===========================================================================
+  #  Maps
+  # ===========================================================================
+
+  map_general_structure:
+    description: "Describes the overall structure and theme of the map."
+    question_formats:
+      - "Describe the general structure of {map}."
+      - "What is {map}?"
+      - "How is {map} laid out?"
+      - "Summarize the map layout of {map}."
+      - "What does the layout of {map} look like?"
+      - "How are the major features arranged in {map}?"
+      - "What is the basic layout or structure of {map}?"
+      - "Give an overview of how {map} is structured."
+      - "What kind of environment is featured in {map}?"
+      - "How would you describe the geography of {map}?"
+
+  map_nicknames:
+    description: "Details common nicknames for a certain map."
+    question_formats:
+      - "What are some common nicknames for the map {map}?"
+      - "What aliases or shorthand names exist for {map}?"
+      - "How is {map} referred to informally by players?"
+      - "What do players usually call {map}?"
+      - "What short names are used for {map}?"
+      - "Are there any alternate names for {map}?"
+      - "What is the slang term for {map}?"
+      - "What is {map} called in casual play?"
+      - "Does {map} have a nickname?"
+      - "What abbreviated terms are used for {map}?"
+
+  map_base_defenses:
+    description: "Describes what base defenses each team gets."
+    question_formats:
+      - "Where base defenses are available on {map}?"
+      - "What does each team get for base defenses in {map}?"
+      - "What defenses are installed at each base in {map}?"
+      - "What protection is available for team bases in {map}?"
+      - "What kind of defenses do team bases have in {map}?"
+      - "What turrets or units guard the bases in {map}?"
+      - "How are bases defended on {map}?"
+      - "What static defenses are provided to teams on {map}?"
+
+  map_base_locations:
+    description: "Describes where the Red and Blue bases are located."
+    question_formats:
+      - "Where are the team bases located in {map}?"
+      - "What are the base positions on {map}?"
+      - "Where are the Red and Blue bases positioned in {map}?"
+      - "What parts of {map} hold the team bases?"
+      - "In what locations are the team bases found on {map}?"
+      - "How is base placement arranged in {map}?"
+      - "What is the relative position of bases in {map}?"
+      - "Where do teams spawn on {map}?"
+
+  map_nodes:
+    description: "Explains how many nodes exist and where they are placed."
+    question_formats:
+      - "How many nodes exist on {map}?"
+      - "What is the node placement in {map}?"
+      - "Where are the nodes located on {map}?"
+      - "How are nodes distributed across {map}?"
+      - "Where can nodes be captured in {map}?"
+      - "What kinds of nodes are placed in {map}?"
+      - "What is the layout of capture nodes in {map}?"
+      - "How is node positioning handled on {map}?"
+
+  map_node_strategic_value:
+    description: "Explains how controlling nodes affects match dynamics."
+    question_formats:
+      - "What is a common strategy for controlling nodes on {map}?"
+      - "On {map}, how can players control nodes for their advantage?"
+      - "What tactical role do nodes play in {map}?"
+      - "Why is it important to hold nodes in {map}?"
+      - "How do captured nodes impact gameplay in {map}?"
+      - "What benefits come from controlling nodes in {map}?"
+      - "What happens when a team controls more nodes in {map}?"
+
+  map_npc_locations:
+    description: "Identifies any neutral or allied NPCs on the map."
+    question_formats:
+      - "What NPCs are present on {map}?"
+      - "Are there any non-player characters on {map}?"
+      - "Which NPCs appear on {map}?"
+      - "Do any friendly or enemy bots exist on {map}?"
+      - "What factions or units appear as NPCs on {map}?"
+
+  map_sniper:
+    description: "Explains why specific sniper positions offer advantages."
+    question_formats:
+      - "How can snipers be effective on {map}?"
+      - "Why is the floating platform valuable for snipers on {map}?"
+      - "What sniper positions exist on {map}?"
+      - "Where do snipers usually position themselves in {map}?"
+      - "What makes certain sniper spots powerful on {map}?"
+      - "How does the terrain of {map} support sniping?"
+      - "What locations on {map} give snipers long lines of sight?"
+
+  map_terrain_features:
+    description: "Describes hills, cover, or verticality affecting movement or combat."
+    question_formats:
+      - "What terrain advantages are present in {map}?"
+      - "What cover is available for defenders on {map}?"
+      - "How does the terrain affect combat in {map}?"
+      - "Are there elevation changes or cover spots on {map}?"
+      - "What features of the terrain benefit players on {map}?"
+      - "Does {map} include verticality or obstacles?"
+      - "Where are the best cover points on {map}?"
+
+  map_vehicle_types:
+    description: "Lists all usable vehicle types available on the map."
+    question_formats:
+      - "Which vehicles are available on {map}?"
+      - "What vehicles spawn on {map}?"
+      - "What types of vehicles can be used on {map}?"
+      - "Where do vehicles appear in {map}?"
+      - "Are there air or land vehicles in {map}?"
+      - "What vehicle options are accessible on {map}?"
+
+  map_turboslider_tactics:
+    description: "Explains how Turbosliders are strategically used."
+    question_formats:
+      - "How are Turbosliders used strategically in {map}?"
+      - "How are Turbosliders used in Siege or CTF on {map}?"
+      - "What role do Turbosliders play in matches on {map}?"
+      - "How do players use Turbosliders to gain advantage in {map}?"
+      - "Why are Turbosliders important in {map}?"
+
+  map_hovership_tactics:
+    description: "Explains how Hoverships are strategically used."
+    question_formats:
+      - "How are Hoverships used offensively on {map}?"
+      - "What strategies involve Hoverships on {map}?"
+      - "How do Hoverships support assaults in {map}?"
+      - "What is the best way to use a Hovership in {map}?"
+
+  map_counter_air_dominance_strategies:
+    description: "Details how to stop enemy Hoverships from dominating."
+    question_formats:
+      - "What's an effective way to defend against Hoverships on {map}?"
+      - "How can teams counter Hovership dominance on {map}?"
+      - "How do you stop enemy air control in {map}?"
+      - "What tactics shut down Hoverships on {map}?"
+      - "How can you deal with aerial threats in {map}?"

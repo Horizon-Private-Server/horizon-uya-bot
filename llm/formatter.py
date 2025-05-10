@@ -4,7 +4,7 @@ import random
 from collections import defaultdict
 
 class OmniPromptFormatter:
-    def __init__(self, prompt_path="prompt.txt", usernames_path="training_data/usernames.txt"):
+    def __init__(self, prompt_path="prompt.txt", usernames_path="training_data/usernames/usernames.txt"):
         with open(prompt_path, "r", encoding="utf-8") as f:
             self.prompt_template = f.read()
 

@@ -18,6 +18,19 @@ facts:
         - "Players informally abbreviate Korgon Outpost as 'Korg' during gameplay."
         - "Korgon Outpost is usually just called 'Korg'."
 
+    - fact_type: map_big_or_small
+      answers:
+        - "Korgon Outpost is considered a large map due to its integration of capturable nodes and built-in team defenses."
+        - "The presence of node objectives and base turrets makes Korgon Outpost a large-scale combat map."
+        - "Maps like Korgon Outpost are structured for extended gameplay, featuring multiple objectives and defensive layers."
+        - "With fortified bases and capture mechanics, Korgon Outpost is designed for large team battles."
+        - "Because Korgon Outpost includes elements like base protection and node control, it's categorized as a large map."
+        - "Node support and turret installations make Korgon Outpost a strategic, large-format map."
+        - "Korgon Outpost supports vehicles and multiple objectives, marking it as a big map by design."
+        - "You can tell Korgon Outpost is big by its layout built around defensive infrastructure and node fights."
+        - "Korgon Outpost falls into the large map classification thanks to its support for Siege mode mechanics."
+        - "As a full-featured map with defensive assets and node play, Korgon Outpost fits the criteria for a big map."
+
     - fact_type: map_base_defenses
       answers:
         - "Shock Droids defend the Red base, while Ball Bots handle defense at the Blue base."

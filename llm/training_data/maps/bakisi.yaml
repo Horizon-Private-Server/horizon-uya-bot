@@ -17,6 +17,19 @@ facts:
         - "Players usually refer to Bakisi Isles as 'kisi'."
         - "The map is informally called 'kisi' in competitive multiplayer lobbies."
 
+    - fact_type: map_big_or_small
+      answers:
+        - "Bakisi Isles is a large map with space for vehicles, node control, and base defenses."
+        - "Bakisi Isles qualifies as a big map because it supports Siege mode and has multiple capturable nodes."
+        - "Bakisi Isles is one of the larger maps in the game, designed for coordinated team play and strategic control."
+        - "With its inclusion of nodes, vehicles, and base defenses, Bakisi Isles fits the large-map classification."
+        - "Bakisi Isles is built for large-scale battles, featuring objectives spread across a wide terrain."
+        - "Bakisi Isles supports full Siege gameplay, including node capture and automated base defense units."
+        - "This map is classified as 'big' due to its size, vehicle integration, and strategic control elements."
+        - "Because Bakisi Isles contains multiple routes, objectives, and defense layers, it's considered a large map."
+        - "Maps like Bakisi Isles are used in Siege due to their size and the inclusion of strategic assets."
+        - "The large, open structure of Bakisi Isles enables vehicle use and objective-based team coordination."  
+
     - fact_type: map_base_defenses
       answers:
         - "The Blue teams has Shock Droids and the Red team has Ball Bots."

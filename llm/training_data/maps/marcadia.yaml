@@ -1,0 +1,106 @@
+facts:
+  params:
+    map: "Marcadia Palace"
+
+  entries:
+    - fact_type: map_general_structure
+      answers:
+        - "Marcadia Palace is a small, symmetric multiplayer map set outside the Presidential Palace on planet Marcadia during nighttime."
+        - "The layout centers on a courtyard flanked by curved walls, with symmetrical paths and item spawns on both sides."
+        - "Marcadia Palace consists of a central plaza bordered by semi-circular courtyards, decorative arches, and a dried-out moat trench."
+        - "The map emphasizes close-range engagement across mirrored open spaces and shallow elevation changes."
+        - "The entire map is outdoors and features a symmetrical layout with a central turret platform and two mirrored flanking paths."
+
+    - fact_type: map_nicknames
+      answers:
+        - "Marcadia Palace is commonly referred to as 'marc' by players."
+        - "A typical shorthand for Marcadia Palace in casual play is 'marc'."
+        - "'Marc' is the standard abbreviated term used for Marcadia Palace."
+        - "Players often call Marcadia Palace simply 'marc'."
+
+    - fact_type: map_big_or_small
+      answers:
+        - "Marcadia Palace qualifies as a small map due to its limited area and absence of base turrets or nodes."
+        - "No node control or Siege mechanics means Marcadia Palace is structured for tight, small-scale matches."
+        - "The layout of Marcadia Palace supports close-quarters combat and lacks any larger strategic infrastructure."
+        - "Marcadia Palace doesn't support Siege mode and has no large-scale tactical systems, marking it as a small map."
+        - "Smaller maps like Marcadia Palace exclude vehicle support and control points, focusing purely on infantry skirmishes."
+        - "Marcadia Palace is built without defensive systems or capturable zones, making it ideal for fast, chaotic fights."
+        - "The compact geometry and lack of objective layers mean Marcadia Palace plays like a small, arena-style map."
+        - "With only simple spawn points and weapon pickups, Marcadia Palace functions as a lightweight, small-format map."
+        - "No automated defenses, no node spawns—Marcadia Palace fits the criteria for a small multiplayer map."
+        - "As a small map, Marcadia Palace emphasizes raw reflexes and weapon control over strategic objectives."
+
+    - fact_type: map_base_defenses
+      answers:
+        - "There are no static base defenses on Marcadia Palace."
+        - "Marcadia Palace does not provide any automated defenses or turrets for team bases."
+        - "Teams must rely entirely on player weapons and gadgets, as no base defenses exist."
+        - "No Shock Droids, Ball Bots, or turrets are present at the bases on Marcadia Palace."
+
+    - fact_type: map_base_locations
+      answers:
+        - "Teams spawn at opposite ends of the palace courtyard in Marcadia Palace."
+        - "The Red and Blue bases are located on the north and south sides of the central courtyard."
+        - "Each team starts on either end of the symmetrical map, flanking the central palace entrance."
+        - "Spawns are placed directly across from each other, facing the palace doorway in the center."
+
+    - fact_type: map_nodes
+      answers:
+        - "Marcadia Palace has no capturable nodes."
+        - "There are no node objectives placed anywhere on Marcadia Palace."
+        - "This map does not include any control nodes or node-based objectives."
+        - "Node placement is not applicable—Marcadia Palace features no nodes."
+
+    - fact_type: map_node_strategic_value
+      answers:
+        - "Node strategy is irrelevant on Marcadia Palace, as the map does not include any capturable nodes."
+        - "There are no nodes on Marcadia Palace, so node control does not influence gameplay."
+        - "Marcadia Palace lacks node-based objectives; strategy centers on positioning and item control instead."
+        - "Node dynamics do not apply—Marcadia Palace has no control nodes to capture or defend."
+
+    - fact_type: map_trooper_locations
+      answers:
+        - "There are no neutral troopers present on Marcadia Palace."
+        - "No Galactic Rangers or other NPCs appear on this map."
+        - "Marcadia Palace contains no AI-controlled troopers."
+        - "The map is entirely player-versus-player with no neutral units."
+
+    - fact_type: map_sniper
+      answers:
+        - "Snipers can use the top of the central turret pillar to get a clear view over the courtyard."
+        - "The moat areas allow Flux Rifle users to shoot across the map while remaining partially hidden."
+        - "Sniping from behind the trees near the side courtyards gives temporary cover and line-of-sight toward the center."
+        - "Long lines of sight in the trench and across the palace courtyard support mid-range sniping tactics."
+
+    - fact_type: map_terrain_features
+      answers:
+        - "The map features a central depression and moat that can be used for flanking or temporary cover."
+        - "Curved courtyard walls and tree clusters on either side of the map provide natural cover and ambush spots."
+        - "A tall central pillar introduces verticality and can be accessed via jump pad or ledge climbing."
+        - "Low walls and trenches around the palace courtyard let players hide mines, duck fire, or plan ambushes."
+
+    - fact_type: map_vehicle_types
+      answers:
+        - "No vehicles are available on Marcadia Palace."
+        - "Marcadia Palace does not include any air or land vehicles."
+        - "This map is infantry-only; vehicles do not spawn or play a role in gameplay."
+
+    - fact_type: map_turboslider_tactics
+      answers:
+        - "Turbosliders are not present on Marcadia Palace and play no role in gameplay."
+        - "This map does not support Turboslider use due to its small size and lack of vehicle spawns."
+        - "Turbosliders are unavailable on Marcadia Palace, making infantry tactics the only option."
+
+    - fact_type: map_hovership_tactics
+      answers:
+        - "Hoverships are not available on Marcadia Palace and are not part of any gameplay strategies."
+        - "This map does not include Hoverships due to its tight, infantry-focused design."
+        - "There are no Hoverships on Marcadia Palace, so players must rely solely on ground-based tactics."
+
+    - fact_type: map_counter_air_dominance_strategies
+      answers:
+        - "There are no Hoverships on Marcadia Palace, so aerial dominance is not a factor."
+        - "Players do not need to counter air threats on Marcadia Palace because the map lacks flying vehicles."
+        - "Marcadia Palace features only ground combat—Hovership counter strategies are irrelevant here."
+

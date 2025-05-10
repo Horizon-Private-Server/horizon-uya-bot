@@ -18,6 +18,19 @@ facts:
         - "Players usually call Metropolis simply 'Metro'."
         - "The map is often abbreviated as 'Metro' in voice comms and lobbies."
 
+    - fact_type: map_big_or_small
+      answers:
+        - "Metropolis qualifies as a big map because it includes both node-based objectives and automated base defenses."
+        - "The inclusion of capturable nodes and static defense units makes Metropolis a large-scale map."
+        - "Maps like Metropolis are designed for extended matches, featuring multiple strategic control points and defense systems."
+        - "Metropolis is a large map due to its emphasis on objective control and fortified base setups."
+        - "Large maps such as Metropolis are built to support Siege mode, requiring node captures and defensive positioning."
+        - "The layout and objectives of Metropolis clearly place it in the 'big' category, optimized for full-team engagements."
+        - "Because Metropolis is equipped with turrets and nodes, it's suited for high-player-count game types."
+        - "The combination of built-in base protection and node strategy in Metropolis marks it as a large map."
+        - "Big maps like Metropolis incorporate multiple layered objectives and fixed defenses to drive strategic gameplay."
+        - "Metropolis's architecture is built around prolonged battles with node control and team defense roles, identifying it as a big map."
+
     - fact_type: map_base_defenses
       answers:
         - "Shock Droids defend the Blue team’s base, while Ball Bots protect the Red team’s side."

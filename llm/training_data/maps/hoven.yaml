@@ -18,6 +18,19 @@ facts:
         - "Players usually call Hoven Gorge just 'Hoven' in matches."
         - "'Hoven' is the informal name used for Hoven Gorge."
 
+    - fact_type: map_big_or_small
+      answers:
+        - "Hoven Gorge qualifies as a large map because it includes capture nodes and automated base defenses."
+        - "Maps like Hoven Gorge are designed for large-scale engagements, complete with node objectives and static defenses."
+        - "Hoven Gorge is one of the bigger maps, offering a full Siege experience with vehicles and strategic control points."
+        - "Because Hoven Gorge contains both team defenses and node capture systems, it's classified as a big map."
+        - "Players recognize Hoven Gorge as large thanks to its multi-node layout and fortified base structures."
+        - "The defining features of big maps—nodes, turrets, and large terrain—are all present in Hoven Gorge."
+        - "Hoven Gorge's extensive layout and control mechanics distinguish it as a large-format battleground."
+        - "With its combination of nodes, vehicles, and defensive units, Hoven Gorge is a large, objective-heavy map."
+        - "The map Hoven Gorge stands out as big due to its tactical depth and infrastructure for Siege mode."
+        - "Because it supports full-scale Siege mechanics, Hoven Gorge is consistently ranked among the largest maps."
+
     - fact_type: map_base_defenses
       answers:
         - "Red team's base is protected by Shock Droids, while the Blue team is defended by Ball Bots."

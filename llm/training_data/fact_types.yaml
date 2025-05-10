@@ -32,6 +32,20 @@ fact_types:
       - "Does {map} have a nickname?"
       - "What abbreviated terms are used for {map}?"
 
+  map_big_or_small:
+    description: "Explains if a map is big or small"
+    question_formats:
+      - "Is {map} a big or small map?"
+      - "How large is {map}?"
+      - "Does {map} count as one of the small maps?"
+      - "Can {map} support large-scale modes like Siege?"
+      - "What size category does {map} fall under?"
+      - "Would you describe {map} as a small or large battlefield?"
+      - "Is {map} considered large enough for nodes and vehicles?"
+      - "How much space does {map} offer for gameplay?"
+      - "Is {map} large enough to allow base defenses and node control?"
+      - "Is {map} too small for Siege mode?"
+
   map_base_defenses:
     description: "Describes what base defenses each team gets."
     question_formats:

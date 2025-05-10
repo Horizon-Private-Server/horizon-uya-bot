@@ -48,7 +48,7 @@ facts:
         - "Bridge and tower nodes give key mobility and air control, while outer nodes support ground advances."
         - "Teams that secure more nodes control both the pace and direction of engagements."
 
-    - fact_type: map_npc_locations
+    - fact_type: map_trooper_locations
       answers:
         - "Galactic Ranger NPCs guard the central tower."
         - "The central tower node is protected by neutral Galactic Ranger units."

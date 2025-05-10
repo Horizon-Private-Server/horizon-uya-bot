@@ -48,3 +48,37 @@ facts:
         - "Teams that hold more nodes can dominate vehicle routes, reinforce faster, and establish superior map pressure."
         - "Controlling multiple nodes provides strategic advantages in elevation, line-of-sight, and defense capability."
         - "Early node control lets teams establish chokepoints and deny enemy reinforcements."
+
+    - fact_type: map_trooper_locations
+      answers: 
+        - "Neutral Galactic Ranger NPCs guard base nodes and node in the center gorge."
+        - "Neutral Galactic Rangers defend the base-adjacent nodes and the central gorge node."
+        - "Galactic Ranger NPCs are positioned at the base nodes and the node beneath the bridge."
+        - "Base-side nodes and the central gorge objective are guarded by neutral Ranger units."
+        - "The central gorge node and nearby base nodes are protected by non-hostile Galactic Rangers."
+
+    - fact_type: map_sniper
+      answers:
+        - "The top of the central cliff provides snipers with elevated sightlines over the frozen gorge and bridge."
+        - "Snipers positioned on the cliffs and turret areas can control mid-map crossings and punish exposed movement below."
+        - "Hoven Gorge supports sniping through verticality—cliff height offers dominant sightlines over key routes."
+
+    - fact_type: map_terrain_features
+      answers:
+        - "Hoven Gorge features vertical cliffs, a central frozen canyon, and tunnel systems that create multiple engagement layers."
+        - "Cover structures and canyon walls near each base support defensive play and ambushes."
+        - "The destructible bridge routes and side canyons create dynamic choke points and flanking options."
+        - "Elevation changes allow for control from above, particularly around the cliff and central bridge."
+
+    - fact_type: map_vehicle_types
+      answers:
+        - "Turbosliders are the primary vehicle available on Hoven Gorge."
+        - "Each team’s first node spawns a Turboslider for fast traversal."
+        - "No air vehicles are present; only land-based Turbosliders are used."
+        - "Turbosliders appear at the base-adjacent capturable nodes, supporting mobility and quick flanking."
+
+    - fact_type: map_turboslider_tactics
+      answers:
+        - "Turbosliders are used to rapidly contest side canyon nodes and reach the center gorge early in the match."
+        - "Players use Turbosliders to flank enemy positions or reinforce mid-map fights quickly."
+        - "They’re essential for quick node captures and setting up chokepoints before enemy teams arrive."

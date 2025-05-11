@@ -4,7 +4,6 @@ facts:
 
   entries:
     map_general_structure: 
-      answers:
         - "Aquatos Sewers is a compact, enclosed multiplayer map set in the underground sewer system of planet Aquatos."
         - "The map is structured as a symmetrical maze of tight corridors and ankle-deep sewage water."
         - "Aquatos Sewers consists of four looping tunnel paths that intersect at a central crossroads room."
@@ -12,14 +11,12 @@ facts:
         - "This map emphasizes chaotic, horizontal movement with no vertical traversal or outdoor areas."
 
     map_nicknames: 
-      answers:
         - "Aquatos Sewers is commonly referred to as 'Sewers' by players."
         - "Players often shorten Aquatos Sewers to just 'Sewers' in casual play."
         - "The most common nickname for Aquatos Sewers is simply 'Sewers'."
         - "'Sewers' is the standard abbreviated term used for Aquatos Sewers."
 
     map_big_or_small: 
-      answers:
         - "Aquatos Sewers lacks any strategic structures like nodes or base defense units, classifying it as a small map."
         - "Since Aquatos Sewers doesn’t include vehicles, nodes, or Siege mode compatibility, it belongs in the small map category."
         - "Small maps like Aquatos Sewers feature tight layouts focused on fast-paced infantry combat, not large-scale strategy."
@@ -32,77 +29,66 @@ facts:
         - "Maps like Aquatos Sewers are optimized for short engagements and quick respawns, not layered objectives or siege warfare."
 
     map_base_defenses: 
-      answers:
         - "Aquatos Sewers does not include any automated base defenses for either team."
         - "No static turrets or defensive units are present in Aquatos Sewers; players rely solely on personal weapons and gadgets."
         - "There are no built-in defenses for bases in Aquatos Sewers—team defense is entirely player-managed."
         - "Unlike larger maps, Aquatos Sewers provides no Shock Droids, Ball Bots, or turrets for base defense."
 
     map_base_locations: 
-      answers:
         - "Each team’s base is located at opposite ends of the map in mirrored tunnel chambers."
         - "Red and Blue teams spawn at symmetrical ends of the sewer tunnel system."
         - "Bases are positioned in dead-end tunnel rooms on either side of the central crossroads."
         - "Team spawns are placed on opposite sides of the map for balance in both CTF and Deathmatch modes."
 
     map_nodes: 
-      answers:
         - "Aquatos Sewers does not contain any capturable nodes."
         - "There are no node objectives present on this map."
         - "This map excludes nodes entirely, focusing on infantry combat."
         - "Node-based gameplay is not supported in Aquatos Sewers."
 
     map_node_strategic_value: 
-      answers:
         - "Aquatos Sewers does not feature nodes, so node control plays no role in match dynamics."
         - "Since there are no capturable nodes on Aquatos Sewers, strategies revolve entirely around weapon pickups and positioning."
         - "Node strategies are irrelevant on this map due to the absence of control points."
         - "Gameplay in Aquatos Sewers is unaffected by node mechanics, focusing instead on corridor control and ambush tactics."
 
     map_trooper_locations: 
-      answers:
         - "There are no neutral troopers present on Aquatos Sewers."
         - "Aquatos Sewers does not include any Galactic Rangers or other non-player characters."
         - "No NPC units or neutral troopers spawn on this map."
         - "Aquatos Sewers is entirely player-focused with no AI trooper presence."
 
     map_sniper: 
-      answers:
         - "Aquatos Sewers offers minimal sniping opportunities due to its tight corridors and enclosed layout."
         - "The narrow tunnel system limits line-of-sight, making sniping impractical except from rare long straightaways."
         - "Snipers have little advantage on Aquatos Sewers because of the map’s confined design and frequent corner engagements."
         - "Flux Rifle use is limited to rare long corridors; most encounters are too close for effective sniping."
 
     map_terrain_features: 
-      answers:
         - "Aquatos Sewers consists of low ceilings, narrow hallways, and shallow water, creating constant close-range engagement zones."
         - "Tight corners and T-junctions provide opportunities for ambushes and cover."
         - "There are no elevation changes or verticality; the map is flat and fully enclosed."
         - "Limited side tunnels and tight intersections force players into predictable movement paths, enhancing trap effectiveness."
 
     map_vehicle_types: 
-      answers:
         - "Aquatos Sewers is a vehicle-free map, focusing entirely on infantry combat."
         - "No vehicles spawn in Aquatos Sewers—there are no Hovership pads or Turboslider garages."
         - "The tight corridors and compact size of Aquatos Sewers make vehicle usage impossible."
         - "Unlike larger maps, Aquatos Sewers excludes all forms of vehicular traversal."
 
     map_turboslider_tactics: 
-      answers:
         - "Turbosliders do not appear in Aquatos Sewers due to its restricted layout."
         - "Aquatos Sewers lacks Turboslider spawn nodes or paths wide enough to support them."
         - "This map’s close-quarters structure removes the possibility of Turboslider-based rushes or rotations."
         - "No strategic options exist for Turbosliders in Aquatos Sewers because the tunnels are too narrow."
 
     map_hovership_tactics: 
-      answers:
         - "Hoverships are absent from Aquatos Sewers and cannot be used for aerial pressure or traversal."
         - "With no sky exposure or spawn points, Aquatos Sewers disables all Hovership activity."
         - "The map's indoor sewer environment blocks any aerial combat or support roles."
         - "Players must rely on on-foot engagements since Hoverships are not compatible with this map’s design."
 
     map_counter_air_dominance_strategies: 
-      answers:
         - "Aquatos Sewers requires no anti-air strategy, as the map includes no Hoverships or aerial elements."
         - "There are no Hoverships to counter on this map, removing the need for Flux Rifles or missile turrets."
         - "Air control tactics are irrelevant in Aquatos Sewers’ enclosed, ground-based layout."

@@ -4,7 +4,6 @@ facts:
 
   entries:
     map_general_structure: 
-      answers:
         - "Metropolis is a large vertical map set on planet Kerwan’s urban skyline, featuring interconnected skyscraper rooftops."
         - "The layout centers around high-rise platforms, bridges, and towers, with traversal routes like Swingshot targets and jump pads."
         - "Gameplay unfolds across multiple vertical layers, emphasizing aerial movement and rooftop control."
@@ -12,14 +11,12 @@ facts:
         - "The environment blends cityscape architecture with open-air hazards, making verticality and spacing essential to movement."
 
     map_nicknames: 
-      answers:
         - "Metropolis is commonly referred to as 'Metro' by players."
         - "'Metro' is the standard shorthand for Metropolis in casual matches."
         - "Players usually call Metropolis simply 'Metro'."
         - "The map is often abbreviated as 'Metro' in voice comms and lobbies."
 
     map_big_or_small: 
-      answers:
         - "Metropolis qualifies as a big map because it includes both node-based objectives and automated base defenses."
         - "The inclusion of capturable nodes and static defense units makes Metropolis a large-scale map."
         - "Maps like Metropolis are designed for extended matches, featuring multiple strategic control points and defense systems."
@@ -32,60 +29,51 @@ facts:
         - "Metropolis's architecture is built around prolonged battles with node control and team defense roles, identifying it as a big map."
 
     map_base_defenses: 
-      answers:
         - "Shock Droids defend the Blue team’s base, while Ball Bots protect the Red team’s side."
         - "Alongside standard gatling turrets, Red has Ball Bots and Blue has Shock Droids for additional defense."
         - "Each team is equipped with different support units—Blue fields Shock Droids, Red deploys Ball Bots."
         - "Gatling turrets cover both bases, with Blue supported by Shock Droids and Red reinforced by Ball Bots."
 
     map_base_locations: 
-      answers:
         - "The Red and Blue bases are located on opposite skyscraper rooftops at the north and south ends of the map."
         - "Teams spawn on elevated rooftops at the far north and south edges of Metropolis."
         - "Base placement is symmetrical, with each team starting on a high-rise platform at opposite ends."
         - "Red and Blue bases sit on large rooftops at either end of the city skyline, connected by bridges and vertical paths."
 
     map_nodes: 
-      answers:
         - "Metropolis contains six major capturable nodes: two near each team's base, two on the central pyramid towers (often called the nipple nodes), and two on corner rooftops."
         - "Nodes are located on base-adjacent rooftops, mid-map towers (often called the nipple nodes), and distant rooftop flanks."
         - "Each team’s first node is near their spawn, with other nodes placed on elevated towers and side platforms."
         - "Node distribution favors vertical and lateral spacing—each zone provides access to weapons, vehicles, or traversal routes."
 
     map_node_strategic_value: 
-      answers:
         - "Capturing the Hovership node provides a Hovership, granting early map control."
         - "Owning more nodes ensures faster traversal, better item access, and sustained pressure across all vertical layers."
         - "Teams that dominate node control can leverage vehicles, turrets, and elevation to overwhelm opponents."
 
     map_trooper_locations: 
-      answers:
         - "No neutral Galactic Rangers are present on Metropolis."
         - "Metropolis does not include any neutral troopers."
 
     map_sniper: 
-      answers:
         - "Snipers often position themselves on corner rooftops or Gravity Boot towers, which offer elevated views across major routes."
         - "High perches near node spawns provide Flux Rifles and allow control over Swingshot and bridge paths."
         - "The verticality of Metropolis enables long sightlines between rooftops, ideal for sniping chokepoints and node approaches."
         - "Controlling elevated sniper zones allows teams to deny access to Hovership routes and punish exposed traversals."
 
     map_terrain_features: 
-      answers:
         - "Metropolis features extreme verticality with layered rooftops, ramps, and mid-air traversal zones."
         - "Cover is provided by bridge walls, node structures, and rooftop equipment, supporting both defense and ambushes."
         - "Players navigate between high and low platforms using jump pads, Swingshots, and Gravity Boot surfaces."
         - "The absence of railings on most platforms creates environmental hazards that reward spatial awareness."
 
     map_vehicle_types: 
-      answers:
         - "Metropolis features Hoverships as its primary vehicle type."
         - "Hoverships spawn at each team’s first rooftop node once captured."
         - "Only aerial vehicles are present; no ground-based vehicles appear on this map."
         - "Vehicle access is tied to node control—capturing the base-adjacent node unlocks a Hovership."
 
     map_hovership_tactics: 
-      answers:
         - "Hoverships are ideal for aerial harassment, quickly repositioning across rooftops to support pushes or defense."
         - "They can be used to hover above enemy routes, intercept flag carriers, and deny access to exposed nodes."
         - "Players often use Hoverships to suppress enemy snipers and contest elevated positions from the air."
@@ -93,7 +81,6 @@ facts:
         - "In Siege and CTF, Hoverships are able to shoot gatling turrets by moving below the base."
 
     map_counter_air_dominance_strategies: 
-      answers:
         - "Snipers positioned on corner rooftops or towers can pick off hovering Hoverships with Flux Rifles."
         - "Players can use Minirocket Tube from high ground to punish predictable flight paths."
         - "Holoshields can be deployed to block key aerial lanes or defend node zones from Hovership fire."

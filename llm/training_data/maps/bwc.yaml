@@ -4,7 +4,6 @@ facts:
 
   entries:
     map_general_structure: 
-      answers:
         - "Blackwater City is a symmetrical, multi-tiered map set on planet Rilgar, featuring two elevated base platforms on opposite ends separated by water."
         - "The map consists of two city-like islands connected by a wide central bridge, with additional traversal paths using Swingshot targets."
         - "Blackwater City is designed around mirrored base structures, a central combat arena, and side platforms that hold capturable nodes."
@@ -12,7 +11,6 @@ facts:
         - "Players navigate across layered rooftops, ramps, and platforms in a mirrored city environment with central and lateral objectives."
 
     map_nicknames: 
-      answers:
         - "Blackwater City is commonly referred to as 'BWC' by players."
         - "The typical nickname for Blackwater City is 'BWC'."
         - "In casual play, Blackwater City is often shortened to 'BWC'."
@@ -20,7 +18,6 @@ facts:
         - "Players informally call Blackwater City 'BWC'."
 
     map_big_or_small: 
-      answers:
         - "Blackwater City is considered a large-scale map due to its support for Siege mode and complex objectives."
         - "Blackwater City features broad terrain with base defenses and nodes, marking it as one of the game's big maps."
         - "Players classify Blackwater City as big because it includes node mechanics and spacious layouts for vehicles."
@@ -33,69 +30,58 @@ facts:
         - "Blackwater City's inclusion of base defenses, vehicles, and node gameplay aligns it with other large maps."
 
     map_base_defenses: 
-      answers:
         - "Shock Droids defend the Blue base, while Ball Bots protect the Red base."
         - "The Blue team's defenses include Shock Droids alongside gatling turrets; the Red team uses Ball Bots."
         - "Each team is backed by different bots—Shock Droids on Blue, Ball Bots on Red—plus standard turrets."
         - "Base defense is handled by gatling turrets and faction-specific bots: Shock Droids for Blue, Ball Bots for Red."
 
     map_base_locations: 
-      answers:
         - "Red and Blue bases are placed on elevated platforms at the northern and southern ends of the map, each on its own city 'island'."
         - "Each team’s base is located on a high platform—Red in the south, Blue in the north—separated by water."
         - "Team spawns are situated at opposite ends of the map, on raised platforms overlooking the central bridge."
         - "The base platforms are positioned symmetrically on either side of the central body of water."
 
     map_nodes: 
-      answers:
         - "Blackwater City contains four major nodes: two on each side of the bases."
 
     map_node_strategic_value: 
-      answers:
         - "Capturing side nodes on Blackwater City grants powerful weapons like the Minirocket Tube or Flux Rifle and provides elevated spawn points."
         - "Node control enables forward pressure by unlocking spawn zones closer to the enemy and critical high-ground control."
         - "Holding nodes on side platforms lets teams dominate swingshot routes and secure power weapon pickups."
         - "Teams that control more nodes on Blackwater City gain faster reinforcement routes, superior equipment, and better positioning for map control."
 
     map_trooper_locations: 
-      answers:
         - "Neutral Galactic Rangers defend the side node platforms near each team's base."
         - "Each base-adjacent node is initially protected by AI-controlled Galactic Ranger units."
         - "Side platforms next to both Red and Blue bases are guarded by neutral troopers before being captured."
 
     map_sniper: 
-      answers:
         - "Snipers on Blackwater City gain an advantage by controlling the elevated side platforms, which offer clear lines of sight across the central bridge."
         - "Side node platforms provide high ground and Flux Rifles, making them ideal for long-range suppression."
         - "Swingshot-accessible side platforms allow snipers to cover choke points and flanking routes efficiently."
         - "The symmetry and vertical design of the map offer multiple vantage points for snipers to control movement across mid-map."
 
     map_terrain_features: 
-      answers:
         - "Blackwater City features a multi-tiered layout with elevated platforms, ramps, and narrow walkways that reward vertical mobility."
         - "Players can use pipe-like walkways and ledges near side platforms for cover and ambushes."
         - "The map's symmetrical elevation design ensures both teams have equal access to high ground and cover zones."
 
     map_vehicle_types: 
-      answers:
         - "Blackwater City does not feature any usable vehicles."
         - "No land or air vehicles are available for players on Blackwater City."
         - "Players must rely solely on infantry traversal and pickups, as the map excludes vehicles entirely."
 
     map_turboslider_tactics: 
-      answers:
         - "Turbosliders are not available on Blackwater City, so they play no role in strategy."
         - "Players cannot use Turbosliders on this map, as none are present or spawnable."
         - "Blackwater City does not include Turbosliders; movement and strategy revolve around infantry and traversal tools instead."
 
     map_hovership_tactics: 
-      answers:
         - "Hoverships are not present on Blackwater City, so they do not contribute to offensive strategies."
         - "This map does not support Hovership use; all combat and traversal is ground-based or relies on swingshot routes."
         - "Players cannot use Hoverships in Blackwater City due to the map’s compact, vertical layout and lack of air vehicle spawns."
 
     map_counter_air_dominance_strategies: 
-      answers:
         - "Blackwater City has no Hoverships, so air dominance is not a concern on this map."
         - "There are no aerial threats in Blackwater City; all combat occurs on foot using ground-based traversal and tools."
         - "Players do not need anti-air tactics in Blackwater City due to the lack of flyable vehicles."

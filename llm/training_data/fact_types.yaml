@@ -3,221 +3,590 @@ fact_types:
   # ===========================================================================
   #  Bot Definitions
   # ===========================================================================
+  bot_info: 
+    bot_identity:
+      description: "Defines the bot's name and identity."
+      question_formats:
+        - "What is your name?"
+        - "Who are you?"
 
-  bot_identity:
-    description: "Defines the bot's name and identity."
-    question_formats:
-      - "What is your name?"
-      - "Who are you?"
+    bot_specialization:
+      description: "Explains the bot's focus area or expertise."
+      question_formats:
+        - "What are you specialized in?"
+        - "What topics can you discuss?"
 
-  bot_specialization:
-    description: "Explains the bot's focus area or expertise."
-    question_formats:
-      - "What are you specialized in?"
-      - "What topics can you discuss?"
+    bot_hardware:
+      description: "Specifies what hardware the bot runs on."
+      question_formats:
+        - "What hardware do you run on?"
+        - "What machine powers you?"
 
-  bot_hardware:
-    description: "Specifies what hardware the bot runs on."
-    question_formats:
-      - "What hardware do you run on?"
-      - "What machine powers you?"
+    bot_training_process:
+      description: "Details how the bot was trained or fine-tuned."
+      question_formats:
+        - "How were you trained?"
+        - "What model training method was used?"
 
-  bot_training_process:
-    description: "Details how the bot was trained or fine-tuned."
-    question_formats:
-      - "How were you trained?"
-      - "What model training method was used?"
+    bot_training_data_source:
+      description: "Gives the source of the training data."
+      question_formats:
+        - "Where is your training data from?"
+        - "What data were you trained on?"
 
-  bot_training_data_source:
-    description: "Gives the source of the training data."
-    question_formats:
-      - "Where is your training data from?"
-      - "What data were you trained on?"
+    bot_creator:
+      description: "Names the creator or developer of the bot."
+      question_formats:
+        - "Who created you?"
+        - "Who built you?"
 
-  bot_creator:
-    description: "Names the creator or developer of the bot."
-    question_formats:
-      - "Who created you?"
-      - "Who built you?"
+    user_fact_submission:
+      description: "Describes how users can submit new facts or corrections."
+      question_formats:
+        - "Can users submit new facts?"
+        - "How can users add information?"
+        - "How can users improve your output?"
 
-  user_fact_submission:
-    description: "Describes how users can submit new facts or corrections."
-    question_formats:
-      - "Can users submit new facts?"
-      - "How can users add information?"
-      - "How can users improve your output?"
+    bot_accuracy_disclaimer:
+      description: "Clarifies whether the bot's answers are guaranteed to be correct."
+      question_formats:
+        - "Are your answers always correct?"
+        - "Can you be wrong?"
 
-  bot_accuracy_disclaimer:
-    description: "Clarifies whether the bot's answers are guaranteed to be correct."
-    question_formats:
-      - "Are your answers always correct?"
-      - "Can you be wrong?"
+    bot_topic_scope:
+      description: "Explains why the bot only discusses certain topics."
+      question_formats:
+        - "Why do you only talk about UYA?"
+        - "Why don't you discuss other games?"
 
-  bot_topic_scope:
-    description: "Explains why the bot only discusses certain topics."
-    question_formats:
-      - "Why do you only talk about UYA?"
-      - "Why don't you discuss other games?"
-
-  bot_backend_quality:
-    description: "Comments on the stability or reliability of the bot's backend."
-    question_formats:
-      - "Is your backend reliable?"
-      - "How stable is your system?"
+    bot_backend_quality:
+      description: "Comments on the stability or reliability of the bot's backend."
+      question_formats:
+        - "Is your backend reliable?"
+        - "How stable is your system?"
 
   # ===========================================================================
   #  Maps
   # ===========================================================================
+  map_info:
+    map_general_structure:
+      description: "Describes the overall structure and theme of the map."
+      question_formats:
+        - "Describe the general structure of {map}."
+        - "What is {map}?"
+        - "How is {map} laid out?"
+        - "Summarize the map layout of {map}."
+        - "What does the layout of {map} look like?"
+        - "How are the major features arranged in {map}?"
+        - "What is the basic layout or structure of {map}?"
+        - "Give an overview of how {map} is structured."
+        - "What kind of environment is featured in {map}?"
+        - "How would you describe the geography of {map}?"
 
-  map_general_structure:
-    description: "Describes the overall structure and theme of the map."
-    question_formats:
-      - "Describe the general structure of {map}."
-      - "What is {map}?"
-      - "How is {map} laid out?"
-      - "Summarize the map layout of {map}."
-      - "What does the layout of {map} look like?"
-      - "How are the major features arranged in {map}?"
-      - "What is the basic layout or structure of {map}?"
-      - "Give an overview of how {map} is structured."
-      - "What kind of environment is featured in {map}?"
-      - "How would you describe the geography of {map}?"
+    map_nicknames:
+      description: "Details common nicknames for a certain map."
+      question_formats:
+        - "What are some common nicknames for the map {map}?"
+        - "What aliases or shorthand names exist for {map}?"
+        - "How is {map} referred to informally by players?"
+        - "What do players usually call {map}?"
+        - "What short names are used for {map}?"
+        - "Are there any alternate names for {map}?"
+        - "What is the slang term for {map}?"
+        - "What is {map} called in casual play?"
+        - "Does {map} have a nickname?"
+        - "What abbreviated terms are used for {map}?"
 
-  map_nicknames:
-    description: "Details common nicknames for a certain map."
-    question_formats:
-      - "What are some common nicknames for the map {map}?"
-      - "What aliases or shorthand names exist for {map}?"
-      - "How is {map} referred to informally by players?"
-      - "What do players usually call {map}?"
-      - "What short names are used for {map}?"
-      - "Are there any alternate names for {map}?"
-      - "What is the slang term for {map}?"
-      - "What is {map} called in casual play?"
-      - "Does {map} have a nickname?"
-      - "What abbreviated terms are used for {map}?"
+    map_big_or_small:
+      description: "Explains if a map is big or small"
+      question_formats:
+        - "Is {map} a big or small map?"
+        - "How large is {map}?"
+        - "Does {map} count as one of the small maps?"
+        - "Can {map} support large-scale modes like Siege?"
+        - "What size category does {map} fall under?"
+        - "Would you describe {map} as a small or large battlefield?"
+        - "Is {map} considered large enough for nodes and vehicles?"
+        - "How much space does {map} offer for gameplay?"
+        - "Is {map} large enough to allow base defenses and node control?"
+        - "Is {map} too small for Siege mode?"
 
-  map_big_or_small:
-    description: "Explains if a map is big or small"
-    question_formats:
-      - "Is {map} a big or small map?"
-      - "How large is {map}?"
-      - "Does {map} count as one of the small maps?"
-      - "Can {map} support large-scale modes like Siege?"
-      - "What size category does {map} fall under?"
-      - "Would you describe {map} as a small or large battlefield?"
-      - "Is {map} considered large enough for nodes and vehicles?"
-      - "How much space does {map} offer for gameplay?"
-      - "Is {map} large enough to allow base defenses and node control?"
-      - "Is {map} too small for Siege mode?"
+    map_base_defenses:
+      description: "Describes what base defenses each team gets."
+      question_formats:
+        - "Where base defenses are available on {map}?"
+        - "What does each team get for base defenses in {map}?"
+        - "What defenses are installed at each base in {map}?"
+        - "What protection is available for team bases in {map}?"
+        - "What kind of defenses do team bases have in {map}?"
+        - "What turrets or units guard the bases in {map}?"
+        - "How are bases defended on {map}?"
+        - "What static defenses are provided to teams on {map}?"
 
-  map_base_defenses:
-    description: "Describes what base defenses each team gets."
-    question_formats:
-      - "Where base defenses are available on {map}?"
-      - "What does each team get for base defenses in {map}?"
-      - "What defenses are installed at each base in {map}?"
-      - "What protection is available for team bases in {map}?"
-      - "What kind of defenses do team bases have in {map}?"
-      - "What turrets or units guard the bases in {map}?"
-      - "How are bases defended on {map}?"
-      - "What static defenses are provided to teams on {map}?"
+    map_base_locations:
+      description: "Describes where the Red and Blue bases are located."
+      question_formats:
+        - "Where are the team bases located in {map}?"
+        - "What are the base positions on {map}?"
+        - "Where are the Red and Blue bases positioned in {map}?"
+        - "What parts of {map} hold the team bases?"
+        - "In what locations are the team bases found on {map}?"
+        - "How is base placement arranged in {map}?"
+        - "What is the relative position of bases in {map}?"
+        - "Where do teams spawn on {map}?"
 
-  map_base_locations:
-    description: "Describes where the Red and Blue bases are located."
-    question_formats:
-      - "Where are the team bases located in {map}?"
-      - "What are the base positions on {map}?"
-      - "Where are the Red and Blue bases positioned in {map}?"
-      - "What parts of {map} hold the team bases?"
-      - "In what locations are the team bases found on {map}?"
-      - "How is base placement arranged in {map}?"
-      - "What is the relative position of bases in {map}?"
-      - "Where do teams spawn on {map}?"
+    map_nodes:
+      description: "Explains how many nodes exist and where they are placed."
+      question_formats:
+        - "How many nodes exist on {map}?"
+        - "What is the node placement in {map}?"
+        - "Where are the nodes located on {map}?"
+        - "How are nodes distributed across {map}?"
+        - "Where can nodes be captured in {map}?"
+        - "What kinds of nodes are placed in {map}?"
+        - "What is the layout of capture nodes in {map}?"
+        - "How is node positioning handled on {map}?"
 
-  map_nodes:
-    description: "Explains how many nodes exist and where they are placed."
-    question_formats:
-      - "How many nodes exist on {map}?"
-      - "What is the node placement in {map}?"
-      - "Where are the nodes located on {map}?"
-      - "How are nodes distributed across {map}?"
-      - "Where can nodes be captured in {map}?"
-      - "What kinds of nodes are placed in {map}?"
-      - "What is the layout of capture nodes in {map}?"
-      - "How is node positioning handled on {map}?"
+    map_node_strategic_value:
+      description: "Explains how controlling nodes affects match dynamics."
+      question_formats:
+        - "What is a common strategy for controlling nodes on {map}?"
+        - "On {map}, how can players control nodes for their advantage?"
+        - "What tactical role do nodes play in {map}?"
+        - "Why is it important to hold nodes in {map}?"
+        - "How do captured nodes impact gameplay in {map}?"
+        - "What benefits come from controlling nodes in {map}?"
+        - "What happens when a team controls more nodes in {map}?"
 
-  map_node_strategic_value:
-    description: "Explains how controlling nodes affects match dynamics."
-    question_formats:
-      - "What is a common strategy for controlling nodes on {map}?"
-      - "On {map}, how can players control nodes for their advantage?"
-      - "What tactical role do nodes play in {map}?"
-      - "Why is it important to hold nodes in {map}?"
-      - "How do captured nodes impact gameplay in {map}?"
-      - "What benefits come from controlling nodes in {map}?"
-      - "What happens when a team controls more nodes in {map}?"
+    map_trooper_locations:
+      description: "Identifies any neutral troopers."
+      question_formats:
+        - "What troopers are present on {map}?"
+        - "Are there any Galactic Rangers on {map}?"
+        - "Which neutral troopers appear on {map}?"
 
-  map_trooper_locations:
-    description: "Identifies any neutral troopers."
-    question_formats:
-      - "What troopers are present on {map}?"
-      - "Are there any Galactic Rangers on {map}?"
-      - "Which neutral troopers appear on {map}?"
+    map_sniper:
+      description: "Explains why specific sniper positions offer advantages."
+      question_formats:
+        - "How can snipers be effective on {map}?"
+        - "What sniper positions exist on {map}?"
+        - "Where do snipers usually position themselves in {map}?"
+        - "What makes certain sniper spots powerful on {map}?"
+        - "How does the terrain of {map} support sniping?"
+        - "What locations on {map} give snipers long lines of sight?"
 
-  map_sniper:
-    description: "Explains why specific sniper positions offer advantages."
-    question_formats:
-      - "How can snipers be effective on {map}?"
-      - "What sniper positions exist on {map}?"
-      - "Where do snipers usually position themselves in {map}?"
-      - "What makes certain sniper spots powerful on {map}?"
-      - "How does the terrain of {map} support sniping?"
-      - "What locations on {map} give snipers long lines of sight?"
+    map_terrain_features:
+      description: "Describes hills, cover, or verticality affecting movement or combat."
+      question_formats:
+        - "What terrain advantages are present in {map}?"
+        - "What cover is available for defenders on {map}?"
+        - "How does the terrain affect combat in {map}?"
+        - "Are there elevation changes or cover spots on {map}?"
+        - "What features of the terrain benefit players on {map}?"
+        - "Does {map} include verticality or obstacles?"
+        - "Where are the best cover points on {map}?"
 
-  map_terrain_features:
-    description: "Describes hills, cover, or verticality affecting movement or combat."
-    question_formats:
-      - "What terrain advantages are present in {map}?"
-      - "What cover is available for defenders on {map}?"
-      - "How does the terrain affect combat in {map}?"
-      - "Are there elevation changes or cover spots on {map}?"
-      - "What features of the terrain benefit players on {map}?"
-      - "Does {map} include verticality or obstacles?"
-      - "Where are the best cover points on {map}?"
+    map_vehicle_types:
+      description: "Lists all usable vehicle types available on the map."
+      question_formats:
+        - "Which vehicles are available on {map}?"
+        - "What vehicles spawn on {map}?"
+        - "What types of vehicles can be used on {map}?"
+        - "Where do vehicles appear in {map}?"
+        - "Are there air or land vehicles in {map}?"
+        - "What vehicle options are accessible on {map}?"
 
-  map_vehicle_types:
-    description: "Lists all usable vehicle types available on the map."
-    question_formats:
-      - "Which vehicles are available on {map}?"
-      - "What vehicles spawn on {map}?"
-      - "What types of vehicles can be used on {map}?"
-      - "Where do vehicles appear in {map}?"
-      - "Are there air or land vehicles in {map}?"
-      - "What vehicle options are accessible on {map}?"
+    map_turboslider_tactics:
+      description: "Explains how Turbosliders are strategically used."
+      question_formats:
+        - "How are Turbosliders used strategically in {map}?"
+        - "What role do Turbosliders play in matches on {map}?"
+        - "How do players use Turbosliders to gain advantage in {map}?"
+        - "Why are Turbosliders important in {map}?"
 
-  map_turboslider_tactics:
-    description: "Explains how Turbosliders are strategically used."
-    question_formats:
-      - "How are Turbosliders used strategically in {map}?"
-      - "What role do Turbosliders play in matches on {map}?"
-      - "How do players use Turbosliders to gain advantage in {map}?"
-      - "Why are Turbosliders important in {map}?"
+    map_hovership_tactics:
+      description: "Explains how Hoverships are strategically used."
+      question_formats:
+        - "How are Hoverships used offensively on {map}?"
+        - "What strategies involve Hoverships on {map}?"
+        - "How do Hoverships support assaults in {map}?"
+        - "What is the best way to use a Hovership in {map}?"
 
-  map_hovership_tactics:
-    description: "Explains how Hoverships are strategically used."
-    question_formats:
-      - "How are Hoverships used offensively on {map}?"
-      - "What strategies involve Hoverships on {map}?"
-      - "How do Hoverships support assaults in {map}?"
-      - "What is the best way to use a Hovership in {map}?"
+    map_counter_air_dominance_strategies:
+      description: "Details how to stop enemy Hoverships from dominating."
+      question_formats:
+        - "What's an effective way to defend against Hoverships on {map}?"
+        - "How can teams counter Hovership dominance on {map}?"
+        - "How do you stop enemy air control in {map}?"
+        - "What tactics shut down Hoverships on {map}?"
+        - "How can you deal with aerial threats in {map}?"
 
-  map_counter_air_dominance_strategies:
-    description: "Details how to stop enemy Hoverships from dominating."
-    question_formats:
-      - "What's an effective way to defend against Hoverships on {map}?"
-      - "How can teams counter Hovership dominance on {map}?"
-      - "How do you stop enemy air control in {map}?"
-      - "What tactics shut down Hoverships on {map}?"
-      - "How can you deal with aerial threats in {map}?"
+  # ===========================================================================
+  #  Horizon Project
+  # ===========================================================================
+  horizon_info:
+    horizon_project_definition:
+      description: "Defines what the Horizon project is."
+      question_formats:
+        - "What is the Horizon project?"
+        - "What is Horizon?"
+        - "What is Horizon for UYA?"
 
+    horizon_technical_replication:
+      description: "Explains how Horizon replicates the original UYA multiplayer servers."
+      question_formats:
+        - "How does Horizon replicate the original servers?"
+        - "How does Horizon work?"
+        - "What is the technical basis for Horizon's multiplayer support?"
+
+    horizon_launch_date:
+      description: "States when Horizon was first released to the public."
+      question_formats:
+        - "When did Horizon go live?"
+        - "When was Horizon released?"
+        - "What is Horizon's launch date?"
+
+    horizon_connection_requirements:
+      description: "Explains whether modded hardware is needed to connect to Horizon servers."
+      question_formats:
+        - "Is a modded PS2 required to use Horizon?"
+        - "Do I need to modify my console to use Horizon?"
+        - "Can I connect to Horizon without hardware mods?"
+
+    horizon_connection_instructions:
+      description: "Describes how to connect to Horizon servers via DNS configuration."
+      question_formats:
+        - "How do you connect to Horizon servers?"
+        - "How can I set up Horizon multiplayer?"
+        - "What are the steps to connect to Horizon?"
+
+    horizon_pcsx2_support:
+      description: "Describes how PCSX2 users can access Horizon servers."
+      question_formats:
+        - "Can PCSX2 players connect to Horizon?"
+        - "Does Horizon work with the PCSX2 emulator?"
+        - "How do PCSX2 players join Horizon?"
+
+    horizon_clan_support:
+      description: "Describes Horizon's support for in-game clans."
+      question_formats:
+        - "Does Horizon support clans?"
+        - "Can I make or join clans on Horizon?"
+
+    horizon_leaderboard_support:
+      description: "Explains Horizon's support for stat tracking and leaderboards."
+      question_formats:
+        - "Does Horizon support leaderboards?"
+        - "Does Horizon track stats?"
+
+
+    horizon_custom_features:
+      description: "Lists the custom features Horizon adds beyond the original game."
+      question_formats:
+        - "What custom features has Horizon added?"
+        - "What has Horizon added to the game?"
+        - "What extras does Horizon include?"
+
+    horizon_custom_maps:
+      description: "Describes Horizon's support for custom multiplayer maps."
+      question_formats:
+        - "Does Horizon support custom maps?"
+        - "Are there new maps on Horizon?"
+        - "What custom maps are on Horizon?"
+
+    horizon_help_resources:
+      description: "Lists where users can go for help with Horizon."
+      question_formats:
+        - "Where can players get help with Horizon?"
+        - "How do I get support for Horizon?"
+        - "Is there documentation or community help for Horizon?"
+
+    horizon_private_server_status:
+      description: "Describes how private servers like Horizon allow UYA multiplayer today."
+      question_formats:
+        - "Are private servers available today?"
+        - "How are people playing UYA multiplayer in modern times?"
+        - "Is online play possible today for UYA?"
+
+    horizon_uya_multiplayer_access_today:
+      description: "Explains how players access UYA multiplayer today via DNS redirection and fan servers."
+      question_formats:
+        - "How do players still access UYA multiplayer today?"
+        - "What are the current options for playing UYA online?"
+        - "How can I play UYA multiplayer now?"
+
+    horizon_version_compatibility:
+      description: "Lists which UYA versions Horizon supports for multiplayer."
+      question_formats:
+        - "Which game versions does Horizon support?"
+        - "Does Horizon work with the PS3 HD collection?"
+
+  # ===========================================================================
+  #  PS3
+  # ===========================================================================
+  ps3_info:
+    ps3_ps2_gameplay_equivalence:
+      description: "Explains whether gameplay differed between the PS2 and PS3 versions of UYA multiplayer."
+      question_formats:
+        - "Are there gameplay differences between PS2 and PS3 UYA multiplayer?"
+        - "Was anything changed in gameplay between the PS2 and PS3 versions?"
+
+    ps3_online_profiles:
+      description: "Describes how online profiles were handled in the PS3 HD version."
+      question_formats:
+        - "How were online profiles handled on PS3?"
+        - "Did PS3 players need to create separate in-game profiles?"
+
+    ps3_server_shutdown_date:
+      description: "States when the PS3 online servers were shut down."
+      question_formats:
+        - "When were the PS3 servers shut down?"
+        - "When did the PS3 online service end?"
+
+    ps3_post_shutdown_multiplayer_status:
+      description: "Explains what happened to UYA multiplayer after official servers shut down."
+      question_formats:
+        - "What happened after official PS3 servers were shut down?"
+        - "Is UYA still playable online on PS3 after server shutdowns?"
+
+    ps3_split_screen_player_count:
+      description: "Describes how many players could play split-screen on PS2 and PS3."
+      question_formats:
+        - "How many players did split-screen support?"
+        - "Was four-player split-screen available?"
+
+    ps3_split_screen_performance_difference:
+      description: "Compares split-screen performance between PS2 and PS3."
+      question_formats:
+        - "How did PS2 split-screen performance compare to PS3?"
+        - "Was split-screen better on PS3?"
+
+    ps3_resolution:
+      description: "States the resolution of the PS3 HD remaster."
+      question_formats:
+        - "What was the PS3 resolution?"
+        - "Was the PS3 version in HD?"
+
+    ps3_texture_improvements:
+      description: "Explains whether textures or UI were improved on the PS3 version."
+      question_formats:
+        - "Were textures improved on PS3?"
+        - "Did the PS3 version look better?"
+
+    ps3_audio_quality:
+      description: "Describes the differences in sound quality and voice chat between PS2 and PS3."
+      question_formats:
+        - "Was the audio quality different between PS3 and PS2 versions?"
+        - "Was voice chat clearer on PS3?"
+
+    ps3_gameplay_changes:
+      description: "States whether any gameplay or balance changes were made in the PS3 HD port."
+      question_formats:
+        - "Were there any gameplay changes in the PS3 remaster?"
+        - "Did the PS3 version play the same as the PS2?"
+
+    ps3_clan_support:
+      description: "Describes the status of clan support in the PS3 HD version."
+      question_formats:
+        - "Did the PS3 version support clans?"
+        - "Was clan support removed in the PS3 port?"
+
+    ps3_friend_invites:
+      description: "Explains how players invited friends in the PS3 version."
+      question_formats:
+        - "How did players invite friends on PS3?"
+        - "Could you invite friends in the PS3 version?"
+
+    ps3_official_server_shutdown_dates:
+      description: "States the shutdown dates for both PS2 and PS3 official UYA servers."
+      question_formats:
+        - "When were the official PS3 UYA servers shut down?"
+        - "When did PS3 UYA multiplayer servers go offline?"
+
+    ps3_profile_handling_comparison:
+      description: "Explains the difference in online profile handling between PS2 and PS3 versions."
+      question_formats:
+        - "How do PS2 and PS3 versions handle profiles?"
+        - "Was login different on PS2 versus PS3?"
+
+    ps3_current_online_play_options:
+      description: "Describes how UYA can be played online today despite official shutdowns."
+      question_formats:
+        - "When did official PS3 servers close and how is online play possible now?"
+        - "What are the shutdown dates for PS3 official servers, and how is online multiplayer still accessible?"
+        - "When did the PS3 servers go offline, and how is UYA multiplayer still playable today?"
+
+    ps3_hd_collection_server_history:
+      description: "Summarizes the brief revival and shutdown of PS3 HD collection online servers."
+      question_formats:
+        - "What happened with the PS3 HD collection's online servers?"
+        - "Did the PS3 HD release have multiplayer support?"
+
+  # ===========================================================================
+  #  Node Mechanics and Strategy
+  # ===========================================================================
+  node_info:
+    node_definition:
+      description: "Defines what nodes are and their role in UYA multiplayer."
+      question_formats:
+        - "What are nodes in UYA multiplayer?"
+        - "What do nodes do in multiplayer?"
+        - "What is a node?"
+
+    node_capture_mechanics:
+      description: "Explains how players capture a node in UYA multiplayer."
+      question_formats:
+        - "How do you capture a node in UYA multiplayer?"
+        - "How do players capture a node?"
+        - "What is the process for capturing a node?"
+
+    node_defense_before_capture:
+      description: "Describes the defenses present on nodes before they are captured."
+      question_formats:
+        - "Are nodes defended before capture?"
+        - "Do nodes have any defenses before capture?"
+        - "What protects a neutral node?"
+
+    node_state_change_on_capture:
+      description: "Explains what changes when a node is captured by a team."
+      question_formats:
+        - "What changes when a node is captured?"
+        - "What happens when a node is captured?"
+        - "How does a node change after being taken?"
+
+    node_resource_provision:
+      description: "Lists the resources that captured nodes can provide to players."
+      question_formats:
+        - "What resources can a captured node provide?"
+        - "Do nodes give weapons or vehicles?"
+        - "What do captured nodes offer?"
+
+    node_presence_by_game_mode:
+      description: "States which multiplayer modes include nodes."
+      question_formats:
+        - "Are nodes in all UYA multiplayer modes?"
+        - "Which game modes include nodes?"
+        - "Is node capture always part of the game?"
+
+    node_respawn_importance:
+      description: "Explains why controlling nodes is important for faster respawning."
+      question_formats:
+        - "Why is node ownership important for respawning?"
+        - "How do nodes affect respawn locations?"
+        - "Why do teams care about node control for respawn?"
+
+    node_strategic_value:
+      description: "Describes why node control is important in team-based game modes."
+      question_formats:
+        - "Why are nodes important in team-based UYA modes?"
+        - "What is the strategic value of nodes?"
+        - "Why capture nodes in Siege or CTF?"
+
+    node_denial_penalty:
+      description: "Explains what happens when a team controls no nodes."
+      question_formats:
+        - "What happens if a team controls no nodes in UYA?"
+        - "What is the penalty for losing all nodes?"
+        - "Why is it bad to have no node control?"
+
+    node_team_strategy:
+      description: "Outlines effective team strategies involving node control."
+      question_formats:
+        - "What is a strong team strategy with nodes?"
+        - "How should teams use nodes to win?"
+        - "What node tactics help a team succeed?"
+
+    player_respawn_rules:
+      description: "Explains where and how players respawn after being defeated."
+      question_formats:
+        - "Do players respawn after being defeated?"
+        - "Where do players respawn?"
+        - "What happens after a player dies in UYA?"
+
+  # ===========================================================================
+  #  Weapon Facts (Generalizable per Weapon)
+  # ===========================================================================
+  weapon_info:
+    weapon_identity:
+      description: "Defines what the weapon is and its core function in UYA multiplayer."
+      question_formats:
+        - "What is the {weapon} in UYA multiplayer?"
+        - "What does the {weapon} do?"
+        - "What kind of weapon is the {weapon}?"
+
+    weapon_damage_behavior:
+      description: "Describes how damage scales with range, hit precision, or firing mode."
+      question_formats:
+        - "How does damage scale for the {weapon}?"
+        - "What affects how much damage the {weapon} does?"
+        - "How does the {weapon}'s damage change with distance?"
+
+    weapon_ammo_capacity:
+      description: "States how much ammunition the weapon holds in multiplayer."
+      question_formats:
+        - "What is the ammo capacity of the {weapon}?"
+        - "How many shots can the {weapon} fire before reloading?"
+        - "How much ammo does the {weapon} have?"
+
+    weapon_multi_target_utility:
+      description: "Explains whether and how the weapon can hit multiple enemies at once."
+      question_formats:
+        - "Can the {weapon} hit multiple enemies?"
+        - "Does the {weapon} have splash or spread damage?"
+        - "Is the {weapon} good for group fights?"
+
+    weapon_anti_air_capability:
+      description: "Describes whether the weapon can effectively hit airborne or mobile aerial targets."
+      question_formats:
+        - "Can the {weapon} hit airborne targets?"
+        - "Is the {weapon} effective against Hoverships or flying enemies?"
+        - "Can the {weapon} be used for anti-air?"
+
+    weapon_upgrade_mechanism:
+      description: "Explains how the weapon is upgraded during multiplayer and what triggers the upgrade."
+      question_formats:
+        - "How is the {weapon} upgraded in multiplayer?"
+        - "What triggers an upgrade for the {weapon}?"
+        - "How do you level up the {weapon}?"
+
+    weapon_upgrade_effects:
+      description: "Describes what changes when the weapon is upgraded."
+      question_formats:
+        - "What happens when the {weapon} upgrades?"
+        - "How strong is the upgraded {weapon}?"
+        - "What benefits come with a level 2 {weapon}?"
+
+    weapon_defensive_role:
+      description: "Explains how the weapon is used for defense, base protection, or area control."
+      question_formats:
+        - "How is the {weapon} used defensively?"
+        - "What role does the {weapon} play in base defense?"
+        - "Is the {weapon} good for holding choke points?"
+
+    weapon_community_opinion:
+      description: "Describes how the community perceives the weapon's effectiveness or tier."
+      question_formats:
+        - "What is the community opinion of the {weapon}?"
+        - "How is the {weapon} viewed in multiplayer?"
+        - "Is the {weapon} considered strong or weak?"
+
+    weapon_usage_techniques:
+      description: "Describes advanced techniques or specific usage patterns associated with the weapon."
+      question_formats:
+        - "What are good tactics for using the {weapon}?"
+        - "What is the best way to use the {weapon} in multiplayer?"
+        - "What is the {weapon} quickscope or area denial technique?"
+
+    weapon_meta_role:
+      description: "Explains the weapon’s tactical role in competitive multiplayer."
+      question_formats:
+        - "What role does the {weapon} serve in UYA multiplayer?"
+        - "What is the {weapon} used for in competitive play?"
+        - "Why is the {weapon} important in the current meta?"
+
+    weapon_map_control_value:
+      description: "Describes how controlling the weapon's spawn impacts map control or team power."
+      question_formats:
+        - "Why do teams contest {weapon} spawns?"
+        - "What happens if a team controls the {weapon} crate?"
+        - "Is the {weapon} spawn point important?"

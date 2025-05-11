@@ -1,0 +1,71 @@
+facts:
+  entries:
+    horizon_project_definition:
+      - "Horizon is a fan-run revival server for UYA multiplayer on PS2 and emulator, replicating the original online servers."
+      - "Horizon brings back UYA multiplayer through a custom server that mimics the original PS2 experience."
+      - "Horizon recreates the official UYA servers to let fans play online again using PS2s or emulators."
+
+    horizon_technical_replication:
+      - "The Horizon team reverse-engineered the PS2 network code and developed custom server software to redirect the game to Horizon servers."
+      - "Horizon works by rewriting the network backend and redirecting traffic to its own server infrastructure."
+      - "They replicated the PS2 online environment by reverse-engineering the original code and hosting custom servers."
+
+    horizon_launch_date:
+      - "Horizon launched for public testing on February 14, 2021."
+      - "The Horizon project went live on February 14, 2021."
+      - "Public access to Horizon began on February 14, 2021."
+
+    horizon_connection_requirements:
+      - "No, unmodified consoles and PCSX2 emulator can connect by editing the network configuration."
+      - "You don’t need a modded PS2; a standard console or emulator can connect to Horizon."
+      - "Unmodded PS2s and PCSX2 users can join Horizon with simple DNS changes."
+
+    horizon_connection_instructions:
+      - "Create or edit a Network Configuration file and set the primary DNS to Horizon’s provided IP."
+      - "To connect, configure your DNS settings to use Horizon's server IP."
+      - "Join Horizon by modifying the network settings and pointing the DNS to the Horizon address."
+
+    horizon_pcsx2_support:
+      - "Yes, by setting the DNS to Horizon’s server."
+      - "PCSX2 users can connect by configuring DNS."
+      - "PCSX2 supports Horizon through DNS changes."
+
+    horizon_clan_support:
+      - "Yes, clan support has been restored or improved over time."
+      - "Clans are supported on Horizon, with ongoing updates to improve functionality."
+      - "Horizon allows clan creation and participation just like the original servers."
+
+    horizon_leaderboard_support:
+      - "Yes, Horizon replicates stat tracking similar to the original game."
+      - "Horizon tracks stats and supports leaderboards."
+      - "Players' performance is recorded on Horizon leaderboards."
+
+    horizon_custom_features:
+      - "Horizon adds mods, multiplayer bots, custom maps, colored clan tags, and lobby upgrades."
+      - "Features include mods, bots, new maps, and enhanced lobbies."
+      - "Custom content on Horizon includes mods, maps, bots, and UI improvements."
+
+    horizon_custom_maps:
+      - "Yes, including single-player areas ported to multiplayer like Daxx."
+      - "Horizon supports multiplayer maps converted from campaign levels."
+      - "Custom multiplayer maps, such as Daxx, are available on Horizon."
+
+    horizon_help_resources:
+      - "Players can join the Horizon Discord or consult the Horizon GitHub wiki."
+      - "Help is available through the Discord server and project wiki."
+      - "Support and documentation are provided via Discord and GitHub."
+
+    horizon_private_server_status:
+      - "Fan projects like Horizon resurrect online play via custom servers and DNS redirects for PS2 hardware or emulators."
+      - "Custom servers like Horizon let players enjoy UYA multiplayer today."
+      - "Private servers allow UYA online play through DNS tricks and custom backends."
+
+    horizon_uya_multiplayer_access_today:
+      - "Community servers such as Horizon redirect the game via custom DNS, letting original hardware and emulators connect; Horizon also adds stability features and stat-tracking bots."
+      - "Players still access UYA multiplayer using fan DNS services like Horizon, which also adds features like bots and stat tracking."
+      - "UYA multiplayer works today through DNS redirection to community servers like Horizon."
+
+    horizon_version_compatibility:
+      - "Horizon supports NTSC-U and PAL versions of UYA; PS3 HD versions are not supported."
+      - "Only PS2 disc versions (NTSC and PAL) are supported—PS3 HD is not compatible with Horizon."
+      - "Horizon works with original PS2 copies, not with the PS3 remaster."

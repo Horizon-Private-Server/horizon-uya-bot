@@ -1,0 +1,56 @@
+facts:
+  entries:
+    node_definition:
+      - "Nodes are capturable points that provide spawn locations, weapons, ammo, vehicles, or defenses."
+      - "In UYA multiplayer, nodes act as control points that grant resources and respawn access once captured."
+      - "Nodes serve as strategic assets that teams can capture to gain spawns, gear, and battlefield advantages."
+
+    node_capture_mechanics:
+      - "To capture a node, destroy its AI defenses and turn the bolt crank to convert it to your team."
+      - "Players must eliminate the node’s turrets and NPCs, then spin the bolt crank to take control."
+      - "Capturing a node involves clearing defenders and activating the crank mechanism."
+
+    node_defense_before_capture:
+      - "Yes. Nodes are guarded by neutral turrets and sometimes NPC defenders."
+      - "Uncaptured nodes are protected by automated turrets and neutral NPCs."
+      - "Nodes start with AI defenses that players must clear before capturing."
+
+    node_state_change_on_capture:
+      - "The node changes team color and activates as a spawn point, weapon dispenser, or vehicle spawner."
+      - "Captured nodes provide spawn access and may generate weapons or vehicles."
+      - "Once taken, nodes become team-colored hubs for respawning and gear distribution."
+
+    node_resource_provision:
+      - "Nodes may provide weapons, ammo, drone bots, or vehicles depending on the map and node type."
+      - "Captured nodes can spawn gear or vehicles depending on how they’re configured."
+      - "Depending on the map, nodes give out resources like guns, bots, or transportation."
+
+    node_presence_by_game_mode:
+      - "Nodes are always present in Siege mode and optionally enabled in Capture the Flag."
+      - "Siege mode always includes nodes, while CTF may or may not."
+      - "Nodes are core to Siege and optionally appear in CTF, based on map configuration."
+
+    node_respawn_importance:
+      - "Owning nodes allows faster re-entry into combat by respawning closer to contested objectives."
+      - "Teams with more nodes can respawn near the action, reducing downtime."
+      - "Node control enables quicker and more strategically placed respawns."
+
+    node_strategic_value:
+      - "Nodes act as forward spawn points, reducing downtime and improving map control for the team."
+      - "Controlling nodes keeps your team closer to the frontlines and supports sustained pressure."
+      - "Strategic node capture helps maintain map presence and speeds up offensive momentum."
+
+    node_denial_penalty:
+      - "The team is forced to respawn at base, limiting their reach and making it harder to contest the map."
+      - "Without nodes, players respawn far from the action, weakening their tactical positioning."
+      - "Losing all nodes forces a team to rely only on base spawns, which slows down engagement and increases vulnerability."
+
+    node_team_strategy:
+      - "Teams should capture forward nodes, deny enemy spawns, and use node control to maintain offensive pressure."
+      - "A strong team strategy involves controlling forward nodes to dominate map flow and suppress the enemy."
+      - "Good node play means pushing spawn lines forward and locking out enemy reinforcements."
+
+    player_respawn_rules:
+      - "Yes. Players respawn after a short delay. They can respawn at their base or a friendly-controlled node."
+      - "After dying, players respawn either at the home base or a captured node."
+      - "Respawns happen at team-held positions, letting players return to the field after a brief delay."

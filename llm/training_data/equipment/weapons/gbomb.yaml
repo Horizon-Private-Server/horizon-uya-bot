@@ -1,0 +1,69 @@
+facts:
+  params:
+    weapon: "Gravity Bomb"
+
+  entries:
+    weapon_identity:
+      - "The Gravity Bomb is a grenade launcher that fires slow, arcing explosive rounds which deal high splash (area-of-effect) damage."
+      - "It’s a heavy explosive launcher designed to damage groups and deny space with wide-area blasts."
+      - "The Gravity Bomb is UYA’s arc-fire splash weapon, useful for indirect attacks and suppression."
+
+    weapon_nickname:
+      - "Players commonly refer to the Gravity Bomb as 'grav' or 'gbomb'."
+      - "The Gravity Bomb is often abbreviated as 'grav' or 'gbomb' in team communication."
+      - "'Grav' or 'gbomb' is the informal shorthand for Gravity Bomb used in multiplayer."
+
+    weapon_damage_behavior:
+      - "It deals very high area damage, effective against groups of enemies or those behind cover."
+      - "The Gravity Bomb’s splash radius makes it deadly without needing direct hits."
+      - "Enemies hit near the blast center take significant damage, often fatal in tight groups."
+
+    weapon_ammo_capacity:
+      - "The Gravity Bomb holds 8 rounds per full ammo supply."
+      - "It fires one grenade per shot, with a maximum of 8 shots per pickup."
+      - "With only 8 rounds, shots must be timed and aimed carefully due to the slow fire rate."
+
+    weapon_multi_target_utility:
+      - "Its high splash damage can injure or kill multiple enemies, even without direct hits."
+      - "The Gravity Bomb is ideal for crowd control and hitting enemies clustered behind cover."
+      - "Its area damage can clear multiple enemies in tight spaces or narrow chokepoints."
+
+    weapon_anti_air_capability:
+      - "Due to its arc and slow speed, it’s ineffective against fast-moving airborne targets."
+      - "The Gravity Bomb is not well-suited for anti-air roles."
+      - "It’s primarily a ground weapon and rarely connects with aerial targets."
+
+    weapon_upgrade_mechanism:
+      - "The Gravity Bomb upgrades after 3 kill assists."
+      - "After helping eliminate 3 enemies, the weapon evolves to a stronger version."
+      - "It levels up through support-based damage contributions in multiplayer matches."
+
+    weapon_upgrade_effects:
+      - "The upgraded version increases splash radius and damage, making it more punishing for groups."
+      - "Upgrading makes it easier to secure kills even without direct hits."
+      - "Its V2 form deals heavier damage and better clears clustered enemies."
+
+    weapon_defensive_role:
+      - "Players use it to deny access to key areas or cover objectives like flags and nodes."
+      - "The Gravity Bomb can lock down entrances or force enemies to take slower, safer routes."
+      - "It’s used to punish attackers entering a room or capturing an objective."
+
+    weapon_community_opinion:
+      - "It’s considered a high-reward support weapon for area control and suppression when used with good aim and positioning."
+      - "Competitive players value it for map control but acknowledge its risk in close duels."
+      - "It’s seen as situational but deadly when used correctly from a midline role."
+
+    weapon_usage_techniques:
+      - "Skilled users aim for chokepoints or blind corners where enemies group or retreat."
+      - "Lobbing grenades over cover or around obstacles is a common method of indirect pressure."
+      - "It’s often used to detonate mines, block paths, or flush enemies out of hiding."
+
+    weapon_meta_role:
+      - "The Gravity Bomb serves as a mid-line support tool to break formations and apply pressure from behind the front."
+      - "It plays an area-denial role in team fights, disrupting pushes and forcing spacing."
+      - "Its function in the meta is softening defenses so teammates can breach or rotate."
+
+    weapon_map_control_value:
+      - "Teams control the Gravity Bomb to suppress enemy movements and secure chokepoints."
+      - "Having a Gravity Bomb user enables safe mine clearing and flank denial."
+      - "Owning the weapon gives area pressure and forces the enemy team to reposition constantly."

@@ -65,6 +65,19 @@ fact_types:
         - "Is your backend reliable?"
         - "How stable is your system?"
 
+  bot_commands_info:
+    bot_available_actions:
+      description: "Describes the commands @Omni understands and the in-game actions they trigger."
+      question_formats:
+        - "What can you do in game @Omni?"
+        - "@Omni what are your available actions?"
+        - "What commands do you understand @Omni?"
+        - "What actions are supported?"
+        - "What are your in-game abilities?"
+        - "What commands can you follow?"
+        - "What kind of tasks or behaviors can you perform?"
+        - "List your available actions @Omni"
+
   # ===========================================================================
   #  Maps
   # ===========================================================================
@@ -514,6 +527,13 @@ fact_types:
         - "What does the {weapon} do?"
         - "What kind of weapon is the {weapon}?"
 
+    weapon_nickname:
+      description: "Lists any community-assigned or informal names for the weapon."
+      question_formats:
+        - "What is the nickname for the {weapon}?"
+        - "Is the {weapon} called something else by players?"
+        - "What do players call the {weapon} informally?"
+
     weapon_damage_behavior:
       description: "Describes how damage scales with range, hit precision, or firing mode."
       question_formats:
@@ -590,3 +610,162 @@ fact_types:
         - "Why do teams contest {weapon} spawns?"
         - "What happens if a team controls the {weapon} crate?"
         - "Is the {weapon} spawn point important?"
+
+  # ===========================================================================
+  #  Charge Boots
+  # ===========================================================================
+  charge_boots_info:
+    charge_boots_identity:
+      description: "Defines what Charge Boots are and their function in UYA multiplayer."
+      question_formats:
+        - "What are Charge Boots in UYA multiplayer?"
+        - "What do Charge Boots do?"
+
+    charge_boots_host_settings:
+      description: "Explains whether Charge Boots can be enabled or disabled and how that is configured."
+      question_formats:
+        - "Can Charge Boots be disabled in multiplayer?"
+        - "Can hosts toggle Charge Boots on or off?"
+
+    charge_boots_meta_settings:
+      description: "Describes how Charge Boots are typically configured in competitive or public matches and their impact on game pacing and advanced movement."
+      question_formats:
+        - "Why are Charge Boots almost always enabled?"
+        - "What is the meta setting for Charge Boots?"
+        - "Are Charge Boots usually turned on in multiplayer?"
+
+  # ===========================================================================
+  #  Hypershot
+  # ===========================================================================
+  hypershot_info:
+    hypershot_identity:
+      description: "Defines what the Hypershot is and its function as a gadget in UYA."
+      question_formats:
+        - "What is the Hypershot in UYA?"
+        - "What does the Hypershot do?"
+        - "How does the Hypershot work?"
+
+    hypershot_node_definition:
+      description: "Explains what a Hypershot node (versa-target) is and how it interacts with the Hypershot."
+      question_formats:
+        - "What is a Hypershot node?"
+        - "What are versa-targets used for in UYA?"
+        - "What does the green node do in UYA multiplayer?"
+
+    hypershot_match_usage:
+      description: "Describes how the Hypershot is used by players during matches."
+      question_formats:
+        - "How is the Hypershot used in matches?"
+        - "What can you do with the Hypershot during multiplayer?"
+        - "How do players use the Hypershot in gameplay?"
+
+    hypershot_map_dependencies:
+      description: "Lists maps where Hypershot use is necessary or commonly required to reach important locations."
+      question_formats:
+        - "Which UYA maps rely on Hypershot use?"
+        - "What maps need the Hypershot to access key areas?"
+        - "Where is the Hypershot required in multiplayer maps?"
+
+  # ===========================================================================
+  #  Gravity Boots
+  # ===========================================================================
+  gravity_boots_info:
+    gravity_boots_identity:
+      description: "Defines what Gravity Boots or Magnet Boots are and their function in UYA multiplayer."
+      question_formats:
+        - "What are Gravity Boots in UYA multiplayer?"
+        - "What are magnet boots in UYA?"
+        - "What do Gravity Boots do?"
+
+    gravity_boots_mechanics:
+      description: "Explains how Gravity Boots interact with the environment, such as gravity ramps and traversal surfaces."
+      question_formats:
+        - "What is the function of gravity ramps in UYA?"
+        - "How do Gravity Boots work on walls or ceilings?"
+        - "What enables vertical traversal in UYA multiplayer?"
+
+    gravity_boots_default_equipment:
+      description: "States whether players have Gravity Boots by default in multiplayer."
+      question_formats:
+        - "Do players always have magnet boots in UYA?"
+        - "Are Gravity Boots equipped by default?"
+        - "Do you need to unlock Gravity Boots in UYA multiplayer?"
+
+  # ===========================================================================
+  #  Holo Shield
+  # ===========================================================================
+  holoshield_info:
+    holoshield_identity:
+      description: "Defines what the Holoshield Glove is and its core function in UYA multiplayer."
+      question_formats:
+        - "What is the Holoshield Glove in UYA multiplayer?"
+        - "What does the Holoshield Glove do?"
+        - "What is the Holoshield?"
+
+    holoshield_mechanics:
+      description: "Explains how the Holoshield operates, including projectile filtering, duration, and destructibility."
+      question_formats:
+        - "How does the Holoshield work?"
+        - "Can shots go through the Holoshield?"
+        - "Can enemies destroy the Holoshield?"
+        - "How long does the Holoshield last?"
+
+    holoshield_combat_interactions:
+      description: "Details the interactions between Holoshields and specific weapons or combat scenarios."
+      question_formats:
+        - "What combos work with the Holoshield?"
+        - "How is the Holoshield used with the Flux Rifle?"
+        - "How can a flag carrier benefit from a Holoshield?"
+
+    holoshield_upgrade_status:
+      description: "Describes whether or not the Holoshield Glove upgrades during gameplay."
+      question_formats:
+        - "Does the Holoshield upgrade?"
+        - "Can you level up the Holoshield?"
+        - "Is there a V2 version of the Holoshield Glove?"
+
+    holoshield_classification:
+      description: "Clarifies the item classification of the Holoshield as a gadget or weapon."
+      question_formats:
+        - "Is the Holoshield a weapon or a gadget?"
+        - "Does the Holoshield Glove deal damage?"
+        - "Is the Holoshield obtained from weapon crates?"
+
+    holoshield_meta_usage:
+      description: "Describes how competitive players and teams use Holoshields tactically in UYA multiplayer."
+      question_formats:
+        - "How is the Holoshield Glove used in competitive play?"
+        - "Why is the Holoshield important in multiplayer?"
+        - "How do teams use Holoshields during matches?"
+
+  # ===========================================================================
+  #  Wrench
+  # ===========================================================================
+  wrench_info:
+    wrench_melee_weapon_identity:
+      description: "Defines what melee weapon players have in UYA multiplayer and its intended function."
+      question_formats:
+        - "Do players have a melee weapon in UYA multiplayer?"
+        - "What melee weapon do players start with?"
+        - "Is there a melee tool in UYA multiplayer?"
+
+    wrench_melee_weapon_attack_mechanics:
+      description: "Explains how players use the wrench for melee attacks on the ground."
+      question_formats:
+        - "How does a player attack with the wrench in UYA?"
+        - "What button activates the melee attack in UYA?"
+        - "How do you swing the wrench?"
+
+    wrench_melee_weapon_combat_value:
+      description: "Describes the effectiveness of the wrench in combat scenarios."
+      question_formats:
+        - "How effective is the OmniWrench in combat?"
+        - "Is the wrench good for fighting?"
+        - "When is the wrench useful in multiplayer?"
+
+    wrench_hyperstrike_mechanics:
+      description: "Explains what the hyperstrike is and how it works during mid-air melee attacks."
+      question_formats:
+        - "What is a hyperstrike in UYA?"
+        - "How do you do a hyperstrike?"
+        - "What does the mid-air melee do?"

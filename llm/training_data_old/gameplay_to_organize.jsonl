@@ -377,3 +377,15 @@
 {"q": "How important are opening moves in clan practice?", "a": "Clans rehearse map openers—who grabs which node or power weapon—because the first 30 s often decide early momentum, such as securing the Metropolis Hovership."}
 {"q": "What were common score and time limit settings for serious matches?", "a": "Competitive hosts often set 5-flag limits in CTF, 20–30 kills in Deathmatch, and 15-minute timers; some clan scrims removed the timer and played to score only."}
 {"q": "Does UYA have any cooperative multiplayer modes?", "a": "No. Multiplayer is entirely competitive; the only team play is versus other players, not PvE co-op."}
+{"q": "What is the main goal in Siege mode in UYA multiplayer?", "a": "The goal is to destroy the enemy team's Power Core located inside their base."}
+{"q": "Is the Power Core vulnerable from the start in Siege mode?", "a": "No. The Power Core is immune to damage until outer base defenses are destroyed."}
+{"q": "What turrets guard the base entrance in Siege mode?", "a": "Two automated Gatling turrets protect the base entrance and must be destroyed first."}
+{"q": "What defenses are behind the Gatling turrets in Siege mode?", "a": "Two missile turrets located further back defend against vehicles and air units."}
+{"q": "How do attackers enter the Power Core room in Siege mode?", "a": "Once turrets are destroyed, a forcefield or door opens, granting access to the Power Core room."}
+{"q": "What enables access to the Power Core area in Siege mode?", "a": "A teleport pad near the base entrance activates after defenses are destroyed, allowing entry to the Power Core room."}
+{"q": "Where can defenders respawn in Siege mode?", "a": "Defenders can respawn at their base or any node they currently control."}
+{"q": "How does node control help defenders in Siege mode?", "a": "Node control gives defenders better spawn options and quicker access to defend their base."}
+{"q": "What is different in the Attrition variant of Siege mode?", "a": "In Attrition Siege, owning more nodes increases turret health, damage, and accuracy."}
+{"q": "How does Attrition Siege affect base defense strength?", "a": "Attrition Siege ties map control to turret performance, making the base harder to breach if your team holds more nodes."}
+{"q": "What are base defenses in Siege mode?", "a": "Base defenses include mini turrets and gatling turrets that fire at enemies approaching the base."}
+{"q": "What happens if time runs out in Siege?", "a": "The team that dealt more damage to the enemy core wins."}

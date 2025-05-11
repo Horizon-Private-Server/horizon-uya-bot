@@ -1,0 +1,16 @@
+facts:
+  entries:
+    gravity_boots_identity:
+      - "Gravity Boots let players walk on walls, ceilings, and curved surfaces marked by gravity ramps."
+      - "Also called magnet boots, they enable movement on non-horizontal surfaces in designated areas."
+      - "They are traversal gadgets that let players defy gravity on special terrain like walls and ceilings."
+
+    gravity_boots_mechanics:
+      - "Gravity ramps enable vertical traversal, flanking, and access to power weapons or objectives."
+      - "These ramps shift the player’s orientation, allowing them to walk across walls and ceilings."
+      - "Using gravity ramps, players can bypass choke points or reach high ground via alternate paths."
+
+    gravity_boots_default_equipment:
+      - "Yes. All players start with magnet boots by default."
+      - "Gravity Boots are standard equipment in multiplayer—no unlocks or pickups required."
+      - "Every player has Gravity Boots at spawn, allowing immediate access to gravity ramp paths."

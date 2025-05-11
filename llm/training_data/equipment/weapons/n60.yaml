@@ -1,0 +1,69 @@
+facts:
+  params:
+    weapon: "N60 Storm"
+
+  entries:
+    weapon_identity:
+      - "The N60 Storm is a dual-barreled rapid-fire blaster pistol and the default starting weapon in multiplayer."
+      - "It’s a fast-firing, low-damage energy weapon players spawn with at the start of every match."
+      - "The N60 Storm is UYA’s baseline blaster, designed for continuous ranged fire with minimal burst power."
+
+    weapon_nickname:
+      - "Players refer to it as 'N60'."
+      - "'N60' is the most common shorthand for the N60 Storm in gameplay discussions."
+      - "The N60 Storm is often abbreviated to 'N60' by players."
+
+    weapon_damage_behavior:
+      - "It fires quick, low-damage energy rounds with moderate accuracy and slow projectile speed."
+      - "Each shot deals minimal damage, relying on volume of fire to wear enemies down."
+      - "The N60 Storm struggles to finish fights on its own due to weak per-shot impact."
+
+    weapon_ammo_capacity:
+      - "The N60 Storm has an ammo capacity of 500 rounds."
+      - "With 500 rounds per pickup, it allows long periods of sustained fire."
+      - "Its high ammo count balances out its low damage and slow projectile speed."
+
+    weapon_multi_target_utility:
+      - "The N60 can hit multiple enemies only if they are aligned, but it lacks splash damage."
+      - "It is a single-target weapon; no AoE capability exists in its default or upgraded form."
+      - "Targets must be focused one at a time—group damage is not its strength."
+
+    weapon_anti_air_capability:
+      - "It can be used to harass airborne targets but rarely hits due to slow projectile speed."
+      - "Its low damage and poor hitbox make it unreliable against fast or aerial enemies."
+      - "While technically viable for air harassment, it’s not a preferred anti-air option."
+
+    weapon_upgrade_mechanism:
+      - "After 3 kill assists, it upgrades to the N90 Hurricane with improved fire rate and damage."
+      - "The weapon evolves to its V2 form after 3 kills or assist contributions in combat."
+      - "Kill participation triggers the upgrade to N90 Hurricane."
+
+    weapon_upgrade_effects:
+      - "The N90 Hurricane doubles the fire rate and increases damage, making it more competitive."
+      - "Upgraded, it becomes more effective at suppression, though still lacks burst potential."
+      - "N90 status improves pressure output but doesn’t fix core damage limitations."
+
+    weapon_defensive_role:
+      - "It can suppress flag runners or drones from range, but it’s too weak to defend critical points solo."
+      - "The Storm can be used to delay or harass rather than stop aggressive pushes."
+      - "Defensively, it chips away at enemies but is rarely a finisher."
+
+    weapon_community_opinion:
+      - "It is seen as a weak starting weapon, mainly used for ranged harassment or cleanup kills."
+      - "Most players consider it inferior to nearly every other pickup weapon in terms of lethality."
+      - "Viewed as a fallback gun—functional but forgettable once stronger options appear."
+
+    weapon_usage_techniques:
+      - "Players use it to finish low-health enemies from a distance or break turrets slowly."
+      - "The N60 is fired from cover to chip damage safely without committing to a duel."
+      - "Its accuracy allows tagging fleeing enemies or sniping static targets like drones."
+
+    weapon_meta_role:
+      - "The N60 Storm fills a ranged harassment role, offering chip damage and pressure at mid-long range."
+      - "It’s a placeholder tool used to maintain threat until more powerful weapons are found."
+      - "In the meta, it exists solely as an opening and fallback weapon."
+
+    weapon_map_control_value:
+      - "Its default status means it has no crate control value—teams do not contest it."
+      - "Because players spawn with it, map control is unaffected by N60 Storm access."
+      - "The N60 Storm is never prioritized—players replace it as soon as better gear is secured."

@@ -1,0 +1,69 @@
+facts:
+  params:
+    weapon: "Mine Glove"
+
+  entries:
+    weapon_identity:
+      - "The Mine Glove is a tactical weapon that deploys proximity mines which stick to the ground and detonate when enemies approach."
+      - "It lets players throw proximity mines that explode on enemy approach, used for area denial."
+      - "The Mine Glove places hidden traps that activate when an enemy gets too close."
+
+    weapon_nickname:
+      - "The Mine Glove has no widely used nickname; players typically refer to it by its full name."
+      - "Unlike other weapons, the Mine Glove is usually called by its original name in both casual and competitive play."
+      - "There is no common shorthand for the Mine Glove—most players just say 'Mine Glove'."
+
+    weapon_damage_behavior:
+      - "Triggered mines home in on enemies briefly before exploding for high damage."
+      - "Each mine deals strong single-target or splash damage when its proximity sensor activates."
+      - "Damage output is lethal if an enemy triggers the mine at close range."
+
+    weapon_ammo_capacity:
+      - "You can carry up to 6 mines at a time; placing a 7th removes the oldest."
+      - "Players can have 6 active mines on the field before older ones begin disappearing."
+      - "The Mine Glove holds a maximum of 6 deployed mines simultaneously."
+
+    weapon_multi_target_utility:
+      - "Multiple enemies can be hit by overlapping mine blasts if grouped closely."
+      - "While each mine targets one enemy, group detonations can affect several opponents."
+      - "Stacked or chained mines can clear clusters of enemies with splash overlap."
+
+    weapon_anti_air_capability:
+      - "Mines are strictly ground-based and cannot hit airborne targets."
+      - "They offer no anti-air value, as they must be triggered by ground movement."
+      - "Mine Glove has no aerial effectiveness—its role is fully terrestrial."
+
+    weapon_upgrade_mechanism:
+      - "After 3 kill assists, the Mine Glove upgrades automatically to V2 mines."
+      - "Upgrading occurs after landing 3 mine kills or assist contributions."
+      - "Like other weapons, 3 successful engagements trigger the upgrade."
+
+    weapon_upgrade_effects:
+      - "V2 mines gain larger blast radius and higher damage—two explosions can kill a full-health player."
+      - "Upgraded mines are deadlier and more punishing to clustered opponents."
+      - "The blast area increases, and kills become more reliable even on partial proximity triggers."
+
+    weapon_defensive_role:
+      - "Mines are used to guard flags, power cores, and chokepoints, slowing or killing advancing enemies."
+      - "Defenders mine critical areas to punish intrusions or delay assaults."
+      - "Base defense relies on pre-placed mines to create kill zones or safe zones behind them."
+
+    weapon_community_opinion:
+      - "It is considered a high-skill utility weapon with strong defensive power."
+      - "Competitive players value the Mine Glove for control, not kills—it's about positioning and map flow."
+      - "Seen as underrated but powerful when used by players with good awareness."
+
+    weapon_usage_techniques:
+      - "Smart players mine flag paths, health crates, and jump pads to catch unaware enemies."
+      - "Chaining or spreading mines along common paths forces the enemy to slow and check every step."
+      - "Players plant mines in blind spots and fall-back routes to punish retreats."
+
+    weapon_meta_role:
+      - "The Mine Glove serves as an area-control utility, delaying enemy movement and punishing overextension."
+      - "It’s a trap-based denial weapon, enabling zone lockdowns and defensive setups."
+      - "In the meta, it supports flank security, flag defense, and map control setups."
+
+    weapon_map_control_value:
+      - "Controlling a mined area forces enemies to reroute or use splash weapons to proceed."
+      - "Teams use the Mine Glove to funnel movement and delay coordinated pushes."
+      - "Mines limit map freedom for the enemy, enabling more predictable engagements."

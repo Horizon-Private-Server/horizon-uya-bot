@@ -1,0 +1,69 @@
+facts:
+  params:
+    weapon: "Morph-o-Ray"
+
+  entries:
+    weapon_identity:
+      - "The Morph-o-Ray is a short-range support weapon that transforms enemies into harmless animals after sustained beam contact."
+      - "It emits a beam that morphs enemies into non-lethal creatures, temporarily disabling them without dealing damage."
+      - "The Morph-o-Ray is a non-lethal beam tool that disables enemies by transforming them into ducks or similar harmless animals."
+
+    weapon_nickname:
+      - "Players commonly refer to the Morph-o-Ray as 'Morph'."
+      - "'Morph' is the standard nickname used for the Morph-o-Ray in matches."
+      - "The Morph-o-Ray is often shortened to 'Morph' in both casual and competitive play."
+
+    weapon_damage_behavior:
+      - "The Morph-o-Ray causes zero direct damage; it only disables enemies via transformation."
+      - "It does not reduce health but transforms enemies into animals, making them temporarily helpless."
+      - "Even when upgraded, the Morph-o-Ray does not deal lethal damage—it only disables."
+
+    weapon_ammo_capacity:
+      - "It has unlimited ammo in multiplayer; players can fire the beam continuously."
+      - "The Morph-o-Ray uses infinite ammo but requires good aim and sustained contact to work."
+      - "No ammo pickups are needed—it operates on unlimited energy with beam duration as the limiting factor."
+
+    weapon_multi_target_utility:
+      - "The Morph-o-Ray affects only one target at a time."
+      - "It cannot morph multiple enemies simultaneously—only a single target is affected per beam."
+      - "Its disabling effect is strictly single-target with no splash or AoE capacity."
+
+    weapon_anti_air_capability:
+      - "The Morph-o-Ray has no anti-air function and cannot target flying enemies reliably."
+      - "Because of its limited range and beam mechanics, it is ineffective against airborne targets."
+      - "It’s meant for ground use only and can’t be used for anti-air combat."
+
+    weapon_upgrade_mechanism:
+      - "After 3 morph assists, it upgrades—reducing the morph time and slightly increasing the range."
+      - "The weapon upgrades after 3 disables or assists involving morphed enemies."
+      - "Like other weapons, it uses the 3-assist threshold to unlock the V2 version."
+
+    weapon_upgrade_effects:
+      - "Upgraded Morph-o-Ray shortens the time needed to transform targets and slightly boosts range."
+      - "V2 morphs targets faster, allowing quicker disables in hectic fights."
+      - "The upgrade enhances usability, not damage—it makes morphing more responsive."
+
+    weapon_defensive_role:
+      - "The Morph-o-Ray can disable attackers immediately at close range, giving defenders a 1v0 advantage."
+      - "Used defensively, it neutralizes threats entering tight areas like base interiors or flag rooms."
+      - "It halts pushes by disabling key enemies, letting teammates finish them safely."
+
+    weapon_community_opinion:
+      - "It is valued for disabling enemies in key moments and creating easy kill setups in team play."
+      - "Players see it as a high-skill, high-reward support weapon—not for kills but for battlefield control."
+      - "Though niche, it’s respected in competitive play for its disruptive potential."
+
+    weapon_usage_techniques:
+      - "Teams use it to morph high-value targets like flag carriers or rocket users for easy cleanup."
+      - "Morphing a player then letting teammates finish them ensures fast kills without risking direct duels."
+      - "Some players use it to corner opponents or force them into suicide resets."
+
+    weapon_meta_role:
+      - "The Morph-o-Ray is a crowd-control tool used to disable priority threats without relying on damage."
+      - "Its meta role is to enable safe takedowns and disrupt coordinated pushes by removing key players from the fight."
+      - "It functions as a lockdown tool in close-range team fights."
+
+    weapon_map_control_value:
+      - "Controlling Morph-o-Ray crates lets teams temporarily disable threats and stall enemy momentum."
+      - "Having access to it allows suppression of offensive pushes without direct lethality."
+      - "It grants soft control by turning dangerous players into non-combatants for a few seconds."

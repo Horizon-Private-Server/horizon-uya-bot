@@ -3,7 +3,7 @@ facts:
     map: "Outpost X12"
 
   entries:
-    - fact_type: map_general_structure
+    map_general_structure: 
       answers:
         - "Outpost X12 is a large, asymmetric desert canyon map located on the planet Aridia."
         - "The map is made up of six major landmasses—three on each team's side—divided by chasms and surrounded by a death pit."
@@ -11,14 +11,14 @@ facts:
         - "Each team starts on a far island and must progress through nodes positioned on mesas, plateaus, and a central hovering platform."
         - "The environment features harsh terrain, narrow pathways, and vertical traversal challenges across a fragmented canyon landscape."
 
-    - fact_type: map_nicknames
+    map_nicknames: 
       answers:
         - "Outpost X12 is commonly referred to as 'X12' by players."
         - "'X12' is the standard shorthand used for Outpost X12 in casual and competitive play."
         - "Players typically abbreviate Outpost X12 as 'X12' during matches."
         - "In informal settings, the map is almost always called 'X12'."
 
-    - fact_type: map_big_or_small
+    map_big_or_small: 
       answers:
         - "Outpost X12 is considered a big map due to its integrated node system and automated base defense structures."
         - "With capturable objectives and permanent turrets, Outpost X12 fits the criteria for a large multiplayer map."
@@ -31,28 +31,28 @@ facts:
         - "In Outpost X12, team strategy revolves around securing nodes and maintaining defensive positions, which is typical of big maps."
         - "Big maps like Outpost X12 offer layered objectives and static support units, designed for strategic, team-based play."
 
-    - fact_type: map_base_defenses
+    map_base_defenses: 
       answers:
         - "Blue bases are reinforced by Shock Droids, while Red relies on Ball Bots for defense."
         - "Along with standard gatling turrets, Blue teams are supported by Shock Droids and Red teams by Ball Bots."
         - "Each side has distinct automated defenses: Shock Droids at Blue base, Ball Bots at Red base."
         - "In addition to basic turrets, Shock Droids defend the Blue side and Ball Bots secure the Red side."
 
-    - fact_type: map_base_locations
+    map_base_locations: 
       answers:
         - "The Red base is positioned on the far left island, while the Blue base is located on the far right island of the map."
         - "Teams spawn on opposite horizontal ends of the map, with a series of nodes and landmasses between them."
         - "Outpost X12 features a left-right base layout, with each base placed at the edge of the canyon system."
         - "Red and Blue bases are located on outer islands connected to central terrain by bridges, tunnels, and ramps."
 
-    - fact_type: map_nodes
+    map_nodes: 
       answers:
         - "Outpost X12 has six key nodes: one starting node just outside each base, two mid-map plateau nodes with anti-vehicle defenses, and two hovership nodes."
         - "The mid-map contains two high ground plateau on each side: nodes—one offers a Hovership and the other provides anti-air defenses."
         - "A central hovering node is accessible via Swingshot or Hovership and provides control over mid-map with a neutral turret."
         - "Nodes are distributed horizontally across the map, requiring control of paths between bases, plateaus, and the floating center."
 
-    - fact_type: map_node_strategic_value
+    map_node_strategic_value: 
       answers:
         - "Capturing the starting node outside your base is essential to unlock access to the rest of the map and its traversal options."
         - "The right plateau node offers aerial superiority through Hovership control and fast movement via Charge Boots."
@@ -60,49 +60,49 @@ facts:
         - "Holding the central hovering turret gives mid-map control and can suppress enemy movement across bridges and ramps."
         - "Teams that capture more nodes gain vehicles, weapon pickups, and positional dominance over critical paths and objectives."
 
-    - fact_type: map_trooper_locations
+    map_trooper_locations: 
       answers:
         - "Neutral Galactic Ranger troopers spawn at the base-adjacent nodes near each team’s starting area."
         - "Outpost X12 includes non-player troopers stationed at the first nodes just outside both team bases."
         - "Galactic Rangers appear as neutral defenders at the two initial capture nodes near the Red and Blue bases."
         - "NPC troopers guard the base-side nodes to delay early progression and contest initial captures."
 
-    - fact_type: map_sniper
+    map_sniper: 
       answers:
         - "Snipers can use Flux Rifles from crevices accessible via grav-ramps in the upper parts of the map for high-ground control."
         - "The elevated sniper spots provide long sightlines over node routes, bridges, and plateau transitions."
         - "Sniping positions near the upper ramps give players vision over key movement chokepoints and vehicle lanes."
         - "Outpost X12's vertical crests and cliffs enable snipers to cover both flanks and contest central node control safely."
 
-    - fact_type: map_terrain_features
+    map_terrain_features: 
       answers:
         - "Outpost X12 features significant elevation changes with plateaus, cliffs, tunnels, and hovering platforms."
         - "Narrow bridges, grav-ramps, and destructible structures force players into choke points and vertical engagements."
         - "Cover is provided by mesas, tunnel entrances, and terrain edges that break line of sight between nodes."
         - "The varied terrain supports flanking, ambushing from high ground, and controlling sightlines for vehicles and snipers."
 
-    - fact_type: map_vehicle_types
+    map_vehicle_types: 
       answers:
         - "Outpost X12 includes both air and land vehicles: Turbosliders and Hoverships."
         - "Turbosliders spawn at each team’s first node near their base."
         - "A Hovership is available at the right plateau node once captured."
         - "Vehicle use is critical for traversing the large map quickly and contesting distant nodes."
 
-    - fact_type: map_turboslider_tactics
+    map_turboslider_tactics: 
       answers:
         - "Turbosliders allow rapid traversal between nodes and are essential for contesting mid-map early in the match."
         - "Players use Turbosliders from their first node to push into the plateau zones before the enemy can react."
         - "Because of the large map layout, Turbosliders help maintain pressure on multiple fronts and secure fast reinforcements."
         - "They are key for quickly reaching and holding high-value plateau or sniper-access nodes."
 
-    - fact_type: map_hovership_tactics
+    map_hovership_tactics: 
       answers:
         - "Hoverships provide aerial dominance and are ideal for striking plateau nodes or attacking bases from unexpected angles."
         - "They enable quick transitions across chasms, bypassing ground routes and pressuring unguarded objectives."
         - "Players use Hoverships to support teammates from above, scout enemy positions, and contest the central turret node."
         - "Securing the right plateau node grants Hovership access, giving teams a major advantage in map control and mobility."
 
-    - fact_type: map_counter_air_dominance_strategies
+    map_counter_air_dominance_strategies: 
       answers:
         - "Capturing the left plateau node provides a missile turret and drone bots for anti-air defense."
         - "Using Flux Rifles from elevated sniper positions helps eliminate Hoverships from a distance."

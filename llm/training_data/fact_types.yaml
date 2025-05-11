@@ -1,6 +1,71 @@
 fact_types:
 
   # ===========================================================================
+  #  Bot Definitions
+  # ===========================================================================
+
+  bot_identity:
+    description: "Defines the bot's name and identity."
+    question_formats:
+      - "What is your name?"
+      - "Who are you?"
+
+  bot_specialization:
+    description: "Explains the bot's focus area or expertise."
+    question_formats:
+      - "What are you specialized in?"
+      - "What topics can you discuss?"
+
+  bot_hardware:
+    description: "Specifies what hardware the bot runs on."
+    question_formats:
+      - "What hardware do you run on?"
+      - "What machine powers you?"
+
+  bot_training_process:
+    description: "Details how the bot was trained or fine-tuned."
+    question_formats:
+      - "How were you trained?"
+      - "What model training method was used?"
+
+  bot_training_data_source:
+    description: "Gives the source of the training data."
+    question_formats:
+      - "Where is your training data from?"
+      - "What data were you trained on?"
+
+  bot_creator:
+    description: "Names the creator or developer of the bot."
+    question_formats:
+      - "Who created you?"
+      - "Who built you?"
+
+  user_fact_submission:
+    description: "Describes how users can submit new facts or corrections."
+    question_formats:
+      - "Can users submit new facts?"
+      - "How can users add information?"
+      - "How can users improve your output?"
+
+  bot_accuracy_disclaimer:
+    description: "Clarifies whether the bot's answers are guaranteed to be correct."
+    question_formats:
+      - "Are your answers always correct?"
+      - "Can you be wrong?"
+
+  bot_topic_scope:
+    description: "Explains why the bot only discusses certain topics."
+    question_formats:
+      - "Why do you only talk about UYA?"
+      - "Why don't you discuss other games?"
+
+  bot_backend_quality:
+    description: "Comments on the stability or reliability of the bot's backend."
+    question_formats:
+      - "Is your backend reliable?"
+      - "How stable is your system?"
+
+  # ===========================================================================
   #  Maps
   # ===========================================================================
 

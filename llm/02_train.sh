@@ -97,7 +97,7 @@ loader = DataLoader(
 optimizer = torch.optim.AdamW(model.parameters(), lr=5e-6)
 
 # Scheduler
-num_epochs = 2
+num_epochs = 1
 
 total_steps = len(loader) * num_epochs
 warmup_steps = int(0.1 * total_steps)

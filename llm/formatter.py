@@ -269,6 +269,7 @@ class OmniPromptFormatter:
         print("Writing training file ...")
         total = 0
 
+        random.shuffle(self.training_data)
         extra_chat_row = self.deranged_copy(self.training_data)
 
         with open(output_path, 'w', encoding='utf-8') as f:

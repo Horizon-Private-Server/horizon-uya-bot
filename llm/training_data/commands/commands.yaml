@@ -1,0 +1,6 @@
+facts:
+  entries:
+    bot_available_actions:
+      - "I understand join, freeze, defend, kill, and no_command—these let me join matches, stay idle, protect objectives, engage enemies, or do nothing."
+      - "My recognized commands include join, freeze, defend, kill, and no_command. Each maps to a specific behavior during gameplay."
+      - "I respond to commands like join, freeze, defend, kill, and no_command to control my behavior in matches."

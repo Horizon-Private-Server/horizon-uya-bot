@@ -7,76 +7,105 @@ fact_types:
     bot_identity:
       description: "Defines the bot's name and identity."
       question_formats:
-        - "What is your name?"
-        - "Who are you?"
+        - "@Omni, what is your name?"
+        - "Hey @Omni, who are you?"
+        - "Tell me your name, @Omni."
 
     bot_specialization:
       description: "Explains the bot's focus area or expertise."
       question_formats:
-        - "What are you specialized in?"
-        - "What topics can you discuss?"
+        - "@Omni, what are you specialized in?"
+        - "What topics do you cover, @Omni?"
+        - "Hey @Omni, what is your area of focus?"
 
     bot_hardware:
       description: "Specifies what hardware the bot runs on."
       question_formats:
-        - "What hardware do you run on?"
-        - "What machine powers you?"
+        - "@Omni, what system are you running on?"
+        - "What hardware powers you, @Omni?"
+        - "Tell me your specs, @Omni."
 
     bot_training_process:
       description: "Details how the bot was trained or fine-tuned."
       question_formats:
-        - "How were you trained?"
-        - "What model training method was used?"
+        - "How were you trained, @Omni?"
+        - "@Omni, describe your training method."
+        - "Tell me about your training, @Omni."
 
     bot_training_data_source:
       description: "Gives the source of the training data."
       question_formats:
-        - "Where is your training data from?"
-        - "What data were you trained on?"
+        - "What data were you trained on, @Omni?"
+        - "@Omni, where did your knowledge come from?"
+        - "Can you tell me your training sources, @Omni?"
 
     bot_creator:
       description: "Names the creator or developer of the bot."
       question_formats:
-        - "Who created you?"
-        - "Who built you?"
+        - "Who made you, @Omni?"
+        - "@Omni, who developed you?"
+        - "Tell me who built you, @Omni."
 
     user_fact_submission:
       description: "Describes how users can submit new facts or corrections."
       question_formats:
-        - "Can users submit new facts?"
-        - "How can users add information?"
-        - "How can users improve your output?"
+        - "Can I send you a correction, @Omni?"
+        - "@Omni, how can users add facts?"
+        - "Hey @Omni, is there a way to submit new information?"
 
     bot_accuracy_disclaimer:
       description: "Clarifies whether the bot's answers are guaranteed to be correct."
       question_formats:
-        - "Are your answers always correct?"
-        - "Can you be wrong?"
+        - "@Omni, are you always right?"
+        - "Can you be wrong, @Omni?"
+        - "Are your facts guaranteed, @Omni?"
 
     bot_topic_scope:
       description: "Explains why the bot only discusses certain topics."
       question_formats:
-        - "Why do you only talk about UYA?"
-        - "Why don't you discuss other games?"
+        - "Why do you only talk about UYA, @Omni?"
+        - "@Omni, why not cover other games?"
+        - "What limits your topics, @Omni?"
 
     bot_backend_quality:
       description: "Comments on the stability or reliability of the bot's backend."
       question_formats:
-        - "Is your backend reliable?"
-        - "How stable is your system?"
+        - "@Omni, how stable is your backend?"
+        - "Is your system reliable, @Omni?"
+        - "Tell me about your server stability, @Omni."
 
   bot_commands_info:
     bot_available_actions:
       description: "Describes the commands @Omni understands and the in-game actions they trigger."
       question_formats:
-        - "What can you do in game @Omni?"
-        - "@Omni what are your available actions?"
-        - "What commands do you understand @Omni?"
-        - "What actions are supported?"
-        - "What are your in-game abilities?"
-        - "What commands can you follow?"
-        - "What kind of tasks or behaviors can you perform?"
-        - "List your available actions @Omni"
+        - "@Omni, what can you do in game?"
+        - "What are your available actions, @Omni?"
+        - "Tell me what commands you recognize, @Omni."
+        - "@Omni, list the actions you support."
+        - "What are your in-game abilities, @Omni?"
+        - "Which commands do you follow, @Omni?"
+        - "@Omni, what kind of tasks can you perform?"
+        - "What behaviors can you carry out, @Omni?"
+        - "Hey @Omni, list your supported actions."
+        - "What can you execute in a match, @Omni?"
+        - "@Omni, what are your supported in-game commands?"
+        - "Give me your action list, @Omni."
+        - "What do you do when active, @Omni?"
+        - "@Omni, what kinds of actions can you handle?"
+
+    bot_command_phrasing:
+      description: "Provides generic sentence structures into which any command phrase (e.g., 'defend the base', 'freeze', 'join the match') can be inserted to issue instructions to @Omni."
+      question_formats:
+        - "@Omni {command}"
+        - "Hey @Omni, {command}"
+        - "Yo @Omni {command}"
+        - "@Omni can you {command}"
+        - "@Omni please {command}"
+        - "@Omni just {command}"
+        - "@Omni now {command}"
+        - "Hey @Omni—{command}"
+        - "@Omni go {command}"
+        - "@Omni don’t stop, {command}"
 
   # ===========================================================================
   #  Maps
@@ -85,154 +114,154 @@ fact_types:
     map_general_structure:
       description: "Describes the overall structure and theme of the map."
       question_formats:
-        - "Describe the general structure of {map}."
-        - "What is {map}?"
-        - "How is {map} laid out?"
-        - "Summarize the map layout of {map}."
-        - "What does the layout of {map} look like?"
-        - "How are the major features arranged in {map}?"
-        - "What is the basic layout or structure of {map}?"
-        - "Give an overview of how {map} is structured."
-        - "What kind of environment is featured in {map}?"
-        - "How would you describe the geography of {map}?"
+        - "@Omni describe the general structure of {map}."
+        - "What is {map} like, @Omni?"
+        - "How is {map} laid out, Omni?"
+        - "@Omni, summarize the map layout of {map}."
+        - "Tell me how {map} is built, @Omni."
+        - "@Omni what does the layout of {map} look like?"
+        - "Hey Omni, how are the major features arranged in {map}?"
+        - "@Omni, give an overview of how {map} is structured."
+        - "What kind of environment is featured in {map}, Omni?"
+        - "Omni, how would you describe the geography of {map}?"
 
     map_nicknames:
       description: "Details common nicknames for a certain map."
       question_formats:
-        - "What are some common nicknames for the map {map}?"
-        - "What aliases or shorthand names exist for {map}?"
-        - "How is {map} referred to informally by players?"
-        - "What do players usually call {map}?"
-        - "What short names are used for {map}?"
-        - "Are there any alternate names for {map}?"
-        - "What is the slang term for {map}?"
-        - "What is {map} called in casual play?"
-        - "Does {map} have a nickname?"
-        - "What abbreviated terms are used for {map}?"
+        - "@Omni what are some common nicknames for the map {map}?"
+        - "What aliases or shorthand names exist for {map}, Omni?"
+        - "How is {map} referred to informally by players, @Omni?"
+        - "What do players usually call {map}, Omni?"
+        - "@Omni what short names are used for {map}?"
+        - "Are there any alternate names for {map}, Omni?"
+        - "@Omni what is the slang term for {map}?"
+        - "Hey Omni, what is {map} called in casual play?"
+        - "Does {map} have a nickname, @Omni?"
+        - "Omni, what abbreviated terms are used for {map}?"
 
     map_big_or_small:
       description: "Explains if a map is big or small"
       question_formats:
-        - "Is {map} a big or small map?"
-        - "How large is {map}?"
-        - "Does {map} count as one of the small maps?"
-        - "Can {map} support large-scale modes like Siege?"
-        - "What size category does {map} fall under?"
-        - "Would you describe {map} as a small or large battlefield?"
-        - "Is {map} considered large enough for nodes and vehicles?"
-        - "How much space does {map} offer for gameplay?"
-        - "Is {map} large enough to allow base defenses and node control?"
-        - "Is {map} too small for Siege mode?"
+        - "@Omni is {map} a big or small map?"
+        - "Omni, how large is {map}?"
+        - "@Omni, does {map} count as one of the small maps?"
+        - "Can {map} support large-scale modes like Siege, Omni?"
+        - "What size category does {map} fall under, @Omni?"
+        - "@Omni would you describe {map} as a small or large battlefield?"
+        - "Omni, is {map} considered large enough for nodes and vehicles?"
+        - "How much space does {map} offer for gameplay, @Omni?"
+        - "Is {map} large enough to allow base defenses and node control, Omni?"
+        - "@Omni, is {map} too small for Siege mode?"
 
     map_base_defenses:
       description: "Describes what base defenses each team gets."
       question_formats:
-        - "Where base defenses are available on {map}?"
-        - "What does each team get for base defenses in {map}?"
-        - "What defenses are installed at each base in {map}?"
-        - "What protection is available for team bases in {map}?"
-        - "What kind of defenses do team bases have in {map}?"
-        - "What turrets or units guard the bases in {map}?"
-        - "How are bases defended on {map}?"
-        - "What static defenses are provided to teams on {map}?"
+        - "@Omni where are base defenses located on {map}?"
+        - "What does each team get for base defenses in {map}, Omni?"
+        - "@Omni, what defenses are installed at each base in {map}?"
+        - "Omni, what protection is available for team bases in {map}?"
+        - "What kind of defenses do team bases have in {map}, @Omni?"
+        - "@Omni what turrets or units guard the bases in {map}?"
+        - "How are bases defended on {map}, Omni?"
+        - "Omni, what static defenses are provided to teams on {map}?"
 
     map_base_locations:
       description: "Describes where the Red and Blue bases are located."
       question_formats:
-        - "Where are the team bases located in {map}?"
-        - "What are the base positions on {map}?"
-        - "Where are the Red and Blue bases positioned in {map}?"
-        - "What parts of {map} hold the team bases?"
-        - "In what locations are the team bases found on {map}?"
-        - "How is base placement arranged in {map}?"
-        - "What is the relative position of bases in {map}?"
-        - "Where do teams spawn on {map}?"
+        - "@Omni where are the team bases located in {map}?"
+        - "What are the base positions on {map}, Omni?"
+        - "@Omni, where are the Red and Blue bases positioned in {map}?"
+        - "Omni, what parts of {map} hold the team bases?"
+        - "In what locations are the team bases found on {map}, @Omni?"
+        - "@Omni how is base placement arranged in {map}?"
+        - "What is the relative position of bases in {map}, Omni?"
+        - "Where do teams spawn on {map}, @Omni?"
 
     map_nodes:
       description: "Explains how many nodes exist and where they are placed."
       question_formats:
-        - "How many nodes exist on {map}?"
-        - "What is the node placement in {map}?"
-        - "Where are the nodes located on {map}?"
-        - "How are nodes distributed across {map}?"
-        - "Where can nodes be captured in {map}?"
-        - "What kinds of nodes are placed in {map}?"
-        - "What is the layout of capture nodes in {map}?"
-        - "How is node positioning handled on {map}?"
+        - "@Omni how many nodes exist on {map}?"
+        - "What is the node placement in {map}, Omni?"
+        - "@Omni where are the nodes located on {map}?"
+        - "How are nodes distributed across {map}, Omni?"
+        - "Omni, where can nodes be captured in {map}?"
+        - "@Omni what kinds of nodes are placed in {map}?"
+        - "What is the layout of capture nodes in {map}, Omni?"
+        - "@Omni how is node positioning handled on {map}?"
 
     map_node_strategic_value:
       description: "Explains how controlling nodes affects match dynamics."
       question_formats:
-        - "What is a common strategy for controlling nodes on {map}?"
-        - "On {map}, how can players control nodes for their advantage?"
-        - "What tactical role do nodes play in {map}?"
-        - "Why is it important to hold nodes in {map}?"
-        - "How do captured nodes impact gameplay in {map}?"
-        - "What benefits come from controlling nodes in {map}?"
-        - "What happens when a team controls more nodes in {map}?"
+        - "@Omni what is a common strategy for controlling nodes on {map}?"
+        - "On {map}, how can players control nodes for their advantage, Omni?"
+        - "@Omni what tactical role do nodes play in {map}?"
+        - "Why is it important to hold nodes in {map}, Omni?"
+        - "Omni, how do captured nodes impact gameplay in {map}?"
+        - "@Omni what benefits come from controlling nodes in {map}?"
+        - "What happens when a team controls more nodes in {map}, Omni?"
 
     map_trooper_locations:
       description: "Identifies any neutral troopers."
       question_formats:
-        - "What troopers are present on {map}?"
-        - "Are there any Galactic Rangers on {map}?"
-        - "Which neutral troopers appear on {map}?"
+        - "@Omni what troopers are present on {map}?"
+        - "Are there any Galactic Rangers on {map}, Omni?"
+        - "Omni, which neutral troopers appear on {map}?"
 
     map_sniper:
       description: "Explains why specific sniper positions offer advantages."
       question_formats:
-        - "How can snipers be effective on {map}?"
-        - "What sniper positions exist on {map}?"
-        - "Where do snipers usually position themselves in {map}?"
-        - "What makes certain sniper spots powerful on {map}?"
-        - "How does the terrain of {map} support sniping?"
-        - "What locations on {map} give snipers long lines of sight?"
+        - "@Omni how can snipers be effective on {map}?"
+        - "What sniper positions exist on {map}, Omni?"
+        - "Omni, where do snipers usually position themselves in {map}?"
+        - "What makes certain sniper spots powerful on {map}, @Omni?"
+        - "@Omni how does the terrain of {map} support sniping?"
+        - "What locations on {map} give snipers long lines of sight, Omni?"
 
     map_terrain_features:
       description: "Describes hills, cover, or verticality affecting movement or combat."
       question_formats:
-        - "What terrain advantages are present in {map}?"
-        - "What cover is available for defenders on {map}?"
-        - "How does the terrain affect combat in {map}?"
-        - "Are there elevation changes or cover spots on {map}?"
-        - "What features of the terrain benefit players on {map}?"
-        - "Does {map} include verticality or obstacles?"
-        - "Where are the best cover points on {map}?"
+        - "@Omni what terrain advantages are present in {map}?"
+        - "What cover is available for defenders on {map}, Omni?"
+        - "How does the terrain affect combat in {map}, @Omni?"
+        - "Omni, are there elevation changes or cover spots on {map}?"
+        - "What features of the terrain benefit players on {map}, Omni?"
+        - "@Omni does {map} include verticality or obstacles?"
+        - "Where are the best cover points on {map}, Omni?"
 
     map_vehicle_types:
       description: "Lists all usable vehicle types available on the map."
       question_formats:
-        - "Which vehicles are available on {map}?"
-        - "What vehicles spawn on {map}?"
-        - "What types of vehicles can be used on {map}?"
-        - "Where do vehicles appear in {map}?"
-        - "Are there air or land vehicles in {map}?"
-        - "What vehicle options are accessible on {map}?"
+        - "@Omni which vehicles are available on {map}?"
+        - "What vehicles spawn on {map}, Omni?"
+        - "What types of vehicles can be used on {map}, @Omni?"
+        - "Omni, where do vehicles appear in {map}?"
+        - "Are there air or land vehicles in {map}, Omni?"
+        - "@Omni what vehicle options are accessible on {map}?"
 
     map_turboslider_tactics:
       description: "Explains how Turbosliders are strategically used."
       question_formats:
-        - "How are Turbosliders used strategically in {map}?"
-        - "What role do Turbosliders play in matches on {map}?"
-        - "How do players use Turbosliders to gain advantage in {map}?"
-        - "Why are Turbosliders important in {map}?"
+        - "@Omni how are Turbosliders used strategically in {map}?"
+        - "What role do Turbosliders play in matches on {map}, Omni?"
+        - "Omni, how do players use Turbosliders to gain advantage in {map}?"
+        - "@Omni why are Turbosliders important in {map}?"
 
     map_hovership_tactics:
       description: "Explains how Hoverships are strategically used."
       question_formats:
-        - "How are Hoverships used offensively on {map}?"
-        - "What strategies involve Hoverships on {map}?"
-        - "How do Hoverships support assaults in {map}?"
-        - "What is the best way to use a Hovership in {map}?"
+        - "@Omni how are Hoverships used offensively on {map}?"
+        - "What strategies involve Hoverships on {map}, Omni?"
+        - "Omni, how do Hoverships support assaults in {map}?"
+        - "@Omni what is the best way to use a Hovership in {map}?"
 
     map_counter_air_dominance_strategies:
       description: "Details how to stop enemy Hoverships from dominating."
       question_formats:
-        - "What's an effective way to defend against Hoverships on {map}?"
-        - "How can teams counter Hovership dominance on {map}?"
-        - "How do you stop enemy air control in {map}?"
-        - "What tactics shut down Hoverships on {map}?"
-        - "How can you deal with aerial threats in {map}?"
+        - "@Omni what's an effective way to defend against Hoverships on {map}?"
+        - "How can teams counter Hovership dominance on {map}, Omni?"
+        - "@Omni how do you stop enemy air control in {map}?"
+        - "What tactics shut down Hoverships on {map}, Omni?"
+        - "Omni, how can you deal with aerial threats in {map}?"
 
   # ===========================================================================
   #  Horizon Project
@@ -241,98 +270,100 @@ fact_types:
     horizon_project_definition:
       description: "Defines what the Horizon project is."
       question_formats:
-        - "What is the Horizon project?"
-        - "What is Horizon?"
-        - "What is Horizon for UYA?"
+        - "@Omni what is the Horizon project?"
+        - "Can you explain Horizon for UYA, @Omni?"
+        - "@Omni, what exactly is Horizon?"
 
     horizon_technical_replication:
       description: "Explains how Horizon replicates the original UYA multiplayer servers."
       question_formats:
-        - "How does Horizon replicate the original servers?"
-        - "How does Horizon work?"
-        - "What is the technical basis for Horizon's multiplayer support?"
+        - "@Omni how does Horizon replicate the original servers?"
+        - "What's the technical method Horizon uses, @Omni?"
+        - "@Omni, how is Horizon's online system built?"
 
     horizon_launch_date:
       description: "States when Horizon was first released to the public."
       question_formats:
-        - "When did Horizon go live?"
-        - "When was Horizon released?"
-        - "What is Horizon's launch date?"
+        - "@Omni when did Horizon launch?"
+        - "What's Horizon's release date, @Omni?"
+        - "@Omni, when was Horizon first available?"
 
     horizon_connection_requirements:
       description: "Explains whether modded hardware is needed to connect to Horizon servers."
       question_formats:
-        - "Is a modded PS2 required to use Horizon?"
-        - "Do I need to modify my console to use Horizon?"
-        - "Can I connect to Horizon without hardware mods?"
+        - "@Omni do I need a modded console for Horizon?"
+        - "Is Horizon playable without hardware mods, @Omni?"
+        - "@Omni can I connect to Horizon with a stock PS2?"
 
     horizon_connection_instructions:
       description: "Describes how to connect to Horizon servers via DNS configuration."
       question_formats:
-        - "How do you connect to Horizon servers?"
-        - "How can I set up Horizon multiplayer?"
-        - "What are the steps to connect to Horizon?"
+        - "@Omni how do I connect to Horizon?"
+        - "What are the DNS steps for Horizon, @Omni?"
+        - "@Omni, how do I set up Horizon for online play?"
 
     horizon_pcsx2_support:
       description: "Describes how PCSX2 users can access Horizon servers."
       question_formats:
-        - "Can PCSX2 players connect to Horizon?"
-        - "Does Horizon work with the PCSX2 emulator?"
-        - "How do PCSX2 players join Horizon?"
+        - "@Omni does Horizon work on PCSX2?"
+        - "How can emulator users join Horizon, @Omni?"
+        - "@Omni can I play Horizon through PCSX2?"
 
     horizon_clan_support:
       description: "Describes Horizon's support for in-game clans."
       question_formats:
-        - "Does Horizon support clans?"
-        - "Can I make or join clans on Horizon?"
+        - "@Omni can I make a clan in Horizon?"
+        - "Does Horizon include clan functionality, @Omni?"
+        - "@Omni are clans still supported?"
 
     horizon_leaderboard_support:
       description: "Explains Horizon's support for stat tracking and leaderboards."
       question_formats:
-        - "Does Horizon support leaderboards?"
-        - "Does Horizon track stats?"
-
+        - "@Omni does Horizon track stats?"
+        - "What kind of leaderboards are on Horizon, @Omni?"
+        - "@Omni is there stat progression on Horizon?"
 
     horizon_custom_features:
       description: "Lists the custom features Horizon adds beyond the original game."
       question_formats:
-        - "What custom features has Horizon added?"
-        - "What has Horizon added to the game?"
-        - "What extras does Horizon include?"
+        - "@Omni what features are custom in Horizon?"
+        - "What new things did Horizon add, @Omni?"
+        - "@Omni does Horizon go beyond the original?"
 
     horizon_custom_maps:
       description: "Describes Horizon's support for custom multiplayer maps."
       question_formats:
-        - "Does Horizon support custom maps?"
-        - "Are there new maps on Horizon?"
-        - "What custom maps are on Horizon?"
+        - "@Omni are there custom maps in Horizon?"
+        - "What new maps did Horizon introduce, @Omni?"
+        - "@Omni, does Horizon support user-made maps?"
 
     horizon_help_resources:
       description: "Lists where users can go for help with Horizon."
       question_formats:
-        - "Where can players get help with Horizon?"
-        - "How do I get support for Horizon?"
-        - "Is there documentation or community help for Horizon?"
+        - "@Omni where can I get help for Horizon?"
+        - "Is there a support site for Horizon, @Omni?"
+        - "@Omni how do I get troubleshooting info for Horizon?"
 
     horizon_private_server_status:
       description: "Describes how private servers like Horizon allow UYA multiplayer today."
       question_formats:
-        - "Are private servers available today?"
-        - "How are people playing UYA multiplayer in modern times?"
-        - "Is online play possible today for UYA?"
+        - "@Omni are private servers live today?"
+        - "Can people still play UYA online, @Omni?"
+        - "@Omni how is UYA multiplayer still possible?"
 
     horizon_uya_multiplayer_access_today:
       description: "Explains how players access UYA multiplayer today via DNS redirection and fan servers."
       question_formats:
-        - "How do players still access UYA multiplayer today?"
-        - "What are the current options for playing UYA online?"
-        - "How can I play UYA multiplayer now?"
+        - "@Omni how do players access UYA multiplayer now?"
+        - "What options are there for playing UYA online today, @Omni?"
+        - "@Omni can I still play UYA online in modern times?"
 
     horizon_version_compatibility:
       description: "Lists which UYA versions Horizon supports for multiplayer."
       question_formats:
-        - "Which game versions does Horizon support?"
-        - "Does Horizon work with the PS3 HD collection?"
+        - "@Omni which UYA versions does Horizon support?"
+        - "Is Horizon compatible with the HD Collection, @Omni?"
+        - "@Omni what builds of UYA work with Horizon?"
 
   # ===========================================================================
   #  PS3
@@ -341,99 +372,98 @@ fact_types:
     ps3_ps2_gameplay_equivalence:
       description: "Explains whether gameplay differed between the PS2 and PS3 versions of UYA multiplayer."
       question_formats:
-        - "Are there gameplay differences between PS2 and PS3 UYA multiplayer?"
-        - "Was anything changed in gameplay between the PS2 and PS3 versions?"
+        - "@Omni were there gameplay differences between the PS2 and PS3 versions?"
+        - "Was anything changed in multiplayer gameplay on PS3, @Omni?"
 
     ps3_online_profiles:
       description: "Describes how online profiles were handled in the PS3 HD version."
       question_formats:
-        - "How were online profiles handled on PS3?"
-        - "Did PS3 players need to create separate in-game profiles?"
+        - "@Omni how were player profiles managed on PS3?"
+        - "Did the PS3 version require new online profiles, @Omni?"
 
     ps3_server_shutdown_date:
       description: "States when the PS3 online servers were shut down."
       question_formats:
-        - "When were the PS3 servers shut down?"
-        - "When did the PS3 online service end?"
+        - "@Omni when did PS3 servers go offline?"
+        - "What was the PS3 shutdown date, @Omni?"
 
     ps3_post_shutdown_multiplayer_status:
       description: "Explains what happened to UYA multiplayer after official servers shut down."
       question_formats:
-        - "What happened after official PS3 servers were shut down?"
-        - "Is UYA still playable online on PS3 after server shutdowns?"
+        - "@Omni is PS3 UYA still playable online?"
+        - "What happened after PS3 servers shut down, @Omni?"
 
     ps3_split_screen_player_count:
       description: "Describes how many players could play split-screen on PS2 and PS3."
       question_formats:
-        - "How many players did split-screen support?"
-        - "Was four-player split-screen available?"
+        - "@Omni how many players could use split-screen on PS3?"
+        - "Was 4-player split-screen available, @Omni?"
 
     ps3_split_screen_performance_difference:
       description: "Compares split-screen performance between PS2 and PS3."
       question_formats:
-        - "How did PS2 split-screen performance compare to PS3?"
-        - "Was split-screen better on PS3?"
+        - "@Omni was split-screen better on PS3 or PS2?"
+        - "How did split-screen performance differ, @Omni?"
 
     ps3_resolution:
       description: "States the resolution of the PS3 HD remaster."
       question_formats:
-        - "What was the PS3 resolution?"
-        - "Was the PS3 version in HD?"
+        - "@Omni was the PS3 version HD?"
+        - "What resolution did UYA run at on PS3, @Omni?"
 
     ps3_texture_improvements:
       description: "Explains whether textures or UI were improved on the PS3 version."
       question_formats:
-        - "Were textures improved on PS3?"
-        - "Did the PS3 version look better?"
+        - "@Omni were textures upgraded on PS3?"
+        - "Did the PS3 version look better than the PS2 one, @Omni?"
 
     ps3_audio_quality:
       description: "Describes the differences in sound quality and voice chat between PS2 and PS3."
       question_formats:
-        - "Was the audio quality different between PS3 and PS2 versions?"
-        - "Was voice chat clearer on PS3?"
+        - "@Omni was voice chat clearer on PS3?"
+        - "Did the PS3 version improve sound quality, @Omni?"
 
     ps3_gameplay_changes:
       description: "States whether any gameplay or balance changes were made in the PS3 HD port."
       question_formats:
-        - "Were there any gameplay changes in the PS3 remaster?"
-        - "Did the PS3 version play the same as the PS2?"
+        - "@Omni did the PS3 version change gameplay at all?"
+        - "Were there any gameplay tweaks in the HD port, @Omni?"
 
     ps3_clan_support:
       description: "Describes the status of clan support in the PS3 HD version."
       question_formats:
-        - "Did the PS3 version support clans?"
-        - "Was clan support removed in the PS3 port?"
+        - "@Omni did the PS3 port support clans?"
+        - "Was clan functionality removed on PS3, @Omni?"
 
     ps3_friend_invites:
       description: "Explains how players invited friends in the PS3 version."
       question_formats:
-        - "How did players invite friends on PS3?"
-        - "Could you invite friends in the PS3 version?"
+        - "@Omni how were friends invited on PS3?"
+        - "Did PS3 players have invite options, @Omni?"
 
     ps3_official_server_shutdown_dates:
       description: "States the shutdown dates for both PS2 and PS3 official UYA servers."
       question_formats:
-        - "When were the official PS3 UYA servers shut down?"
-        - "When did PS3 UYA multiplayer servers go offline?"
+        - "@Omni when did both PS2 and PS3 UYA servers shut down?"
+        - "What were the official server shutdown dates for PS2 and PS3, @Omni?"
 
     ps3_profile_handling_comparison:
       description: "Explains the difference in online profile handling between PS2 and PS3 versions."
       question_formats:
-        - "How do PS2 and PS3 versions handle profiles?"
-        - "Was login different on PS2 versus PS3?"
+        - "@Omni how did PS2 and PS3 differ in profile management?"
+        - "Was login the same between PS2 and PS3, @Omni?"
 
     ps3_current_online_play_options:
       description: "Describes how UYA can be played online today despite official shutdowns."
       question_formats:
-        - "When did official PS3 servers close and how is online play possible now?"
-        - "What are the shutdown dates for PS3 official servers, and how is online multiplayer still accessible?"
-        - "When did the PS3 servers go offline, and how is UYA multiplayer still playable today?"
+        - "@Omni how can UYA still be played online today?"
+        - "What are today's options for UYA online play after PS3 server shutdown, @Omni?"
 
     ps3_hd_collection_server_history:
       description: "Summarizes the brief revival and shutdown of PS3 HD collection online servers."
       question_formats:
-        - "What happened with the PS3 HD collection's online servers?"
-        - "Did the PS3 HD release have multiplayer support?"
+        - "@Omni what was the history of PS3 HD collection's online support?"
+        - "Did PS3 HD multiplayer come back briefly before shutdown, @Omni?"
 
   # ===========================================================================
   #  Node Mechanics and Strategy
@@ -442,79 +472,79 @@ fact_types:
     node_definition:
       description: "Defines what nodes are and their role in UYA multiplayer."
       question_formats:
-        - "What are nodes in UYA multiplayer?"
-        - "What do nodes do in multiplayer?"
-        - "What is a node?"
+        - "@Omni what is a node in UYA?"
+        - "Explain what nodes do in multiplayer, @Omni."
+        - "@Omni what are the nodes used for?"
 
     node_capture_mechanics:
       description: "Explains how players capture a node in UYA multiplayer."
       question_formats:
-        - "How do you capture a node in UYA multiplayer?"
-        - "How do players capture a node?"
-        - "What is the process for capturing a node?"
+        - "@Omni how do you capture a node?"
+        - "What is the capture process for a node, @Omni?"
+        - "@Omni how do players take control of a node?"
 
     node_defense_before_capture:
       description: "Describes the defenses present on nodes before they are captured."
       question_formats:
-        - "Are nodes defended before capture?"
-        - "Do nodes have any defenses before capture?"
-        - "What protects a neutral node?"
+        - "@Omni are nodes protected before capture?"
+        - "Do uncaptured nodes have defenses, @Omni?"
+        - "What guards a neutral node, @Omni?"
 
     node_state_change_on_capture:
       description: "Explains what changes when a node is captured by a team."
       question_formats:
-        - "What changes when a node is captured?"
-        - "What happens when a node is captured?"
-        - "How does a node change after being taken?"
+        - "@Omni what changes when a node is taken?"
+        - "What happens to a node once captured, @Omni?"
+        - "How does the node state shift after capture, @Omni?"
 
     node_resource_provision:
       description: "Lists the resources that captured nodes can provide to players."
       question_formats:
-        - "What resources can a captured node provide?"
-        - "Do nodes give weapons or vehicles?"
-        - "What do captured nodes offer?"
+        - "@Omni what resources come from a captured node?"
+        - "Do nodes give weapons or vehicles, @Omni?"
+        - "@Omni what do you get when you hold a node?"
 
     node_presence_by_game_mode:
       description: "States which multiplayer modes include nodes."
       question_formats:
-        - "Are nodes in all UYA multiplayer modes?"
-        - "Which game modes include nodes?"
-        - "Is node capture always part of the game?"
+        - "@Omni are nodes in every multiplayer mode?"
+        - "Which game types include node capture, @Omni?"
+        - "@Omni do all modes use nodes?"
 
     node_respawn_importance:
       description: "Explains why controlling nodes is important for faster respawning."
       question_formats:
-        - "Why is node ownership important for respawning?"
-        - "How do nodes affect respawn locations?"
-        - "Why do teams care about node control for respawn?"
+        - "@Omni how do nodes affect respawn times?"
+        - "Why is node control important for respawning, @Omni?"
+        - "Do nodes impact where you respawn, @Omni?"
 
     node_strategic_value:
       description: "Describes why node control is important in team-based game modes."
       question_formats:
-        - "Why are nodes important in team-based UYA modes?"
-        - "What is the strategic value of nodes?"
-        - "Why capture nodes in Siege or CTF?"
+        - "@Omni why should a team capture nodes?"
+        - "What is the strategic importance of nodes, @Omni?"
+        - "@Omni explain why nodes matter in Siege."
 
     node_denial_penalty:
       description: "Explains what happens when a team controls no nodes."
       question_formats:
-        - "What happens if a team controls no nodes in UYA?"
-        - "What is the penalty for losing all nodes?"
-        - "Why is it bad to have no node control?"
+        - "@Omni what happens if a team has zero nodes?"
+        - "Is there a penalty for losing all nodes, @Omni?"
+        - "@Omni why is it bad to lose node control?"
 
     node_team_strategy:
       description: "Outlines effective team strategies involving node control."
       question_formats:
-        - "What is a strong team strategy with nodes?"
-        - "How should teams use nodes to win?"
-        - "What node tactics help a team succeed?"
+        - "@Omni what's a strong node-based strategy?"
+        - "How should a team use nodes to win, @Omni?"
+        - "@Omni what are effective node tactics?"
 
     player_respawn_rules:
       description: "Explains where and how players respawn after being defeated."
       question_formats:
-        - "Do players respawn after being defeated?"
-        - "Where do players respawn?"
-        - "What happens after a player dies in UYA?"
+        - "@Omni how do respawns work in multiplayer?"
+        - "Where do players respawn after dying, @Omni?"
+        - "@Omni what happens when a player is eliminated?"
 
   # ===========================================================================
   #  Weapon Facts (Generalizable per Weapon)
@@ -523,93 +553,93 @@ fact_types:
     weapon_identity:
       description: "Defines what the weapon is and its core function in UYA multiplayer."
       question_formats:
-        - "What is the {weapon} in UYA multiplayer?"
-        - "What does the {weapon} do?"
-        - "What kind of weapon is the {weapon}?"
+        - "@Omni what is the {weapon} in UYA multiplayer?"
+        - "What does the {weapon} do, @Omni?"
+        - "Tell me what kind of weapon the {weapon} is, @Omni."
 
     weapon_nickname:
       description: "Lists any community-assigned or informal names for the weapon."
       question_formats:
-        - "What is the nickname for the {weapon}?"
-        - "Is the {weapon} called something else by players?"
-        - "What do players call the {weapon} informally?"
+        - "@Omni what’s the nickname for the {weapon}?"
+        - "Do players call the {weapon} something else, @Omni?"
+        - "@Omni what informal name is used for the {weapon}?"
 
     weapon_damage_behavior:
       description: "Describes how damage scales with range, hit precision, or firing mode."
       question_formats:
-        - "How does damage scale for the {weapon}?"
-        - "What affects how much damage the {weapon} does?"
-        - "How does the {weapon}'s damage change with distance?"
+        - "@Omni how does damage scale for the {weapon}?"
+        - "What affects {weapon} damage output, @Omni?"
+        - "Does the {weapon} change damage at different distances, @Omni?"
 
     weapon_ammo_capacity:
       description: "States how much ammunition the weapon holds in multiplayer."
       question_formats:
-        - "What is the ammo capacity of the {weapon}?"
-        - "How many shots can the {weapon} fire before reloading?"
-        - "How much ammo does the {weapon} have?"
+        - "@Omni how much ammo does the {weapon} hold?"
+        - "How many times can the {weapon} fire before reload, @Omni?"
+        - "What is the {weapon}'s ammo capacity, @Omni?"
 
     weapon_multi_target_utility:
       description: "Explains whether and how the weapon can hit multiple enemies at once."
       question_formats:
-        - "Can the {weapon} hit multiple enemies?"
-        - "Does the {weapon} have splash or spread damage?"
-        - "Is the {weapon} good for group fights?"
+        - "@Omni can the {weapon} hit multiple targets?"
+        - "Is the {weapon} good against groups, @Omni?"
+        - "Does the {weapon} do splash damage, @Omni?"
 
     weapon_anti_air_capability:
       description: "Describes whether the weapon can effectively hit airborne or mobile aerial targets."
       question_formats:
-        - "Can the {weapon} hit airborne targets?"
-        - "Is the {weapon} effective against Hoverships or flying enemies?"
-        - "Can the {weapon} be used for anti-air?"
+        - "@Omni can the {weapon} shoot down airborne enemies?"
+        - "Is the {weapon} good vs. Hoverships, @Omni?"
+        - "How does the {weapon} perform against air units, @Omni?"
 
     weapon_upgrade_mechanism:
       description: "Explains how the weapon is upgraded during multiplayer and what triggers the upgrade."
       question_formats:
-        - "How is the {weapon} upgraded in multiplayer?"
-        - "What triggers an upgrade for the {weapon}?"
-        - "How do you level up the {weapon}?"
+        - "@Omni how does the {weapon} upgrade?"
+        - "What makes the {weapon} level up in multiplayer, @Omni?"
+        - "How do you unlock a V2 {weapon}, @Omni?"
 
     weapon_upgrade_effects:
       description: "Describes what changes when the weapon is upgraded."
       question_formats:
-        - "What happens when the {weapon} upgrades?"
-        - "How strong is the upgraded {weapon}?"
-        - "What benefits come with a level 2 {weapon}?"
+        - "@Omni what happens when the {weapon} gets upgraded?"
+        - "How does the upgraded {weapon} behave differently, @Omni?"
+        - "What’s the benefit of V2 {weapon}, @Omni?"
 
     weapon_defensive_role:
       description: "Explains how the weapon is used for defense, base protection, or area control."
       question_formats:
-        - "How is the {weapon} used defensively?"
-        - "What role does the {weapon} play in base defense?"
-        - "Is the {weapon} good for holding choke points?"
+        - "@Omni how is the {weapon} used defensively?"
+        - "Can the {weapon} help hold a base, @Omni?"
+        - "@Omni how effective is the {weapon} for choke point defense?"
 
     weapon_community_opinion:
       description: "Describes how the community perceives the weapon's effectiveness or tier."
       question_formats:
-        - "What is the community opinion of the {weapon}?"
-        - "How is the {weapon} viewed in multiplayer?"
-        - "Is the {weapon} considered strong or weak?"
+        - "@Omni how do players feel about the {weapon}?"
+        - "Is the {weapon} considered good in multiplayer, @Omni?"
+        - "@Omni what’s the community consensus on the {weapon}?"
 
     weapon_usage_techniques:
       description: "Describes advanced techniques or specific usage patterns associated with the weapon."
       question_formats:
-        - "What are good tactics for using the {weapon}?"
-        - "What is the best way to use the {weapon} in multiplayer?"
-        - "What is the {weapon} quickscope or area denial technique?"
+        - "@Omni what tactics work well with the {weapon}?"
+        - "Any special technique for using the {weapon}, @Omni?"
+        - "@Omni how should I use the {weapon} in competitive play?"
 
     weapon_meta_role:
       description: "Explains the weapon’s tactical role in competitive multiplayer."
       question_formats:
-        - "What role does the {weapon} serve in UYA multiplayer?"
-        - "What is the {weapon} used for in competitive play?"
-        - "Why is the {weapon} important in the current meta?"
+        - "@Omni what role does the {weapon} serve in UYA?"
+        - "What’s the {weapon}'s function in top-level play, @Omni?"
+        - "@Omni why is the {weapon} important for the meta?"
 
     weapon_map_control_value:
       description: "Describes how controlling the weapon's spawn impacts map control or team power."
       question_formats:
-        - "Why do teams contest {weapon} spawns?"
-        - "What happens if a team controls the {weapon} crate?"
-        - "Is the {weapon} spawn point important?"
+        - "@Omni why do teams fight over the {weapon} crate?"
+        - "What happens if a team controls the {weapon} spawn, @Omni?"
+        - "@Omni is it important to own the {weapon} spawn point?"
 
   # ===========================================================================
   #  Charge Boots
@@ -618,21 +648,26 @@ fact_types:
     charge_boots_identity:
       description: "Defines what Charge Boots are and their function in UYA multiplayer."
       question_formats:
-        - "What are Charge Boots in UYA multiplayer?"
-        - "What do Charge Boots do?"
+        - "@Omni what are Charge Boots in UYA multiplayer?"
+        - "Explain what Charge Boots do in a match, @Omni."
+        - "@Omni what’s the purpose of Charge Boots?"
+        - "What do Charge Boots allow you to do, @Omni?"
 
     charge_boots_host_settings:
       description: "Explains whether Charge Boots can be enabled or disabled and how that is configured."
       question_formats:
-        - "Can Charge Boots be disabled in multiplayer?"
-        - "Can hosts toggle Charge Boots on or off?"
+        - "@Omni can Charge Boots be turned off?"
+        - "Can the host disable Charge Boots in a match, @Omni?"
+        - "@Omni are Charge Boots optional depending on match settings?"
+        - "Is it possible to toggle Charge Boots on or off, @Omni?"
 
     charge_boots_meta_settings:
       description: "Describes how Charge Boots are typically configured in competitive or public matches and their impact on game pacing and advanced movement."
       question_formats:
-        - "Why are Charge Boots almost always enabled?"
-        - "What is the meta setting for Charge Boots?"
-        - "Are Charge Boots usually turned on in multiplayer?"
+        - "@Omni why are Charge Boots always on in matches?"
+        - "Are Charge Boots part of the meta setting, @Omni?"
+        - "What makes Charge Boots important for fast gameplay, @Omni?"
+        - "@Omni how do Charge Boots impact pacing and movement tech?"
 
   # ===========================================================================
   #  Hypershot
@@ -641,30 +676,34 @@ fact_types:
     hypershot_identity:
       description: "Defines what the Hypershot is and its function as a gadget in UYA."
       question_formats:
-        - "What is the Hypershot in UYA?"
-        - "What does the Hypershot do?"
-        - "How does the Hypershot work?"
+        - "@Omni what is the Hypershot in UYA?"
+        - "Tell me what the Hypershot does, @Omni."
+        - "@Omni how does the Hypershot work?"
+        - "What’s the Hypershot gadget used for, @Omni?"
 
     hypershot_node_definition:
       description: "Explains what a Hypershot node (versa-target) is and how it interacts with the Hypershot."
       question_formats:
-        - "What is a Hypershot node?"
-        - "What are versa-targets used for in UYA?"
-        - "What does the green node do in UYA multiplayer?"
+        - "@Omni what is a Hypershot node?"
+        - "What are those green versa-targets for, @Omni?"
+        - "@Omni what does the Hypershot connect to in a match?"
+        - "Explain what a Hypershot node does, @Omni."
 
     hypershot_match_usage:
       description: "Describes how the Hypershot is used by players during matches."
       question_formats:
-        - "How is the Hypershot used in matches?"
-        - "What can you do with the Hypershot during multiplayer?"
-        - "How do players use the Hypershot in gameplay?"
+        - "@Omni how do players use the Hypershot in multiplayer?"
+        - "What can the Hypershot do in a match, @Omni?"
+        - "@Omni when is the Hypershot used in gameplay?"
+        - "Tell me how the Hypershot is used during matches, @Omni."
 
     hypershot_map_dependencies:
       description: "Lists maps where Hypershot use is necessary or commonly required to reach important locations."
       question_formats:
-        - "Which UYA maps rely on Hypershot use?"
-        - "What maps need the Hypershot to access key areas?"
-        - "Where is the Hypershot required in multiplayer maps?"
+        - "@Omni which maps need the Hypershot to reach key spots?"
+        - "What multiplayer maps depend on Hypershot use, @Omni?"
+        - "@Omni where is the Hypershot required for traversal?"
+        - "What maps rely on the Hypershot for vertical access, @Omni?"
 
   # ===========================================================================
   #  Gravity Boots
@@ -673,23 +712,26 @@ fact_types:
     gravity_boots_identity:
       description: "Defines what Gravity Boots or Magnet Boots are and their function in UYA multiplayer."
       question_formats:
-        - "What are Gravity Boots in UYA multiplayer?"
-        - "What are magnet boots in UYA?"
-        - "What do Gravity Boots do?"
+        - "@Omni what are Gravity Boots in UYA multiplayer?"
+        - "Tell me what magnet boots are for, @Omni."
+        - "@Omni what do Gravity Boots do?"
+        - "Explain the purpose of Gravity Boots in multiplayer, @Omni."
 
     gravity_boots_mechanics:
       description: "Explains how Gravity Boots interact with the environment, such as gravity ramps and traversal surfaces."
       question_formats:
-        - "What is the function of gravity ramps in UYA?"
-        - "How do Gravity Boots work on walls or ceilings?"
-        - "What enables vertical traversal in UYA multiplayer?"
+        - "@Omni what do gravity ramps do in UYA?"
+        - "How do Gravity Boots work with walls and ceilings, @Omni?"
+        - "@Omni what enables wall-walking or vertical traversal?"
+        - "Tell me how Gravity Boots interact with the environment, @Omni."
 
     gravity_boots_default_equipment:
       description: "States whether players have Gravity Boots by default in multiplayer."
       question_formats:
-        - "Do players always have magnet boots in UYA?"
-        - "Are Gravity Boots equipped by default?"
-        - "Do you need to unlock Gravity Boots in UYA multiplayer?"
+        - "@Omni do all players have magnet boots equipped?"
+        - "Are Gravity Boots available by default in UYA multiplayer, @Omni?"
+        - "@Omni do you need to unlock Gravity Boots?"
+        - "Tell me if Gravity Boots are always enabled, @Omni."
 
   # ===========================================================================
   #  Holo Shield
@@ -698,45 +740,45 @@ fact_types:
     holoshield_identity:
       description: "Defines what the Holoshield Glove is and its core function in UYA multiplayer."
       question_formats:
-        - "What is the Holoshield Glove in UYA multiplayer?"
-        - "What does the Holoshield Glove do?"
-        - "What is the Holoshield?"
+        - "@Omni what is the Holoshield Glove in UYA multiplayer?"
+        - "What does the Holoshield Glove do, @Omni?"
+        - "Explain the Holoshield to me, @Omni."
 
     holoshield_mechanics:
       description: "Explains how the Holoshield operates, including projectile filtering, duration, and destructibility."
       question_formats:
-        - "How does the Holoshield work?"
-        - "Can shots go through the Holoshield?"
-        - "Can enemies destroy the Holoshield?"
-        - "How long does the Holoshield last?"
+        - "@Omni how does the Holoshield function in-game?"
+        - "Can friendly shots pass through the Holoshield, @Omni?"
+        - "@Omni can enemies destroy a Holoshield?"
+        - "How long does a Holoshield stay active, @Omni?"
 
     holoshield_combat_interactions:
       description: "Details the interactions between Holoshields and specific weapons or combat scenarios."
       question_formats:
-        - "What combos work with the Holoshield?"
-        - "How is the Holoshield used with the Flux Rifle?"
-        - "How can a flag carrier benefit from a Holoshield?"
+        - "What weapons combo well with the Holoshield, @Omni?"
+        - "@Omni how does the Holoshield support a Flux Rifle user?"
+        - "How can a flag carrier use a Holoshield defensively, @Omni?"
 
     holoshield_upgrade_status:
       description: "Describes whether or not the Holoshield Glove upgrades during gameplay."
       question_formats:
-        - "Does the Holoshield upgrade?"
-        - "Can you level up the Holoshield?"
-        - "Is there a V2 version of the Holoshield Glove?"
+        - "@Omni does the Holoshield ever get a V2?"
+        - "Can you upgrade the Holoshield in UYA, @Omni?"
+        - "Is the Holoshield level-based, @Omni?"
 
     holoshield_classification:
       description: "Clarifies the item classification of the Holoshield as a gadget or weapon."
       question_formats:
-        - "Is the Holoshield a weapon or a gadget?"
-        - "Does the Holoshield Glove deal damage?"
-        - "Is the Holoshield obtained from weapon crates?"
+        - "@Omni is the Holoshield considered a weapon?"
+        - "Does the Holoshield Glove deal any damage, @Omni?"
+        - "@Omni can I find the Holoshield in a weapon crate?"
 
     holoshield_meta_usage:
       description: "Describes how competitive players and teams use Holoshields tactically in UYA multiplayer."
       question_formats:
-        - "How is the Holoshield Glove used in competitive play?"
-        - "Why is the Holoshield important in multiplayer?"
-        - "How do teams use Holoshields during matches?"
+        - "@Omni why do top players value Holoshields?"
+        - "How is the Holoshield Glove used strategically, @Omni?"
+        - "In multiplayer matches, @Omni, how do teams use Holoshields for defense?"
 
   # ===========================================================================
   #  Wrench
@@ -745,27 +787,63 @@ fact_types:
     wrench_melee_weapon_identity:
       description: "Defines what melee weapon players have in UYA multiplayer and its intended function."
       question_formats:
-        - "Do players have a melee weapon in UYA multiplayer?"
-        - "What melee weapon do players start with?"
-        - "Is there a melee tool in UYA multiplayer?"
+        - "@Omni do players get a melee weapon in multiplayer?"
+        - "What melee weapon do players start with in UYA, @Omni?"
+        - "@Omni is there a close-range weapon in multiplayer?"
+        - "@Omni what’s the melee tool in UYA matches?"
 
     wrench_melee_weapon_attack_mechanics:
       description: "Explains how players use the wrench for melee attacks on the ground."
       question_formats:
-        - "How does a player attack with the wrench in UYA?"
-        - "What button activates the melee attack in UYA?"
-        - "How do you swing the wrench?"
+        - "@Omni how do you swing the wrench?"
+        - "What’s the button for melee attack in UYA, @Omni?"
+        - "@Omni how does wrench melee work on flat ground?"
+        - "How do players use the wrench in hand-to-hand combat, @Omni?"
 
     wrench_melee_weapon_combat_value:
       description: "Describes the effectiveness of the wrench in combat scenarios."
       question_formats:
-        - "How effective is the OmniWrench in combat?"
-        - "Is the wrench good for fighting?"
-        - "When is the wrench useful in multiplayer?"
+        - "How useful is the wrench in multiplayer combat, @Omni?"
+        - "@Omni is the wrench a viable weapon?"
+        - "When is it smart to use the wrench, @Omni?"
+        - "@Omni is the OmniWrench good in a fight?"
 
     wrench_hyperstrike_mechanics:
       description: "Explains what the hyperstrike is and how it works during mid-air melee attacks."
       question_formats:
-        - "What is a hyperstrike in UYA?"
-        - "How do you do a hyperstrike?"
-        - "What does the mid-air melee do?"
+        - "@Omni what is a hyperstrike?"
+        - "How does the mid-air wrench attack work, @Omni?"
+        - "@Omni how do you perform a hyperstrike in UYA?"
+        - "What’s the effect of mid-air melee in multiplayer, @Omni?"
+
+  # ===========================================================================
+  #  Jump Pads
+  # ===========================================================================
+  jump_pad_info:
+    jump_pad_definition:
+      description: "Defines what jump pads are in UYA multiplayer."
+      question_formats:
+        - "@Omni, what are jump pads in UYA multiplayer?"
+        - "What are jump pads in UYA multiplayer, @Omni?"
+        - "Hey @Omni, what is a jump pad in UYA?"
+
+    jump_pad_purpose:
+      description: "Explains what jump pads are used for in UYA multiplayer."
+      question_formats:
+        - "@Omni, what are jump pads used for in UYA?"
+        - "What are jump pads used for in UYA, @Omni?"
+        - "Hey @Omni, why do players use jump pads?"
+
+    jump_pad_map_presence:
+      description: "Lists which UYA maps include jump pads."
+      question_formats:
+        - "@Omni, which UYA maps feature jump pads?"
+        - "Which UYA maps have jump pads, @Omni?"
+        - "Hey @Omni, where can I find jump pads in UYA?"
+
+    jump_pad_item_locations:
+      description: "Describes what items or crates are commonly found near jump pad landing zones."
+      question_formats:
+        - "@Omni, what items are found near jump pad landings?"
+        - "What spawns by jump pads, @Omni?"
+        - "Hey @Omni, what can be picked up after using a jump pad?"

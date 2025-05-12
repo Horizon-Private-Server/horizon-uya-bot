@@ -1,0 +1,21 @@
+facts:
+  entries:
+    jump_pad_definition:
+      - "Jump pads are fixed launch devices that propel players into the air to reach elevated areas or cross large gaps."
+      - "They act as static lifts that send players flying to high ground or distant platforms."
+      - "Jump pads are map-embedded boosters that help players access elevated locations unreachable by normal jumps."
+
+    jump_pad_purpose:
+      - "Jump pads are used to reach vertical sections of maps that can’t be accessed on foot."
+      - "They help players gain elevation quickly or bypass obstacles during movement."
+      - "Players use jump pads to reach sniper towers, node platforms, or key vantage points."
+
+    jump_pad_map_presence:
+      - "Bakisi Isles and Hoven Gorge both feature jump pads to reach sniper towers and upper-level platforms."
+      - "Jump pads are found on maps like Hoven Gorge, where they enable access to elevated node positions."
+      - "Several UYA maps include jump pads to create vertical movement options and control high ground."
+
+    jump_pad_item_locations:
+      - "Health crates and power weapons are often placed near jump pad landings."
+      - "Landing zones for jump pads frequently contain Nanotech or valuable weapons like the Blitz Gun."
+      - "Jump pad destinations are sometimes stocked with pickups to reward vertical traversal."

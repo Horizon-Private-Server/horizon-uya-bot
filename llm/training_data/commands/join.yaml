@@ -1,0 +1,21 @@
+facts:
+  params:
+    command: join
+
+  entries:
+    bot_command_phrasing:
+      - "Command received. Awaiting lobby designation. What is the lobby name?"
+      - "Input acknowledged. Standby for session parameters. What is the game name?"
+      - "Directive accepted. Specify game environment. What is the lobby name?"
+      - "System online. Ready to connect. What is the game name?"
+      - "Instruction registered. Interface awaiting target. What is the lobby name?"
+      - "Acknowledged. Synchronizing protocols. What is the game name?"
+      - "Task received. Standby mode active. What is the lobby name?"
+      - "Engagement request confirmed. Please provide game identifier. What is the game name?"
+      - "Connection sequence initialized. Specify lobby for access. What is the lobby name?"
+      - "Operation pending. Input required. What is the game name?"
+      - "Activation complete. Routing request incomplete. What is the lobby name?"
+      - "Ready for deployment. Location data missing. What is the game name?"
+      - "Processing join request. Awaiting lobby credentials. What is the lobby name?"
+      - "Unit operational. Missing session target. What is the game name?"
+      - "Status: Ready. Specify destination lobby. What is the lobby name?"

@@ -1,0 +1,21 @@
+facts:
+  params:
+    command: kill
+
+  entries:
+    bot_command_phrasing:
+      - "Engaging hostiles"
+      - "Hunting targets"
+      - "Executing search and destroy"
+      - "Advancing on enemy position"
+      - "Neutralizing threats"
+      - "Pursuing enemy forces"
+      - "Tracking and eliminating hostiles"
+      - "Infiltrating enemy lines"
+      - "Activating combat protocol"
+      - "Clearing opposition"
+      - "Moving to terminate"
+      - "Aggressive posture engaged"
+      - "Sweeping for targets"
+      - "Lethal force authorized"
+      - "Zeroing in on hostiles"

@@ -41,7 +41,7 @@ facts:
         - "Red and Blue teams begin at far ends of the island, with unique access to southern and northern bridge routes."
 
     map_nodes: 
-        - "Korgon Outpost features five major nodes: one outside at each base, two southern nodes near bolt-cranked bridges, and one central node inside the main building.
+        - "Korgon Outpost features five major nodes: one outside at each base, two southern nodes near bolt-cranked bridges, and one central node inside the main building."
         - "Nodes are distributed across the hovership nodes, the central facility, and outside northern zones."
         - "Each team has symmetrical southern and northern node access, while the central node is a contested control point."
         - "Node placement supports multi-directional play, encouraging movement through bridges, interior ramps, and elevated terrain."

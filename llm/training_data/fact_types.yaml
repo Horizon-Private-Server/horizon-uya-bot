@@ -116,152 +116,149 @@ fact_types:
       question_formats:
         - "@Omni describe the general structure of {map}."
         - "What is {map} like, @Omni?"
-        - "How is {map} laid out, Omni?"
+        - "How is {map} laid out, @Omni?"
         - "@Omni, summarize the map layout of {map}."
         - "Tell me how {map} is built, @Omni."
         - "@Omni what does the layout of {map} look like?"
-        - "Hey Omni, how are the major features arranged in {map}?"
+        - "Hey @Omni, how are the major features arranged in {map}?"
         - "@Omni, give an overview of how {map} is structured."
-        - "What kind of environment is featured in {map}, Omni?"
-        - "Omni, how would you describe the geography of {map}?"
+        - "What kind of environment is featured in {map}, @Omni?"
+        - "@Omni, how would you describe the geography of {map}?"
 
     map_nicknames:
       description: "Details common nicknames for a certain map."
       question_formats:
         - "@Omni what are some common nicknames for the map {map}?"
-        - "What aliases or shorthand names exist for {map}, Omni?"
+        - "What aliases or shorthand names exist for {map}, @Omni?"
         - "How is {map} referred to informally by players, @Omni?"
-        - "What do players usually call {map}, Omni?"
+        - "What do players usually call {map}, @Omni?"
         - "@Omni what short names are used for {map}?"
-        - "Are there any alternate names for {map}, Omni?"
+        - "Are there any alternate names for {map}, @Omni?"
         - "@Omni what is the slang term for {map}?"
-        - "Hey Omni, what is {map} called in casual play?"
+        - "Hey @Omni, what is {map} called in casual play?"
         - "Does {map} have a nickname, @Omni?"
-        - "Omni, what abbreviated terms are used for {map}?"
+        - "@Omni, what abbreviated terms are used for {map}?"
 
     map_big_or_small:
       description: "Explains if a map is big or small"
       question_formats:
         - "@Omni is {map} a big or small map?"
-        - "Omni, how large is {map}?"
+        - "@Omni, how large is {map}?"
         - "@Omni, does {map} count as one of the small maps?"
-        - "Can {map} support large-scale modes like Siege, Omni?"
-        - "What size category does {map} fall under, @Omni?"
-        - "@Omni would you describe {map} as a small or large battlefield?"
-        - "Omni, is {map} considered large enough for nodes and vehicles?"
-        - "How much space does {map} offer for gameplay, @Omni?"
-        - "Is {map} large enough to allow base defenses and node control, Omni?"
+        - "Can {map} support large-scale modes like Siege, @Omni?"
+        - "@Omni, is {map} considered large enough for nodes and vehicles?"
+        - "Is {map} large enough to allow base defenses and node control, @Omni?"
         - "@Omni, is {map} too small for Siege mode?"
 
     map_base_defenses:
       description: "Describes what base defenses each team gets."
       question_formats:
         - "@Omni where are base defenses located on {map}?"
-        - "What does each team get for base defenses in {map}, Omni?"
+        - "What does each team get for base defenses in {map}, @Omni?"
         - "@Omni, what defenses are installed at each base in {map}?"
-        - "Omni, what protection is available for team bases in {map}?"
+        - "@Omni, what protection is available for team bases in {map}?"
         - "What kind of defenses do team bases have in {map}, @Omni?"
         - "@Omni what turrets or units guard the bases in {map}?"
-        - "How are bases defended on {map}, Omni?"
-        - "Omni, what static defenses are provided to teams on {map}?"
+        - "How are bases defended on {map}, @Omni?"
+        - "@Omni, what static defenses are provided to teams on {map}?"
 
     map_base_locations:
       description: "Describes where the Red and Blue bases are located."
       question_formats:
         - "@Omni where are the team bases located in {map}?"
-        - "What are the base positions on {map}, Omni?"
+        - "What are the base positions on {map}, @Omni?"
         - "@Omni, where are the Red and Blue bases positioned in {map}?"
-        - "Omni, what parts of {map} hold the team bases?"
+        - "@Omni, what parts of {map} hold the team bases?"
         - "In what locations are the team bases found on {map}, @Omni?"
         - "@Omni how is base placement arranged in {map}?"
-        - "What is the relative position of bases in {map}, Omni?"
+        - "What is the relative position of bases in {map}, @Omni?"
         - "Where do teams spawn on {map}, @Omni?"
 
     map_nodes:
       description: "Explains how many nodes exist and where they are placed."
       question_formats:
         - "@Omni how many nodes exist on {map}?"
-        - "What is the node placement in {map}, Omni?"
+        - "What is the node placement in {map}, @Omni?"
         - "@Omni where are the nodes located on {map}?"
-        - "How are nodes distributed across {map}, Omni?"
-        - "Omni, where can nodes be captured in {map}?"
+        - "How are nodes distributed across {map}, @Omni?"
+        - "@Omni, where can nodes be captured in {map}?"
         - "@Omni what kinds of nodes are placed in {map}?"
-        - "What is the layout of capture nodes in {map}, Omni?"
+        - "What is the layout of capture nodes in {map}, @Omni?"
         - "@Omni how is node positioning handled on {map}?"
 
     map_node_strategic_value:
       description: "Explains how controlling nodes affects match dynamics."
       question_formats:
         - "@Omni what is a common strategy for controlling nodes on {map}?"
-        - "On {map}, how can players control nodes for their advantage, Omni?"
+        - "On {map}, how can players control nodes for their advantage, @Omni?"
         - "@Omni what tactical role do nodes play in {map}?"
-        - "Why is it important to hold nodes in {map}, Omni?"
-        - "Omni, how do captured nodes impact gameplay in {map}?"
+        - "Why is it important to hold nodes in {map}, @Omni?"
+        - "@Omni, how do captured nodes impact gameplay in {map}?"
         - "@Omni what benefits come from controlling nodes in {map}?"
-        - "What happens when a team controls more nodes in {map}, Omni?"
+        - "What happens when a team controls more nodes in {map}, @Omni?"
 
     map_trooper_locations:
       description: "Identifies any neutral troopers."
       question_formats:
         - "@Omni what troopers are present on {map}?"
-        - "Are there any Galactic Rangers on {map}, Omni?"
-        - "Omni, which neutral troopers appear on {map}?"
+        - "Are there any Galactic Rangers on {map}, @Omni?"
+        - "@Omni, which neutral troopers appear on {map}?"
 
     map_sniper:
       description: "Explains why specific sniper positions offer advantages."
       question_formats:
         - "@Omni how can snipers be effective on {map}?"
-        - "What sniper positions exist on {map}, Omni?"
-        - "Omni, where do snipers usually position themselves in {map}?"
+        - "What sniper positions exist on {map}, @Omni?"
+        - "@Omni, where do snipers usually position themselves in {map}?"
         - "What makes certain sniper spots powerful on {map}, @Omni?"
         - "@Omni how does the terrain of {map} support sniping?"
-        - "What locations on {map} give snipers long lines of sight, Omni?"
+        - "What locations on {map} give snipers long lines of sight, @Omni?"
 
     map_terrain_features:
       description: "Describes hills, cover, or verticality affecting movement or combat."
       question_formats:
         - "@Omni what terrain advantages are present in {map}?"
-        - "What cover is available for defenders on {map}, Omni?"
+        - "What cover is available for defenders on {map}, @Omni?"
         - "How does the terrain affect combat in {map}, @Omni?"
-        - "Omni, are there elevation changes or cover spots on {map}?"
-        - "What features of the terrain benefit players on {map}, Omni?"
+        - "@Omni, are there elevation changes or cover spots on {map}?"
+        - "What features of the terrain benefit players on {map}, @Omni?"
         - "@Omni does {map} include verticality or obstacles?"
-        - "Where are the best cover points on {map}, Omni?"
+        - "Where are the best cover points on {map}, @Omni?"
 
     map_vehicle_types:
       description: "Lists all usable vehicle types available on the map."
       question_formats:
         - "@Omni which vehicles are available on {map}?"
-        - "What vehicles spawn on {map}, Omni?"
+        - "What vehicles spawn on {map}, @Omni?"
         - "What types of vehicles can be used on {map}, @Omni?"
-        - "Omni, where do vehicles appear in {map}?"
-        - "Are there air or land vehicles in {map}, Omni?"
+        - "@Omni, where do vehicles appear in {map}?"
+        - "Are there air or land vehicles in {map}, @Omni?"
         - "@Omni what vehicle options are accessible on {map}?"
 
     map_turboslider_tactics:
       description: "Explains how Turbosliders are strategically used."
       question_formats:
         - "@Omni how are Turbosliders used strategically in {map}?"
-        - "What role do Turbosliders play in matches on {map}, Omni?"
-        - "Omni, how do players use Turbosliders to gain advantage in {map}?"
+        - "What role do Turbosliders play in matches on {map}, @Omni?"
+        - "@Omni, how do players use Turbosliders to gain advantage in {map}?"
         - "@Omni why are Turbosliders important in {map}?"
 
     map_hovership_tactics:
       description: "Explains how Hoverships are strategically used."
       question_formats:
         - "@Omni how are Hoverships used offensively on {map}?"
-        - "What strategies involve Hoverships on {map}, Omni?"
-        - "Omni, how do Hoverships support assaults in {map}?"
+        - "What strategies involve Hoverships on {map}, @Omni?"
+        - "@Omni, how do Hoverships support assaults in {map}?"
         - "@Omni what is the best way to use a Hovership in {map}?"
 
     map_counter_air_dominance_strategies:
       description: "Details how to stop enemy Hoverships from dominating."
       question_formats:
         - "@Omni what's an effective way to defend against Hoverships on {map}?"
-        - "How can teams counter Hovership dominance on {map}, Omni?"
+        - "How can teams counter Hovership dominance on {map}, @Omni?"
         - "@Omni how do you stop enemy air control in {map}?"
-        - "What tactics shut down Hoverships on {map}, Omni?"
-        - "Omni, how can you deal with aerial threats in {map}?"
+        - "What tactics shut down Hoverships on {map}, @Omni?"
+        - "@Omni, how can you deal with aerial threats in {map}?"
 
   # ===========================================================================
   #  Horizon Project
@@ -806,7 +803,7 @@ fact_types:
         - "How useful is the wrench in multiplayer combat, @Omni?"
         - "@Omni is the wrench a viable weapon?"
         - "When is it smart to use the wrench, @Omni?"
-        - "@Omni is the OmniWrench good in a fight?"
+        - "@Omni is the @OmniWrench good in a fight?"
 
     wrench_hyperstrike_mechanics:
       description: "Explains what the hyperstrike is and how it works during mid-air melee attacks."

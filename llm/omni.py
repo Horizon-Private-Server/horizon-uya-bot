@@ -107,7 +107,7 @@ async def on_message(message):
             print("==========================================================")
  
             command = output.split("\n")[0].split("command: ")[-1]
-            chat_resp = output.split("\n")[-1].split("chat_response: ")[-1].removeprefix("Omni: ").strip()
+            chat_resp = output.split("\n")[-1].removeprefix("chat_response:: ").strip()
             print(command, chat_resp)
 
             # Update history AFTER generating response

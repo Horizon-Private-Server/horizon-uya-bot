@@ -63,7 +63,7 @@ class OmniPromptFormatter:
         random.shuffle(assignments)
         return assignments
 
-    def generate_training_row(self, data, simulate_state=True, extra_chat=None):
+    def generate_training_row(self, data, simulate_state=True):
         if simulate_state:
             num_players = random.choice([2, 3, 4, 5, 6, 7, 8])
             mode = random.choice(self.modes)
@@ -102,14 +102,9 @@ class OmniPromptFormatter:
             map_choice = ""
             mode = ""
 
-        
-        chat = ""
-        if extra_chat:
-            chat = f"{self.usernames.pop()}: {extra_chat['q']}\n" + f"Omni: {extra_chat['a']}\n"
-        chat += f"{self.usernames.pop()}: {data['q']}"
-
+        chat = f"{self.usernames.pop()}: {data['q']}"
         instruction = self.fill_prompt(connection_status, map_choice, mode, players, chat)
-        output = f"command: {data['c']}\nchat_response: {data['a']}"
+        output = f"chat_response: {data['a']}\ncommand: {data['c']}"
 
         return {"instruction": instruction, "output": output}
 
@@ -270,11 +265,9 @@ class OmniPromptFormatter:
         total = 0
 
         random.shuffle(self.training_data)
-        extra_chat_row = self.deranged_copy(self.training_data)
-
         with open(output_path, 'w', encoding='utf-8') as f:
             for i, record in enumerate(self.training_data):
-                row = self.generate_training_row(record, simulate_state=(i % 2 != 0), extra_chat=extra_chat_row[i])
+                row = self.generate_training_row(record, simulate_state=(i % 2 != 0))
                 if i % 2 != 0:
                     assert 'Username\\\": \\\"Omni' in json.dumps(row)
                 f.write(json.dumps(row) + '\n')

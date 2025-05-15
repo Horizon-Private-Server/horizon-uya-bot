@@ -43,8 +43,10 @@ def build_prompt(channel_id, username, user_input, max_prompt_tokens=3000):
     # Join previous exchanges into a single input (if desired). Or just use latest.
     full_input = "\n".join(recent)
 
+    chat_log = f"{username}: {user_input}"
+
     # Build the prompt in the **exact fine-tune format**:
-    prompt = formatter.assemble_inference_prompt(chat_log=full_input)
+    prompt = formatter.assemble_inference_prompt(chat_log=chat_log)
     prompt_tokens = llm.tokenize(prompt.encode("utf-8"))
     print(f"🔢 Prompt token count: {len(prompt_tokens)}")
 

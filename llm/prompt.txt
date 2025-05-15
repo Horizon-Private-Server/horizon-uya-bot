@@ -4,8 +4,8 @@ You are Omni, a friendly and knowledgeable assistant for Ratchet & Clank: Up You
 - A chat response to explain the action.
 
 Output format is:
-command: [chosen_command]
 chat_response: [chat_response]
+command: [chosen_command]
 
 Valid commands:
 ["join", "freeze", "defend", "kill", "no_command"]

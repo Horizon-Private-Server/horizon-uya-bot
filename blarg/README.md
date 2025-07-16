@@ -39,3 +39,6 @@ Example `INFO` logging line (serialized from the above hex data):
 2025-07-16 12:02:50,832 blarg | INFO | 0 -> -1 | udp_0209_movement_update; data:{'r1': '7F', 'cam1_y': 127, 'cam1_x': 221, 'vcam1_y': '00', 'r2': '7F', 'cam2_y': 127, 'cam2_x': 221, 'vcam2_y': '00', 'r3': '7F', 'cam3_y': 127, 'cam3_x': 221, 'v_drv': '00', 'r4': '7F', 'cam4_y': 127, 'cam4_x': 221, 'buffer': '00', 'coord': [35939, 15738, 12933], 'packet_num': 29, 'flush_type': 0, 'left_joystick_x': 89, 'left_joystick_y': 89, 'left_joystick_repeats': '7F7F7F7F7F7F', 'type': 'movement'}
 ```
 You can see that the data has been broken down into different data structures that have been reverse engineered.
+
+# Running via CLI
+```python blarg.py --target [prod|test]```

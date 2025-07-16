@@ -142,7 +142,7 @@ class Blarg:
         async with websockets.connect(uri,ping_interval=None) as websocket:
             while True:
                 data = await websocket.recv()
-                #self._logger.debug(f"{data}")
+                self._logger.debug(f"{data}")
 
                 if self._config['fail_on_error'] == 'True':
                     for data_point in json.loads(data):

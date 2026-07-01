@@ -6,10 +6,6 @@ class dm_crouch_body(State):
     def __init__(self, state_machine):
         super().__init__(state_machine)
 
-
-
-
-
     def enter(self, msg:dict):
         self.starting_coord = self.state_machine.game_state.player.coord
         self.player_tracking = self.state_machine.game_state.get_closest_enemy_player()
@@ -26,6 +22,8 @@ class dm_crouch_body(State):
         target_distance = calculate_distance(self.state_machine.game_state.player.coord, self.state_machine.target)
         if target_distance > 100:
             new_coord = self.state_machine.game_state.map.path(self.state_machine.game_state.player.coord, self.state_machine.target, chargeboot=True)
+            if calculate_distance(self.state_machine.game_state.player.coord, new_coord) > 300:
+                return
             self.state_machine.update_joystick_input_and_angle(self.state_machine.game_state.player.coord, new_coord)
             self.state_machine.game_state.player.set_coord(new_coord)
             return

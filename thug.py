@@ -3,13 +3,19 @@ import asyncio
 import logging
 import argparse
 
+from butils.colors import ColorFormatter, CYAN, MAGENTA, BRIGHT_WHITE, BRIGHT_CYAN, RESET
+
 logger = logging.getLogger('thug')
 logger.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s %(name)s | %(levelname)s | %(message)s')
-sh = logging.StreamHandler()
-sh.setFormatter(formatter)
-sh.setLevel(logging.DEBUG)
-logger.addHandler(sh)
+# Colorized stream handler
+ch = logging.StreamHandler()
+ch.setFormatter(ColorFormatter('%(asctime)s %(name)s | %(levelname)s | %(message)s'))
+ch.setLevel(logging.DEBUG)
+logger.handlers = [ch]
+# Also apply color handler to all child loggers
+logging.getLogger('thug.map').handlers = [ch]
+logging.getLogger('thug.model').handlers = [ch]
+logging.getLogger('thug.model.prototype').handlers = [ch]
 
 from butils.utils import *
 
@@ -87,6 +93,16 @@ class Thug:
 
 
 if __name__ == '__main__':
+    print(f"{CYAN}{'='*62}{RESET}")
+    print(f"{BRIGHT_WHITE}  H   H   OOO   RRRR   IIII  ZZZZZ   OOO   N   N  {RESET}")
+    print(f"{BRIGHT_WHITE}  H   H  O   O  R   R   II      Z   O   O  NN  N  {RESET}")
+    print(f"{BRIGHT_WHITE}  HHHHH  O   O  RRRR    II     Z    O   O  N N N  {RESET}")
+    print(f"{BRIGHT_WHITE}  H   H  O   O  R  R    II    Z     O   O  N  NN  {RESET}")
+    print(f"{BRIGHT_WHITE}  H   H   OOO   R   R  IIII  ZZZZZ   OOO   N   N  {RESET}")
+    print(f"{MAGENTA}                    UYA MP BOTS                     {RESET}")
+    print(f"{CYAN}{'='*62}{RESET}")
+    print()
+
     parser = argparse.ArgumentParser(description="Run Horizon's UYA Bot. (Thug)")
     parser.add_argument('--config', type=str, default=None, help='Path to JSON configuration file (default: use ENV Vars)')
 

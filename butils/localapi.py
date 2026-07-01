@@ -31,8 +31,11 @@ class LocalApi():
         await runner.setup()
         site = web.TCPSite(runner, 'localhost', self._port)
 
-        await site.start()
-        port_select = site._server.sockets[0].getsockname()[1]
+        try:
+            await site.start()
+        except OSError:
+            # Port in use from previous session — local API is optional
+            pass
 
     async def kill(self):
         return

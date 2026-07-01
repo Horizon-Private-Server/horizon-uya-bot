@@ -1,4 +1,5 @@
 import logging
+from butils.colors import GREEN, YELLOW, MAGENTA, RESET
 logger = logging.getLogger('thug.model')
 logger.setLevel(logging.INFO)
 
@@ -123,6 +124,10 @@ class Model:
         '''
         logger.debug(f"I | {protocol}; src:{src_player} {dme_packet}")
 
+        # Ignore unknown dict-type DME packets
+        if isinstance(dme_packet, dict):
+            return
+
         if dme_packet.name == 'tcp_000F_playername_update' and dme_packet.unk3 == '001A00':
             self.dmetcp_queue.put([0, tcp_000F_playername_update.tcp_000F_playername_update(unk1=32958977, unk2='00000000000003000300000000001A000000', username=self.game_state.player.username, unk3='001A00')])
 
@@ -174,6 +179,9 @@ class Model:
             self.loop.create_task(self.send_player_data())
             self.loop.create_task(self.timer_update())
             self.game_state.state = 'active'
+            logger.info(f"{GREEN}{'='*40}{RESET}")
+            logger.info(f"{GREEN}  GAME ON  |  {self.game_state.map.map}  |  {self.game_state.game_mode}{RESET}")
+            logger.info(f"{GREEN}{'='*40}{RESET}")
             if self.bot.bot_mode == 'metric':
                 self._metric_manager.start()
 
@@ -185,7 +193,7 @@ class Model:
 
         if dme_packet.name == 'tcp_0012_player_left':
             if src_player == 0:
-                logger.info("Host has left! Exiting ...")
+                logger.info(f"{YELLOW}Host has left! Exiting ...{RESET}")
                 self.alive = False
 
 
@@ -408,5 +416,6 @@ class Model:
     async def kill(self, delay=0):
         await asyncio.sleep(delay)
         logger.info(f"Killing Model ...")
+        await self.game_state.map.persist_new_nodes()
         self.alive = False                        
         logger.info(f"Killed.")

@@ -97,6 +97,10 @@ class Prototype:
         if self.game_state.player.is_dead:
             return
 
+        # Don't run AI while game is in staging or player positions are unknown
+        if self.game_state.state == 'staging' or self.game_state.players[0].coord == [0,0,0]:
+            return
+
         if self.state == None:
             if 'training' in self.bot_mode:
                 self.state = training_initial.training_initial(self)
@@ -124,6 +128,7 @@ class Prototype:
         logger.info(f"Transitioning from {self.state} to {new_state}")
         self.state.exit()
         self.state = eval(f"{new_state}.{new_state}(self)")
+        self._misc.pop('interp_target', None)
         self.state.enter(msg)
 
     def send_movement(self):
@@ -147,6 +152,20 @@ class Prototype:
         self.game_state.player.prev_animation = self.game_state.player.animation
         self.game_state.player.animation = None
 
+    def interpolate_toward(self, target):
+        """Step smoothly toward target instead of teleporting."""
+        src = self.game_state.player.coord
+        dist = calculate_distance(src, target)
+        if dist < 100 or dist > 10000:
+            return target
+        step = max(30, dist * 0.2)
+        ratio = step / dist
+        return [
+            int(src[0] + (target[0] - src[0]) * ratio),
+            int(src[1] + (target[1] - src[1]) * ratio),
+            int(src[2] + (target[2] - src[2]) * ratio)
+        ]
+
     def patrol(self, coords, circular=False):
         if 'patrol' not in self._misc.keys():
             self._misc['patrol'] = CircularList(coords, circular=circular)
@@ -158,7 +177,35 @@ class Prototype:
         else:
             patrol_coord = self._misc['patrol'].pop()
 
-        new_coord = self.game_state.map.path(self.game_state.player.coord, patrol_coord)
+        # Interpolated movement — step toward next path node instead of teleporting
+        if 'interp_target' not in self._misc or self._misc['interp_target'] is None:
+            new_target = self.game_state.map.path(self.game_state.player.coord, patrol_coord)
+            if calculate_distance(self.game_state.player.coord, new_target) < 300:
+                self._misc['interp_target'] = new_target
+
+        target = self._misc['interp_target']
+        dist_to_target = calculate_distance(self.game_state.player.coord, target)
+
+        if dist_to_target < 100:
+            # Reached target, get next path node
+            new_target = self.game_state.map.path(self.game_state.player.coord, patrol_coord)
+            if new_target is not None and calculate_distance(self.game_state.player.coord, new_target) < 300:
+                self._misc['interp_target'] = new_target
+                target = self._misc['interp_target']
+                dist_to_target = calculate_distance(self.game_state.player.coord, target)
+
+        if dist_to_target > 0 and dist_to_target < 10000:
+            # Step 20% of the way each frame for smooth movement
+            step = max(30, dist_to_target * 0.2)
+            ratio = step / dist_to_target
+            new_coord = [
+                int(self.game_state.player.coord[0] + (target[0] - self.game_state.player.coord[0]) * ratio),
+                int(self.game_state.player.coord[1] + (target[1] - self.game_state.player.coord[1]) * ratio),
+                int(self.game_state.player.coord[2] + (target[2] - self.game_state.player.coord[2]) * ratio)
+            ]
+        else:
+            new_coord = self.game_state.player.coord
+
         self.update_joystick_input_and_angle(self.game_state.player.coord, new_coord)
         self.game_state.player.set_coord(new_coord)
 
@@ -177,7 +224,7 @@ class Prototype:
             self.game_state.player.left_joystick_y = None
             return
 
-        if new_coord[2] > old_coord[2]:
+        if new_coord[2] > old_coord[2] + 500:
             self.game_state.player.animation = 'jump'
 
         if self.game_state.player.prev_animation != 'crouch' and calculate_distance(old_coord, new_coord) > CHARGEBOOT_DISTANCE:

@@ -29,16 +29,16 @@ class MlsTcp(AbstractTcp):
         
         
     async def connect(self, world_id):
-        await asyncio.wait_for(self.connect_to_mls(), timeout=7.0)
-        await asyncio.wait_for(self.get_game_info(world_id), timeout=5.0)
-        await asyncio.wait_for(self.join_game(world_id), timeout=5.0)
+        await asyncio.wait_for(self.connect_to_mls(), timeout=15.0)
+        await asyncio.wait_for(self.get_game_info(world_id), timeout=10.0)
+        await asyncio.wait_for(self.join_game(world_id), timeout=10.0)
 
         self.loop.create_task(self.check_game_info_alive(world_id))
 
 
     async def connect_to_mls(self):
-        # Need to let server process access token
-        await asyncio.sleep(2)
+        # Let server settle after MAS login and game creation
+        await asyncio.sleep(4)
         self._logger.info("Connecting to MLS ...")
 
         pkt = hex_to_bytes('1240006B8F99EC1BAF06D2674284B5305EE6E38B1DE7331F2FBF31DE497228B7C52162F18DAE8913C40C43C0E890D14EEE16AD07C64FD9281D8B972D78BE78D1B290CE')

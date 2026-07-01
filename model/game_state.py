@@ -140,6 +140,8 @@ class GameState:
         self.players[src_player].cam_x = movement_data['cam3_x']
         self.players[src_player].movement_packet_num = movement_data['packet_num']
 
+        self.map.add_node(movement_data['coord'])
+
         if self.players[src_player].flag == 'red_flag':
             self.red_flag_loc = movement_data['coord']
         elif self.players[src_player].flag == 'blue_flag':

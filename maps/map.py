@@ -1,21 +1,22 @@
 import numpy as np
+import re
 import json
 import networkx as nx
 import os
 from scipy.spatial import distance
 from datetime import datetime
 import random
-import sys
 import gzip
 import aiofiles
 import io
-import asyncio
+import pickle
 from constants.constants import CHARGEBOOT_DISTANCE
 
 from butils.utils import *
 from maps.local_coordinates.local_transforms import LocalTransform
 
 import logging
+from butils.colors import GREEN, RESET
 logger = logging.getLogger("thug.map")
 logger.setLevel(logging.DEBUG)
 
@@ -48,7 +49,9 @@ class Map:
         logger.info(f"Loading map graph {self.map} ...")
         self.G = await self.read_graph(f"maps/graphs/{self.map}.edgelist")
 
-        assert len(list(nx.connected_components(self.G))) == 1
+        components = list(nx.connected_components(self.G))
+        if len(components) != 1:
+            logger.warning(f"Graph has {len(components)} connected components (expected 1). Largest: {max(len(c) for c in components)}")
 
         self.points = np.array(self.G.nodes)
         logger.info(f"Loaded map in {(datetime.now() - start_time).total_seconds():.2f} seconds!")
@@ -74,15 +77,47 @@ class Map:
         return content
 
     async def read_graph(self, filepath):
+        # Try fast pickle cache first
+        pkl_path = filepath.replace('.edgelist', '.graph.pkl')
+        try:
+            async with aiofiles.open(pkl_path, 'rb') as f:
+                data = await f.read()
+            G = pickle.loads(data)
+            # Verify pickle matches edgelist freshness
+            if os.path.getmtime(pkl_path) >= os.path.getmtime(filepath):
+                logger.info(f"Loaded graph from cache ({len(G)} nodes)")
+                return G
+        except (FileNotFoundError, pickle.UnpicklingError):
+            pass
+
         content = await self.read_file(filepath)
         file_like_object = io.StringIO(content)
         G = nx.read_edgelist(file_like_object, nodetype=eval, delimiter='|')
+        G = self._normalize_graph(G)
+        # Save pickle cache
+        try:
+            async with aiofiles.open(pkl_path, 'wb') as f:
+                await f.write(pickle.dumps(G, protocol=pickle.HIGHEST_PROTOCOL))
+        except Exception:
+            pass
+        return G
+
+    def _normalize_graph(self, G):
+        """Normalize np.int64 node tuples to plain int tuples."""
+        mapping = {}
+        for node in list(G.nodes):
+            plain = tuple(int(x) for x in node)
+            if plain != node:
+                mapping[node] = plain
+        if mapping:
+            nx.relabel_nodes(G, mapping, copy=False)
         return G
 
     async def read_waypoints(self, G_waypoint_path, waypoints_path):
         content = await self.read_file(G_waypoint_path)
         file_like_object = io.StringIO(content)
         G_waypoints = nx.read_edgelist(file_like_object,nodetype=eval, delimiter='|')
+        G_waypoints = self._normalize_graph(G_waypoints)
 
         content = await self.read_file(waypoints_path)
         file_like_object = io.StringIO(content)
@@ -93,22 +128,82 @@ class Map:
         content = await self.read_file(filepath, mode='rb')
         with gzip.GzipFile(fileobj=io.BytesIO(content)) as f:
             data = json.load(f)
-        return data
-    
+        # Normalize np.int64 cache keys to plain tuple format
+        normalized = {}
+        for key, value in data.items():
+            parts = key.split('|')
+            nums_a = re.findall(r'\d+', parts[0])
+            nums_b = re.findall(r'\d+', parts[1])
+            plain_key = f"({nums_a[0]}, {nums_a[1]}, {nums_a[2]})|({nums_b[0]}, {nums_b[1]}, {nums_b[2]})"
+            normalized[plain_key] = value
+        return normalized
+
     def clear_cache(self):
         # Player has respawned, reset caches
         self.path_cache = None
-        
+
+    @staticmethod
+    def _to_plain(t):
+        """Normalize np.int64 tuple elements to plain Python ints."""
+        return tuple(int(x) for x in t)
+
+    def add_node(self, coord, connect_radius=60):
+        if self.map_not_yet_loaded():
+            return
+        coord = self._to_plain(coord)
+        if self.G.has_node(coord):
+            return
+        distances = distance.cdist(self.points, [coord], 'euclidean').flatten()
+        if len(distances) > 0 and np.min(distances) < 20:
+            return
+        self.G.add_node(coord)
+        mask = distances < connect_radius
+        if np.any(mask):
+            nearby = self.points[mask]
+            nearby_dists = distances[mask]
+            for i, neighbor in enumerate(nearby):
+                nb = tuple(int(x) for x in neighbor)
+                self.G.add_edge(coord, nb, weight=nearby_dists[i])
+        else:
+            closest_idx = np.argmin(distances)
+            closest_node = tuple(int(x) for x in self.points[closest_idx])
+            self.G.add_edge(coord, closest_node, weight=distances[closest_idx])
+        self.points = np.array(self.G.nodes)
+        self._pending_persist = getattr(self, '_pending_persist', [])
+        self._pending_persist.append(coord)
+        if not hasattr(self, '_nodes_added'):
+            self._nodes_added = 0
+        self._nodes_added += 1
+        if self._nodes_added % 50 == 1:
+            logger.info(f"{GREEN}Graph grown: +{self._nodes_added} nodes, total={len(self.points)} (last: {coord}){RESET}")
+
+    async def persist_new_nodes(self):
+        pending = getattr(self, '_pending_persist', [])
+        if not pending:
+            return
+        edgelist_path = f"maps/graphs/{self.map}.edgelist"
+        async with aiofiles.open(edgelist_path, 'a') as f:
+            for coord in pending:
+                for neighbor in self.G.neighbors(coord):
+                    weight = self.G[coord][neighbor].get('weight', 0)
+                    await f.write(f"{coord}|{neighbor}|{{'weight': {weight}}}\n")
+        # Invalidate pickle cache since edgelist changed
+        pkl_path = edgelist_path.replace('.edgelist', '.graph.pkl')
+        try:
+            os.remove(pkl_path)
+        except FileNotFoundError:
+            pass
+        logger.info(f"{GREEN}Persisted {len(pending)} new nodes to {edgelist_path}{RESET}")
+        self._pending_persist = []
+
     def path(self, src, dst, chargeboot=False):
         if self.map_not_yet_loaded():
             return siege_ctf_respawn_coords[self.map]['red']
 
-        # When chargeboot = True, we want to move ~ 110
         cboot_dist = CHARGEBOOT_DISTANCE
 
-        src = tuple(src)
-        dst = tuple(dst)
-
+        src = self._to_plain(src)
+        dst = self._to_plain(dst)
 
         if self.path_cache != None and len(self.path_cache) != 0 and calculate_distance(dst, self.path_cache[-1]) < 600:
             if chargeboot:
@@ -182,11 +277,22 @@ class Map:
                 return src
 
     def query_waypoint_cache(self, src_waypoint, dst_waypoint):
-        if f'{src_waypoint}|{dst_waypoint}' in self.waypoint_cache.keys():
-            return self.waypoint_cache[f'{src_waypoint}|{dst_waypoint}'].copy()
-        result = self.waypoint_cache[f'{dst_waypoint}|{src_waypoint}'].copy()
-        result.reverse()
-        return result
+        key_a = f'{src_waypoint}|{dst_waypoint}'
+        key_b = f'{dst_waypoint}|{src_waypoint}'
+        if key_a in self.waypoint_cache:
+            return self.waypoint_cache[key_a].copy()
+        if key_b in self.waypoint_cache:
+            result = self.waypoint_cache[key_b].copy()
+            result.reverse()
+            return result
+        # Cache miss — compute path on the fly
+        logger.warning(f"Waypoint cache miss: {key_a}, computing path...")
+        try:
+            path = nx.astar_path(self.G_waypoints, src_waypoint, dst_waypoint, heuristic=search_heuristic)
+            return path
+        except Exception:
+            logger.exception(f"Failed to compute waypoint path")
+            return [src_waypoint, dst_waypoint]
 
 
     def find_closest_node(self, dst):
@@ -194,12 +300,12 @@ class Map:
             return siege_ctf_respawn_coords[self.map]['red']
         distances = distance.cdist(self.points, [dst], 'euclidean')
         min_idx = np.where(distances == np.amin(distances))[0][0]
-        return tuple(self.points[min_idx])
+        return self._to_plain(self.points[min_idx])
 
     def get_closest_waypoint(self, point):
         distances = distance.cdist(self.waypoints, [point], 'euclidean')
         min_idx = np.where(distances == np.amin(distances))[0][0]
-        return tuple(self.waypoints[min_idx])
+        return self._to_plain(self.waypoints[min_idx])
 
     def get_random_coord(self):
         if self.map_not_yet_loaded():

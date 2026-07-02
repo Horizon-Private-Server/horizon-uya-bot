@@ -97,6 +97,10 @@ class Prototype:
         if self.game_state.player.is_dead:
             return
 
+        # Don't run AI while game is in staging or player positions are unknown
+        if self.game_state.state == 'staging' or self.game_state.players[0].coord == [0,0,0]:
+            return
+
         if self.state == None:
             if 'training' in self.bot_mode:
                 self.state = training_initial.training_initial(self)
@@ -147,6 +151,20 @@ class Prototype:
         self.game_state.player.prev_animation = self.game_state.player.animation
         self.game_state.player.animation = None
 
+    def interpolate_toward(self, target):
+        """Step smoothly toward target instead of teleporting."""
+        src = self.game_state.player.coord
+        dist = calculate_distance(src, target)
+        if dist < 100 or dist > 10000:
+            return target
+        step = max(30, dist * 0.2)
+        ratio = step / dist
+        return [
+            int(src[0] + (target[0] - src[0]) * ratio),
+            int(src[1] + (target[1] - src[1]) * ratio),
+            int(src[2] + (target[2] - src[2]) * ratio)
+        ]
+
     def patrol(self, coords, circular=False):
         if 'patrol' not in self._misc.keys():
             self._misc['patrol'] = CircularList(coords, circular=circular)
@@ -158,7 +176,54 @@ class Prototype:
         else:
             patrol_coord = self._misc['patrol'].pop()
 
-        new_coord = self.game_state.map.path(self.game_state.player.coord, patrol_coord)
+        # If escaping, path toward escape target instead of patrol
+        if self._misc.get('escape_target'):
+            patrol_coord = self._misc['escape_target']
+            if calculate_distance(self.game_state.player.coord, patrol_coord) < 500:
+                self._misc.pop('escape_target', None)
+
+        target_coord = self.game_state.map.path(self.game_state.player.coord, patrol_coord)
+        # Smooth step toward target instead of teleporting
+        dist = calculate_distance(self.game_state.player.coord, target_coord)
+        if dist > 80:
+            ratio = 80.0 / dist
+            new_coord = [
+                int(self.game_state.player.coord[0] + (target_coord[0] - self.game_state.player.coord[0]) * ratio),
+                int(self.game_state.player.coord[1] + (target_coord[1] - self.game_state.player.coord[1]) * ratio),
+                int(self.game_state.player.coord[2] + (target_coord[2] - self.game_state.player.coord[2]) * ratio)
+            ]
+        else:
+            new_coord = target_coord
+
+        # Stuck detection — force jump if barely moving (skip during escape)
+        if 'stuck_pos' not in self._misc:
+            self._misc['stuck_pos'] = None
+            self._misc['stuck_frames'] = 0
+        if self._misc.get('escape_target'):
+            self._misc['stuck_frames'] = 0
+        elif self._misc['stuck_pos'] is not None and calculate_distance(self._misc['stuck_pos'], self.game_state.player.coord) < 30:
+            self._misc['stuck_frames'] += 1
+        else:
+            self._misc['stuck_pos'] = tuple(self.game_state.player.coord)
+            self._misc['stuck_frames'] = 0
+        if self._misc['stuck_frames'] > 30:
+            self.game_state.player.animation = 'jump'
+            self._misc['stuck_pos'] = None
+            self._misc['stuck_frames'] = -80
+            self._misc.pop('patrol', None)
+            # Escape: pick 3 random far nodes and pick the one farthest from current pos
+            coords = [self.game_state.map.get_random_coord() for _ in range(3)]
+            coords.sort(key=lambda c: calculate_distance(self.game_state.player.coord, c), reverse=True)
+            self._misc['escape_target'] = coords[0]
+        # Freeze coords after jump — 80 frames covers jump + double jump arc
+        if self._misc.get('jump_frames', 0) > 0 or self._misc['stuck_frames'] < 0:
+            if self._misc.get('jump_frames', 0) > 0:
+                self._misc['jump_frames'] -= 1
+            if self._misc['stuck_frames'] < 0:
+                self._misc['stuck_frames'] += 1
+            self.update_joystick_input_and_angle(self.game_state.player.coord, new_coord)
+            return
+
         self.update_joystick_input_and_angle(self.game_state.player.coord, new_coord)
         self.game_state.player.set_coord(new_coord)
 
@@ -177,8 +242,9 @@ class Prototype:
             self.game_state.player.left_joystick_y = None
             return
 
-        if new_coord[2] > old_coord[2]:
+        if new_coord[2] > old_coord[2] + 200:
             self.game_state.player.animation = 'jump'
+            self._misc['jump_frames'] = 80
 
         if self.game_state.player.prev_animation != 'crouch' and calculate_distance(old_coord, new_coord) > CHARGEBOOT_DISTANCE:
             self.game_state.player.animation = 'crouch'
@@ -214,6 +280,10 @@ class Prototype:
 
     def fire_weapon(self, object_id=-1):
         if self.game_state.player.arsenal.enabled == False or self.game_state.player.is_dead or self.game_state.weapons == [] or self.game_state.player.weapon in [None, 'wrench', 'hyper'] or self.changing_weapons:
+            return
+
+        # Don't fire while stuck or mid-jump
+        if self._misc.get('stuck_frames', 0) > 15 or self._misc.get('stuck_frames', 0) < 0:
             return
 
         if datetime.now().timestamp() - self.weapon_switch_dt < self.weapon_switch_fire_cooldown:

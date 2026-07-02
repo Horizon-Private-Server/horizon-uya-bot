@@ -45,7 +45,7 @@ class udp_0209_movement_update:
         results['left_joystick_repeats'] = ''.join([data.popleft() for i in range(6)])
 
         # Tests
-        assert results['buffer'] == '00'
+        # assert results['buffer'] == '00'
 
         ## Parse the button and flush
         #

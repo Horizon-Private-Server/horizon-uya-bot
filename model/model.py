@@ -107,6 +107,9 @@ class Model:
         '''
         logger.debug(f"Processing: {serialized}")
 
+        if 'packet' not in serialized:
+            return
+
         if serialized['packet'] == 'medius.rt.clientappsingle':
             for dme_packet in serialized['packets']:
                 self.process_dme_packet(serialized['src_player'], dme_packet, serialized['protocol'])

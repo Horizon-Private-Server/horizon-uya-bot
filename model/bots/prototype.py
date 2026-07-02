@@ -177,35 +177,7 @@ class Prototype:
         else:
             patrol_coord = self._misc['patrol'].pop()
 
-        # Interpolated movement — step toward next path node instead of teleporting
-        if 'interp_target' not in self._misc or self._misc['interp_target'] is None:
-            new_target = self.game_state.map.path(self.game_state.player.coord, patrol_coord)
-            if calculate_distance(self.game_state.player.coord, new_target) < 300:
-                self._misc['interp_target'] = new_target
-
-        target = self._misc['interp_target']
-        dist_to_target = calculate_distance(self.game_state.player.coord, target)
-
-        if dist_to_target < 100:
-            # Reached target, get next path node
-            new_target = self.game_state.map.path(self.game_state.player.coord, patrol_coord)
-            if new_target is not None and calculate_distance(self.game_state.player.coord, new_target) < 300:
-                self._misc['interp_target'] = new_target
-                target = self._misc['interp_target']
-                dist_to_target = calculate_distance(self.game_state.player.coord, target)
-
-        if dist_to_target > 0 and dist_to_target < 10000:
-            # Step 20% of the way each frame for smooth movement
-            step = max(30, dist_to_target * 0.2)
-            ratio = step / dist_to_target
-            new_coord = [
-                int(self.game_state.player.coord[0] + (target[0] - self.game_state.player.coord[0]) * ratio),
-                int(self.game_state.player.coord[1] + (target[1] - self.game_state.player.coord[1]) * ratio),
-                int(self.game_state.player.coord[2] + (target[2] - self.game_state.player.coord[2]) * ratio)
-            ]
-        else:
-            new_coord = self.game_state.player.coord
-
+        new_coord = self.game_state.map.path(self.game_state.player.coord, patrol_coord)
         self.update_joystick_input_and_angle(self.game_state.player.coord, new_coord)
         self.game_state.player.set_coord(new_coord)
 

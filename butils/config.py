@@ -54,9 +54,8 @@ class Config:
                         value = logging.INFO
 
                 self.__dict__[key] = value
-        self._authenticate()
-
-        self.world_id = self._get_active_games(result['game_name_to_join'])
+        self.world_id = int(result.get('world_id', 0))
+        self.game_name_to_join = result.get('game_name_to_join', '')
 
     def _authenticate(self):
         data = {

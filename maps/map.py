@@ -163,11 +163,17 @@ class Map:
             nearby_dists = distances[mask]
             for i, neighbor in enumerate(nearby):
                 nb = tuple(int(x) for x in neighbor)
-                self.G.add_edge(coord, nb, weight=nearby_dists[i])
+                weight = nearby_dists[i]
+                if abs(coord[2] - nb[2]) > 200:
+                    weight *= 3
+                self.G.add_edge(coord, nb, weight=weight)
         else:
             closest_idx = np.argmin(distances)
             closest_node = tuple(int(x) for x in self.points[closest_idx])
-            self.G.add_edge(coord, closest_node, weight=distances[closest_idx])
+            weight = distances[closest_idx]
+            if abs(coord[2] - closest_node[2]) > 200:
+                weight *= 3
+            self.G.add_edge(coord, closest_node, weight=weight)
         self.points = np.array(self.G.nodes)
         self._pending_persist = getattr(self, '_pending_persist', [])
         self._pending_persist.append(coord)

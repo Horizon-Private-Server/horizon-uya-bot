@@ -106,6 +106,9 @@ class Model:
         '''
         logger.debug(f"Processing: {serialized}")
 
+        if 'packet' not in serialized:
+            return
+
         if serialized['packet'] == 'medius.rt.clientappsingle':
             for dme_packet in serialized['packets']:
                 self.process_dme_packet(serialized['src_player'], dme_packet, serialized['protocol'])
@@ -192,9 +195,26 @@ class Model:
         if dme_packet.name == 'tcp_0003_broadcast_lobby_state':
             msgs = [key for key in dme_packet.data.keys() if key[0:3] == 'msg']
 
+            # Adopt the team the host assigned us BEFORE any re-ready below, so the
+            # re-ready confirms our new team instead of asserting a stale one and
+            # getting yanked back. The host broadcasts teams via a 'colors' sub-msg.
             for msg in msgs:
-                if src_player == 0 and dme_packet.data['src'] == -1 and dme_packet.data[msg]['type'] == 'ready/unready' and dme_packet.data[msg][f'p{self.game_state.player.player_id}'] == 'kicked':
-                    self.alive = False
+                if dme_packet.data[msg].get('type') == 'colors':
+                    my_color = dme_packet.data[msg].get(f'p{self.game_state.player.player_id}')
+                    if my_color and my_color != 'NA' and my_color != self.game_state.player.team:
+                        logger.info(f"Host assigned us to team '{my_color}' (was '{self.game_state.player.team}')")
+                        self.game_state.player.team = my_color
+
+            for msg in msgs:
+                if src_player == 0 and dme_packet.data['src'] == -1 and dme_packet.data[msg]['type'] == 'ready/unready':
+                    my_state = dme_packet.data[msg].get(f'p{self.game_state.player.player_id}')
+                    if my_state == 'kicked':
+                        self.alive = False
+                    elif my_state == 'unready' and self.game_state.state == 'staging':
+                        # Host marked us unready (e.g. after a team change). The host never
+                        # sends us a '04 change team request', so this broadcast is the only
+                        # signal we get -- re-ready immediately so the bot always stays ready.
+                        self.dmetcp_queue.put([0, tcp_0211_player_lobby_state_change.tcp_0211_player_lobby_state_change(team=self.game_state.player.team, skin=self.game_state.player.skin, username=self.game_state.player.username, ready='ready', clan_tag=self.game_state.player.clan_tag)])
                 if dme_packet.data[msg]['type'] == 'timer_update':
                     self.game_state.time_update(src_player, dme_packet.data[msg]['time'])
                     if src_player == 0:

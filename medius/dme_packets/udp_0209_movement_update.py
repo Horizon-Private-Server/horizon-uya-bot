@@ -45,7 +45,10 @@ class udp_0209_movement_update:
         results['left_joystick_repeats'] = ''.join([data.popleft() for i in range(6)])
 
         # Tests
-        assert results['buffer'] == '00'
+        # NOTE: 'buffer' is not always '00' on the live server (observed '04' in-game),
+        # so this reverse-engineering sanity check is disabled. The real value is kept
+        # in results['buffer'] and round-trips through to_bytes().
+        # assert results['buffer'] == '00'
 
         ## Parse the button and flush
         #

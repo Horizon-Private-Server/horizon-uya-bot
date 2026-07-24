@@ -1,0 +1,31 @@
+# Secrets / local-only config (prod uses env vars, not these)
+.env
+.env.*
+configs/
+configs_local/
+configs_test/
+run_local.sh
+
+# Logs and local run artifacts
+logs/
+blarg/logs/
+*.log
+
+# Git / editor / OS cruft
+.git/
+.gitignore
+.idea/
+.vscode/
+.claude/
+*.swp
+.DS_Store
+
+# Python caches / build output
+__pycache__/
+*.pyc
+*.pyo
+build/
+*.egg-info/
+env/
+venv/
+.venv/

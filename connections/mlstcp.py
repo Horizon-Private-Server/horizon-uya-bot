@@ -21,6 +21,7 @@ class MlsTcp(AbstractTcp):
         self.dme_access_key = None
         self.dme_ip = None
         self.dme_port = None
+        self.dme_world_id = None
 
         self._logger = logging.getLogger('thug.mlstcp')
         self._logger.setLevel(mls_log_level)
@@ -248,8 +249,14 @@ class MlsTcp(AbstractTcp):
 
         self.dme_ip = hex_to_str(''.join([data.popleft() for _ in range(16)]))
         self.dme_port = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
-        buf = ''.join([data.popleft() for _ in range(92)])
+
+        # Second address in the connect info (type + ip + port), then the dme world id
+        buf = ''.join([data.popleft() for _ in range(24)])
+        self.dme_world_id = hex_to_int_little(''.join([data.popleft() for _ in range(4)]))
+        buf = ''.join([data.popleft() for _ in range(64)])
 
         self.dme_session_key = hex_to_bytes(''.join([data.popleft() for _ in range(17)]))
         self.dme_access_key = hex_to_bytes(''.join([data.popleft() for _ in range(16)]))
+
+        self._logger.info(f"Joined game! DME {self.dme_ip}:{self.dme_port} | DME world id: {self.dme_world_id}")
 

@@ -44,8 +44,7 @@ class DmeTcp(AbstractTcp):
         # Initial connect to DME TCP
         self._logger.info("Connecting to dme world Stage [1] ...")
         pkt = hex_to_bytes('156A00010801')
-        pkt += int_to_bytes_little(2, self.world_id-1)
-        #pkt += int_to_bytes_little(2, 1)
+        pkt += int_to_bytes_little(2, self.world_id)
         pkt += hex_to_bytes('BC29000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000')
         pkt += self.session_key
         pkt += self.access_key
@@ -61,7 +60,7 @@ class DmeTcp(AbstractTcp):
                 continue
 
             if data[0] != 0x07:
-                raise Exception('Unknown response!')
+                raise Exception(f'Unknown response to dme world connect (world id {self.world_id}): {bytes_to_hex(data)}')
 
             elif data[0] == 0x07:
                 self.player_id = bytes_to_int_little(data[6:8])
@@ -78,7 +77,7 @@ class DmeTcp(AbstractTcp):
                 continue
 
             if data[0] != 0x18:
-                raise Exception('Unknown response!')
+                raise Exception(f'Unknown response to dme udp info request: {bytes_to_hex(data)}')
 
             elif data[0] == 0x18:
                 pass

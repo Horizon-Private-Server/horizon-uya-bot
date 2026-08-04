@@ -42,10 +42,8 @@ class Config:
             self.__dict__[key] = value
 
     def _set_from_file(self, config_file):
-        # This will always be local debugging
         with open(config_file, 'r') as f:
             result = json.loads(f.read())
-            result['local'] = True
             for key, value in result.items():
                 if 'log_level' in key:
                     if value == 'debug':
@@ -54,9 +52,10 @@ class Config:
                         value = logging.INFO
 
                 self.__dict__[key] = value
-        self._authenticate()
 
-        self.world_id = self._get_active_games(result['game_name_to_join'])
+        if 'world_id' not in result.keys():
+            self._authenticate()
+            self.world_id = self._get_active_games(result['game_name_to_join'])
 
     def _authenticate(self):
         data = {

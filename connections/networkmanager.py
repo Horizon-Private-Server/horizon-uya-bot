@@ -22,11 +22,11 @@ class NetworkManager:
         self.loop.run_until_complete(self._mls.connect(config.world_id))
 
         # DME TCP
-        self._dmetcp = DmeTcp(self.loop, config.dmetcp_log_level, self._mls.dme_ip, self._mls.dme_port, self._mls.dme_session_key, self._mls.dme_access_key, config.world_id)
+        self._dmetcp = DmeTcp(self.loop, config.dmetcp_log_level, self._mls.dme_ip, self._mls.dme_port, self._mls.dme_session_key, self._mls.dme_access_key, self._mls.dme_world_id)
         self.loop.run_until_complete(self._dmetcp.connect())
 
         # DME UDP
-        self._dmeudp = DmeUdp(self.loop, config.dmeudp_log_level, self._dmetcp.dmeudp_ip, self._dmetcp.dmeudp_port, config.world_id, self._dmetcp.player_id)
+        self._dmeudp = DmeUdp(self.loop, config.dmeudp_log_level, self._dmetcp.dmeudp_ip, self._dmetcp.dmeudp_port, self._mls.dme_world_id, self._dmetcp.player_id)
         self.loop.run_until_complete(self._dmeudp.connect())
 
         # DME TCP FINAL
